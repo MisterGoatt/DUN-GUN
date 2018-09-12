@@ -30,7 +30,7 @@ public class Start extends ApplicationAdapter {
 	
 	public void render () {
 
-		Gdx.gl.glClearColor(0, 0, 0, 1); //background in RGBA
+		Gdx.gl.glClearColor(240, 30, 111, 1); //background in RGBA
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); //clears the screen
 		batch.begin(); //begins sprite batch
 		batch.draw(img, 525, 200); //draws image
