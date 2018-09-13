@@ -17,9 +17,9 @@ public class Start extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("SillyBoi.jpg");
-		font = new BitmapFont(); //uses default bitmap font
-		font.getData().setScale(8); //increases the default scale of the font
-		font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear); 
+		font = new BitmapFont(Gdx.files.internal("ArialBlack83.fnt")); //uses default bitmap font
+		//font.getData().setScale(8); //increases the default scale of the font
+		//font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear); 
 		//how to determine what a bitmap looks like when the bitmap gets drawn at a larger size than it was 
 		//originally designed to be drawn in
 		//Linear filter makes sure text is not pixely when drawn larger
@@ -30,11 +30,12 @@ public class Start extends ApplicationAdapter {
 	
 	public void render () {
 
-		Gdx.gl.glClearColor(240, 30, 111, 1); //background in RGBA
+		Gdx.gl.glClearColor(0, 0, 0, 1); //background in RGBA
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); //clears the screen
 		batch.begin(); //begins sprite batch
 		batch.draw(img, 525, 200); //draws image
-		font.draw(batch, "DUN-GUN", 475, 120); //draws text to screen
+		font.draw(batch, "DUN-GUN", 545, 700); //draws text to screen
+		font.draw(batch, "Richard |Plaskett| Tullis| Jeremy",  125,200);
 		batch.end(); //what actually displays everything to the screen
 	}
 	
