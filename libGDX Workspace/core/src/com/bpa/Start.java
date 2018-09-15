@@ -10,16 +10,21 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Start extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture img;
-	BitmapFont font; //instantiates font
-	BitmapFont font2;
+	Texture publisherScreen;
+	Texture creditScreen;
+	Texture menuScreen;
+	private long startTime = System.currentTimeMillis();
+	private long counter;
+
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("SillyBoi.jpg");
-		font = new BitmapFont(Gdx.files.internal("fonts/ArialBlack36.fnt"));
-		font2 = new BitmapFont(Gdx.files.internal("fonts/ArialBlack83.fnt"));
+		publisherScreen = new Texture("screens/ctm_placeholder.jpg");
+		creditScreen = new Texture("screens/credits_placeholder.jpg");
+		menuScreen = new Texture("screens/titlescreen_placeholder.jpg");
+
+
 	}
 
 	@Override
@@ -28,16 +33,32 @@ public class Start extends ApplicationAdapter {
 
 		Gdx.gl.glClearColor(0, 0, 0, 1); //background in RGBA
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); //clears the screen
+		
+		
+		System.out.println((System.currentTimeMillis() - startTime) / 1000);
+		counter = (System.currentTimeMillis() - startTime) / 1000;
 		batch.begin(); //begins sprite batch
-		batch.draw(img, 525, 200); //draws image
-		font2.draw(batch, "DUN-GUN", 545, 700); //draws text to screen
-		font.draw(batch, "Richard - Plaskett - Tullis - Jeremy",  425, 165);
+
+		if (counter < 2) {
+			System.out.println("A");
+			batch.draw(publisherScreen, 0, 0); //draws image
+		}else if (counter <=  3 && counter >= 2) {
+			System.out.println("b");
+			batch.draw(creditScreen, 0, 0);
+		}else if (counter > 3){
+			System.out.println("c");
+			batch.draw(menuScreen, 0, 0);
+		}
+		
 		batch.end(); //what actually displays everything to the screen
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
+		publisherScreen.dispose();
+		creditScreen.dispose();
+		menuScreen.dispose();
+		
 	}
 }
