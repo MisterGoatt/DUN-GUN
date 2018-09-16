@@ -37,7 +37,6 @@ public class Start extends ApplicationAdapter{
 		Gdx.gl.glClearColor(0, 0, 0, 1); //background in RGBA
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); //clears the screen
 		
-		
 		System.out.println((System.currentTimeMillis() - startTime) / 1000);
 		counter = (System.currentTimeMillis() - startTime) / 1000;
 		batch.begin(); //begins sprite batch
