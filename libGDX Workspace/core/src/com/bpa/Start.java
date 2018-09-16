@@ -64,6 +64,7 @@ public class Start extends ApplicationAdapter{
 		publisherScreen.dispose();
 		creditScreen.dispose();
 		titleScreen.dispose();
+		framerate.dispose();
 		
 	}
 }
