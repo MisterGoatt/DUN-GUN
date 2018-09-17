@@ -16,9 +16,7 @@ public class Start extends ApplicationAdapter{
 	private long startTime = System.currentTimeMillis();
 	private long counter;
 	BitmapFont framerate; //font for frame rate display
-	
 
-	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -26,30 +24,24 @@ public class Start extends ApplicationAdapter{
 		creditScreen = new Texture("screens/credits_placeholder.jpg");
 		titleScreen = new Texture("screens/titlescreen_placeholder.jpg");
 		framerate = new BitmapFont(Gdx.files.internal("fonts/CourierNew32.fnt"));
-
-
 	}
 
 	@Override
-	
 	public void render () {
 
 		Gdx.gl.glClearColor(0, 0, 0, 1); //background in RGBA
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); //clears the screen
 		
-		System.out.println((System.currentTimeMillis() - startTime) / 1000);
+		//System.out.println((System.currentTimeMillis() - startTime) / 1000);
 		counter = (System.currentTimeMillis() - startTime) / 1000;
 		batch.begin(); //begins sprite batch
 
 		//draws publisher screen, credit screen, and then title screen
 		if (counter <= 2) {
-			System.out.println("A");
 			batch.draw(publisherScreen, 0, 0);
-		}else if (counter <=  4 && counter > 2) {
-			System.out.println("b");
+		}else if (counter <=  5 && counter > 2) {
 			batch.draw(creditScreen, 0, 0);
-		}else if (counter >= 4.1){
-			System.out.println("c");
+		}else if (counter >= 5.1){
 			batch.draw(titleScreen, 0, 0);
 		}
 		int f = Gdx.graphics.getFramesPerSecond(); // grabs frames per second
