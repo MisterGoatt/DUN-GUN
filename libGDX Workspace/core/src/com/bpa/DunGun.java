@@ -1,5 +1,6 @@
 package com.bpa;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -8,14 +9,14 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Start extends ApplicationAdapter{
-	SpriteBatch batch;
+public class DunGun extends Game{
+	public SpriteBatch batch;
 	Texture publisherScreen;
 	Texture creditScreen;
 	Texture titleScreen;
 	private long startTime = System.currentTimeMillis();
 	private long counter;
-	BitmapFont framerate; //font for frame rate display
+	public BitmapFont framerate; //font for frame rate display
 	
 
 	
@@ -26,7 +27,7 @@ public class Start extends ApplicationAdapter{
 		creditScreen = new Texture("screens/credits_placeholder.jpg");
 		titleScreen = new Texture("screens/titlescreen_placeholder.jpg");
 		framerate = new BitmapFont(Gdx.files.internal("fonts/CourierNew32.fnt"));
-
+		this.setScreen(new MainMenu(this));
 
 	}
 
