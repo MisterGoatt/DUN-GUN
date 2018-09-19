@@ -19,7 +19,6 @@ public class DunGun extends Game{
 	private long startTime = System.currentTimeMillis();
 	private long counter;
 	BitmapFont framerate; //font for frame rate display*/
-	private OrthographicCamera camera;
 
 
 	@Override

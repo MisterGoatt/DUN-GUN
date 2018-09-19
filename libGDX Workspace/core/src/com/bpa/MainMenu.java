@@ -24,7 +24,7 @@ public class MainMenu implements Screen{
 		this.game = game;
 
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 1000, 800);
+		camera.setToOrtho(false, 1500, 800);
 		publisherScreen = new Texture("screens/ctm_placeholder.jpg");
 		creditScreen = new Texture("screens/credits_placeholder.jpg");
 		titleScreen = new Texture("screens/titlescreen_placeholder.jpg");
@@ -46,7 +46,6 @@ public class MainMenu implements Screen{
 		
 		//System.out.println((System.currentTimeMillis() - startTime) / 1000);
 		counter = (System.currentTimeMillis() - startTime) / 1000;
-		game.batch.begin(); //begins sprite batch
 
 		//draws publisher screen, credit screen, and then title screen
 		if (counter <= 2) {
@@ -60,7 +59,6 @@ public class MainMenu implements Screen{
 		String frames = Integer.toString(f); //converts frames per second to a string
 		framerate.draw(game.batch, frames, 5, 785); //displays frames per second as text in top left
 		game.batch.end(); //what actually displays everything to the screen
-		game.batch.end();
 
 	}
 
