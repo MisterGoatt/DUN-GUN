@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.Input;
+
 
 public class MainMenu implements Screen{
 	
@@ -33,8 +35,6 @@ public class MainMenu implements Screen{
 	
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		camera.update();
 
@@ -46,8 +46,14 @@ public class MainMenu implements Screen{
 		
 		//System.out.println((System.currentTimeMillis() - startTime) / 1000);
 		counter = (System.currentTimeMillis() - startTime) / 1000;
-
+		//Mouse Input
+		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+			System.out.println("Hola!");
+		}
+		
+		
 		//draws publisher screen, credit screen, and then title screen
+		
 		if (counter <= 2) {
 			game.batch.draw(publisherScreen, 0, 0);
 		}else if (counter <=  5 && counter > 2) {
