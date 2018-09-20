@@ -21,6 +21,12 @@ public class MainMenu implements Screen{
 	Texture publisherScreen;
 	Texture creditScreen;
 	Texture titleScreen;
+	Texture dv;
+	boolean isPressed = false; //for mouse input spam
+	BitmapFont dvf;
+
+
+
 	
 	public MainMenu(final DunGun game) {
 		this.game = game;
@@ -31,11 +37,16 @@ public class MainMenu implements Screen{
 		creditScreen = new Texture("screens/credits_placeholder.jpg");
 		titleScreen = new Texture("screens/titlescreen_placeholder.jpg");
 		framerate = new BitmapFont(Gdx.files.internal("fonts/CourierNew32.fnt"));
+		dv = new Texture("hqdefault.jpg");
+		dvf = new BitmapFont(Gdx.files.internal("fonts/CourierNew32.fnt"));
 	}
 	
 	@Override
 	public void render(float delta) {
 
+		int mX = Gdx.input.getX();
+		int mY = Gdx.input.getY();
+		
 		camera.update();
 
 		game.batch.setProjectionMatrix(camera.combined);
@@ -47,13 +58,20 @@ public class MainMenu implements Screen{
 		//System.out.println((System.currentTimeMillis() - startTime) / 1000);
 		counter = (System.currentTimeMillis() - startTime) / 1000;
 		//Mouse Input
-		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-			System.out.println("Hola!");
+		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && (isPressed == false)) {
+			isPressed = true;
+			if (mX >= 700 && mX <= 800 && mY >= 300 &&  mY <= 400) {
+				System.out.println("DEUS VULT");
+				game.batch.draw(dv, mX, mY);
+				dvf.draw(game.batch, "DEUS VULT", mX, mY - 100);
+			}
 		}
-		
-		
+		//keeps from holding down spam
+		if (!(Gdx.input.isButtonPressed(Input.Buttons.LEFT))) {
+			
+			isPressed = false;
+		}
 		//draws publisher screen, credit screen, and then title screen
-		
 		if (counter <= 2) {
 			game.batch.draw(publisherScreen, 0, 0);
 		}else if (counter <=  5 && counter > 2) {
@@ -65,13 +83,13 @@ public class MainMenu implements Screen{
 		String frames = Integer.toString(f); //converts frames per second to a string
 		framerate.draw(game.batch, frames, 5, 785); //displays frames per second as text in top left
 		game.batch.end(); //what actually displays everything to the screen
+		System.out.println(mX + " " + mY);
 
+		
 	}
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -106,6 +124,7 @@ public class MainMenu implements Screen{
 		creditScreen.dispose();
 		titleScreen.dispose();
 		framerate.dispose();
+		dv.dispose();
 	}
 
 }
