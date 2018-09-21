@@ -45,8 +45,9 @@ public class MainMenu implements Screen{
 	@Override
 	public void render(float delta) {
 
-		game.batch.begin(); //**************************
+		game.batch.begin(); 
 
+		//mouse x and y
 		int mX = Gdx.input.getX();
 		int mY = Gdx.input.getY();
 		
@@ -55,10 +56,20 @@ public class MainMenu implements Screen{
 		Gdx.gl.glClearColor(0, 0, 0, 1); //background in RGBA
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); //clears the screen
 		
+		//FRAMES PER SECOND
+		//**********************************
 		//System.out.println((System.currentTimeMillis() - startTime) / 1000);
 		counter = (System.currentTimeMillis() - startTime) / 1000;
+		int f = Gdx.graphics.getFramesPerSecond(); // grabs frames per second
+		String frames = Integer.toString(f); //converts frames per second to a string
+		framerate.draw(game.batch, frames, 5, 785); //displays frames per second as text in top left
+		//**********************************
+
 		
-		//Mouse Input
+		
+		
+		//MOUSE INPUT
+		//**********************************
 		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && (isPressed == false) && unlimiter == false){
 			isPressed = true;
 			if (mX >= 700 && mX <= 800 && mY >= 300 &&  mY <= 400) {
@@ -89,8 +100,12 @@ public class MainMenu implements Screen{
 				isPressed = false;
 			}			
 		}
+		//**********************************
 
-		//draws publisher screen, credit screen, and then title screen
+		
+
+		//DRAWS INTRO SCREENS
+		//**********************************
 		if (counter <= 7.1 && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 			skip1 = true;
 		}
@@ -103,12 +118,11 @@ public class MainMenu implements Screen{
 					game.batch.draw(titleScreen, 0, 0);
 				}
 	}
-		int f = Gdx.graphics.getFramesPerSecond(); // grabs frames per second
-		String frames = Integer.toString(f); //converts frames per second to a string
-		framerate.draw(game.batch, frames, 5, 785); //displays frames per second as text in top left
-		System.out.println(mX + " " + mY);
+		//**********************************
 
-		game.batch.end(); //*************************
+		//System.out.println(mX + " " + mY);
+
+		game.batch.end(); 
 		
 	}
 
