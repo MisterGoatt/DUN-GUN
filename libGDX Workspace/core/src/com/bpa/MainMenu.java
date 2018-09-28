@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.bpa.world.GameMap;
-import com.bpa.world.TiledGameMap;
 import com.badlogic.gdx.Input;
 
 
@@ -25,24 +23,12 @@ public class MainMenu implements Screen{
 	Texture creditScreen;
 	Texture titleScreen;
 	Texture musicScreen;
-	Texture dv;
-	boolean unlimiter = false;
-	boolean isPressed = false; //for mouse input spam
-	boolean a = false;
+	boolean skiptomap = false;
 	boolean skip1 = false;
-	Texture img;
-	OrthographicCamera cam;
-	GameMap gameMap;
 	
 	
 	public MainMenu(final DunGun game) {
 		this.game = game;
-		
-		cam = new OrthographicCamera();
-		cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		
-		gameMap = new TiledGameMap();
-		
 		
 		
 		publisherScreen = new Texture("screens/ctm_placeholder.jpg");
@@ -50,8 +36,7 @@ public class MainMenu implements Screen{
 		titleScreen = new Texture("screens/titlescreen_placeholder.jpg");
 		musicScreen = new Texture("screens/musicscreen.jpg");
 		framerate = new BitmapFont(Gdx.files.internal("fonts/CourierNew32.fnt"));
-		dv = new Texture("hqdefault.jpg");
-		dvf = new BitmapFont(Gdx.files.internal("fonts/CourierNew32.fnt"));
+
 		
 	}
 	
@@ -76,7 +61,6 @@ public class MainMenu implements Screen{
 		
 		
 		
-		cam.update();
 		
 
 		
@@ -85,7 +69,6 @@ public class MainMenu implements Screen{
 		//**********************************
 		if (counter <= 10.2 && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 			skip1 = true;
-			a = true;
 			
 		}
 		
@@ -100,15 +83,11 @@ public class MainMenu implements Screen{
 				else if (counter >= 7.2 && counter <= 10.2){
 					game.batch.draw(titleScreen, 0, 0);
 				}
-				else if (counter >= 10.21) {
-					a = true;
-				}
+
 				
 	}
 		//**********************************
-		if (a == true) {
-			gameMap.render(cam);
-		}
+
 		System.out.println(mX + " " + mY);
 
 		
@@ -162,8 +141,6 @@ public class MainMenu implements Screen{
 		creditScreen.dispose();
 		titleScreen.dispose();
 		framerate.dispose();
-		dv.dispose();
-		img.dispose();
 	}
 
 }
