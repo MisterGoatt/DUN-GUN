@@ -26,9 +26,14 @@ public class Level1 implements Screen{
 	@Override
 	public void render(float delta) {
 		game.batch.begin(); 
-		int mX = Gdx.input.getX();
-		int mY = Gdx.graphics.getHeight() - Gdx.input.getY();
+		//int mX = Gdx.input.getX();
+		//int mY = Gdx.graphics.getHeight() - Gdx.input.getY();
 
+		if (Gdx.input.isTouched()) {
+			cam.translate(Gdx.input.getDeltaX() * (-1), Gdx.input.getDeltaY());
+			cam.update();
+		}
+		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		gameMap.render(cam);
