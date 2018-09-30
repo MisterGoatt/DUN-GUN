@@ -8,14 +8,14 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
-public class TiledGameMap extends L1TMap {
+public class L1TMLoad extends TMapLocations {
 	
 	TiledMap tiledMap;
 	OrthogonalTiledMapRenderer tiledMapRenderer;
 	
-	public TiledGameMap () {
-		tiledMap = new TmxMapLoader().load("tileMaps/TileMap1.tmx");
-		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+	public L1TMLoad () {
+		tiledMap = new TmxMapLoader().load("tileMaps/Tutorial/TileMap1.tmx"); // loads map into the game
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap); // what renders map to the screen
 	};
 	
 	@Override

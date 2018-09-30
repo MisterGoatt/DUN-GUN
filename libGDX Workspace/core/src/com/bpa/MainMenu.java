@@ -24,6 +24,8 @@ public class MainMenu implements Screen{
 	Texture mainMenuScreen;
 	boolean skipToMainM = false;
 	boolean onMenu = false;
+	boolean justClicked = false;
+
 	
 	public MainMenu(final DunGun game) {
 		this.game = game;
@@ -42,6 +44,7 @@ public class MainMenu implements Screen{
 	@Override
 	public void render(float delta) {
 
+		
 		game.batch.begin(); 
 		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -53,12 +56,13 @@ public class MainMenu implements Screen{
 		int mY = Gdx.graphics.getHeight() - Gdx.input.getY();
 		
 
+		
+
+		
+		
 		//DRAWS INTRO SCREENS
 		//**********************************
-		if (counter <= 10.2 && Gdx.input.isTouched(Input.Buttons.LEFT)) {
-			skipToMainM = true;
-		}
-		
+
 		if (skipToMainM == false) {
 			if (counter <= 2) {
 					game.batch.draw(publisherScreen, 0, 0);
@@ -82,20 +86,32 @@ public class MainMenu implements Screen{
 	}
 		
 		
-		//**********************************
+
 		//TO LEVEL1
-		
-		if (onMenu == true && 679 < mX  && mX < 836 && 531 < mY && mY < 573 && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+		if (onMenu == true && 680 < mX && mX < 836 && 531 < mY && mY < 573 && Gdx.input.isButtonPressed(Input.Buttons.LEFT) && justClicked == false) {
 			game.setScreen(new Level1(game));
 
+		}
+		//QUITS GAME
+		if (onMenu == true && 680 < mX && mX < 836 && 265 < mY && mY < 310 && Gdx.input.isButtonPressed(Input.Buttons.LEFT) && justClicked == false) {
+			Gdx.app.exit();
+			
+		}
+		
+		
+		System.out.println(mX + " " + mY);
+
+		//***********************************
+		//Keeps mouse from being held down
+		justClicked = false;
+
+		if ( (onMenu == true || counter <= 10.2) && Gdx.input.isTouched(Input.Buttons.LEFT)) {
+			skipToMainM = true;
+			justClicked = true;
 		}
 		
 		
 		
-		
-		
-		//System.out.println(mX + " " + mY);
-
 		
 		//FRAMES PER SECOND
 		//**********************************

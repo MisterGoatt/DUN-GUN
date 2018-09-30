@@ -16,13 +16,13 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class Level1 implements Screen{
 	private OrthographicCamera cam;
 	final DunGun game;
-	L1TMap gameMap;
+	TMapLocations level1Map;
 	private Viewport gamePort;
 
 	
 	public Level1(final DunGun game) {
 		this.game = game;
-		gameMap = new TiledGameMap();
+		level1Map = new L1TMLoad();
 		cam = new OrthographicCamera();
 		cam.setToOrtho(false, 320, 320); // centers camera on the 20x20 tile map(which equals 320x320)
 		//cam.zoom = 10;//zooms down on the map
@@ -49,14 +49,14 @@ public class Level1 implements Screen{
 		
 		if (Gdx.input.justTouched()) {
 			Vector3 pos = cam.unproject(new Vector3 (Gdx.input.getX(), Gdx.input.getY(), 0)); //getting location of the screen and converts to game world coordinates
-			TileType type = gameMap.getTileTypeByLocation(0, pos.x, pos.y);
+			TileType type = level1Map.getTileTypeByLocation(0, pos.x, pos.y);
 			if (type != null) {
 				System.out.println("id: " + type.getId() + " " + type.getName() + " " + type.isCollidable() + " " + type.getDamage());
 			}
 		}
 		cam.update();
 
-		gameMap.render(cam);
+		level1Map.render(cam);
 		game.batch.end();
 	}
 
