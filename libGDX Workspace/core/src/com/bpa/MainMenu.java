@@ -43,8 +43,6 @@ public class MainMenu implements Screen{
 	public void render(float delta) {
 
 		game.batch.begin(); 
-		boolean singleClick = false; //prevent held down mouse click
-
 		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -57,9 +55,8 @@ public class MainMenu implements Screen{
 
 		//DRAWS INTRO SCREENS
 		//**********************************
-		if (counter <= 10.2 && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+		if (counter <= 10.2 && Gdx.input.isTouched(Input.Buttons.LEFT)) {
 			skipToMainM = true;
-			singleClick = true;
 		}
 		
 		if (skipToMainM == false) {
@@ -79,7 +76,7 @@ public class MainMenu implements Screen{
 					game.batch.draw(mainMenuScreen, 0, 0);
 					onMenu = true;
 				}			
-	}else if (skipToMainM == true && singleClick == false){
+	}else if (skipToMainM == true){
 		game.batch.draw(mainMenuScreen, 0, 0);
 		onMenu = true;
 	}
@@ -90,7 +87,6 @@ public class MainMenu implements Screen{
 		
 		if (onMenu == true && 679 < mX  && mX < 836 && 531 < mY && mY < 573 && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 			game.setScreen(new Level1(game));
-			System.out.println("TAPPING");
 
 		}
 		
@@ -98,7 +94,7 @@ public class MainMenu implements Screen{
 		
 		
 		
-		System.out.println(mX + " " + mY);
+		//System.out.println(mX + " " + mY);
 
 		
 		//FRAMES PER SECOND

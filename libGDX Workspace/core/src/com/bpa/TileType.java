@@ -7,7 +7,7 @@ public enum TileType {
 	//CONSTANTS
 
 	WALLS(17, true, "Wall"),
-	GROUND(130, false, "Ground");
+	GROUND(290, false, "Ground");
 	
 	
 	public static final int TILE_SIZE = 16;
@@ -38,7 +38,7 @@ public enum TileType {
 	}
 
 	public String getName() {
-		return name;
+		return name; 
 	}
 
 	public float getDamage() {
@@ -48,6 +48,7 @@ public enum TileType {
 	private static HashMap<Integer, TileType> tileMap;
 	
 	static {
+		tileMap = new HashMap<Integer, TileType>();
 		for (TileType tileType : TileType.values()) {
 			tileMap.put(tileType.getId(), tileType);
 		}
