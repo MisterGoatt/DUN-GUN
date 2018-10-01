@@ -30,7 +30,7 @@ public class Level1 implements Screen{
 		this.game = game;
 		//level1Map = new L1TMLoad();
 		cam = new OrthographicCamera();
-		cam.setToOrtho(false, 320, 320); // centers camera on the 20x20 tile map(which equals 320x320)
+		//cam.setToOrtho(false, 320, 320); // centers camera on the 20x20 tile map(which equals 320x320)
 		gamePort = new FitViewport(DunGun.V_WIDTH, DunGun.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 
 		

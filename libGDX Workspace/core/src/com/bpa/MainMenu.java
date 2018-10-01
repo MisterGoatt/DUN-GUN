@@ -17,6 +17,8 @@ public class MainMenu implements Screen{
 	private long startTime = System.currentTimeMillis();
 	private long counter;
 	BitmapFont framerate; //font for frame rate display
+	BitmapFont menuText;
+	BitmapFont menuTextRed;
 	Texture publisherScreen;
 	Texture creditScreen;
 	Texture titleScreen;
@@ -35,8 +37,10 @@ public class MainMenu implements Screen{
 		creditScreen = new Texture("screens/credits_placeholder.jpg");
 		titleScreen = new Texture("screens/titleScreen.jpg");
 		musicScreen = new Texture("screens/musicscreen.jpg");
-		mainMenuScreen = new Texture("screens/main_menu.png");
+		mainMenuScreen = new Texture("screens/main_menu_2.jpg");
 		framerate = new BitmapFont(Gdx.files.internal("fonts/CourierNew32.fnt"));
+		menuText = new BitmapFont(Gdx.files.internal("fonts/HBM Foista Regular36.fnt"));
+		menuTextRed = new BitmapFont(Gdx.files.internal("fonts/HBM Foista Regular36 (Red).fnt"));
 
 		
 	}
@@ -85,18 +89,63 @@ public class MainMenu implements Screen{
 		onMenu = true;
 	}
 		
-		
-
-		//TO LEVEL1
-		if (onMenu == true && 680 < mX && mX < 836 && 531 < mY && mY < 573 && Gdx.input.isButtonPressed(Input.Buttons.LEFT) && justClicked == false) {
-			game.setScreen(new Level1(game));
-
-		}
-		//QUITS GAME
-		if (onMenu == true && 680 < mX && mX < 836 && 265 < mY && mY < 310 && Gdx.input.isButtonPressed(Input.Buttons.LEFT) && justClicked == false) {
-			Gdx.app.exit();
+		if (onMenu == true && justClicked == false) {
 			
+
+			
+			//TO LEVEL1
+			if (680 < mX && mX < 836 && 531 < mY && mY < 573)  {
+				menuTextRed.draw(game.batch, "start", 710, 560);
+
+				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+				game.setScreen(new Level1(game));
+				
+				}}else {
+				menuText.draw(game.batch, "start", 710, 560);
+
+			}
+			//QUITS GAME
+			if (680 < mX && mX < 836 && 265 < mY && mY < 310){
+				menuTextRed.draw(game.batch, "quit", 720, 295);
+
+				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+					Gdx.app.exit();
+					
+				}}else {
+				menuText.draw(game.batch, "quit", 720, 295);
+
+			}
+			//OPTIONS
+			if (680 < mX && mX < 836 && 464 < mY && mY < 504){
+				menuTextRed.draw(game.batch, "options", 687, 492);
+
+				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+					
+				}}else {
+					menuText.draw(game.batch, "options", 687, 492);
+				}
+			//TUTORIAL
+			if (680 < mX && mX < 836 && 407 < mY && mY < 438){
+				menuTextRed.draw(game.batch, "tutorial", 677, 429);
+
+				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+					
+				}}else {
+					menuText.draw(game.batch, "tutorial", 677, 429);
+				}
+			//CREDITS
+			if (680 < mX && mX < 836 && 338 < mY && mY < 374){
+				menuTextRed.draw(game.batch, "credits", 690, 362);
+
+				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+					
+				}}else {
+					menuText.draw(game.batch, "credits", 690, 362);
+
+				}
 		}
+
+
 		
 		
 		System.out.println(mX + " " + mY);
@@ -109,8 +158,6 @@ public class MainMenu implements Screen{
 			skipToMainM = true;
 			justClicked = true;
 		}
-		
-		
 		
 		
 		//FRAMES PER SECOND
@@ -165,6 +212,7 @@ public class MainMenu implements Screen{
 		titleScreen.dispose();
 		framerate.dispose();
 		mainMenuScreen.dispose();
+		menuText.dispose();
 	}
 
 }
