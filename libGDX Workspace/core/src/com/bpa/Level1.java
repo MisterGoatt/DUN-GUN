@@ -1,12 +1,16 @@
 package com.bpa;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -47,10 +51,30 @@ public class Level1 implements Screen{
 		//int mX = Gdx.input.getX();
 		//int mY = Gdx.graphics.getHeight() - Gdx.input.getY();
 		
-		
-		if (Gdx.input.isTouched()) {
-			cam.translate(Gdx.input.getDeltaX() * (-1), Gdx.input.getDeltaY());
+		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+	        System.out.println("left"); 
+			cam.zoom -= .01;
+
+			//cam.translate(Gdx.input.getDeltaX() * (-1), Gdx.input.getDeltaY());
 		}
+		if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+	        System.out.println("right"); 
+			cam.zoom += .01;
+			
+
+		} 
+		if(Gdx.input.isKeyPressed(Keys.LEFT)){
+	      cam.position.x -= 5;
+		} 
+		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+			cam.position.x += 5;
+	      }
+		if (Gdx.input.isKeyPressed(Keys.UP)) {
+	    	  cam.position.y += 5;
+	      }
+		if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+	    	  cam.position.y -= 5;
+	      }
 		
 		
 		/*if (Gdx.input.justTouched()) {
@@ -60,7 +84,7 @@ public class Level1 implements Screen{
 				System.out.println("id: " + type.getId() + " " + type.getName() + " " + type.isCollidable() + " " + type.getDamage());
 			}
 		} */
-		//cam.update();
+		cam.update();
 		renderer.setView((OrthographicCamera) gamePort.getCamera()); //uses gamePort camera 
 		renderer.render();
 
