@@ -8,7 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
@@ -34,7 +34,7 @@ public class Level1 implements Screen{
 		map = maploader.load("tileMaps/Tutorial/TileMap1.tmx");
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
-		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); //centers the map to center of screen
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class Level1 implements Screen{
 			}
 		} */
 		//cam.update();
-		renderer.setView(cam);
+		renderer.setView((OrthographicCamera) gamePort.getCamera()); //uses gamePort camera 
 		renderer.render();
 
 		//level1Map.render(cam);
@@ -74,6 +74,7 @@ public class Level1 implements Screen{
 	}
 	@Override
 	public void resize(int width, int height) {
+		System.out.println(width + height);
 		gamePort.update(width, height);
 	}
 	@Override
