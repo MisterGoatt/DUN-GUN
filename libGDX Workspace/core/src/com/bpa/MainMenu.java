@@ -3,8 +3,11 @@ package com.bpa;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.Input;
 
 
@@ -27,12 +30,13 @@ public class MainMenu implements Screen{
 	boolean skipToMainM = false;
 	boolean onMenu = false;
 	boolean justClicked = false;
-
+	private Viewport gamePort;
+	private OrthographicCamera cam;
 	
 	public MainMenu(final DunGun game) {
 		this.game = game;
 		
-		
+		cam = new OrthographicCamera();		
 		publisherScreen = new Texture("screens/ctm_placeholder.jpg");
 		creditScreen = new Texture("screens/credits_placeholder.jpg");
 		titleScreen = new Texture("screens/titleScreen.jpg");
@@ -41,7 +45,8 @@ public class MainMenu implements Screen{
 		framerate = new BitmapFont(Gdx.files.internal("fonts/CourierNew32.fnt"));
 		menuText = new BitmapFont(Gdx.files.internal("fonts/HBM Foista Regular36.fnt"));
 		menuTextRed = new BitmapFont(Gdx.files.internal("fonts/HBM Foista Regular36 (Red).fnt"));
-
+		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+		cam.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0); //centers the map to center of screen
 		
 	}
 	
@@ -50,7 +55,8 @@ public class MainMenu implements Screen{
 
 		
 		game.batch.begin(); 
-		
+		game.batch.setProjectionMatrix(cam.combined);
+
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
@@ -85,7 +91,7 @@ public class MainMenu implements Screen{
 					onMenu = true;
 				}			
 	}else if (skipToMainM == true){
-		game.batch.draw(mainMenuScreen, 0, 0);
+		game.batch.draw(mainMenuScreen, 0, 0,cam.viewportWidth, cam.viewportHeight);
 		onMenu = true;
 	}
 		
@@ -98,7 +104,7 @@ public class MainMenu implements Screen{
 				menuTextRed.draw(game.batch, "start", 710, 560);
 
 				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-				game.setScreen(new Level1(game));
+					game.setScreen(new Level1(game));
 				
 				}}else {
 				menuText.draw(game.batch, "start", 710, 560);
@@ -172,7 +178,7 @@ public class MainMenu implements Screen{
 		framerate.draw(game.batch, frames, 5, 785); //displays frames per second as text in top left
 		//**********************************
 		
-		
+		cam.update();
 		game.batch.end(); 
 		
 	}
@@ -184,7 +190,7 @@ public class MainMenu implements Screen{
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
+		gamePort.update(width, height);
 		
 	}
 

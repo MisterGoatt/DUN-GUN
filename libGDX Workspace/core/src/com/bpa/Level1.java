@@ -62,9 +62,16 @@ public class Level1 implements Screen{
 	        System.out.println("right"); 
 			cam.zoom += .01;
 			
-			
-
 		} 
+		
+		if (mY < 100 && mX < 100 && Gdx.input.isButtonPressed(Buttons.LEFT)) {
+			
+			game.setScreen(new MainMenu(game));
+;
+
+		}
+		
+		
 		if(Gdx.input.isKeyPressed(Keys.LEFT)){
 	      cam.position.x -= 5;
 		} 
@@ -100,7 +107,6 @@ public class Level1 implements Screen{
 	}
 	@Override
 	public void resize(int width, int height) {
-		System.out.println(width + height);
 		gamePort.update(width, height);
 	}
 	@Override
