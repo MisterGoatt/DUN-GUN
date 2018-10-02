@@ -120,7 +120,8 @@ public class MainMenu implements Screen{
 				menuTextRed.draw(game.batch, "options", 687, 492);
 
 				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-					
+					game.setScreen(new Options(game));
+
 				}}else {
 					menuText.draw(game.batch, "options", 687, 492);
 				}
@@ -129,7 +130,8 @@ public class MainMenu implements Screen{
 				menuTextRed.draw(game.batch, "tutorial", 677, 429);
 
 				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-					
+					game.setScreen(new Tutorial(game));
+
 				}}else {
 					menuText.draw(game.batch, "tutorial", 677, 429);
 				}
@@ -138,7 +140,8 @@ public class MainMenu implements Screen{
 				menuTextRed.draw(game.batch, "credits", 690, 362);
 
 				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-					
+					game.setScreen(new Credits(game));
+
 				}}else {
 					menuText.draw(game.batch, "credits", 690, 362);
 
