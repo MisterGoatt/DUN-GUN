@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Tutorial implements Screen{
 	final DunGun game;
-	Texture tutorial;
+	//Texture tutorial;
 	private OrthographicCamera cam;
 	//TMapLocations level1Map;
 	private Viewport gamePort;
@@ -26,7 +26,7 @@ public class Tutorial implements Screen{
 	
 	public Tutorial(final DunGun game) {
 		this.game = game;
-		tutorial = new Texture("screens/Tutorial.jpg");
+		//tutorial = new Texture("screens/Tutorial.jpg");
 		maploader = new TmxMapLoader();
 		map = maploader.load("tileMaps/Level1/TileMap2.tmx");
 		renderer = new OrthogonalTiledMapRenderer(map);
@@ -50,12 +50,12 @@ public class Tutorial implements Screen{
 	public void render(float delta) {
 		// TODO Auto-generated method stub
 		game.batch.begin(); 
-		game.batch.setProjectionMatrix(cam.combined);
+		//game.batch.setProjectionMatrix(cam.combined);
 
 		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		game.batch.draw(tutorial, 0, 0);
+		//game.batch.draw(tutorial, 0, 0);
 		
 		//mouse x and y
 		int mX = Gdx.input.getX();
@@ -124,7 +124,7 @@ public class Tutorial implements Screen{
 		map.dispose();
 		renderer.dispose();		
 		game.batch.dispose();
-		tutorial.dispose();	
+		//tutorial.dispose();	
 	}
 
 }
