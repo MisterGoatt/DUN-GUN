@@ -9,8 +9,8 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		new LwjglApplication(new DunGun(), config);
 		
-		config.width=1500;
-		config.height=800;
+		config.width = 1500;
+		config.height= 800;
 		config.title = "DUN-GUN";
 		config.foregroundFPS = 60;
 		config.backgroundFPS = 30;
