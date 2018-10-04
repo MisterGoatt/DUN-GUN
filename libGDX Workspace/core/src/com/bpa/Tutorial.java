@@ -28,7 +28,7 @@ public class Tutorial implements Screen{
 		this.game = game;
 		//tutorial = new Texture("screens/Tutorial.jpg");
 		maploader = new TmxMapLoader();
-		map = maploader.load("tileMaps/Level1/TileMap2.tmx");
+		map = maploader.load("tileMaps/Tutorial/TileMap4.tmx");
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
 		cam = new OrthographicCamera();		
