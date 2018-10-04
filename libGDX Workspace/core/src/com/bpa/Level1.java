@@ -18,9 +18,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 
 public class Level1 implements Screen{
-	private OrthographicCamera cam;
 	final DunGun game;
 	//TMapLocations level1Map;
+	private OrthographicCamera cam;
 	private Viewport gamePort;
 	private TmxMapLoader maploader; //what loads map into game
 	private TiledMap map; //references map itself
@@ -30,7 +30,7 @@ public class Level1 implements Screen{
 		this.game = game;
 
 		maploader = new TmxMapLoader();
-		map = maploader.load("tileMaps/Level1/TileMap3.tmx");
+		map = maploader.load("tileMaps/Level1/Level1PlaceHolder2.tmx");
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
 		cam = new OrthographicCamera();		
@@ -46,30 +46,27 @@ public class Level1 implements Screen{
 		//clears screen
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		game.batch.setProjectionMatrix(cam.combined);
-
+		//game.batch.setProjectionMatrix(cam.combined);
+		
+		//mouse x and y
 		int mX = Gdx.input.getX();
 		int mY = Gdx.graphics.getHeight() - Gdx.input.getY();
+		if (mY < 100 && mX < 100 && Gdx.input.isButtonPressed(Buttons.LEFT)) {
+			game.setScreen(new MainMenu(game));
+
+		}
 		
 		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-	        System.out.println("left"); 
 			cam.zoom -= .01;
 
 			//cam.translate(Gdx.input.getDeltaX() * (-1), Gdx.input.getDeltaY());
 		}
-		
 		if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-	        System.out.println("right"); 
 			cam.zoom += .01;
 			
 		} 
 		
-		if (mY < 100 && mX < 100 && Gdx.input.isButtonPressed(Buttons.LEFT)) {
-			
-			game.setScreen(new MainMenu(game));
-;
 
-		}
 		
 		
 		if(Gdx.input.isKeyPressed(Keys.LEFT)){
@@ -85,26 +82,12 @@ public class Level1 implements Screen{
 	    	  cam.position.y -= 5;
 	      }
 		
-		
-		/*if (Gdx.input.justTouched()) {
-			Vector3 pos = cam.unproject(new Vector3 (Gdx.input.getX(), Gdx.input.getY(), 0)); //getting location of the screen and converts to game world coordinates
-			TileType type = level1Map.getTileTypeByLocation(0, pos.x, pos.y);
-			if (type != null) {
-				System.out.println("id: " + type.getId() + " " + type.getName() + " " + type.isCollidable() + " " + type.getDamage());
-			}
-		} */
 		cam.update();
 		renderer.setView((OrthographicCamera) gamePort.getCamera()); //uses gamePort camera 
 		renderer.render();
 
-		//level1Map.render(cam);
 	}
 
-	@Override
-	public void show() {
-		// TODO Auto-generated method stub
-		
-	}
 	@Override
 	public void resize(int width, int height) {
 		gamePort.update(width, height);
@@ -128,5 +111,11 @@ public class Level1 implements Screen{
 	public void dispose() {
 		map.dispose();
 		renderer.dispose();
+	}
+
+	@Override
+	public void show() {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -32,7 +32,7 @@ public class Tutorial implements Screen{
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
 		cam = new OrthographicCamera();		
-		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+		gamePort = new FitViewport(DunGun.V_WIDTH, DunGun.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); //centers the map to center of screen
 		//cam.position.set(300, 20, 0); //moves camera to bottom left of map
 		//cam.zoom -= .5; // zooms in to the map
@@ -48,8 +48,7 @@ public class Tutorial implements Screen{
 
 	@Override
 	public void render(float delta) {
-		// TODO Auto-generated method stub
-		game.batch.begin(); 
+		//game.batch.begin(); 
 		//game.batch.setProjectionMatrix(cam.combined);
 
 		
@@ -60,6 +59,8 @@ public class Tutorial implements Screen{
 		//mouse x and y
 		int mX = Gdx.input.getX();
 		int mY = Gdx.graphics.getHeight() - Gdx.input.getY();
+		
+		//RETURNS TO MAIN MENU
 		if (mY < 100 && mX < 100 && Gdx.input.isButtonPressed(Buttons.LEFT)) {
 			game.setScreen(new MainMenu(game));
 		}
@@ -73,10 +74,10 @@ public class Tutorial implements Screen{
 		if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
 	        System.out.println("right"); 
 			cam.zoom += .01;
-			
-			
-
 		} 
+		
+		
+		
 		if(Gdx.input.isKeyPressed(Keys.LEFT)){
 	      cam.position.x -= 5;
 		} 
@@ -93,12 +94,10 @@ public class Tutorial implements Screen{
 		cam.update();
 		renderer.setView((OrthographicCamera) gamePort.getCamera()); //uses gamePort camera 
 		renderer.render();
-		game.batch.end();
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		System.out.println(width + height);
 		gamePort.update(width, height);		
 	}
 
@@ -123,7 +122,6 @@ public class Tutorial implements Screen{
 	public void dispose() {
 		map.dispose();
 		renderer.dispose();		
-		game.batch.dispose();
 		//tutorial.dispose();	
 	}
 
