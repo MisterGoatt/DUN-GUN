@@ -30,7 +30,7 @@ public class Level1 implements Screen{
 		this.game = game;
 
 		maploader = new TmxMapLoader();
-		map = maploader.load("tileMaps/Tutorial/TileMap1.tmx");
+		map = maploader.load("tileMaps/Level1/TileMap3.tmx");
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
 		cam = new OrthographicCamera();		
