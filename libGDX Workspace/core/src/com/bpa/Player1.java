@@ -28,9 +28,9 @@ public class Player1 extends Sprite{
 	
 	public void update(float dt) {
 		setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
-	
+		System.out.println("anytbing to make commit");
 	}
-	
+	    
 	
 	public void definePlayer1() {
 		BodyDef bdef = new BodyDef();
