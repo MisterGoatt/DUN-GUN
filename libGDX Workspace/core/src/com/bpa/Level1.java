@@ -7,6 +7,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -40,10 +41,14 @@ public class Level1 implements Screen{
 	private Player1 player;
 	private float velocity2 = 2;
 	private float velocity = (float) 1.25;
+	private TextureAtlas atlas;
 	
 	
 	
 	public Level1(final DunGun game) {
+		
+		atlas = new TextureAtlas("sprites/P1.txt");
+		
 		this.game = game;
 
 		maploader = new TmxMapLoader();
@@ -59,54 +64,27 @@ public class Level1 implements Screen{
 		world = new World(new Vector2(0, 0), true);
 		b2dr = new Box2DDebugRenderer();
 		
-		BodyDef bdef = new BodyDef();
-		PolygonShape shape = new PolygonShape();
-		FixtureDef fdef = new FixtureDef();
-		Body body;
+		new B2WorldCreator(world, map);
 		
-		player = new Player1(world);
 		
-		//CREATE GROUND BODIES AND FIXTURES
-		for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
-			Rectangle rect = ((RectangleMapObject) object).getRectangle();
-			bdef.type = BodyDef.BodyType.StaticBody;
-			bdef.position.set((rect.getX() + rect.getWidth() / 2) / DunGun.PPM, (rect.getY()+ rect.getHeight() / 2) / DunGun.PPM);
-			body = world.createBody(bdef);
-			shape.setAsBox(rect.getWidth() / 2 / DunGun.PPM, rect.getHeight() / 2 / DunGun.PPM);
-			fdef.shape = shape;
-			body.createFixture(fdef);
+		player = new Player1(world, this);
+
 		
-		}
 		cam.zoom -= .25;
+	}
+	
+	public TextureAtlas getAtlas() {
+		return atlas;
 	}
 
 	 public void handleInput(float dt){
 	        //control our player using immediate impulses
-	       
-            /*if (Gdx.input.isKeyPressed(Input.Keys.W)  && player.b2body.getLinearVelocity().y <= 2) {
-                player.b2body.setLinearVelocity(new Vector2(0, 1));
 
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.D) && player.b2body.getLinearVelocity().x <= 2) {
-                player.b2body.setLinearVelocity(new Vector2(1, 0));
-
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.A) && player.b2body.getLinearVelocity().x >= -2) {
-                player.b2body.setLinearVelocity(new Vector2(-1, 0));
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.S) && player.b2body.getLinearVelocity().y >= -2) {
-                player.b2body.setLinearVelocity(new Vector2(0, -1));
-
-            }*/
-            
-            
 	        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
 	            player.b2body.setLinearVelocity(new Vector2(0, velocity2));
-	        	
 	        }
 	        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
 	            player.b2body.setLinearVelocity(new Vector2(velocity2, 0));
-
 	        }
 	        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
 	            player.b2body.setLinearVelocity(new Vector2(- velocity2, 0));
@@ -119,7 +97,6 @@ public class Level1 implements Screen{
 	        }
 	        if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)) {
 	        	player.b2body.setLinearVelocity(new Vector2(velocity, velocity));
-
 	        }
 	        if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)) {
 	        	player.b2body.setLinearVelocity(new Vector2(-velocity, -velocity));
@@ -152,9 +129,7 @@ public class Level1 implements Screen{
         //takes 1 step in the physics simulation(60 times per second)
         world.step(1 / 60f, 6, 2);
 
-        //player.update(dt);
-        
-        
+        player.update(dt);
         
 		cam.position.x = player.b2body.getPosition().x;
 		cam.position.y = player.b2body.getPosition().y;
@@ -208,10 +183,14 @@ public class Level1 implements Screen{
         renderer.render();
 
         //renderer our Box2DDebugLines
-        b2dr.render(world, cam.combined);
+       // b2dr.render(world, cam.combined);
 		
 		
 		game.batch.setProjectionMatrix(cam.combined); //MAY NEED IDK
+		game.batch.begin();
+		player.draw(game.batch); //give sprite game batch to draw itself on
+		game.batch.end();
+		
 		
 		//mouse x and y
 		int mX = Gdx.input.getX();
