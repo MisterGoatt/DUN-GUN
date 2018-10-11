@@ -1,6 +1,5 @@
 package com.bpa;
 
-import java.awt.geom.RectangularShape;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -28,13 +27,12 @@ public class Player1 extends Sprite{
 	
 	public void update(float dt) {
 		setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
-		System.out.println("anytbing to make commit");
 	}
 	    
 	
 	public void definePlayer1() {
 		BodyDef bdef = new BodyDef();
-		bdef.position.set(750 / DunGun.PPM, 300 / DunGun.PPM);
+		bdef.position.set(1400 / DunGun.PPM, 400 / DunGun.PPM);
 		bdef.type = BodyDef.BodyType.DynamicBody;
 		b2body = world.createBody(bdef);
 		

@@ -52,7 +52,7 @@ public class Level1 implements Screen{
 		this.game = game;
 
 		maploader = new TmxMapLoader();
-		map = maploader.load("tileMaps/Level1/Level1PlaceHolder3.tmx");
+		map = maploader.load("tileMaps/Level1/Level1PlaceHolder4.tmx");
 		renderer = new OrthogonalTiledMapRenderer(map, 1/ DunGun.PPM);
 		
 		cam = new OrthographicCamera();		
@@ -70,7 +70,7 @@ public class Level1 implements Screen{
 		player = new Player1(world, this);
 
 		
-		cam.zoom -= .25;
+		cam.zoom -= .45;
 	}
 	
 	public TextureAtlas getAtlas() {
@@ -149,7 +149,7 @@ public class Level1 implements Screen{
         //separate our update logic from render
 		update(delta);
 		
-		System.out.println(player.b2body.getLinearVelocity().y + " " + player.b2body.getLinearVelocity().x);
+		//System.out.println(player.b2body.getLinearVelocity().y + " " + player.b2body.getLinearVelocity().x);
 		
 		//clears screen
 		Gdx.gl.glClearColor(0, 0, 0, 1);
