@@ -1,17 +1,17 @@
 # DUN-GUN
 BPA 2018-2019
 
-Richard H - Team Captain/Programmer
+Richard H - Team Captain/Programmer (gameplay)
 
 
 
 
-Jeremy B  - Programmer
+Jeremy B  - Programmer (Networking)
 
 
 
 
-Kyle P    - Programmer
+Kyle P    - Level Design/LevelBuilding
 
 
 
