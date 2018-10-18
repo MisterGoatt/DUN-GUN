@@ -157,7 +157,7 @@ public class MainMenu implements Screen{
 
 		
 		
-		System.out.println(mX + " " + mY);
+		//System.out.println(mX + " " + mY);
 
 		//***********************************
 		//Keeps mouse from being held down
