@@ -45,55 +45,61 @@ public class Level1 implements Screen{
 		cam = new OrthographicCamera();		
 		viewport = new FitViewport(DunGun.V_WIDTH / DunGun.PPM, DunGun.V_HEIGHT / DunGun.PPM, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		//viewport.apply();
-		//cam.position.set((viewport.getWorldWidth() / DunGun.PPM) / 2, viewport.getWorldHeight() / DunGun.PPM, 0);
+		       //cam.position.set((viewport.getWorldWidth() / DunGun.PPM) / 2, viewport.getWorldHeight() / DunGun.PPM, 0);
 
 		//viewport.apply();
 		batch = new SpriteBatch();
 		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/p1.atlas"));
 		textureRegion = textureAtlas.findRegion("p1");
 		sprite = new Sprite(textureRegion);
-		//sprite.setPosition((viewport.getWorldWidth() / 2) - (sprite.getWidth() / 2), 
-		//		(viewport.getWorldHeight() / 2) - (sprite.getHeight() / 2));
-		sprite.setPosition((viewport.getWorldWidth() / 2) * 100, 
-				(viewport.getWorldHeight() / 2) * 100);
-		//cam.zoom -= .45;
+		sprite.setPosition((viewport.getWorldWidth() / 2) * DunGun.PPM, //places the player at the center of the camera
+				(viewport.getWorldHeight() / 2) * DunGun.PPM);
+
+		cam.zoom -= .45;
 	}
 	
 	@Override
 	public void render(float delta) {
 		
+		//clears screen
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		
+		float pW = sprite.getTexture().getWidth() / cam.zoom; //Keeps player scaled
+		float pH = sprite.getTexture().getHeight() / cam.zoom; // ^
+		sprite.setSize(pW, pH); // Keeps players size matched regardless of zoom
+		
 	 	if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-			cam.zoom -= 1;
+			cam.zoom -= .01;
 
 			//cam.translate(Gdx.input.getDeltaX() * (-1), Gdx.input.getDeltaY());
 		}
 		if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-			cam.zoom += 1;
+			cam.zoom += .01;
 			
 		}
-		 if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-			 
-			 cam.translate(0, 2);
+		
+		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+			//sprite.translateY(pSpeed);
+			cam.translate(0, .02f);
 		 	}
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-        	cam.translate(2, 0);
-        }
+        	//sprite.translateX(pSpeed);
+        	cam.translate(.02f, 0);
+        } 
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            cam.translate(-2, 0);
-       
+            //sprite.translateX(-pSpeed);
+        	cam.translate(-.02f, 0);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-        	cam.translate(0, -2);
+        	cam.translate(0, -.02f);
+        	//sprite.translateY(-pSpeed);
         }
+        
+
+        System.out.println(sprite.getY());
         cam.update();
-
-		
-
-		//clears screen
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //render our game map
         mapRenderer.render();
