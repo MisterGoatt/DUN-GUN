@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -24,13 +26,14 @@ public class Level1 implements Screen{
 	private OrthographicCamera cam;
 	private Viewport viewport;
 	private TmxMapLoader maploader; //what loads map into game
-	private TiledMap map; //references map itself
+	private TiledMap map; 
 	private OrthogonalTiledMapRenderer mapRenderer; //renders map to the screen
 	TextureAtlas textureAtlas;
 	Sprite sprite;
 	SpriteBatch batch;
 	TextureRegion textureRegion;
-	
+	MapLayer objectLayer;
+	Texture texture;
 	
 	
 	public Level1(final DunGun game) {
@@ -39,7 +42,7 @@ public class Level1 implements Screen{
 		this.game = game;
 
 		maploader = new TmxMapLoader();
-		map = maploader.load("tileMaps/Level1/Level1PlaceHolder4.tmx");
+		map = maploader.load("tileMaps/Level1/Level1PlaceHolder5.tmx");
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1/ DunGun.PPM);
 		
 		cam = new OrthographicCamera();		
@@ -54,7 +57,8 @@ public class Level1 implements Screen{
 		sprite = new Sprite(textureRegion);
 		sprite.setPosition((viewport.getWorldWidth() / 2) * DunGun.PPM, //places the player at the center of the camera
 				(viewport.getWorldHeight() / 2) * DunGun.PPM);
-
+		//cam.position.x = (viewport.getWorldWidth() / 2) * DunGun.PPM;
+		//cam.position.y = (viewport.getWorldHeight() / 2) * DunGun.PPM;
 		cam.zoom -= .45;
 	}
 	
@@ -65,10 +69,10 @@ public class Level1 implements Screen{
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		
 		float pW = sprite.getTexture().getWidth() / cam.zoom; //Keeps player scaled
 		float pH = sprite.getTexture().getHeight() / cam.zoom; // ^
 		sprite.setSize(pW, pH); // Keeps players size matched regardless of zoom
+
 		
 	 	if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 			cam.zoom -= .01;
@@ -98,17 +102,16 @@ public class Level1 implements Screen{
         }
         
 
-        System.out.println(sprite.getY());
         cam.update();
-
-        //render our game map
-        mapRenderer.render();
-		game.batch.setProjectionMatrix(cam.combined); 
         mapRenderer.setView(cam);
+        
+        //render our game map
+        mapRenderer.render(); // renders map
+		game.batch.setProjectionMatrix(cam.combined); 
         batch.begin();
         sprite.draw(batch);
         batch.end();
-
+		
 		/*
 		//mouse x and y
 		int mX = Gdx.input.getX();
