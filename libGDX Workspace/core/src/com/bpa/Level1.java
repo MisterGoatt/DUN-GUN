@@ -12,8 +12,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -34,6 +36,10 @@ public class Level1 implements Screen{
 	TextureRegion textureRegion;
 	MapLayer objectLayer;
 	Texture texture;
+	//private TiledMapTileLayer terrainLayer;
+	//private int[] decorationLayersIndices;
+	private int[] layerBackround = {0};
+	private int[] layerAfterBackground = {2};
 	
 	
 	public Level1(final DunGun game) {
@@ -44,6 +50,13 @@ public class Level1 implements Screen{
 		maploader = new TmxMapLoader();
 		map = maploader.load("tileMaps/Level1/Level1PlaceHolder5.tmx");
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1/ DunGun.PPM);
+		/*MapLayers mapLayers = map.getLayers();
+		terrainLayer = (TiledMapTileLayer) mapLayers.get("Wall");
+		decorationLayersIndices = new int[] {
+				mapLayers.getIndex("Ground")
+		};*/
+		
+		
 		
 		cam = new OrthographicCamera();		
 		viewport = new FitViewport(DunGun.V_WIDTH / DunGun.PPM, DunGun.V_HEIGHT / DunGun.PPM, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
@@ -106,11 +119,14 @@ public class Level1 implements Screen{
         mapRenderer.setView(cam);
         
         //render our game map
-        mapRenderer.render(); // renders map
-		game.batch.setProjectionMatrix(cam.combined); 
+        //mapRenderer.render(); // renders map
+		mapRenderer.render(layerBackround);
+        game.batch.setProjectionMatrix(cam.combined); 
         batch.begin();
         sprite.draw(batch);
         batch.end();
+        
+        mapRenderer.render(layerAfterBackground);
 		
 		/*
 		//mouse x and y
