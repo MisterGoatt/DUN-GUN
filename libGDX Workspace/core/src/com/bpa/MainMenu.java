@@ -2,6 +2,7 @@ package com.bpa;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -32,22 +33,34 @@ public class MainMenu implements Screen{
 	boolean justClicked = false;
 	private Viewport gamePort;
 	private OrthographicCamera cam;
+	private boolean mStart = false;
+	Music themeMusic = Gdx.audio.newMusic(Gdx.files.internal("music/DunGun.mp3"));
+	
+
 	
 	public MainMenu(final DunGun game) {
 		this.game = game;
 		
-		cam = new OrthographicCamera();		
 		publisherScreen = new Texture("screens/ctm_placeholder.jpg");
 		creditScreen = new Texture("screens/credits_placeholder.jpg");
 		titleScreen = new Texture("screens/titleScreen.jpg");
 		musicScreen = new Texture("screens/musicscreen.jpg");
 		mainMenuScreen = new Texture("screens/main_menu_2.jpg");
+		
 		framerate = new BitmapFont(Gdx.files.internal("fonts/CourierNew32.fnt"));
 		menuText = new BitmapFont(Gdx.files.internal("fonts/HBM Foista Regular36.fnt"));
 		menuTextRed = new BitmapFont(Gdx.files.internal("fonts/HBM Foista Regular36 (Red).fnt"));
+		
+		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0); //centers the map to center of screen
 		
+
+	}
+	
+	public void music(boolean mStart) {
+		themeMusic.setLooping(true);
+		themeMusic.play();		
 	}
 	
 	@Override
@@ -57,6 +70,7 @@ public class MainMenu implements Screen{
 		game.batch.begin(); 
 		game.batch.setProjectionMatrix(cam.combined);
 
+		//clears screen
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
@@ -80,22 +94,27 @@ public class MainMenu implements Screen{
 			else if (counter <=  5 && counter > 2) {
 					game.batch.draw(creditScreen, 0, 0);
 				}
-			else if (counter >= 5.1 && counter <= 7.1) {
+			else if (counter >= 5.1 && counter < 7.12) {
 					game.batch.draw(musicScreen, 0, 0);
 				}
-			else if (counter >= 7.2 && counter <= 10.2){
+			else if (counter >= 7.12 && counter <= 10.77){
 					game.batch.draw(titleScreen, 0, 0);
 				} 
 			else {
 					game.batch.draw(mainMenuScreen, 0, 0);
 					onMenu = true;
 				}			
-	}else if (skipToMainM == true){
-		game.batch.draw(mainMenuScreen, 0, 0,cam.viewportWidth, cam.viewportHeight);
-		onMenu = true;
-	}
+		}else if (skipToMainM == true){
+			game.batch.draw(mainMenuScreen, 0, 0,cam.viewportWidth, cam.viewportHeight);
+			onMenu = true;
+		}
 		
-		if (onMenu == true && justClicked == false) {
+		//MUSIC START
+		mStart = true;
+		music(mStart);
+		
+		
+		if (onMenu == true && justClicked == false) { //prevents hold down mouse click
 			
 
 			
@@ -104,6 +123,7 @@ public class MainMenu implements Screen{
 				menuTextRed.draw(game.batch, "start", 710, 560);
 
 				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+					themeMusic.stop();
 					game.setScreen(new Level1(game));
 				
 				}}else {
@@ -126,6 +146,7 @@ public class MainMenu implements Screen{
 				menuTextRed.draw(game.batch, "options", 687, 492);
 
 				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+					themeMusic.stop();
 					game.setScreen(new Options(game));
 
 				}}else {
@@ -136,6 +157,7 @@ public class MainMenu implements Screen{
 				menuTextRed.draw(game.batch, "tutorial", 677, 429);
 
 				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+					themeMusic.stop();
 					game.setScreen(new Tutorial(game));
 
 				}}else {
@@ -146,6 +168,7 @@ public class MainMenu implements Screen{
 				menuTextRed.draw(game.batch, "credits", 690, 362);
 
 				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+					themeMusic.stop();
 					game.setScreen(new Credits(game));
 
 				}}else {
@@ -222,6 +245,7 @@ public class MainMenu implements Screen{
 		framerate.dispose();
 		mainMenuScreen.dispose();
 		menuText.dispose();
+		themeMusic.dispose();
 	}
 
 }

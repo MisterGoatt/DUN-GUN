@@ -1,7 +1,7 @@
 P1.png
 size: 32, 64
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 p1
   rotate: false

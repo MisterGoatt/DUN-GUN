@@ -31,8 +31,8 @@ public class Level1 implements Screen{
 	private TiledMap map; 
 	private OrthogonalTiledMapRenderer mapRenderer; //renders map to the screen
 	TextureAtlas textureAtlas;
-	Sprite sprite;
-	SpriteBatch batch;
+	Sprite player;
+	SpriteBatch spriteBatch;
 	TextureRegion textureRegion;
 	MapLayer objectLayer;
 	Texture texture;
@@ -50,13 +50,6 @@ public class Level1 implements Screen{
 		maploader = new TmxMapLoader();
 		map = maploader.load("tileMaps/Level1/Level1PlaceHolder5.tmx");
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1/ DunGun.PPM);
-		/*MapLayers mapLayers = map.getLayers();
-		terrainLayer = (TiledMapTileLayer) mapLayers.get("Wall");
-		decorationLayersIndices = new int[] {
-				mapLayers.getIndex("Ground")
-		};*/
-		
-		
 		
 		cam = new OrthographicCamera();		
 		viewport = new FitViewport(DunGun.V_WIDTH / DunGun.PPM, DunGun.V_HEIGHT / DunGun.PPM, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
@@ -64,11 +57,11 @@ public class Level1 implements Screen{
 		       //cam.position.set((viewport.getWorldWidth() / DunGun.PPM) / 2, viewport.getWorldHeight() / DunGun.PPM, 0);
 
 		//viewport.apply();
-		batch = new SpriteBatch();
+		spriteBatch = new SpriteBatch();
 		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/p1.atlas"));
 		textureRegion = textureAtlas.findRegion("p1");
-		sprite = new Sprite(textureRegion);
-		sprite.setPosition((viewport.getWorldWidth() / 2) * DunGun.PPM, //places the player at the center of the camera
+		player = new Sprite(textureRegion);
+		player.setPosition((viewport.getWorldWidth() / 2) * DunGun.PPM, //places the player at the center of the camera
 				(viewport.getWorldHeight() / 2) * DunGun.PPM);
 		//cam.position.x = (viewport.getWorldWidth() / 2) * DunGun.PPM;
 		//cam.position.y = (viewport.getWorldHeight() / 2) * DunGun.PPM;
@@ -82,9 +75,9 @@ public class Level1 implements Screen{
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		float pW = sprite.getTexture().getWidth() / cam.zoom; //Keeps player scaled
-		float pH = sprite.getTexture().getHeight() / cam.zoom; // ^
-		sprite.setSize(pW, pH); // Keeps players size matched regardless of zoom
+		float pW = player.getTexture().getWidth() / cam.zoom; //Keeps player scaled
+		float pH = player.getTexture().getHeight() / cam.zoom; // ^
+		player.setSize(pW, pH); // Keeps players size matched regardless of zoom
 
 		
 	 	if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
@@ -98,35 +91,35 @@ public class Level1 implements Screen{
 		}
 		
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-			//sprite.translateY(pSpeed);
+			//player.translateY(pSpeed);
 			cam.translate(0, .02f);
 		 	}
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-        	//sprite.translateX(pSpeed);
+        	//player.translateX(pSpeed);
         	cam.translate(.02f, 0);
         } 
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            //sprite.translateX(-pSpeed);
+            //player.translateX(-pSpeed);
         	cam.translate(-.02f, 0);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
         	cam.translate(0, -.02f);
-        	//sprite.translateY(-pSpeed);
+        	//player.translateY(-pSpeed);
         }
         
 
-        cam.update();
+        cam.update(); //updates orthographic camera
         mapRenderer.setView(cam);
         
         //render our game map
         //mapRenderer.render(); // renders map
-		mapRenderer.render(layerBackround);
+		mapRenderer.render(layerBackround); //renders layer in Tiled that player covers
         game.batch.setProjectionMatrix(cam.combined); 
-        batch.begin();
-        sprite.draw(batch);
-        batch.end();
+        spriteBatch.begin(); //starts sprite spriteBatch
+        player.draw(spriteBatch); //draws player sprite
+        spriteBatch.end(); //starts sprite spriteBatch
         
-        mapRenderer.render(layerAfterBackground);
+        mapRenderer.render(layerAfterBackground); //renders layer of Tiled that hides player
 		
 		/*
 		//mouse x and y
@@ -142,7 +135,7 @@ public class Level1 implements Screen{
 
 	@Override
 	public void resize(int width, int height) {
-		viewport.update(width, height, true);
+		viewport.update(width, height, true); //updates the viewport camera
 	}
 	@Override
 	public void pause() {
@@ -163,6 +156,8 @@ public class Level1 implements Screen{
 	public void dispose() {
 		map.dispose();
 		mapRenderer.dispose();
+		textureAtlas.dispose();
+		
 
 	}
 
