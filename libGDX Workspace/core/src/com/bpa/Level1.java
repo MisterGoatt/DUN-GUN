@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
@@ -18,6 +21,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -31,16 +35,15 @@ public class Level1 implements Screen{
 	private TiledMap map; 
 	private OrthogonalTiledMapRenderer mapRenderer; //renders map to the screen
 	TextureAtlas textureAtlas;
-	Sprite player;
+	Sprite p1;
 	TextureRegion textureRegion;
 	MapLayer objectLayer;
-	Texture texture;
+	private ShapeRenderer shapeRenderer;
 	//private TiledMapTileLayer terrainLayer;
 	//private int[] decorationLayersIndices;
-	private int[] layerBackround = {0};
-	private int[] layerAfterBackground = {2};
+	private int[] layerBackround = {0, 1, 2, 3};
+	private int[] layerAfterBackground = {4};
 	private int pSpeed = 3;
-	
 	
 	public Level1(final DunGun game) {
 		
@@ -48,7 +51,7 @@ public class Level1 implements Screen{
 		this.game = game;
 
 		maploader = new TmxMapLoader();
-		map = maploader.load("tileMaps/Level1/Level1PlaceHolder5.tmx");
+		map = maploader.load("tileMaps/Level1/Level1.tmx");
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 		
 		cam = new OrthographicCamera();		
@@ -58,13 +61,14 @@ public class Level1 implements Screen{
 
 		//viewport.apply();
 		//spriteBatch = new SpriteBatch();
-		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/p1.atlas"));
-		textureRegion = textureAtlas.findRegion("p1");
-		player = new Sprite(textureRegion);
-		player.setPosition((viewport.getWorldWidth() / 2), //places the player at the center of the camera
+		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/player1.atlas"));
+		textureRegion = textureAtlas.findRegion("P12");
+		p1 = new Player(new Sprite(textureRegion));
+		p1.setPosition((viewport.getWorldWidth() / 2), //places the p1 at the center of the camera
 				(viewport.getWorldHeight() / 2)) ;
 		//cam.position.x = (viewport.getWorldWidth() / 2) * DunGun.PPM;
 		//cam.position.y = (viewport.getWorldHeight() / 2) * DunGun.PPM;
+		shapeRenderer = new ShapeRenderer();
         
 		//cam.zoom -= .45;
 	}
@@ -82,47 +86,37 @@ public class Level1 implements Screen{
 
 			//cam.translate(Gdx.input.getDeltaX() * (-1), Gdx.input.getDeltaY());
 		}
-		if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+	 	if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
 			cam.zoom += .01;
 			
 		}
 		
-		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-			//player.translateY(pSpeed);
-			//cam.translate(0, .02f);
-			player.translate(0, pSpeed); 
-		 	}
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-        	//player.translateX(pSpeed);
-        	player.translate(pSpeed, 0);
-        } 
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            //player.translateX(-pSpeed);
-        	player.translate(-pSpeed, 0);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-        	player.translate(0, -pSpeed);
-        	//player.translateY(-pSpeed);
-        }
         
+        mapRenderer.render();
 
-        cam.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight()/ 2, 0);
+        shapeRenderer.setProjectionMatrix(cam.combined); //keeps circle from doing weird out of sync movement
+        shapeRenderer.setColor(100, 100, 100, 0);
+        shapeRenderer.begin(ShapeType.Filled);
+        shapeRenderer.circle(p1.getX(), p1.getY(), 10);
+        shapeRenderer.end();;
+        
+        cam.position.set(p1.getX() + p1.getWidth() / 2, p1.getY() + p1.getHeight()/ 2, 0);
         cam.update(); //updates orthographic camera
 
         mapRenderer.setView(cam);
         
         //render our game map
         //mapRenderer.render(); // renders map
-		mapRenderer.render(layerBackround); //renders layer in Tiled that player covers
-        game.batch.setProjectionMatrix(cam.combined); 
+		//mapRenderer.render(layerBackround); //renders layer in Tiled that p1 covers
+        game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
 
 		game.batch.begin(); //starts sprite spriteBatch
 
-        player.draw(game.batch); //draws player sprite
+        p1.draw(game.batch); //draws p1 sprite
         game.batch.end(); //starts sprite spriteBatch
-        
-        mapRenderer.render(layerAfterBackground); //renders layer of Tiled that hides player
 
+
+        //mapRenderer.render(layerAfterBackground); //renders layer of Tiled that hides p1
 
         
 		/*
@@ -140,9 +134,9 @@ public class Level1 implements Screen{
 	@Override
 	public void resize(int width, int height) {
 		viewport.update(width, height, true); //updates the viewport camera
-		float pW = player.getWidth() / cam.zoom; //Keeps player scaled
-		float pH = player.getHeight() / cam.zoom; // ^
-		player.setSize(pW, pH); // Keeps players size matched regardless of zoom
+		float pW = p1.getWidth() / cam.zoom; //Keeps p1 scaled
+		float pH = p1.getHeight() / cam.zoom; // ^
+		p1.setSize(pW, pH); // Keeps players size matched regardless of zoom
 	}
 	@Override
 	public void pause() {
