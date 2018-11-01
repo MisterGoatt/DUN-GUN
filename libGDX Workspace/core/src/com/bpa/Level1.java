@@ -3,6 +3,7 @@ package com.bpa;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -51,7 +52,7 @@ public class Level1 implements Screen{
 		this.game = game;
 
 		maploader = new TmxMapLoader();
-		map = maploader.load("tileMaps/Level1/Level1.tmx");
+		map = maploader.load("tileMaps/Level1/top-downMap.tmx");
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 		
 		cam = new OrthographicCamera();		
@@ -61,8 +62,8 @@ public class Level1 implements Screen{
 
 		//viewport.apply();
 		//spriteBatch = new SpriteBatch();
-		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/player1.atlas"));
-		textureRegion = textureAtlas.findRegion("P12");
+		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/soldier1.atlas"));
+		textureRegion = textureAtlas.findRegion("soldier1");
 		p1 = new Player(new Sprite(textureRegion));
 		p1.setPosition((viewport.getWorldWidth() / 2), //places the p1 at the center of the camera
 				(viewport.getWorldHeight() / 2)) ;
@@ -70,6 +71,8 @@ public class Level1 implements Screen{
 		//cam.position.y = (viewport.getWorldHeight() / 2) * DunGun.PPM;
 		shapeRenderer = new ShapeRenderer();
         
+		
+		Gdx.input.setInputProcessor((InputProcessor) p1);
 		//cam.zoom -= .45;
 	}
 	

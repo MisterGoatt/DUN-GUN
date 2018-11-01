@@ -1,0 +1,12 @@
+soldier1.png
+size: 32, 50
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+soldier1
+  rotate: false
+  xy: 0, 0
+  size: 32, 50
+  orig: 32, 50
+  offset: 0, 0
+  index: -1
