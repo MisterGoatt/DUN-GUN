@@ -27,7 +27,8 @@ public class Player extends Sprite implements InputProcessor{
         
         //boundingCircle.set();
     	super(sprite);
-    	
+    	this.setOrigin(16, 10);
+
     }
 
 

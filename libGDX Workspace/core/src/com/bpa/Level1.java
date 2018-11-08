@@ -24,6 +24,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -43,6 +44,7 @@ public class Level1 implements Screen{
 	MapLayer objectLayer;
 	private ShapeRenderer shapeRenderer;
 	public static Vector3 mouse_position = new Vector3(0, 0, 0);
+	private Vector3 camPos = new Vector3(0, 0, 0);
 
 
 	//private int[] layerBackround = {0, 1, 2, 3};
@@ -54,9 +56,8 @@ public class Level1 implements Screen{
 		this.game = game;
 
 		maploader = new TmxMapLoader();
-		map = maploader.load("tileMaps/Level1/top-downMap.tmx");
+		map = maploader.load("tileMaps/Level1/untitled.tmx");
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
-		
 		cam = new OrthographicCamera();		
 		viewport = new FitViewport(DunGun.V_WIDTH, DunGun.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 
@@ -71,7 +72,18 @@ public class Level1 implements Screen{
         
 		
 		Gdx.input.setInputProcessor((InputProcessor) p1);
-		cam.zoom -= .45;
+		cam.zoom -= .70;
+	}
+	
+	public void cameraUpdate(float delta) {
+
+		camPos.set(Math.round(p1.getX()), Math.round(p1.getY()), 0);
+
+		System.out.println(camPos.x + " " + camPos.y);
+		cam.position.set(camPos);
+		cam.update();
+		cam.unproject(camPos);
+		//cam.update();
 	}
 	
 	@Override
@@ -98,9 +110,13 @@ public class Level1 implements Screen{
         shapeRenderer.circle(p1.getX() + 16, p1.getY() + 10, 10);
         shapeRenderer.end();
         
-        cam.position.set(p1.getX() + p1.getWidth() / 2, p1.getY() + p1.getHeight()/ 2, 0);
-        cam.update(); //updates orthographic camera
+        //cam.position.set(p1.getX() + p1.getWidth() / 2, p1.getY() + p1.getHeight()/ 2, 0);
+        //cam.update(); //updates orthographic camera
+        cameraUpdate(delta);
+
         mapRenderer.setView(cam);
+        
+        
         
         //render our game map
         //mapRenderer.render(); // renders map

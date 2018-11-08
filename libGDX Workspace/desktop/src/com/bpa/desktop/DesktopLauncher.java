@@ -14,5 +14,7 @@ public class DesktopLauncher {
 		config.title = "DUN-GUN";
 		config.foregroundFPS = 60;
 		config.backgroundFPS = 30;
+		config.vSyncEnabled = true;
+
 	}
 }
