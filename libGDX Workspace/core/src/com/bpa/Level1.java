@@ -79,11 +79,10 @@ public class Level1 implements Screen{
 
 		camPos.set(Math.round(p1.getX()), Math.round(p1.getY()), 0);
 
-		System.out.println(camPos.x + " " + camPos.y);
 		cam.position.set(camPos);
-		cam.update();
 		cam.unproject(camPos);
-		//cam.update();
+
+		cam.update();
 	}
 	
 	@Override
@@ -103,16 +102,17 @@ public class Level1 implements Screen{
 		
         
         mapRenderer.render();
+        cameraUpdate(delta);
        
         shapeRenderer.setProjectionMatrix(cam.combined); //keeps circle from doing weird out of sync movement
         shapeRenderer.setColor(100, 100, 100, 0);
         shapeRenderer.begin(ShapeType.Line);
-        shapeRenderer.circle(p1.getX() + 16, p1.getY() + 10, 10);
+        //shapeRenderer.circle(p1.getX() + 16, p1.getY() + 10, 10);
+        shapeRenderer.rect(p1.getX() + 7, p1.getY(), 16, 16);
         shapeRenderer.end();
         
         //cam.position.set(p1.getX() + p1.getWidth() / 2, p1.getY() + p1.getHeight()/ 2, 0);
         //cam.update(); //updates orthographic camera
-        cameraUpdate(delta);
 
         mapRenderer.setView(cam);
         

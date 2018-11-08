@@ -16,7 +16,7 @@ import com.badlogic.gdx.math.Vector3;
 public class Player extends Sprite implements InputProcessor{
 
 	private Vector2 velocity = new Vector2();
-	private float speed = 3;
+	private float speed = 2;
 	private Circle boundingCircle;
 	private float angle;
 
