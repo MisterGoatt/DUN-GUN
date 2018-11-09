@@ -56,16 +56,15 @@ public class Level1 implements Screen{
 		this.game = game;
 
 		maploader = new TmxMapLoader();
-		map = maploader.load("tileMaps/Level1/untitled.tmx");
+		map = maploader.load("tileMaps/Level1/top-downTest.tmx");
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 		cam = new OrthographicCamera();		
 		viewport = new FitViewport(DunGun.V_WIDTH, DunGun.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 
 		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/TDPlayer.atlas"));
 		textureRegion = textureAtlas.findRegion("TDPlayer");
-		p1 = new Player(new Sprite(textureRegion));
-		p1.setPosition((viewport.getWorldWidth() / 2), //places the p1 at the center of the camera
-				(viewport.getWorldHeight() / 2)) ;
+		p1 = new Player(new Sprite(textureRegion), (TiledMapTileLayer)map.getLayers().get(1));
+		p1.setPosition();
 		
 
 		shapeRenderer = new ShapeRenderer();
@@ -78,10 +77,8 @@ public class Level1 implements Screen{
 	public void cameraUpdate(float delta) {
 
 		camPos.set(Math.round(p1.getX()), Math.round(p1.getY()), 0);
-
 		cam.position.set(camPos);
 		cam.unproject(camPos);
-
 		cam.update();
 	}
 	
@@ -102,7 +99,6 @@ public class Level1 implements Screen{
 		
         
         mapRenderer.render();
-        cameraUpdate(delta);
        
         shapeRenderer.setProjectionMatrix(cam.combined); //keeps circle from doing weird out of sync movement
         shapeRenderer.setColor(100, 100, 100, 0);
@@ -115,6 +111,7 @@ public class Level1 implements Screen{
         //cam.update(); //updates orthographic camera
 
         mapRenderer.setView(cam);
+        cameraUpdate(delta);
         
         
         
