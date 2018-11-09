@@ -219,6 +219,36 @@ public class Player extends Sprite implements InputProcessor{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
+	public Vector2 getVelocity() {
+		return velocity;
+	}
+
+
+	public void setVelocity(Vector2 velocity) {
+		this.velocity = velocity;
+	}
+
+
+	public float getSpeed() {
+		return speed;
+	}
+
+
+	public void setSpeed(float speed) {
+		this.speed = speed;
+	}
+
+
+	public TiledMapTileLayer getCollisionLayer() {
+		return collisionLayer;
+	}
+
+
+	public void setCollisionLayer(TiledMapTileLayer collisionLayer) {
+		this.collisionLayer = collisionLayer;
+	}
 	
 	
 }
