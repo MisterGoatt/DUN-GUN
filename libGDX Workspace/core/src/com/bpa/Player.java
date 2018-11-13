@@ -18,7 +18,6 @@ public class Player extends Sprite implements InputProcessor{
 
 	private Vector2 velocity = new Vector2();
 	private float speed = 3 ;
-	private Circle boundingCircle;
 	private float angle;
 	
 	private TiledMapTileLayer collisionLayer;
@@ -38,7 +37,7 @@ public class Player extends Sprite implements InputProcessor{
     	update(Gdx.graphics.getDeltaTime()); //allows movement of player
     	super.draw(batch);
     }
-    
+     
     public void update(float delta) {
 
     	//save old position
@@ -47,6 +46,8 @@ public class Player extends Sprite implements InputProcessor{
     	
     	//move on x 
         setX(getX() + velocity.x);
+
+    	
         if (velocity.x < 0) {
         	//top left
         	collisionX = collisionLayer.getCell((int) (getX() / tileWidth), (int)((getY() + getHeight()) / tileHeight))
@@ -62,21 +63,29 @@ public class Player extends Sprite implements InputProcessor{
         		collisionX = collisionLayer.getCell((int) (getX() / tileWidth), (int) (getY() / tileHeight))
         			.getTile().getProperties().containsKey("blocked");
         }else if (velocity.x > 0) {
+        	
+        	System.out.println("x right");
         	//top right
         	collisionX = collisionLayer.getCell((int) ((getX() + getWidth()) / tileWidth), (int) ((getY() + getHeight()) / tileHeight))
         			.getTile().getProperties().containsKey("blocked");
+        	
         	//middle right
-        	if(!collisionX)
+        	if(!collisionX) {
         		collisionX = collisionLayer.getCell((int) ((getX() + getWidth()) / tileWidth), (int) ((getY() + getHeight() / 2) / tileHeight))
-        		.getTile().getProperties().containsKey("blocked");
+        			.getTile().getProperties().containsKey("blocked");
+        	}
 
         	//bottom right
-    		if(!collisionX)
+    		if(!collisionX) {
 	        	collisionX = collisionLayer.getCell((int) ((getX() + getWidth()) / tileWidth), (int) (getY() / tileHeight))
-	    		.getTile().getProperties().containsKey("blocked");
+	        			.getTile().getProperties().containsKey("blocked");
+    		}
         }
+        
+
         //react to X collision
         if (collisionX) {
+        	System.out.println("collide X");
         	setX(oldX);
         	velocity.x = 0;
         }
@@ -84,42 +93,53 @@ public class Player extends Sprite implements InputProcessor{
         //move on y
         setY(getY() + velocity.y );
 
+        
         if (velocity.y < 0) { 
+        	System.out.println("y down");
         	//bottom left
         	collisionY = collisionLayer.getCell((int) (getX() / tileWidth), (int) (getY() / tileHeight))
-    		.getTile().getProperties().containsKey("blocked");
+        		.getTile().getProperties().containsKey("blocked");
         	
         	//bottom middle
-	        if(!collisionY)	
+	        if(!collisionY)	{
 	        	collisionY = collisionLayer.getCell((int) ((getX() +getWidth() / 2 ) / tileWidth), (int) (getY() / tileHeight))
 	    			.getTile().getProperties().containsKey("blocked");
-	        
+	        }
         	//bottom right
-        	if (!collisionY)
+        	if (!collisionY) {
 	        	collisionY = collisionLayer.getCell((int) ((getX() + getWidth() ) / tileWidth), (int) (getY() / tileHeight))
 	    			.getTile().getProperties().containsKey("blocked");
+        	}
         }else if (velocity.y > 0) {
-        	//top left
-        	collisionY = collisionLayer.getCell((int) (getX() / tileWidth), (int) (getY() / tileHeight))
-    		.getTile().getProperties().containsKey("blocked");
         	
-        	//top middle
-	        if(!collisionY)	
-	        	collisionY = collisionLayer.getCell((int) ((getX() + getWidth() / 2 ) / tileWidth), (int) (getY() + getHeight() / tileHeight))
-	    			.getTile().getProperties().containsKey("blocked");
-	        
+        	
+        	//top left
+        	
+        	collisionY = collisionLayer.getCell((int) (getX() / tileWidth), (int) (getY() / tileHeight))
+        			.getTile().getProperties().containsKey("blocked");
+        	System.out.println("y up");
+        	//middle right
+	        if(!collisionY) {
+	        	collisionY = collisionLayer.getCell((int) ((getX() + getWidth()) / tileWidth), (int) ((getY() + getWidth() / 2) / tileHeight)).getTile().getProperties().containsKey("blocked");
+	        }
         	//top right
-        	if (!collisionY)
+        	if (!collisionY) {
 	        	collisionY = collisionLayer.getCell((int) ((getX() + getWidth() ) / tileWidth), (int) (getY() / tileHeight))
 	    			.getTile().getProperties().containsKey("blocked");
-        }
+        	}
+        	
+        	}
 
 
+        
         //react to Y collision
         if(collisionY) {
+        	System.out.println("collide Y");
         	setY(oldY);
         	velocity.y = 0;
         }
+        
+        System.out.println(collisionY);
         
     }
     

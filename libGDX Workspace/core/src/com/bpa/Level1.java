@@ -63,9 +63,8 @@ public class Level1 implements Screen{
 
 		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/TDPlayer.atlas"));
 		textureRegion = textureAtlas.findRegion("TDPlayer");
-		p1 = new Player(new Sprite(textureRegion), (TiledMapTileLayer)map.getLayers().get(1));
-		p1.setPosition();
-		
+		p1 = new Player(new Sprite(new Texture("sprites/TDPlayer.png")), (TiledMapTileLayer)map.getLayers().get(0));
+		p1.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2);
 
 		shapeRenderer = new ShapeRenderer();
         
@@ -100,13 +99,13 @@ public class Level1 implements Screen{
         
         mapRenderer.render();
        
-        shapeRenderer.setProjectionMatrix(cam.combined); //keeps circle from doing weird out of sync movement
+        /*shapeRenderer.setProjectionMatrix(cam.combined); //keeps circle from doing weird out of sync movement
         shapeRenderer.setColor(100, 100, 100, 0);
         shapeRenderer.begin(ShapeType.Line);
         //shapeRenderer.circle(p1.getX() + 16, p1.getY() + 10, 10);
         shapeRenderer.rect(p1.getX() + 7, p1.getY(), 16, 16);
         shapeRenderer.end();
-        
+        */
         //cam.position.set(p1.getX() + p1.getWidth() / 2, p1.getY() + p1.getHeight()/ 2, 0);
         //cam.update(); //updates orthographic camera
 
