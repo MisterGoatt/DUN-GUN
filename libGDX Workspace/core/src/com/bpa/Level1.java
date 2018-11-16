@@ -17,6 +17,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -24,11 +26,20 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+//TO INCLUDE PPM GO TO EPISODE 8 *****************************************
+// ********************************************
 
 public class Level1 implements Screen{
 	final DunGun game;
@@ -38,15 +49,20 @@ public class Level1 implements Screen{
 	private TmxMapLoader maploader; //what loads map into game
 	private TiledMap map; 
 	private OrthogonalTiledMapRenderer mapRenderer; //renders map to the screen
-	TextureAtlas textureAtlas;
-	Sprite p1;
+	private TextureAtlas textureAtlas;
+	//Sprite p1;
 	TextureRegion textureRegion;
 	MapLayer objectLayer;
-	private ShapeRenderer shapeRenderer;
 	public static Vector3 mouse_position = new Vector3(0, 0, 0);
+
+	//Box2d variables
+	private World world;
+	private Box2DDebugRenderer b2dr; //graphical representation of body fixtures
+	private PlayerOne playerOne;
 	private Vector3 camPos = new Vector3(0, 0, 0);
 
-
+	
+	
 	//private int[] layerBackround = {0, 1, 2, 3};
 	//private int[] layerAfterBackground = {4};
 	
@@ -55,35 +71,43 @@ public class Level1 implements Screen{
 		
 		this.game = game;
 
-		maploader = new TmxMapLoader();
-		map = maploader.load("tileMaps/Level1/top-downTest.tmx");
-		mapRenderer = new OrthogonalTiledMapRenderer(map);
-		cam = new OrthographicCamera();		
-		viewport = new FitViewport(DunGun.V_WIDTH, DunGun.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
-
-		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/TDPlayer.atlas"));
-		textureRegion = textureAtlas.findRegion("TDPlayer");
-		p1 = new Player(new Sprite(new Texture("sprites/TDPlayer.png")), (TiledMapTileLayer)map.getLayers().get(0));
-		p1.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2);
-
-		shapeRenderer = new ShapeRenderer();
-        
 		
-		Gdx.input.setInputProcessor((InputProcessor) p1);
-		cam.zoom -= .70;
+		cam = new OrthographicCamera();		
+		viewport = new FitViewport(DunGun.V_WIDTH / DunGun.PPM, DunGun.V_HEIGHT / DunGun.PPM, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+		maploader = new TmxMapLoader();
+		map = maploader.load("tileMaps/Level1/top-down.tmx");
+		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / DunGun.PPM);
+		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/TDPlayer.atlas"));
+
+        //Box2d variables
+		world = new World(new Vector2(0, 0), true); // no gravity and yes we want to sleep objects (won't calculate simulations for bodies at rest)
+		b2dr = new Box2DDebugRenderer();
+		playerOne = new PlayerOne(world, this); //must be created after world creation or will crash
+
+		new B2DWorldCreator(world, map);
+		cam.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
+		//Gdx.input.setInputProcessor((InputProcessor) p1);
+		//cam.zoom -= .70;
+	}
+	
+	public TextureAtlas gettextureAtlas() {
+		return textureAtlas;
 	}
 	
 	public void cameraUpdate(float delta) {
 
-		camPos.set(Math.round(p1.getX()), Math.round(p1.getY()), 0);
-		cam.position.set(camPos);
-		cam.unproject(camPos);
+		//timeStep = 60 times a second, velocity iterations = 6, position iterations = 2
+		world.step(1/60f, 6, 2); //tells game how many times per second for Box2d to make its calculations
+		cam.position.x = playerOne.b2body.getPosition().x;
+		cam.position.y = playerOne.b2body.getPosition().y;
+
 		cam.update();
 	}
 	
 	@Override
 	public void render(float delta) {
-		
+        cameraUpdate(delta);
+        playerOne.handleInput(delta);
 		//clears screen
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -98,19 +122,9 @@ public class Level1 implements Screen{
 		
         
         mapRenderer.render();
-       
-        /*shapeRenderer.setProjectionMatrix(cam.combined); //keeps circle from doing weird out of sync movement
-        shapeRenderer.setColor(100, 100, 100, 0);
-        shapeRenderer.begin(ShapeType.Line);
-        //shapeRenderer.circle(p1.getX() + 16, p1.getY() + 10, 10);
-        shapeRenderer.rect(p1.getX() + 7, p1.getY(), 16, 16);
-        shapeRenderer.end();
-        */
-        //cam.position.set(p1.getX() + p1.getWidth() / 2, p1.getY() + p1.getHeight()/ 2, 0);
-        //cam.update(); //updates orthographic camera
+        b2dr.render(world, cam.combined); //renders the Box2d world
 
         mapRenderer.setView(cam);
-        cameraUpdate(delta);
         
         
         
@@ -124,7 +138,7 @@ public class Level1 implements Screen{
         
         game.batch.begin(); //starts sprite spriteBatch
 
-        p1.draw(game.batch); //draws p1 sprite
+        playerOne.draw(game.batch); //draws p1 sprite
 
         game.batch.end(); //starts sprite spriteBatch
 
@@ -137,9 +151,9 @@ public class Level1 implements Screen{
 	@Override
 	public void resize(int width, int height) {
 		viewport.update(width, height, true); //updates the viewport camera
-		float pW = p1.getWidth(); //Keeps p1 scaled
-		float pH = p1.getHeight(); // ^
-		p1.setSize(pW, pH); // Keeps players size matched regardless of zoom
+		//float pW = p1.getWidth(); //Keeps p1 scaled
+		//float pH = p1.getHeight(); // ^
+		//p1.setSize(pW, pH); // Keeps players size matched regardless of zoom
 	}
 	@Override
 	public void pause() {
@@ -161,7 +175,8 @@ public class Level1 implements Screen{
 		map.dispose();
 		mapRenderer.dispose();
 		textureAtlas.dispose();
-		shapeRenderer.dispose();
+		world.dispose();
+		b2dr.dispose();
 		
 
 	}
