@@ -74,7 +74,7 @@ public class PlayerOne extends Sprite{
 	    	angle += 360 ;
 	    }
 	    float angle2 = MathUtils.atan2(mouseY - getY(), mouseX - getX());
-	    b2body.setTransform(bdef.position.x, bdef.position.y, angle2);
+	    b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angle2);
 		sprite.setRotation(angle);
 		sprite.draw(batch);
 		}
