@@ -34,7 +34,7 @@ public class MainMenu implements Screen{
 	private Viewport gamePort;
 	private OrthographicCamera cam;
 	private boolean mStart = false;
-	Music themeMusic = Gdx.audio.newMusic(Gdx.files.internal("music/DunGun.mp3"));
+	Music themeMusic = Gdx.audio.newMusic(Gdx.files.internal("music/Dun-Gun2.mp3"));
 	
 
 	

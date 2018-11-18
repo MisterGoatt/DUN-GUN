@@ -87,7 +87,7 @@ public class Level1 implements Screen{
 		new B2DWorldCreator(world, map);
 		cam.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 		//Gdx.input.setInputProcessor((InputProcessor) p1);
-		//cam.zoom -= .70;
+		cam.zoom -= .70;
 	}
 	
 
@@ -135,10 +135,7 @@ public class Level1 implements Screen{
         playerOne.renderSprite(game.batch);
 
         game.batch.end(); //starts sprite spriteBatch
-
-
         //mapRenderer.render(layerAfterBackground); //renders layer of Tiled that hides p1
-		
 	}
 
 
@@ -172,7 +169,6 @@ public class Level1 implements Screen{
 		world.dispose();
 		b2dr.dispose();
 		
-
 	}
 
 	@Override

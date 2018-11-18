@@ -25,8 +25,6 @@ public class PlayerOne extends Sprite{
 	TextureRegion textureRegion;
 	
 
-
-
 	public PlayerOne(World world) {
 		this.world = world;
 		definePlayer();
@@ -34,11 +32,8 @@ public class PlayerOne extends Sprite{
 		textureRegion = textureAtlas.findRegion("TDPlayer");
 		sprite =new Sprite(new Texture("sprites/TDPlayer.png"));
 		sprite.setOrigin((sprite.getWidth() / 2) / DunGun.PPM, (float) ((sprite.getHeight() / 2) / DunGun.PPM - .08));
-		
-
 
     }
-
 
 	
 	public void definePlayer() {
@@ -67,18 +62,17 @@ public class PlayerOne extends Sprite{
 		float mouseX = Level1.mouse_position.x; //grabs cam.unproject x vector value
 		float mouseY = Level1.mouse_position.y; //grabs cam.unproject y vector value
 		
-		float angle = MathUtils.atan2(mouseY - getY(), mouseX - getX()) * MathUtils.radDeg;
+		float angle = MathUtils.atan2(mouseY - getY(), mouseX - getX()) * MathUtils.radDeg; //find the distance between mouse and player
 
-        angle = angle - 90;
+        angle = angle - 90; //makes it a full 360 degrees
 	    if (angle < 0) {
 	    	angle += 360 ;
 	    }
-	    float angle2 = MathUtils.atan2(mouseY - getY(), mouseX - getX());
-	    b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angle2);
-		sprite.setRotation(angle);
-		sprite.draw(batch);
+	    float angle2 = MathUtils.atan2(mouseY - getY(), mouseX - getX()); //get distance between mouse and player in radians
+	    b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
+		sprite.setRotation(angle); //rotates sprite
+		sprite.draw(batch); //draws sprite
 		}
-	
 	
 	public void handleInput(float delta) {
 		setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2 + (5 / DunGun.PPM));
@@ -93,8 +87,6 @@ public class PlayerOne extends Sprite{
 			this.b2body.applyLinearImpulse(new Vector2(0, -3f), this.b2body.getWorldCenter(), true);
 		if (Gdx.input.isKeyPressed(Input.Keys.A))
 			this.b2body.applyLinearImpulse(new Vector2(-3f, 0), this.b2body.getWorldCenter(), true);
-		
-
 	}
 
 }
