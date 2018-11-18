@@ -82,7 +82,7 @@ public class Level1 implements Screen{
         //Box2d variables
 		world = new World(new Vector2(0, 0), true); // no gravity and yes we want to sleep objects (won't calculate simulations for bodies at rest)
 		b2dr = new Box2DDebugRenderer();
-		playerOne = new PlayerOne(world, this); //must be created after world creation or will crash
+		playerOne = new PlayerOne(world); //must be created after world creation or will crash
 
 		new B2DWorldCreator(world, map);
 		cam.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
@@ -90,9 +90,7 @@ public class Level1 implements Screen{
 		//cam.zoom -= .70;
 	}
 	
-	public TextureAtlas gettextureAtlas() {
-		return textureAtlas;
-	}
+
 	
 	public void cameraUpdate(float delta) {
 
@@ -125,9 +123,6 @@ public class Level1 implements Screen{
         b2dr.render(world, cam.combined); //renders the Box2d world
 
         mapRenderer.setView(cam);
-        
-        
-        
         //render our game map
         //mapRenderer.render(); // renders map
 		//mapRenderer.render(layerBackround); //renders layer in Tiled that p1 covers
@@ -135,10 +130,9 @@ public class Level1 implements Screen{
 		
         mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
         cam.unproject(mouse_position); //gets mouse coordinates within viewport
-        
         game.batch.begin(); //starts sprite spriteBatch
 
-        playerOne.draw(game.batch); //draws p1 sprite
+        playerOne.renderSprite(game.batch);
 
         game.batch.end(); //starts sprite spriteBatch
 
