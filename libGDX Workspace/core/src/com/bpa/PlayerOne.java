@@ -2,6 +2,7 @@ package com.bpa;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,15 +15,19 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Disposable;
 
-public class PlayerOne extends Sprite{
+public class PlayerOne extends Sprite implements Disposable{
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
-	private TextureRegion playerStand;
 	private BodyDef bdef = new BodyDef();
+	private float speed = .75f;
+	private boolean running;
 	TextureAtlas textureAtlas;
 	Sprite sprite;
 	TextureRegion textureRegion;
+	private Sound runningSound;
+	
 	
 
 	public PlayerOne(World world) {
@@ -32,8 +37,9 @@ public class PlayerOne extends Sprite{
 		textureRegion = textureAtlas.findRegion("TDPlayer");
 		sprite =new Sprite(new Texture("sprites/TDPlayer.png"));
 		sprite.setOrigin((sprite.getWidth() / 2) / DunGun.PPM, (float) ((sprite.getHeight() / 2) / DunGun.PPM - .08));
+		runningSound = Gdx.audio.newSound(Gdx.files.internal("sound effects/running.mp3"));
 
-    }
+	}
 
 	
 	public void definePlayer() {
@@ -77,9 +83,8 @@ public class PlayerOne extends Sprite{
 	public void handleInput(float delta) {
 		setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2 + (5 / DunGun.PPM));
 
-		this.b2body.setLinearVelocity(0, 0);
-
-		if (Gdx.input.isKeyPressed(Input.Keys.W))
+		/*
+		if (Gdx.input.isKeyPressed(Input.Keys.W)) 
 			this.b2body.applyLinearImpulse(new Vector2(0, 3f), this.b2body.getWorldCenter(), true); //third parameter wakes body up
 		if (Gdx.input.isKeyPressed(Input.Keys.D))
 			this.b2body.applyLinearImpulse(new Vector2(3f, 0), this.b2body.getWorldCenter(), true);
@@ -87,6 +92,55 @@ public class PlayerOne extends Sprite{
 			this.b2body.applyLinearImpulse(new Vector2(0, -3f), this.b2body.getWorldCenter(), true);
 		if (Gdx.input.isKeyPressed(Input.Keys.A))
 			this.b2body.applyLinearImpulse(new Vector2(-3f, 0), this.b2body.getWorldCenter(), true);
+		
+		if ((Gdx.input.isKeyPressed(Input.Keys.W)) && (Gdx.input.isKeyPressed(Input.Keys.A)))
+			this.b2body.applyLinearImpulse(new Vector2(1.5f, 1.5f), this.b2body.getWorldCenter(), true); //third parameter wakes body up
+*/				
+		this.b2body.setLinearVelocity(0, 0);
+
+		if(Gdx.input.isKeyPressed(Input.Keys.W)){
+	        this.b2body.setLinearVelocity(0f, speed);
+	    }if(Gdx.input.isKeyPressed(Input.Keys.S)){
+	        this.b2body.setLinearVelocity(0f, -speed);
+	    }if(Gdx.input.isKeyPressed(Input.Keys.A)){
+	        this.b2body.setLinearVelocity(-speed, 0f);
+
+	    }if(Gdx.input.isKeyPressed(Input.Keys.D)){
+	        this.b2body.setLinearVelocity(speed,0f);
+
+	    }if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)){
+	        this.b2body.setLinearVelocity(-speed, speed);
+
+	    }if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)){
+	    	this.b2body.setLinearVelocity(speed, speed);
+	    }
+	    if(Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)){
+	        this.b2body.setLinearVelocity(-speed, -speed );
+
+	    }if(Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)){
+	        this.b2body.setLinearVelocity(speed, -speed);
+	    } 
+	    
+
+		if (b2body.getLinearVelocity().x > 0 || b2body.getLinearVelocity().x < 0 || b2body.getLinearVelocity().y > 0 || b2body.getLinearVelocity().y < 0) {
+			if (!running) {	
+			runningSound.loop();
+			running = true;
+			}
+
+
+	    }else {
+	    	runningSound.stop();
+	    	running = false;
+	    }
+	    System.out.println(running);
+
+	}
+
+	@Override
+	public void dispose() {
+		runningSound.dispose();
+		
 	}
 
 }
