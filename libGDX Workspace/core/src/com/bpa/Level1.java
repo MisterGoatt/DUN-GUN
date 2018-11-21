@@ -59,7 +59,6 @@ public class Level1 implements Screen{
 	private World world;
 	private Box2DDebugRenderer b2dr; //graphical representation of body fixtures
 	private PlayerOne playerOne;
-	private Vector3 camPos = new Vector3(0, 0, 0);
 
 	
 	
@@ -75,7 +74,7 @@ public class Level1 implements Screen{
 		cam = new OrthographicCamera();		
 		viewport = new FitViewport(DunGun.V_WIDTH / DunGun.PPM, DunGun.V_HEIGHT / DunGun.PPM, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		maploader = new TmxMapLoader();
-		map = maploader.load("tileMaps/Level1/top-down.tmx");
+		map = maploader.load("tileMaps/Level1/customset.tmx");
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / DunGun.PPM);
 		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/TDPlayer.atlas"));
 
@@ -87,15 +86,15 @@ public class Level1 implements Screen{
 		new B2DWorldCreator(world, map);
 		cam.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 		//Gdx.input.setInputProcessor((InputProcessor) p1);
-		cam.zoom -= .70;
+		cam.zoom -= .50;
 	}
 	
-
 	
 	public void cameraUpdate(float delta) {
 
 		//timeStep = 60 times a second, velocity iterations = 6, position iterations = 2
 		world.step(1/60f, 6, 2); //tells game how many times per second for Box2d to make its calculations
+		System.out.println(playerOne.b2body.getPosition().x + " " + playerOne.b2body.getPosition().y);
 		cam.position.x = playerOne.b2body.getPosition().x;
 		cam.position.y = playerOne.b2body.getPosition().y;
 

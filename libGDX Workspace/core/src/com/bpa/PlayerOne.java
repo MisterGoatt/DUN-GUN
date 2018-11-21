@@ -21,7 +21,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
-	private float speed = .75f;
+	private float speed = 1f;
 	private boolean running;
 	TextureAtlas textureAtlas;
 	Sprite sprite;
@@ -106,7 +106,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	        this.b2body.setLinearVelocity(-speed, 0f);
 
 	    }if(Gdx.input.isKeyPressed(Input.Keys.D)){
-	        this.b2body.setLinearVelocity(speed,0f);
+	        this.b2body.setLinearVelocity(speed, 0f);
 
 	    }if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)){
 	        this.b2body.setLinearVelocity(-speed, speed);
