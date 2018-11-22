@@ -1,5 +1,8 @@
 package com.bpa;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
@@ -94,9 +97,12 @@ public class Level1 implements Screen{
 
 		//timeStep = 60 times a second, velocity iterations = 6, position iterations = 2
 		world.step(1/60f, 6, 2); //tells game how many times per second for Box2d to make its calculations
-		System.out.println(playerOne.b2body.getPosition().x + " " + playerOne.b2body.getPosition().y);
-		cam.position.x = playerOne.b2body.getPosition().x;
-		cam.position.y = playerOne.b2body.getPosition().y;
+
+	//	cam.position.x = playerOne.b2body.getPosition().x;
+		cam.position.x = Math.round(playerOne.b2body.getPosition().x * 100f) / 100f;
+
+//		cam.position.y = playerOne.b2body.getPosition().y;
+		cam.position.y = Math.round(playerOne.b2body.getPosition().y * 100f) / 100f;
 
 		cam.update();
 	}
@@ -119,9 +125,8 @@ public class Level1 implements Screen{
 		
         
         mapRenderer.render();
-        b2dr.render(world, cam.combined); //renders the Box2d world
+        //b2dr.render(world, cam.combined); //renders the Box2d world
 
-        mapRenderer.setView(cam);
         //render our game map
         //mapRenderer.render(); // renders map
 		//mapRenderer.render(layerBackround); //renders layer in Tiled that p1 covers
@@ -135,15 +140,15 @@ public class Level1 implements Screen{
 
         game.batch.end(); //starts sprite spriteBatch
         //mapRenderer.render(layerAfterBackground); //renders layer of Tiled that hides p1
+        mapRenderer.setView(cam);
+
 	}
 
 
 	@Override
 	public void resize(int width, int height) {
-		viewport.update(width, height, true); //updates the viewport camera
-		//float pW = p1.getWidth(); //Keeps p1 scaled
-		//float pH = p1.getHeight(); // ^
-		//p1.setSize(pW, pH); // Keeps players size matched regardless of zoom
+		viewport.update(width, height); //updates the viewport camera
+
 	}
 	@Override
 	public void pause() {

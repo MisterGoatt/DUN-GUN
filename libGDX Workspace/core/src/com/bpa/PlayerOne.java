@@ -21,7 +21,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
-	private float speed = 1f;
+	private float speed = 1 ;
 	private boolean running;
 	TextureAtlas textureAtlas;
 	Sprite sprite;
@@ -82,20 +82,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	
 	public void handleInput(float delta) {
 		setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2 + (5 / DunGun.PPM));
-
-		/*
-		if (Gdx.input.isKeyPressed(Input.Keys.W)) 
-			this.b2body.applyLinearImpulse(new Vector2(0, 3f), this.b2body.getWorldCenter(), true); //third parameter wakes body up
-		if (Gdx.input.isKeyPressed(Input.Keys.D))
-			this.b2body.applyLinearImpulse(new Vector2(3f, 0), this.b2body.getWorldCenter(), true);
-		if (Gdx.input.isKeyPressed(Input.Keys.S))
-			this.b2body.applyLinearImpulse(new Vector2(0, -3f), this.b2body.getWorldCenter(), true);
-		if (Gdx.input.isKeyPressed(Input.Keys.A))
-			this.b2body.applyLinearImpulse(new Vector2(-3f, 0), this.b2body.getWorldCenter(), true);
-		
-		if ((Gdx.input.isKeyPressed(Input.Keys.W)) && (Gdx.input.isKeyPressed(Input.Keys.A)))
-			this.b2body.applyLinearImpulse(new Vector2(1.5f, 1.5f), this.b2body.getWorldCenter(), true); //third parameter wakes body up
-*/				
+	
 		this.b2body.setLinearVelocity(0, 0);
 
 		if(Gdx.input.isKeyPressed(Input.Keys.W)){
