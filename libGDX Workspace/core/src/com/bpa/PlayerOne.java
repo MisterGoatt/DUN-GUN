@@ -120,7 +120,6 @@ public class PlayerOne extends Sprite implements Disposable{
 	    	runningSound.stop();
 	    	running = false;
 	    }
-	    System.out.println(running);
 
 	}
 

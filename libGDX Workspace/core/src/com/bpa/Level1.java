@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -23,6 +24,7 @@ import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
+import com.badlogic.gdx.maps.tiled.BaseTmxMapLoader.Parameters;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -76,11 +78,16 @@ public class Level1 implements Screen{
 		
 		cam = new OrthographicCamera();		
 		viewport = new FitViewport(DunGun.V_WIDTH / DunGun.PPM, DunGun.V_HEIGHT / DunGun.PPM, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
-		maploader = new TmxMapLoader();
-		map = maploader.load("tileMaps/Level1/customset.tmx");
+		
+		TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
+		params.textureMinFilter = TextureFilter.Linear;
+		params.textureMagFilter = TextureFilter.Linear;
+		map = new TmxMapLoader().load("tileMaps/Level1/customset2.tmx", params);
+		//map = maploader.load("tileMaps/Level1/customset.tmx");
+		
+		//maploader.load("tileMaps/Level1/customset.tmx", params);
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / DunGun.PPM);
 		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/TDPlayer.atlas"));
-
         //Box2d variables
 		world = new World(new Vector2(0, 0), true); // no gravity and yes we want to sleep objects (won't calculate simulations for bodies at rest)
 		b2dr = new Box2DDebugRenderer();
@@ -98,12 +105,12 @@ public class Level1 implements Screen{
 		//timeStep = 60 times a second, velocity iterations = 6, position iterations = 2
 		world.step(1/60f, 6, 2); //tells game how many times per second for Box2d to make its calculations
 
-	//	cam.position.x = playerOne.b2body.getPosition().x;
-		cam.position.x = Math.round(playerOne.b2body.getPosition().x * 100f) / 100f;
+		cam.position.x = playerOne.b2body.getPosition().x;
+		//cam.position.x = Math.round(playerOne.b2body.getPosition().x * 100f) / 100f;
 
-//		cam.position.y = playerOne.b2body.getPosition().y;
-		cam.position.y = Math.round(playerOne.b2body.getPosition().y * 100f) / 100f;
-
+		cam.position.y = playerOne.b2body.getPosition().y;
+		//cam.position.y = Math.round(playerOne.b2body.getPosition().y * 100f) / 100f;
+		System.out.println(playerOne.b2body.getPosition().y);
 		cam.update();
 	}
 	
