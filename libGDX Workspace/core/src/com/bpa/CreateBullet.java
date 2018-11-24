@@ -38,7 +38,7 @@ public class CreateBullet extends Sprite {
 
 		
 		
-		bdef.position.set(PlayerOne.p1PosX, PlayerOne.p1PosY + 50 / DunGun.PPM);
+		bdef.position.set(PlayerOne.p1PosX, PlayerOne.p1PosY);
 
 	
 		bdef.type = BodyDef.BodyType.DynamicBody;
