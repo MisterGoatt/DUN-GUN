@@ -23,8 +23,6 @@ public class CreateBullet extends Sprite {
 	private float targetY;
 
 	
-	
-	
 	public CreateBullet(World world) {
 		this.world = world;
 
@@ -33,11 +31,7 @@ public class CreateBullet extends Sprite {
 	}
 	
 	public void defineBullet() {
-		
-		
-
-		
-		
+			
 		bdef.position.set(PlayerOne.p1PosX, PlayerOne.p1PosY);
 
 	
@@ -49,9 +43,13 @@ public class CreateBullet extends Sprite {
 		shape.setRadius(4 / DunGun.PPM);
 		
 		fdef.shape = shape;
+		fdef.filter.categoryBits = DunGun.BULLET; //identifies the category bit is
+		fdef.filter.maskBits = DunGun.WALL; // what masking bit the category bit collides with
 		b2body.createFixture(fdef);
 		//b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, PlayerOne.angle2); //sets the position of the body to the position of the body and implements rotation
 
+
+		
 		float differenceX = Level1.mouse_position.x - b2body.getPosition().x;
 		float differenceY = Level1.mouse_position.y - b2body.getPosition().y;
 		float angle = MathUtils.atan2(differenceY, differenceX);
@@ -60,8 +58,10 @@ public class CreateBullet extends Sprite {
 
 		//float posX = (float) (Math.cos(90)) ;
 
-		float posX = (float) (Math.cos(angle));
-		float posY = (float) (Math.sin(angle)) ;
+		float posX = (float) (Math.cos(angle)) * 5;
+		float posY = (float) (Math.sin(angle)) * 5;
+		
+		
 		
 		//b2body.setLinearVelocity(posX, posY);
 		b2body.applyLinearImpulse(posX, posY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);

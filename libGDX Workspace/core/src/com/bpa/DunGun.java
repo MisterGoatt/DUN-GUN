@@ -11,7 +11,9 @@ public class DunGun extends Game{
 	public static final int V_WIDTH = 1500;
 	public static final int V_HEIGHT = 800;
 	public static final float PPM = 100; //Pixels Per Meter
-	
+	public static final short PLAYER = 0x0001;
+	public static final short BULLET = 0x0002;
+	public static final short WALL = 0x0004;
 	
 	@Override
 	public void create() {

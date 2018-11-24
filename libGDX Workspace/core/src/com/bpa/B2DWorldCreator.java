@@ -27,7 +27,10 @@ public class B2DWorldCreator {
 			body = world.createBody(bdef);//adds body to the 2d world
 			shape.setAsBox(rect.getWidth() / 2 / DunGun.PPM, rect.getHeight() / 2 / DunGun.PPM);//defines polygon shape
 			fdef.shape = shape; //sets the polygon shape as a shape (?)
+			fdef.filter.categoryBits = DunGun.WALL;
+			fdef.filter.maskBits = -1;
 			body.createFixture(fdef); //adds fixture to body
+
 		}
 	}
 }

@@ -64,9 +64,11 @@ public class PlayerOne extends Sprite implements Disposable{
 		shape.setRadius(12 / DunGun.PPM);
 		
 		fdef.shape = shape;
+		fdef.filter.categoryBits = DunGun.PLAYER;
+		fdef.filter.maskBits = DunGun.WALL;
 		b2body.createFixture(fdef);
-		
-		shape.dispose();
+
+		//shape.dispose();
 	}
 	
 	public void renderSprite(SpriteBatch batch) {
