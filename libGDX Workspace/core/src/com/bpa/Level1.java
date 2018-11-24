@@ -64,7 +64,7 @@ public class Level1 implements Screen{
 	private World world;
 	private Box2DDebugRenderer b2dr; //graphical representation of body fixtures
 	private PlayerOne playerOne;
-
+	private CreateBullet bullet;
 	
 	
 	//private int[] layerBackround = {0, 1, 2, 3};
@@ -92,7 +92,6 @@ public class Level1 implements Screen{
 		world = new World(new Vector2(0, 0), true); // no gravity and yes we want to sleep objects (won't calculate simulations for bodies at rest)
 		b2dr = new Box2DDebugRenderer();
 		playerOne = new PlayerOne(world); //must be created after world creation or will crash
-
 		new B2DWorldCreator(world, map);
 		cam.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 		//Gdx.input.setInputProcessor((InputProcessor) p1);
@@ -110,7 +109,6 @@ public class Level1 implements Screen{
 
 		cam.position.y = playerOne.b2body.getPosition().y;
 		//cam.position.y = Math.round(playerOne.b2body.getPosition().y * 100f) / 100f;
-		System.out.println(playerOne.b2body.getPosition().y);
 		cam.update();
 	}
 	
@@ -121,18 +119,18 @@ public class Level1 implements Screen{
 		//clears screen
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-	 	if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+	 	/*if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 			cam.zoom -= .01;
 
 		}
 	 	if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
 			cam.zoom += .01;
 			
-		}
+		}*/
 		
         
         mapRenderer.render();
-        //b2dr.render(world, cam.combined); //renders the Box2d world
+        b2dr.render(world, cam.combined); //renders the Box2d world
 
         //render our game map
         //mapRenderer.render(); // renders map
@@ -144,7 +142,6 @@ public class Level1 implements Screen{
         game.batch.begin(); //starts sprite spriteBatch
 
         playerOne.renderSprite(game.batch);
-
         game.batch.end(); //starts sprite spriteBatch
         //mapRenderer.render(layerAfterBackground); //renders layer of Tiled that hides p1
         mapRenderer.setView(cam);

@@ -21,15 +21,22 @@ public class PlayerOne extends Sprite implements Disposable{
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
-	private float speed = 1 ;
+	private float speed = 3 ;
 	private boolean running;
 	TextureAtlas textureAtlas;
 	Sprite sprite;
 	TextureRegion textureRegion;
 	private Sound runningSound;
+	private float shootDelay = 0.5f;
+	private float timeSinceLastShot = 60f;
+	private float bulletSpeed = 10f;
+	private CreateBullet createBullet;
+	public static float p1PosX;
+	public static float p1PosY;
+	public static float angle2; //get distance between mouse and player in radians
+	public static float angle;
 	
 	
-
 	public PlayerOne(World world) {
 		this.world = world;
 		definePlayer();
@@ -38,6 +45,8 @@ public class PlayerOne extends Sprite implements Disposable{
 		sprite =new Sprite(new Texture("sprites/TDPlayer.png"));
 		sprite.setOrigin((sprite.getWidth() / 2) / DunGun.PPM, (float) ((sprite.getHeight() / 2) / DunGun.PPM - .08));
 		runningSound = Gdx.audio.newSound(Gdx.files.internal("sound effects/running.mp3"));
+		createBullet = new CreateBullet(world);
+
 
 	}
 
@@ -56,6 +65,8 @@ public class PlayerOne extends Sprite implements Disposable{
 		
 		fdef.shape = shape;
 		b2body.createFixture(fdef);
+		
+		shape.dispose();
 	}
 	
 	public void renderSprite(SpriteBatch batch) {
@@ -65,24 +76,33 @@ public class PlayerOne extends Sprite implements Disposable{
 		float posY2 = (float) (posY - .1);
 		sprite.setSize(32 / DunGun.PPM, 32 / DunGun.PPM);
 		sprite.setPosition(posX2, posY2);
-		float mouseX = Level1.mouse_position.x; //grabs cam.unproject x vector value
-		float mouseY = Level1.mouse_position.y; //grabs cam.unproject y vector value
+		//float mouseX = Level1.mouse_position.x; //grabs cam.unproject x vector value
+		//float mouseY = Level1.mouse_position.y; //grabs cam.unproject y vector value
 		
-		float angle = MathUtils.atan2(mouseY - getY(), mouseX - getX()) * MathUtils.radDeg; //find the distance between mouse and player
+		angle = MathUtils.atan2(Level1.mouse_position.y - getY(), Level1.mouse_position.x - getX()) * MathUtils.radDeg; //find the distance between mouse and player
 
         angle = angle - 90; //makes it a full 360 degrees
 	    if (angle < 0) {
 	    	angle += 360 ;
 	    }
-	    float angle2 = MathUtils.atan2(mouseY - getY(), mouseX - getX()); //get distance between mouse and player in radians
+	    angle2 = MathUtils.atan2(Level1.mouse_position.y - getY(), Level1.mouse_position.x - getX()); //get distance between mouse and player in radians
 	    b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
 		sprite.setRotation(angle); //rotates sprite
 		sprite.draw(batch); //draws sprite
-		}
+		
+	}
 	
 	public void handleInput(float delta) {
 		setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2 + (5 / DunGun.PPM));
-	
+
+
+		createBullet.update();
+		
+		p1PosX = b2body.getPosition().x;
+		p1PosY = b2body.getPosition().y;
+		
+		timeSinceLastShot -= 1f;
+		
 		this.b2body.setLinearVelocity(0, 0);
 
 		if(Gdx.input.isKeyPressed(Input.Keys.W)){
@@ -107,7 +127,14 @@ public class PlayerOne extends Sprite implements Disposable{
 	    }if(Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)){
 	        this.b2body.setLinearVelocity(speed, -speed);
 	    } 
-	    
+	    if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+	    	if (timeSinceLastShot <=0) {
+	    		createBullet = new CreateBullet(world);
+	    		timeSinceLastShot = 30;
+	    		//timeSinceLastShot = shootDelay; //reset timeSinceLast Shot
+
+	    	}
+	    }
 
 		if (b2body.getLinearVelocity().x > 0 || b2body.getLinearVelocity().x < 0 || b2body.getLinearVelocity().y > 0 || b2body.getLinearVelocity().y < 0) {
 			if (!running) {	
@@ -120,8 +147,8 @@ public class PlayerOne extends Sprite implements Disposable{
 	    	runningSound.stop();
 	    	running = false;
 	    }
-
 	}
+	
 
 	@Override
 	public void dispose() {
