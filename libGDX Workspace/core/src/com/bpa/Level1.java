@@ -130,7 +130,7 @@ public class Level1 implements Screen{
 		
         
         mapRenderer.render();
-        b2dr.render(world, cam.combined); //renders the Box2d world
+        //b2dr.render(world, cam.combined); //renders the Box2d world
 
         //render our game map
         //mapRenderer.render(); // renders map
