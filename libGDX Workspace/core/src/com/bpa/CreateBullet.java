@@ -1,5 +1,8 @@
 package com.bpa;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -13,25 +16,38 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 
 public class CreateBullet extends Sprite {
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
-	private static Vector2 bulletTarget;
-	private float targetX;
-	private float targetY;
-
+	public String id = "BULLET";
+	public static Array<CreateBullet> bullets;
+	Sprite sprite;
+	TextureAtlas textureAtlas;
+	TextureRegion textureRegion;
+	public static float angle;
+	private float speed = 7;
+	
 	
 	public CreateBullet(World world) {
 		this.world = world;
 
 		defineBullet();
+		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/bullet.atlas"));
+		textureRegion = textureAtlas.findRegion("bullet");
+		sprite =new Sprite(new Texture("sprites/bullet.png"));
+		sprite.setOrigin((sprite.getWidth() / 2) / DunGun.PPM, (float) ((sprite.getHeight() / 2) / DunGun.PPM - .08));
+		sprite.setSize(16 / DunGun.PPM, 16 / DunGun.PPM);
+		sprite.setRotation(PlayerOne.angle); //!!!!!!!!!!
 		
 	}
 	
+	
+	
 	public void defineBullet() {
-			
+		bullets = new Array<CreateBullet>();
 		bdef.position.set(PlayerOne.p1PosX, PlayerOne.p1PosY);
 
 	
@@ -45,53 +61,38 @@ public class CreateBullet extends Sprite {
 		fdef.shape = shape;
 		fdef.filter.categoryBits = DunGun.BULLET; //identifies the category bit is
 		fdef.filter.maskBits = DunGun.WALL; // what masking bit the category bit collides with
-		b2body.createFixture(fdef);
+		b2body.createFixture(fdef).setUserData("bullets");
 		//b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, PlayerOne.angle2); //sets the position of the body to the position of the body and implements rotation
-
 
 		
 		float differenceX = Level1.mouse_position.x - b2body.getPosition().x;
 		float differenceY = Level1.mouse_position.y - b2body.getPosition().y;
-		float angle = MathUtils.atan2(differenceY, differenceX);
+		angle = MathUtils.atan2(differenceY, differenceX);
 		//float angle = MathUtils.atan2(Level1.mouse_position.y - b2body.getPosition().y, Level1.mouse_position.x - b2body.getPosition().x) * MathUtils.radDeg; //find the distance between mouse and player
 
 
 		//float posX = (float) (Math.cos(90)) ;
 
-		float posX = (float) (Math.cos(angle)) * 5;
-		float posY = (float) (Math.sin(angle)) * 5;
+		float posX = (float) (Math.cos(angle)) * speed;
+		float posY = (float) (Math.sin(angle)) * speed;
 		
 		
 		
-		//b2body.setLinearVelocity(posX, posY);
 		b2body.applyLinearImpulse(posX, posY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);
-		//b2body.applyLinearImpulse(new Vector2(1 , 1), new Vector2(Level1.mouse_position.x, Level1.mouse_position.y), true);
-
-		System.out.println("mouse X " + Level1.mouse_position.x);	
-		System.out.println("mouse Y " + Level1.mouse_position.y);
-		
-		System.out.println("player X " + b2body.getPosition().x);
-		System.out.println("player Y " + b2body.getPosition().y);
-
-		//System.out.println("differenceX " + differenceX);
-		//System.out.println("differenceY " + differenceY);
-		System.out.println("angle " + angle);
-
-		System.out.println("posX " + posX);
-		System.out.println("posY " + posY);
-
-		System.out.println("\n");
-		
-		
-		
-		
 		
 	}
 	
-	public void update() {
-		//System.out.println("mouse X " + Level1.mouse_position.x);	
-		//System.out.println("mouse Y " + Level1.mouse_position.y);
+	public void renderSprite(SpriteBatch batch) {
 
+		float posX = b2body.getPosition().x - .05f;
+		float posY = b2body.getPosition().y;
+		//System.out.println(getX() + " " + getY());
+		sprite.setPosition(posX, posY);
+
+
+		sprite.draw(batch);
+		
+		
 	}
 	
 }

@@ -2,6 +2,9 @@ package com.bpa;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+
+import javax.swing.text.AbstractDocument.Content;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -40,6 +43,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -64,18 +68,18 @@ public class Level1 implements Screen{
 	private World world;
 	private Box2DDebugRenderer b2dr; //graphical representation of body fixtures
 	private PlayerOne playerOne;
-	private CreateBullet bullet;
-	
-	
+	public CreateBullet createBullet;
 	//private int[] layerBackround = {0, 1, 2, 3};
 	//private int[] layerAfterBackground = {4};
+	public static boolean isShooting = false;
+	ArrayList<CreateBullet> bulletManager = new ArrayList<CreateBullet>();
+	
 	
 	public Level1(final DunGun game) {
 		
 		
 		this.game = game;
 
-		
 		cam = new OrthographicCamera();		
 		viewport = new FitViewport(DunGun.V_WIDTH / DunGun.PPM, DunGun.V_HEIGHT / DunGun.PPM, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		
@@ -96,19 +100,43 @@ public class Level1 implements Screen{
 		cam.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 		//Gdx.input.setInputProcessor((InputProcessor) p1);
 		cam.zoom -= .50;
+		
+		this.world.setContactListener(new MyContactListener());
 	}
 	
+	public void shootGun() {
+		if (isShooting) {
+			
+			System.out.println("BOOM");
+			createBullet = new CreateBullet(world);
+			bulletManager.add(createBullet);
+			isShooting = false;
+		}
+		}
+
+
 	
 	public void cameraUpdate(float delta) {
 
 		//timeStep = 60 times a second, velocity iterations = 6, position iterations = 2
 		world.step(1/60f, 6, 2); //tells game how many times per second for Box2d to make its calculations
-
+		
+		//remove bullets
+		Array<Body> bodies = MyContactListener.bodiesToRemove;
+		//removes bullets when they collide with wall
+		for (int i = 0; i < bodies.size; i ++) {
+			Body b = bodies.get(i);
+			CreateBullet.bullets.removeValue((CreateBullet) b.getUserData(), true);
+			world.destroyBody(b);
+			
+			bulletManager.remove(i);
+		}
+	
+		bodies.clear(); //empties list of bodies
+		
 		cam.position.x = playerOne.b2body.getPosition().x;
-		//cam.position.x = Math.round(playerOne.b2body.getPosition().x * 100f) / 100f;
 
 		cam.position.y = playerOne.b2body.getPosition().y;
-		//cam.position.y = Math.round(playerOne.b2body.getPosition().y * 100f) / 100f;
 		cam.update();
 	}
 	
@@ -127,21 +155,27 @@ public class Level1 implements Screen{
 			cam.zoom += .01;
 			
 		}*/
-		
         
         mapRenderer.render();
-        b2dr.render(world, cam.combined); //renders the Box2d world
+        //b2dr.render(world, cam.combined); //renders the Box2d world
 
-        //render our game map
-        //mapRenderer.render(); // renders map
+  
 		//mapRenderer.render(layerBackround); //renders layer in Tiled that p1 covers
         game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
 		
+        shootGun(); //sees if gun is shooting
         mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
         cam.unproject(mouse_position); //gets mouse coordinates within viewport
         game.batch.begin(); //starts sprite spriteBatch
-
         playerOne.renderSprite(game.batch);
+        
+        if (bulletManager.size() > 0) {
+        	for (int i = 0; i < bulletManager.size(); i++) {
+                createBullet.renderSprite(game.batch);
+                bulletManager.get(i).renderSprite(game.batch);
+        	}
+        }
+
         game.batch.end(); //starts sprite spriteBatch
         //mapRenderer.render(layerAfterBackground); //renders layer of Tiled that hides p1
         mapRenderer.setView(cam);

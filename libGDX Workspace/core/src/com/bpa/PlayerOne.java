@@ -1,5 +1,7 @@
 package com.bpa;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
@@ -27,15 +29,12 @@ public class PlayerOne extends Sprite implements Disposable{
 	Sprite sprite;
 	TextureRegion textureRegion;
 	private Sound runningSound;
-	private float shootDelay = 0.5f;
 	private float timeSinceLastShot = 60f;
-	private float bulletSpeed = 10f;
-	private CreateBullet createBullet;
 	public static float p1PosX;
 	public static float p1PosY;
 	public static float angle2; //get distance between mouse and player in radians
 	public static float angle;
-	
+
 	
 	public PlayerOne(World world) {
 		this.world = world;
@@ -45,9 +44,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		sprite =new Sprite(new Texture("sprites/TDPlayer.png"));
 		sprite.setOrigin((sprite.getWidth() / 2) / DunGun.PPM, (float) ((sprite.getHeight() / 2) / DunGun.PPM - .08));
 		runningSound = Gdx.audio.newSound(Gdx.files.internal("sound effects/running.mp3"));
-		createBullet = new CreateBullet(world);
-
-
+		
 	}
 
 	
@@ -66,7 +63,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		fdef.shape = shape;
 		fdef.filter.categoryBits = DunGun.PLAYER;
 		fdef.filter.maskBits = DunGun.WALL;
-		b2body.createFixture(fdef);
+		b2body.createFixture(fdef).setUserData("player");;
 
 		//shape.dispose();
 	}
@@ -96,9 +93,6 @@ public class PlayerOne extends Sprite implements Disposable{
 	
 	public void handleInput(float delta) {
 		setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2 + (5 / DunGun.PPM));
-
-
-		createBullet.update();
 		
 		p1PosX = b2body.getPosition().x;
 		p1PosY = b2body.getPosition().y;
@@ -131,7 +125,8 @@ public class PlayerOne extends Sprite implements Disposable{
 	    } 
 	    if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 	    	if (timeSinceLastShot <=0) {
-	    		createBullet = new CreateBullet(world);
+	    		//createBullet = new CreateBullet(world);
+	    		Level1.isShooting = true;
 	    		timeSinceLastShot = 30;
 	    		//timeSinceLastShot = shootDelay; //reset timeSinceLast Shot
 

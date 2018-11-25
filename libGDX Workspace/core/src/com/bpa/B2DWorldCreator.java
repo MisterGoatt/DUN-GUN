@@ -11,6 +11,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class B2DWorldCreator {
+	public String id = "WALL";
+	
 	public B2DWorldCreator(World world, TiledMap map) {
 		BodyDef bdef = new BodyDef(); //defines what a body consists of
 		PolygonShape shape = new PolygonShape(); //shape of the fixture
@@ -29,7 +31,7 @@ public class B2DWorldCreator {
 			fdef.shape = shape; //sets the polygon shape as a shape (?)
 			fdef.filter.categoryBits = DunGun.WALL;
 			fdef.filter.maskBits = -1;
-			body.createFixture(fdef); //adds fixture to body
+			body.createFixture(fdef).setUserData("walls");; //adds fixture to body
 
 		}
 	}
