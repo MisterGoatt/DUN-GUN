@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,8 +18,9 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
 
-public class CreateBullet extends Sprite {
+public class CreateBullet extends Sprite implements Disposable{
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
@@ -29,7 +31,8 @@ public class CreateBullet extends Sprite {
 	TextureRegion textureRegion;
 	public static float angle;
 	private float speed = 7;
-	
+	private Sound gunShot;
+
 	
 	public CreateBullet(World world) {
 		this.world = world;
@@ -41,7 +44,8 @@ public class CreateBullet extends Sprite {
 		sprite.setOrigin((sprite.getWidth() / 2) / DunGun.PPM, (float) ((sprite.getHeight() / 2) / DunGun.PPM - .08));
 		sprite.setSize(16 / DunGun.PPM, 16 / DunGun.PPM);
 		sprite.setRotation(PlayerOne.angle); //!!!!!!!!!!
-		
+		gunShot = Gdx.audio.newSound(Gdx.files.internal("sound effects/pistol_shot.mp3"));
+
 	}
 	
 	
@@ -63,7 +67,7 @@ public class CreateBullet extends Sprite {
 		fdef.filter.maskBits = DunGun.WALL; // what masking bit the category bit collides with
 		b2body.createFixture(fdef).setUserData("bullets");
 		//b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, PlayerOne.angle2); //sets the position of the body to the position of the body and implements rotation
-
+		//fdef.shape.dispose();
 		
 		float differenceX = Level1.mouse_position.x - b2body.getPosition().x;
 		float differenceY = Level1.mouse_position.y - b2body.getPosition().y;
@@ -80,6 +84,7 @@ public class CreateBullet extends Sprite {
 		
 		b2body.applyLinearImpulse(posX, posY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);
 		
+	
 	}
 	
 	public void renderSprite(SpriteBatch batch) {
@@ -95,4 +100,9 @@ public class CreateBullet extends Sprite {
 		
 	}
 	
+	@Override
+	public void dispose() {
+		gunShot.dispose();
+		
+	}
 }

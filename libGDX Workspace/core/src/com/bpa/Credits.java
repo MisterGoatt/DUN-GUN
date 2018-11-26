@@ -12,7 +12,7 @@ public class Credits implements Screen{
 	
 	public Credits(final DunGun game) {
 		this.game = game;
-		credits = new Texture("screens/Credits.jpg");
+		credits = new Texture("screens/cScreen.png");
 
 		
 	}
@@ -34,8 +34,8 @@ public class Credits implements Screen{
 		//mouse x and y
 		int mX = Gdx.input.getX();
 		int mY = Gdx.graphics.getHeight() - Gdx.input.getY();
-		
-		if (mY < 100 && mX < 100 && Gdx.input.isButtonPressed(Buttons.LEFT)) {
+		System.out.println(mX + " " + mY);
+		if (21 <  mY && mY < 70 && 21 < mX && mX < 142 && Gdx.input.isButtonPressed(Buttons.LEFT)) {
 			game.setScreen(new MainMenu(game));
 
 		}

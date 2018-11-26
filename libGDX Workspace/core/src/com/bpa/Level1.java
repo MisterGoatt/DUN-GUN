@@ -9,6 +9,7 @@ import javax.swing.text.AbstractDocument.Content;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -73,7 +74,8 @@ public class Level1 implements Screen{
 	//private int[] layerAfterBackground = {4};
 	public static boolean isShooting = false;
 	ArrayList<CreateBullet> bulletManager = new ArrayList<CreateBullet>();
-	
+	private Sound gunShot;
+
 	
 	public Level1(final DunGun game) {
 		
@@ -92,26 +94,28 @@ public class Level1 implements Screen{
 		//maploader.load("tileMaps/Level1/customset.tmx", params);
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / DunGun.PPM);
 		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/TDPlayer.atlas"));
-        //Box2d variables
+       
+		//Box2d variables
 		world = new World(new Vector2(0, 0), true); // no gravity and yes we want to sleep objects (won't calculate simulations for bodies at rest)
 		b2dr = new Box2DDebugRenderer();
 		playerOne = new PlayerOne(world); //must be created after world creation or will crash
 		new B2DWorldCreator(world, map);
 		cam.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
-		//Gdx.input.setInputProcessor((InputProcessor) p1);
 		cam.zoom -= .50;
 		
+		gunShot = Gdx.audio.newSound(Gdx.files.internal("sound effects/pistol_shot.mp3"));
+
 		this.world.setContactListener(new MyContactListener());
 	}
 	
 	public void shootGun() {
 		if (isShooting) {
-			
-			System.out.println("BOOM");
+			//System.out.println(bulletManager.size());
 			createBullet = new CreateBullet(world);
+			gunShot.play();
 			bulletManager.add(createBullet);
 			isShooting = false;
-		}
+			}
 		}
 
 
@@ -125,11 +129,11 @@ public class Level1 implements Screen{
 		Array<Body> bodies = MyContactListener.bodiesToRemove;
 		//removes bullets when they collide with wall
 		for (int i = 0; i < bodies.size; i ++) {
+
 			Body b = bodies.get(i);
 			CreateBullet.bullets.removeValue((CreateBullet) b.getUserData(), true);
 			world.destroyBody(b);
-			
-			bulletManager.remove(i);
+			bulletManager.remove(0);
 		}
 	
 		bodies.clear(); //empties list of bodies
@@ -157,7 +161,7 @@ public class Level1 implements Screen{
 		}*/
         
         mapRenderer.render();
-        //b2dr.render(world, cam.combined); //renders the Box2d world
+        b2dr.render(world, cam.combined); //renders the Box2d world
 
   
 		//mapRenderer.render(layerBackround); //renders layer in Tiled that p1 covers
@@ -171,7 +175,8 @@ public class Level1 implements Screen{
         
         if (bulletManager.size() > 0) {
         	for (int i = 0; i < bulletManager.size(); i++) {
-                createBullet.renderSprite(game.batch);
+                System.out.println(i);
+        		createBullet.renderSprite(game.batch);
                 bulletManager.get(i).renderSprite(game.batch);
         	}
         }
