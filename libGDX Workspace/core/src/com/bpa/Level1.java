@@ -1,55 +1,37 @@
 package com.bpa;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
+
 import java.util.ArrayList;
 
-import javax.swing.text.AbstractDocument.Content;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Buttons;
+
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+
 import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapLayers;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.objects.TextureMapObject;
-import com.badlogic.gdx.maps.tiled.BaseTmxMapLoader.Parameters;
+
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-//TO INCLUDE PPM GO TO EPISODE 8 *****************************************
-// ********************************************
+
 
 public class Level1 implements Screen{
 	final DunGun game;
@@ -75,7 +57,6 @@ public class Level1 implements Screen{
 	public static boolean isShooting = false;
 	ArrayList<CreateBullet> bulletManager = new ArrayList<CreateBullet>();
 	private Sound gunShot;
-
 	
 	public Level1(final DunGun game) {
 		
@@ -84,7 +65,6 @@ public class Level1 implements Screen{
 
 		cam = new OrthographicCamera();		
 		viewport = new FitViewport(DunGun.V_WIDTH / DunGun.PPM, DunGun.V_HEIGHT / DunGun.PPM, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
-		
 		TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
 		params.textureMinFilter = TextureFilter.Linear;
 		params.textureMagFilter = TextureFilter.Linear;
@@ -161,7 +141,7 @@ public class Level1 implements Screen{
 		}*/
         
         mapRenderer.render();
-        b2dr.render(world, cam.combined); //renders the Box2d world
+        //b2dr.render(world, cam.combined); //renders the Box2d world
 
   
 		//mapRenderer.render(layerBackround); //renders layer in Tiled that p1 covers
@@ -172,10 +152,8 @@ public class Level1 implements Screen{
         cam.unproject(mouse_position); //gets mouse coordinates within viewport
         game.batch.begin(); //starts sprite spriteBatch
         playerOne.renderSprite(game.batch);
-        
         if (bulletManager.size() > 0) {
         	for (int i = 0; i < bulletManager.size(); i++) {
-                System.out.println(i);
         		createBullet.renderSprite(game.batch);
                 bulletManager.get(i).renderSprite(game.batch);
         	}
@@ -215,7 +193,7 @@ public class Level1 implements Screen{
 		textureAtlas.dispose();
 		world.dispose();
 		b2dr.dispose();
-		
+		gunShot.dispose();
 	}
 
 	@Override

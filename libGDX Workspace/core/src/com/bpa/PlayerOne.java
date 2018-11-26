@@ -65,7 +65,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		fdef.filter.maskBits = DunGun.WALL;
 		b2body.createFixture(fdef).setUserData("player");;
 
-		//shape.dispose();
+		shape.dispose();
 	}
 	
 	public void renderSprite(SpriteBatch batch) {
@@ -150,6 +150,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	@Override
 	public void dispose() {
 		runningSound.dispose();
+		textureAtlas.dispose();
 		
 	}
 

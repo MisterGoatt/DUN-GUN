@@ -82,7 +82,7 @@ public class MainMenu implements Screen{
 
 		
 
-		
+		/*
 		
 		//DRAWS INTRO SCREENS
 		//**********************************
@@ -107,7 +107,7 @@ public class MainMenu implements Screen{
 		}else if (skipToMainM == true){
 			game.batch.draw(mainMenuScreen, 0, 0,cam.viewportWidth, cam.viewportHeight);
 			onMenu = true;
-		}
+		}*/
 		
 		//MUSIC START
 		mStart = true;
@@ -239,11 +239,7 @@ public class MainMenu implements Screen{
 	public void dispose() {
 		// TODO Auto-generated method stub
 		game.batch.dispose();
-		publisherScreen.dispose();
-		creditScreen.dispose();
-		titleScreen.dispose();
 		framerate.dispose();
-		mainMenuScreen.dispose();
 		menuText.dispose();
 		themeMusic.dispose();
 	}

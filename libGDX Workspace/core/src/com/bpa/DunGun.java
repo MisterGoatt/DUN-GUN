@@ -21,7 +21,7 @@ public class DunGun extends Game{
 		
 		
 
-		this.setScreen(new MainMenu(this));
+		this.setScreen(new IntroductionScreens(this));
 	}
 
 	@Override

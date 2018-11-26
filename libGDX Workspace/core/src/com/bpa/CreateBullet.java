@@ -30,8 +30,7 @@ public class CreateBullet extends Sprite implements Disposable{
 	TextureAtlas textureAtlas;
 	TextureRegion textureRegion;
 	public static float angle;
-	private float speed = 7;
-	private Sound gunShot;
+	private float speed = 50;
 
 	
 	public CreateBullet(World world) {
@@ -44,14 +43,14 @@ public class CreateBullet extends Sprite implements Disposable{
 		sprite.setOrigin((sprite.getWidth() / 2) / DunGun.PPM, (float) ((sprite.getHeight() / 2) / DunGun.PPM - .08));
 		sprite.setSize(16 / DunGun.PPM, 16 / DunGun.PPM);
 		sprite.setRotation(PlayerOne.angle); //!!!!!!!!!!
-		gunShot = Gdx.audio.newSound(Gdx.files.internal("sound effects/pistol_shot.mp3"));
-
+		
 	}
 	
 	
 	
 	public void defineBullet() {
 		bullets = new Array<CreateBullet>();
+		System.out.println(PlayerOne.angle);
 		bdef.position.set(PlayerOne.p1PosX, PlayerOne.p1PosY);
 
 	
@@ -68,7 +67,7 @@ public class CreateBullet extends Sprite implements Disposable{
 		b2body.createFixture(fdef).setUserData("bullets");
 		//b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, PlayerOne.angle2); //sets the position of the body to the position of the body and implements rotation
 		//fdef.shape.dispose();
-		
+		shape.dispose();
 		float differenceX = Level1.mouse_position.x - b2body.getPosition().x;
 		float differenceY = Level1.mouse_position.y - b2body.getPosition().y;
 		angle = MathUtils.atan2(differenceY, differenceX);
@@ -102,7 +101,6 @@ public class CreateBullet extends Sprite implements Disposable{
 	
 	@Override
 	public void dispose() {
-		gunShot.dispose();
-		
+		textureAtlas.dispose();
 	}
 }
