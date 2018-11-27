@@ -5,11 +5,12 @@ import java.util.ArrayList;
 
 
 import com.badlogic.gdx.Gdx;
-
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -56,10 +57,12 @@ public class Level1 implements Screen{
 	public static boolean isShooting = false;
 	ArrayList<CreateBullet> bulletManager = new ArrayList<CreateBullet>();
 	private Sound gunShot;
+	private Texture mouseCursor;
+	private boolean lockCursor = true;
+
+	
 	
 	public Level1(final DunGun game) {
-		
-		
 		this.game = game;
 
 		cam = new OrthographicCamera();		
@@ -69,7 +72,7 @@ public class Level1 implements Screen{
 		params.textureMagFilter = TextureFilter.Linear;
 		map = new TmxMapLoader().load("tileMaps/Level1/customset2.tmx", params);
 		//map = maploader.load("tileMaps/Level1/customset.tmx");
-		
+		mouseCursor = new Texture("crosshair 1.png");
 		//maploader.load("tileMaps/Level1/customset.tmx", params);
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / DunGun.PPM);
        
@@ -124,19 +127,32 @@ public class Level1 implements Screen{
 	
 	@Override
 	public void render(float delta) {
-        cameraUpdate(delta);
+		
+		
+		
+		
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && lockCursor) {
+			lockCursor = false;
+		}else if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !lockCursor) {
+			lockCursor = true;
+		}
+		if (!lockCursor) {
+			Gdx.input.setCursorCatched(true);
+		}else Gdx.input.setCursorCatched(false);
+		
+		cameraUpdate(delta);
         playerOne.handleInput(delta);
 		//clears screen
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-	 	/*if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+	 	/*(if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 			cam.zoom -= .01;
 
 		}
 	 	if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
 			cam.zoom += .01;
-			
-		}*/
+	 	}*/	
+		
         
         mapRenderer.render();
         //b2dr.render(world, cam.combined); //renders the Box2d world
@@ -155,6 +171,9 @@ public class Level1 implements Screen{
                 bulletManager.get(i).renderSprite(game.batch);
         	}
         }*/
+        
+        game.batch.draw(mouseCursor, Level1.mouse_position.x - .05f, Level1.mouse_position.y - .05f, 13 / DunGun.PPM, 13 / DunGun.PPM);
+
 
         game.batch.end(); //starts sprite spriteBatch
         //mapRenderer.render(layerAfterBackground); //renders layer of Tiled that hides p1
@@ -190,6 +209,7 @@ public class Level1 implements Screen{
 		world.dispose();
 		b2dr.dispose();
 		gunShot.dispose();
+		mouseCursor.dispose();
 	}
 
 	@Override

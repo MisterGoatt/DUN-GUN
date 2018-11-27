@@ -42,7 +42,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		this.world = world;
 		definePlayer();
 		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/player1/playerRevolver.atlas"));
-		animation = new Animation <TextureRegion>(1f/30f, textureAtlas.getRegions());
+		animation = new Animation <TextureRegion>(1f/15f, textureAtlas.getRegions());
 		standingRegion = textureAtlas.findRegion("tile000");
 		
 		//sprite.setOrigin((sprite.getWidth() / 2) / DunGun.PPM, (float) ((sprite.getHeight() / 2) / DunGun.PPM - .08));
@@ -144,7 +144,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	    		//createBullet = new CreateBullet(world);
 	    		Level1.isShooting = true;
 	    		shootAnimation = true;
-	    		timeSinceLastShot = 30;
+	    		timeSinceLastShot = 40;
 	    		//timeSinceLastShot = shootDelay; //reset timeSinceLast Shot
 
 	    	}
