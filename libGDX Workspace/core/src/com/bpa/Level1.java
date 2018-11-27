@@ -41,7 +41,6 @@ public class Level1 implements Screen{
 	private TmxMapLoader maploader; //what loads map into game
 	private TiledMap map; 
 	private OrthogonalTiledMapRenderer mapRenderer; //renders map to the screen
-	private TextureAtlas textureAtlas;
 	//Sprite p1;
 	TextureRegion textureRegion;
 	MapLayer objectLayer;
@@ -73,7 +72,6 @@ public class Level1 implements Screen{
 		
 		//maploader.load("tileMaps/Level1/customset.tmx", params);
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / DunGun.PPM);
-		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/TDPlayer.atlas"));
        
 		//Box2d variables
 		world = new World(new Vector2(0, 0), true); // no gravity and yes we want to sleep objects (won't calculate simulations for bodies at rest)
@@ -146,18 +144,17 @@ public class Level1 implements Screen{
   
 		//mapRenderer.render(layerBackround); //renders layer in Tiled that p1 covers
         game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
-		
         shootGun(); //sees if gun is shooting
         mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
         cam.unproject(mouse_position); //gets mouse coordinates within viewport
         game.batch.begin(); //starts sprite spriteBatch
         playerOne.renderSprite(game.batch);
-        if (bulletManager.size() > 0) {
+        /*if (bulletManager.size() > 0) {
         	for (int i = 0; i < bulletManager.size(); i++) {
         		createBullet.renderSprite(game.batch);
                 bulletManager.get(i).renderSprite(game.batch);
         	}
-        }
+        }*/
 
         game.batch.end(); //starts sprite spriteBatch
         //mapRenderer.render(layerAfterBackground); //renders layer of Tiled that hides p1
@@ -190,7 +187,6 @@ public class Level1 implements Screen{
 	public void dispose() {
 		map.dispose();
 		mapRenderer.dispose();
-		textureAtlas.dispose();
 		world.dispose();
 		b2dr.dispose();
 		gunShot.dispose();

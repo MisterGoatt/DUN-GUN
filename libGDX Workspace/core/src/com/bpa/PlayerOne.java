@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -25,24 +26,26 @@ public class PlayerOne extends Sprite implements Disposable{
 	private BodyDef bdef = new BodyDef();
 	private float speed = 3 ;
 	private boolean running;
-	TextureAtlas textureAtlas;
-	Sprite sprite;
-	TextureRegion textureRegion;
+	private TextureAtlas textureAtlas;
+	private Animation <TextureRegion> animation;
+	private TextureRegion standingRegion;
+	private float timePassed = 0;
 	private Sound runningSound;
 	private float timeSinceLastShot = 60f;
 	public static float p1PosX;
 	public static float p1PosY;
 	public static float angle2; //get distance between mouse and player in radians
 	public static float angle;
-
+	private boolean shootAnimation = false;
 	
 	public PlayerOne(World world) {
 		this.world = world;
 		definePlayer();
-		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/TDPlayer.atlas"));
-		textureRegion = textureAtlas.findRegion("TDPlayer");
-		sprite =new Sprite(new Texture("sprites/TDPlayer.png"));
-		sprite.setOrigin((sprite.getWidth() / 2) / DunGun.PPM, (float) ((sprite.getHeight() / 2) / DunGun.PPM - .08));
+		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/player1/playerRevolver.atlas"));
+		animation = new Animation <TextureRegion>(1f/30f, textureAtlas.getRegions());
+		standingRegion = textureAtlas.findRegion("tile000");
+		
+		//sprite.setOrigin((sprite.getWidth() / 2) / DunGun.PPM, (float) ((sprite.getHeight() / 2) / DunGun.PPM - .08));
 		runningSound = Gdx.audio.newSound(Gdx.files.internal("sound effects/running.mp3"));
 		
 	}
@@ -69,12 +72,14 @@ public class PlayerOne extends Sprite implements Disposable{
 	}
 	
 	public void renderSprite(SpriteBatch batch) {
+		
+		
+		
 		float posX = b2body.getPosition().x;
 		float posY = b2body.getPosition().y;
-		float posX2 = (float) (posX - .14);
-		float posY2 = (float) (posY - .1);
-		sprite.setSize(32 / DunGun.PPM, 32 / DunGun.PPM);
-		sprite.setPosition(posX2, posY2);
+
+		//sprite.setSize(32 / DunGun.PPM, 32 / DunGun.PPM);
+		//sprite.setPosition(posX2, posY2);
 		//float mouseX = Level1.mouse_position.x; //grabs cam.unproject x vector value
 		//float mouseY = Level1.mouse_position.y; //grabs cam.unproject y vector value
 		
@@ -86,9 +91,20 @@ public class PlayerOne extends Sprite implements Disposable{
 	    }
 	    angle2 = MathUtils.atan2(Level1.mouse_position.y - getY(), Level1.mouse_position.x - getX()); //get distance between mouse and player in radians
 	    b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
-		sprite.setRotation(angle); //rotates sprite
-		sprite.draw(batch); //draws sprite
-		
+		//sprite.setRotation(angle); //rotates sprite
+		System.out.println(timePassed);
+	    if (shootAnimation) {
+			batch.draw(animation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
+			timePassed += Gdx.graphics.getDeltaTime();
+
+			if(animation.isAnimationFinished(timePassed)) {
+				shootAnimation = false;
+				timePassed = 0;
+			}
+		}else {
+			System.out.println("mate");
+			batch.draw(standingRegion, posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
+		}
 	}
 	
 	public void handleInput(float delta) {
@@ -127,6 +143,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	    	if (timeSinceLastShot <=0) {
 	    		//createBullet = new CreateBullet(world);
 	    		Level1.isShooting = true;
+	    		shootAnimation = true;
 	    		timeSinceLastShot = 30;
 	    		//timeSinceLastShot = shootDelay; //reset timeSinceLast Shot
 

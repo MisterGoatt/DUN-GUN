@@ -23,13 +23,9 @@ public class MainMenu implements Screen{
 	BitmapFont framerate; //font for frame rate display
 	BitmapFont menuText;
 	BitmapFont menuTextRed;
-	Texture publisherScreen;
-	Texture creditScreen;
-	Texture titleScreen;
-	Texture musicScreen;
 	Texture mainMenuScreen;
 	boolean skipToMainM = false;
-	boolean onMenu = false;
+	boolean onMenu = true;
 	boolean justClicked = false;
 	private Viewport gamePort;
 	private OrthographicCamera cam;
@@ -41,10 +37,6 @@ public class MainMenu implements Screen{
 	public MainMenu(final DunGun game) {
 		this.game = game;
 		
-		publisherScreen = new Texture("screens/ctm_placeholder.jpg");
-		creditScreen = new Texture("screens/credits_placeholder.jpg");
-		titleScreen = new Texture("screens/titleScreen.jpg");
-		musicScreen = new Texture("screens/musicscreen.jpg");
 		mainMenuScreen = new Texture("screens/main_menu_2.jpg");
 		
 		framerate = new BitmapFont(Gdx.files.internal("fonts/CourierNew32.fnt"));
@@ -66,58 +58,27 @@ public class MainMenu implements Screen{
 	@Override
 	public void render(float delta) {
 
+		//clears screen
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		game.batch.begin(); 
 		game.batch.setProjectionMatrix(cam.combined);
 
-		//clears screen
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 		
 		
 		//mouse x and y
 		int mX = Gdx.input.getX();
 		int mY = Gdx.graphics.getHeight() - Gdx.input.getY();
 		
-
-		
-
-		/*
-		
-		//DRAWS INTRO SCREENS
-		//**********************************
-
-		if (skipToMainM == false) {
-			if (counter <= 2) {
-					game.batch.draw(publisherScreen, 0, 0);
-				}
-			else if (counter <=  5 && counter > 2) {
-					game.batch.draw(creditScreen, 0, 0);
-				}
-			else if (counter >= 5.1 && counter < 7.12) {
-					game.batch.draw(musicScreen, 0, 0);
-				}
-			else if (counter >= 7.12 && counter <= 10.77){
-					game.batch.draw(titleScreen, 0, 0);
-				} 
-			else {
-					game.batch.draw(mainMenuScreen, 0, 0);
-					onMenu = true;
-				}			
-		}else if (skipToMainM == true){
-			game.batch.draw(mainMenuScreen, 0, 0,cam.viewportWidth, cam.viewportHeight);
-			onMenu = true;
-		}*/
-		
 		//MUSIC START
 		mStart = true;
 		music(mStart);
-		
+		game.batch.draw(mainMenuScreen, 0, 0); // draw background screen
+
 		
 		if (onMenu == true && justClicked == false) { //prevents hold down mouse click
-			
-
-			
 			//TO LEVEL1
 			if (680 < mX && mX < 836 && 531 < mY && mY < 573)  {
 				menuTextRed.draw(game.batch, "start", 710, 560);
@@ -176,12 +137,6 @@ public class MainMenu implements Screen{
 
 				}
 		}
-
-
-		
-		
-		//System.out.println(mX + " " + mY);
-
 		//***********************************
 		//Keeps mouse from being held down
 		justClicked = false;
@@ -200,7 +155,7 @@ public class MainMenu implements Screen{
 		String frames = Integer.toString(f); //converts frames per second to a string
 		framerate.draw(game.batch, frames, 5, 785); //displays frames per second as text in top left
 		//**********************************
-		
+
 		cam.update();
 		game.batch.end(); 
 		
@@ -242,6 +197,7 @@ public class MainMenu implements Screen{
 		framerate.dispose();
 		menuText.dispose();
 		themeMusic.dispose();
+		mainMenuScreen.dispose();
 	}
 
 }
