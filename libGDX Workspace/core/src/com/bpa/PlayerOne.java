@@ -24,9 +24,12 @@ public class PlayerOne extends Sprite implements Disposable{
 	private BodyDef bdef = new BodyDef();
 	private float speed = 3 ;
 	private boolean running;
-	private TextureAtlas textureAtlas;
-	private Animation <TextureRegion> animation;
-	private TextureRegion standingRegion;
+	private TextureAtlas revolverTextureAtlas;
+	private TextureAtlas rifleTextureAtlas;
+	private Animation <TextureRegion> revolverAnimation;
+	private Animation <TextureRegion> rifleAnimation;
+	private TextureRegion revolverStandingRegion;
+	private TextureRegion rifleStandingRegion;
 	private float timePassed = 0;
 	private Sound runningSound;
 	private float timeSinceLastShot = 60f;
@@ -39,11 +42,15 @@ public class PlayerOne extends Sprite implements Disposable{
 	public PlayerOne(World world) {
 		this.world = world;
 		definePlayer();
-		textureAtlas = DunGun.manager.get("sprites/player1/playerRevolver.atlas", TextureAtlas.class);
-		animation = new Animation <TextureRegion>(1f/15f, textureAtlas.getRegions());
-		standingRegion = textureAtlas.findRegion("tile000");
 		
-		//sprite.setOrigin((sprite.getWidth() / 2) / DunGun.PPM, (float) ((sprite.getHeight() / 2) / DunGun.PPM - .08));
+		revolverTextureAtlas = DunGun.manager.get("sprites/player1/playerRevolver.atlas", TextureAtlas.class);
+		revolverAnimation = new Animation <TextureRegion>(1f/15f, revolverTextureAtlas.getRegions());
+		revolverStandingRegion = revolverTextureAtlas.findRegion("tile000");
+		
+		rifleTextureAtlas = DunGun.manager.get("sprites/player1/rifleAnimation.atlas", TextureAtlas.class);
+		rifleAnimation = new Animation <TextureRegion>(1f/15f, rifleTextureAtlas.getRegions());
+		rifleStandingRegion = rifleTextureAtlas.findRegion("tile000");
+		
 		runningSound = Gdx.audio.newSound(Gdx.files.internal("sound effects/running.mp3"));
 	}
 	
@@ -86,17 +93,33 @@ public class PlayerOne extends Sprite implements Disposable{
 	    angle2 = MathUtils.atan2(Level1.mouse_position.y - getY(), Level1.mouse_position.x - getX()); //get distance between mouse and player in radians
 	    b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
 		//sprite.setRotation(angle); //rotates sprite
-	    if (shootAnimation) {
-			batch.draw(animation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
-			timePassed += Gdx.graphics.getDeltaTime();
-
-			if(animation.isAnimationFinished(timePassed)) {
-				shootAnimation = false;
-				timePassed = 0;
-			}
-		}else {
-			batch.draw(standingRegion, posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
-		}
+	    
+	    if (GunSelectionScreen.weaponSelected == "revolver") {
+		    if (shootAnimation) {
+				batch.draw(revolverAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
+				timePassed += Gdx.graphics.getDeltaTime();
+		
+				if(revolverAnimation.isAnimationFinished(timePassed)) {
+					shootAnimation = false;
+					timePassed = 0;
+				}
+			}else {
+				batch.draw(revolverStandingRegion, posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
+				}
+		    }
+	    else if (GunSelectionScreen.weaponSelected == "rifle") {
+	    	if (shootAnimation) {
+				batch.draw(rifleAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
+				timePassed += Gdx.graphics.getDeltaTime();
+		
+				if(rifleAnimation.isAnimationFinished(timePassed)) {
+					shootAnimation = false;
+					timePassed = 0;
+				}
+			}else {
+				batch.draw(rifleStandingRegion, posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
+				}
+	    }
 	}
 	
 	public void handleInput(float delta) {
@@ -136,7 +159,11 @@ public class PlayerOne extends Sprite implements Disposable{
 	    		//createBullet = new CreateBullet(world);
 	    		Level1.isShooting = true;
 	    		shootAnimation = true;
-	    		timeSinceLastShot = 45;
+	    		if (GunSelectionScreen.weaponSelected == "revolver") {
+	    			timeSinceLastShot = 45;
+	    		}else if (GunSelectionScreen.weaponSelected == "rifle") {
+	    			timeSinceLastShot = 90;
+	    		}
 	    		//timeSinceLastShot = shootDelay; //reset timeSinceLast Shot
 	    	}
 	    }
@@ -157,7 +184,8 @@ public class PlayerOne extends Sprite implements Disposable{
 	@Override
 	public void dispose() {
 		runningSound.dispose();
-		textureAtlas.dispose();	
+		revolverTextureAtlas.dispose();	
+		rifleTextureAtlas.dispose();
 	}
 }
 

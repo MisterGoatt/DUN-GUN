@@ -92,7 +92,7 @@ public class MainMenu implements Screen{
 
 				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 					themeMusic.stop();
-					game.setScreen(new Level1(game));
+					game.setScreen(new GunSelectionScreen(game));
 				
 				}}else {
 				menuText.draw(game.batch, "start", 710, 560);

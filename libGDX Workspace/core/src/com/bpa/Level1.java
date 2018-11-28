@@ -57,6 +57,7 @@ public class Level1 implements Screen{
 	public static boolean isShooting = false;
 	//ArrayList<CreateBullet> bulletManager = new ArrayList<CreateBullet>();
 	private Sound gunShot;
+	private Sound rifleShot;
 	private Texture mouseCursor;
 	private boolean lockCursor = true;
 
@@ -85,14 +86,17 @@ public class Level1 implements Screen{
 		cam.zoom -= .50;
 		
 		gunShot = DunGun.manager.get("sound effects/pistol_shot.mp3", Sound.class);
-
+		rifleShot = DunGun.manager.get("sound effects/rifleShot.mp3", Sound.class);
 		this.world.setContactListener(new MyContactListener());
 	}
 	
 	public void shootGun() {
 		if (isShooting) {
 			createBullet = new CreateBullet(world);
-			gunShot.play();
+			if (GunSelectionScreen.weaponSelected == "revolver")
+				gunShot.play();
+			if (GunSelectionScreen.weaponSelected == "rifle")
+				rifleShot.play();
 			//bulletManager.add(createBullet);
 			isShooting = false;
 			}

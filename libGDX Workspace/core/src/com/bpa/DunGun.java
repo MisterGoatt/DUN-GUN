@@ -35,10 +35,12 @@ public class DunGun extends Game{
 		//PlayerOne
 		manager.load("sprites/player1/playerRevolver.atlas", TextureAtlas.class);
 		manager.load("sound effects/running.mp3", Sound.class);
+		manager.load("sprites/player1/rifleAnimation.atlas", TextureAtlas.class);
 		
 		//Level1
 		manager.load("crosshair 1.png", Texture.class);
 		manager.load("sound effects/pistol_shot.mp3", Sound.class);
+		manager.load("sound effects/rifleShot.mp3", Sound.class);
 		
 		//IntroductionScreens
 		manager.load("screens/ctm_placeholder.jpg", Texture.class);
@@ -56,6 +58,9 @@ public class DunGun extends Game{
 		//CreateBullet
 		manager.load("sprites/bullet.atlas", TextureAtlas.class);
 		manager.load("sprites/bullet.png", Texture.class);
+		
+		//GunSelectionScreen
+		manager.load("screens/gunPick.jpg", Texture.class);
 		
 		manager.finishLoading();
 		this.setScreen(new IntroductionScreens(this));

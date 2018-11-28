@@ -6,7 +6,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class IntroductionScreens implements Screen{
 	final DunGun game;
@@ -17,10 +20,16 @@ public class IntroductionScreens implements Screen{
 	Texture titleScreen;
 	Texture musicScreen;
 	private long startTime = System.currentTimeMillis();
-
+	private Viewport gamePort;
+	private OrthographicCamera cam;
 	
 	public IntroductionScreens(final DunGun game) {
 		this.game = game;
+		
+		cam = new OrthographicCamera();		
+		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+		cam.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0); //centers the map to center of screen
+		
 		publisherScreen = new Texture("screens/ctm_placeholder.jpg");
 		creditScreen = new Texture("screens/credits_placeholder.jpg");
 		titleScreen = new Texture("screens/titleScreen.jpg");
@@ -67,13 +76,15 @@ public class IntroductionScreens implements Screen{
 			//framerate.draw(game.batch, frames, 5, 785); //displays frames per second as text in top left
 			//**********************************
 			game.batch.end();
+			cam.update();
+
 			
 		}
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
+		gamePort.update(width, height);
 		
 	}
 
