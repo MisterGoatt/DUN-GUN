@@ -1,8 +1,17 @@
 package com.bpa;
 
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+
+import java.awt.Font;
+
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 
 
 public class DunGun extends Game{
@@ -15,26 +24,50 @@ public class DunGun extends Game{
 	public static final short BULLET = 0x0002;
 	public static final short WALL = 0x0004;
 	
+	public static AssetManager manager;
+	
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		
-		
 
+		manager = new AssetManager();
+		
+		//PlayerOne
+		manager.load("sprites/player1/playerRevolver.atlas", TextureAtlas.class);
+		manager.load("sound effects/running.mp3", Sound.class);
+		
+		//Level1
+		manager.load("crosshair 1.png", Texture.class);
+		manager.load("sound effects/pistol_shot.mp3", Sound.class);
+		
+		//IntroductionScreens
+		manager.load("screens/ctm_placeholder.jpg", Texture.class);
+		manager.load("screens/credits_placeholder.jpg", Texture.class);
+		manager.load("screens/titleScreen.jpg", Texture.class);
+		manager.load("screens/musicScreen.jpg", Texture.class);
+		
+		//MainMenu
+		manager.load("music/Dun-Gun2.mp3", Music.class);
+		manager.load("screens/main_menu_2.jpg", Texture.class);
+		manager.load("fonts/CourierNew32.fnt", BitmapFont.class);
+		manager.load("fonts/HBM Foista Regular36.fnt", BitmapFont.class);
+		manager.load("fonts/HBM Foista Regular36 (Red).fnt", BitmapFont.class);
+		
+		//CreateBullet
+		manager.load("sprites/bullet.atlas", TextureAtlas.class);
+		manager.load("sprites/bullet.png", Texture.class);
+		
+		manager.finishLoading();
 		this.setScreen(new IntroductionScreens(this));
 	}
 
 	@Override
 	public void render () {
-		
-		super.render(); //REMEMBER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+		super.render(); //REMEMBER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!			
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
-		
-
 	}
 }

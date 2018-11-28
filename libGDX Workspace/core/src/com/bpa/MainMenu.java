@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.Input;
@@ -30,18 +31,19 @@ public class MainMenu implements Screen{
 	private Viewport gamePort;
 	private OrthographicCamera cam;
 	private boolean mStart = false;
-	Music themeMusic = Gdx.audio.newMusic(Gdx.files.internal("music/Dun-Gun2.mp3"));
-	
+	Music themeMusic = DunGun.manager.get("music/Dun-Gun2.mp3", Music.class);
+	private Vector3 mouse_position = new Vector3(0, 0, 0);
+
 
 	
 	public MainMenu(final DunGun game) {
 		this.game = game;
 		
-		mainMenuScreen = new Texture("screens/main_menu_2.jpg");
+		mainMenuScreen = DunGun.manager.get("screens/main_menu_2.jpg", Texture.class);
 		
-		framerate = new BitmapFont(Gdx.files.internal("fonts/CourierNew32.fnt"));
-		menuText = new BitmapFont(Gdx.files.internal("fonts/HBM Foista Regular36.fnt"));
-		menuTextRed = new BitmapFont(Gdx.files.internal("fonts/HBM Foista Regular36 (Red).fnt"));
+		framerate = DunGun.manager.get("fonts/CourierNew32.fnt", BitmapFont.class) ;
+		menuText = DunGun.manager.get("fonts/HBM Foista Regular36.fnt", BitmapFont.class);
+		menuTextRed = DunGun.manager.get("fonts/HBM Foista Regular36 (Red).fnt", BitmapFont.class);
 		
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
@@ -62,15 +64,20 @@ public class MainMenu implements Screen{
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+		
+        mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+        cam.unproject(mouse_position); //gets mouse coordinates within viewport
+		
 		game.batch.begin(); 
 		game.batch.setProjectionMatrix(cam.combined);
 
 
-		
+		//System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
+		System.out.println(mouse_position);
 		
 		//mouse x and y
-		int mX = Gdx.input.getX();
-		int mY = Gdx.graphics.getHeight() - Gdx.input.getY();
+		float mX = mouse_position.x;
+		float mY = mouse_position.y;
 		
 		//MUSIC START
 		mStart = true;
@@ -79,7 +86,7 @@ public class MainMenu implements Screen{
 
 		
 		if (onMenu == true && justClicked == false) { //prevents hold down mouse click
-			//TO LEVEL1
+			//START
 			if (680 < mX && mX < 836 && 531 < mY && mY < 573)  {
 				menuTextRed.draw(game.batch, "start", 710, 560);
 

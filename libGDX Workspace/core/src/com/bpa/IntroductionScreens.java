@@ -24,7 +24,7 @@ public class IntroductionScreens implements Screen{
 		publisherScreen = new Texture("screens/ctm_placeholder.jpg");
 		creditScreen = new Texture("screens/credits_placeholder.jpg");
 		titleScreen = new Texture("screens/titleScreen.jpg");
-		musicScreen = new Texture("screens/musicscreen.jpg");
+		musicScreen = new Texture("screens/musicScreen.jpg");
 	
 	}
  
@@ -53,7 +53,7 @@ public class IntroductionScreens implements Screen{
 				}
 			else if (counter >= 7.12 && counter <= 10.77){
 					game.batch.draw(titleScreen, 0, 0);
-				}
+				}else game.setScreen(new MainMenu(game));
 			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 				game.setScreen(new MainMenu(game));
 			}

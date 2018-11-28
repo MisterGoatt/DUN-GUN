@@ -1,17 +1,12 @@
 package com.bpa;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -37,13 +32,13 @@ public class CreateBullet extends Sprite implements Disposable{
 		this.world = world;
 
 		defineBullet();
-		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/bullet.atlas"));
+		textureAtlas = DunGun.manager.get("sprites/bullet.atlas", TextureAtlas.class);
 		textureRegion = textureAtlas.findRegion("bullet");
-		sprite =new Sprite(new Texture("sprites/bullet.png"));
+		sprite =new Sprite(DunGun.manager.get("sprites/bullet.png", Texture.class));
 		sprite.setOrigin((sprite.getWidth() / 2) / DunGun.PPM, (float) ((sprite.getHeight() / 2) / DunGun.PPM - .08));
 		sprite.setSize(16 / DunGun.PPM, 16 / DunGun.PPM);
 		sprite.setRotation(PlayerOne.angle); //!!!!!!!!!!
-		
+
 	}
 	
 	

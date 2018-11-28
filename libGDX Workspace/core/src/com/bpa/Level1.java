@@ -55,7 +55,7 @@ public class Level1 implements Screen{
 	//private int[] layerBackround = {0, 1, 2, 3};
 	//private int[] layerAfterBackground = {4};
 	public static boolean isShooting = false;
-	ArrayList<CreateBullet> bulletManager = new ArrayList<CreateBullet>();
+	//ArrayList<CreateBullet> bulletManager = new ArrayList<CreateBullet>();
 	private Sound gunShot;
 	private Texture mouseCursor;
 	private boolean lockCursor = true;
@@ -72,7 +72,7 @@ public class Level1 implements Screen{
 		params.textureMagFilter = TextureFilter.Linear;
 		map = new TmxMapLoader().load("tileMaps/Level1/customset2.tmx", params);
 		//map = maploader.load("tileMaps/Level1/customset.tmx");
-		mouseCursor = new Texture("crosshair 1.png");
+		mouseCursor = DunGun.manager.get("crosshair 1.png", Texture.class);
 		//maploader.load("tileMaps/Level1/customset.tmx", params);
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / DunGun.PPM);
        
@@ -84,23 +84,21 @@ public class Level1 implements Screen{
 		cam.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 		cam.zoom -= .50;
 		
-		gunShot = Gdx.audio.newSound(Gdx.files.internal("sound effects/pistol_shot.mp3"));
+		gunShot = DunGun.manager.get("sound effects/pistol_shot.mp3", Sound.class);
 
 		this.world.setContactListener(new MyContactListener());
 	}
 	
 	public void shootGun() {
 		if (isShooting) {
-			//System.out.println(bulletManager.size());
 			createBullet = new CreateBullet(world);
 			gunShot.play();
-			bulletManager.add(createBullet);
+			//bulletManager.add(createBullet);
 			isShooting = false;
 			}
 		}
 
 
-	
 	public void cameraUpdate(float delta) {
 
 		//timeStep = 60 times a second, velocity iterations = 6, position iterations = 2
@@ -114,7 +112,7 @@ public class Level1 implements Screen{
 			Body b = bodies.get(i);
 			CreateBullet.bullets.removeValue((CreateBullet) b.getUserData(), true);
 			world.destroyBody(b);
-			bulletManager.remove(0);
+			//bulletManager.remove(i);
 		}
 	
 		bodies.clear(); //empties list of bodies

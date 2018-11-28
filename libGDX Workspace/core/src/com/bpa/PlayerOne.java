@@ -5,14 +5,12 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -41,15 +39,13 @@ public class PlayerOne extends Sprite implements Disposable{
 	public PlayerOne(World world) {
 		this.world = world;
 		definePlayer();
-		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/player1/playerRevolver.atlas"));
+		textureAtlas = DunGun.manager.get("sprites/player1/playerRevolver.atlas", TextureAtlas.class);
 		animation = new Animation <TextureRegion>(1f/15f, textureAtlas.getRegions());
 		standingRegion = textureAtlas.findRegion("tile000");
 		
 		//sprite.setOrigin((sprite.getWidth() / 2) / DunGun.PPM, (float) ((sprite.getHeight() / 2) / DunGun.PPM - .08));
 		runningSound = Gdx.audio.newSound(Gdx.files.internal("sound effects/running.mp3"));
-		
 	}
-
 	
 	public void definePlayer() {
 		//define player body
@@ -73,8 +69,6 @@ public class PlayerOne extends Sprite implements Disposable{
 	
 	public void renderSprite(SpriteBatch batch) {
 		
-		
-		
 		float posX = b2body.getPosition().x;
 		float posY = b2body.getPosition().y;
 
@@ -92,7 +86,6 @@ public class PlayerOne extends Sprite implements Disposable{
 	    angle2 = MathUtils.atan2(Level1.mouse_position.y - getY(), Level1.mouse_position.x - getX()); //get distance between mouse and player in radians
 	    b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
 		//sprite.setRotation(angle); //rotates sprite
-		System.out.println(timePassed);
 	    if (shootAnimation) {
 			batch.draw(animation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
 			timePassed += Gdx.graphics.getDeltaTime();
@@ -102,7 +95,6 @@ public class PlayerOne extends Sprite implements Disposable{
 				timePassed = 0;
 			}
 		}else {
-			System.out.println("mate");
 			batch.draw(standingRegion, posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
 		}
 	}
@@ -144,9 +136,8 @@ public class PlayerOne extends Sprite implements Disposable{
 	    		//createBullet = new CreateBullet(world);
 	    		Level1.isShooting = true;
 	    		shootAnimation = true;
-	    		timeSinceLastShot = 40;
+	    		timeSinceLastShot = 45;
 	    		//timeSinceLastShot = shootDelay; //reset timeSinceLast Shot
-
 	    	}
 	    }
 
@@ -155,7 +146,6 @@ public class PlayerOne extends Sprite implements Disposable{
 			runningSound.loop();
 			running = true;
 			}
-
 
 	    }else {
 	    	runningSound.stop();
@@ -167,9 +157,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	@Override
 	public void dispose() {
 		runningSound.dispose();
-		textureAtlas.dispose();
-		
+		textureAtlas.dispose();	
 	}
-
 }
 
