@@ -25,7 +25,7 @@ public class CreateBullet extends Sprite implements Disposable{
 	TextureAtlas textureAtlas;
 	TextureRegion textureRegion;
 	public static float angle;
-	private float speed = 50;
+	private float speed = 1;
 
 	
 	public CreateBullet(World world) {
@@ -45,7 +45,6 @@ public class CreateBullet extends Sprite implements Disposable{
 	
 	public void defineBullet() {
 		bullets = new Array<CreateBullet>();
-		System.out.println(PlayerOne.angle);
 		bdef.position.set(PlayerOne.p1PosX, PlayerOne.p1PosY);
 
 	
@@ -63,8 +62,8 @@ public class CreateBullet extends Sprite implements Disposable{
 		//b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, PlayerOne.angle2); //sets the position of the body to the position of the body and implements rotation
 		//fdef.shape.dispose();
 		shape.dispose();
-		float differenceX = Level1.mouse_position.x - b2body.getPosition().x;
-		float differenceY = Level1.mouse_position.y - b2body.getPosition().y;
+		float differenceX = Level1.mousePosition.x - b2body.getPosition().x;
+		float differenceY = Level1.mousePosition.y - b2body.getPosition().y;
 		angle = MathUtils.atan2(differenceY, differenceX);
 		//float angle = MathUtils.atan2(Level1.mouse_position.y - b2body.getPosition().y, Level1.mouse_position.x - b2body.getPosition().x) * MathUtils.radDeg; //find the distance between mouse and player
 

@@ -49,7 +49,6 @@ public class GunSelectionScreen implements Screen{
 		
 		cam.unproject(mouse_position); //gets mouse coordinates within viewport
 		
-	    System.out.println(mouse_position.x + " " + mouse_position.y);
 		//System.out.println(Gdx.input.getX());
 		
 	    if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && wait >= 30) {
@@ -69,7 +68,6 @@ public class GunSelectionScreen implements Screen{
 
 	    	}
 	    }
-	    System.out.println(weaponSelected);
 	    game.batch.begin();
 
 		game.batch.draw(gunPickScreen, 0, 0);

@@ -41,6 +41,7 @@ public class DunGun extends Game{
 		manager.load("crosshair 1.png", Texture.class);
 		manager.load("sound effects/pistol_shot.mp3", Sound.class);
 		manager.load("sound effects/rifleShot.mp3", Sound.class);
+		manager.load("screens/Pause.jpg", Texture.class);
 		
 		//IntroductionScreens
 		manager.load("screens/ctm_placeholder.jpg", Texture.class);

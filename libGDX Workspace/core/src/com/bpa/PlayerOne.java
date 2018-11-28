@@ -84,13 +84,13 @@ public class PlayerOne extends Sprite implements Disposable{
 		//float mouseX = Level1.mouse_position.x; //grabs cam.unproject x vector value
 		//float mouseY = Level1.mouse_position.y; //grabs cam.unproject y vector value
 		
-		angle = MathUtils.atan2(Level1.mouse_position.y - getY(), Level1.mouse_position.x - getX()) * MathUtils.radDeg; //find the distance between mouse and player
+		angle = MathUtils.atan2(Level1.mousePosition.y - getY(), Level1.mousePosition.x - getX()) * MathUtils.radDeg; //find the distance between mouse and player
 
         angle = angle - 90; //makes it a full 360 degrees
 	    if (angle < 0) {
 	    	angle += 360 ;
 	    }
-	    angle2 = MathUtils.atan2(Level1.mouse_position.y - getY(), Level1.mouse_position.x - getX()); //get distance between mouse and player in radians
+	    angle2 = MathUtils.atan2(Level1.mousePosition.y - getY(), Level1.mousePosition.x - getX()); //get distance between mouse and player in radians
 	    b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
 		//sprite.setRotation(angle); //rotates sprite
 	    
@@ -160,7 +160,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	    		Level1.isShooting = true;
 	    		shootAnimation = true;
 	    		if (GunSelectionScreen.weaponSelected == "revolver") {
-	    			timeSinceLastShot = 45;
+	    			timeSinceLastShot = 50;
 	    		}else if (GunSelectionScreen.weaponSelected == "rifle") {
 	    			timeSinceLastShot = 90;
 	    		}

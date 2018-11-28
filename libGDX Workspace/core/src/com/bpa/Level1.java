@@ -45,7 +45,7 @@ public class Level1 implements Screen{
 	//Sprite p1;
 	TextureRegion textureRegion;
 	MapLayer objectLayer;
-	public static Vector3 mouse_position = new Vector3(0, 0, 0);
+	public static Vector3 mousePosition = new Vector3(0, 0, 0);
 
 	//Box2d variables
 	private World world;
@@ -60,7 +60,8 @@ public class Level1 implements Screen{
 	private Sound rifleShot;
 	private Texture mouseCursor;
 	private boolean lockCursor = true;
-
+	private Texture pauseMenu;
+	private boolean gamePaused = false;
 	
 	
 	public Level1(final DunGun game) {
@@ -87,6 +88,7 @@ public class Level1 implements Screen{
 		
 		gunShot = DunGun.manager.get("sound effects/pistol_shot.mp3", Sound.class);
 		rifleShot = DunGun.manager.get("sound effects/rifleShot.mp3", Sound.class);
+		pauseMenu = DunGun.manager.get("screens/Pause.jpg", Texture.class);
 		this.world.setContactListener(new MyContactListener());
 	}
 	
@@ -129,59 +131,87 @@ public class Level1 implements Screen{
 	
 	@Override
 	public void render(float delta) {
+
+		//clears screen
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+  
 		
-		
-		
-		
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && lockCursor) {
+		//hides the mouse and displays crosshair		
+		if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && lockCursor) {
 			lockCursor = false;
-		}else if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !lockCursor) {
+		}else if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && !lockCursor) {
 			lockCursor = true;
 		}
 		if (!lockCursor) {
 			Gdx.input.setCursorCatched(true);
 		}else Gdx.input.setCursorCatched(false);
 		
-		cameraUpdate(delta);
-        playerOne.handleInput(delta);
-		//clears screen
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-	 	/*(if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-			cam.zoom -= .01;
-
+		//pauses game and pulls up menu
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !gamePaused) {
+			gamePaused = true;
+		} else if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && gamePaused) {
+			gamePaused = false;
 		}
-	 	if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-			cam.zoom += .01;
-	 	}*/	
+		
 		
         
-        mapRenderer.render();
+		
+		if (!gamePaused) { 
+			cameraUpdate(delta);
+
+			playerOne.handleInput(delta);
+			mapRenderer.render();
+
+        }
+        
         //b2dr.render(world, cam.combined); //renders the Box2d world
 
-  
-		//mapRenderer.render(layerBackround); //renders layer in Tiled that p1 covers
-        game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
-        shootGun(); //sees if gun is shooting
-        mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-        cam.unproject(mouse_position); //gets mouse coordinates within viewport
+		//mapRenderer.render(layerBackround); //renders layer in Tiled that p1 covers		
+		
+		game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
+
+        
+        
         game.batch.begin(); //starts sprite spriteBatch
-        playerOne.renderSprite(game.batch);
         /*if (bulletManager.size() > 0) {
         	for (int i = 0; i < bulletManager.size(); i++) {
         		createBullet.renderSprite(game.batch);
                 bulletManager.get(i).renderSprite(game.batch);
         	}
         }*/
+       
+        if (gamePaused) {
+        	cam.position.x = 0;
+        	cam.position.y = 0;
+        	game.batch.draw(pauseMenu, 0 + (2), 0 + 2, 1500 / 200,  800 / 200);
+        	//game.batch.draw(pauseMenu, playerOne.b2body.getPosition().x - (350 / DunGun.PPM), playerOne.b2body.getPosition().y - (200 / DunGun.PPM), 1500 / 200,  800 / 200);
+        	
+        }
+        if (!gamePaused) {
+            shootGun(); //sees if gun is shooting
+
+        	playerOne.renderSprite(game.batch);
+        	game.batch.draw(mouseCursor, Level1.mousePosition.x - .05f, Level1.mousePosition.y - .05f, 13 / DunGun.PPM, 13 / DunGun.PPM);
+        	mapRenderer.setView(cam);
+        }
+
+        mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+        cam.unproject(mousePosition); //gets mouse coordinates within viewport
         
-        game.batch.draw(mouseCursor, Level1.mouse_position.x - .05f, Level1.mouse_position.y - .05f, 13 / DunGun.PPM, 13 / DunGun.PPM);
-
-
+        System.out.println(mousePosition);
         game.batch.end(); //starts sprite spriteBatch
         //mapRenderer.render(layerAfterBackground); //renders layer of Tiled that hides p1
-        mapRenderer.setView(cam);
 
 	}
+	
+	
+	public void gameMenu() {
+		
+		
+		
+	}
+	
 
 
 	@Override
@@ -212,6 +242,7 @@ public class Level1 implements Screen{
 		b2dr.dispose();
 		gunShot.dispose();
 		mouseCursor.dispose();
+		pauseMenu.dispose();
 	}
 
 	@Override
