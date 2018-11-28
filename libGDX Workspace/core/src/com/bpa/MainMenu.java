@@ -33,6 +33,7 @@ public class MainMenu implements Screen{
 	private boolean mStart = false;
 	Music themeMusic = DunGun.manager.get("music/Dun-Gun2.mp3", Music.class);
 	private Vector3 mouse_position = new Vector3(0, 0, 0);
+	private int wait = 0;
 
 
 	
@@ -63,7 +64,7 @@ public class MainMenu implements Screen{
 		//clears screen
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+
 		
         mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
         cam.unproject(mouse_position); //gets mouse coordinates within viewport
@@ -83,66 +84,69 @@ public class MainMenu implements Screen{
 		mStart = true;
 		music(mStart);
 		game.batch.draw(mainMenuScreen, 0, 0); // draw background screen
-
-		
-		if (onMenu == true && justClicked == false) { //prevents hold down mouse click
-			//START
-			if (680 < mX && mX < 836 && 531 < mY && mY < 573)  {
-				menuTextRed.draw(game.batch, "start", 710, 560);
-
-				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-					themeMusic.stop();
-					game.setScreen(new GunSelectionScreen(game));
-				
-				}}else {
-				menuText.draw(game.batch, "start", 710, 560);
-
+		if (wait < 11) {
+			wait += 1;
 			}
-			//QUITS GAME
-			if (680 < mX && mX < 836 && 265 < mY && mY < 310){
-				menuTextRed.draw(game.batch, "quit", 720, 295);
-
-				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-					Gdx.app.exit();
+		if (wait > 10){
+			if (onMenu == true && justClicked == false) { //prevents hold down mouse click
+				//START
+				if (680 < mX && mX < 836 && 531 < mY && mY < 573)  {
+					menuTextRed.draw(game.batch, "start", 710, 560);
+	
+					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+						themeMusic.stop();
+						game.setScreen(new GunSelectionScreen(game));
 					
-				}}else {
-				menuText.draw(game.batch, "quit", 720, 295);
-
+					}}else {
+					menuText.draw(game.batch, "start", 710, 560);
+	
+				}
+				//QUITS GAME
+				if (680 < mX && mX < 836 && 265 < mY && mY < 310){
+					menuTextRed.draw(game.batch, "quit", 720, 295);
+	
+					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+						Gdx.app.exit();
+						
+					}}else {
+					menuText.draw(game.batch, "quit", 720, 295);
+	
+				}
+				//OPTIONS
+				if (680 < mX && mX < 836 && 464 < mY && mY < 504){
+					menuTextRed.draw(game.batch, "options", 687, 492);
+	
+					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+						themeMusic.stop();
+						game.setScreen(new Options(game));
+	
+					}}else {
+						menuText.draw(game.batch, "options", 687, 492);
+					}
+				//TUTORIAL
+				if (680 < mX && mX < 836 && 407 < mY && mY < 438){
+					menuTextRed.draw(game.batch, "tutorial", 677, 429);
+	
+					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+						themeMusic.stop();
+						game.setScreen(new Tutorial(game));
+	
+					}}else {
+						menuText.draw(game.batch, "tutorial", 677, 429);
+					}
+				//CREDITS
+				if (680 < mX && mX < 836 && 338 < mY && mY < 374){
+					menuTextRed.draw(game.batch, "credits", 690, 362);
+	
+					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+						themeMusic.stop();
+						game.setScreen(new Credits(game));
+	
+					}}else {
+						menuText.draw(game.batch, "credits", 690, 362);
+	
+					}
 			}
-			//OPTIONS
-			if (680 < mX && mX < 836 && 464 < mY && mY < 504){
-				menuTextRed.draw(game.batch, "options", 687, 492);
-
-				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-					themeMusic.stop();
-					game.setScreen(new Options(game));
-
-				}}else {
-					menuText.draw(game.batch, "options", 687, 492);
-				}
-			//TUTORIAL
-			if (680 < mX && mX < 836 && 407 < mY && mY < 438){
-				menuTextRed.draw(game.batch, "tutorial", 677, 429);
-
-				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-					themeMusic.stop();
-					game.setScreen(new Tutorial(game));
-
-				}}else {
-					menuText.draw(game.batch, "tutorial", 677, 429);
-				}
-			//CREDITS
-			if (680 < mX && mX < 836 && 338 < mY && mY < 374){
-				menuTextRed.draw(game.batch, "credits", 690, 362);
-
-				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-					themeMusic.stop();
-					game.setScreen(new Credits(game));
-
-				}}else {
-					menuText.draw(game.batch, "credits", 690, 362);
-
-				}
 		}
 		//***********************************
 		//Keeps mouse from being held down

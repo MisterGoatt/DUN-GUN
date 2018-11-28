@@ -138,12 +138,12 @@ public class Level1 implements Screen{
   
 		
 		//hides the mouse and displays crosshair		
-		if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && lockCursor) {
-			lockCursor = false;
-		}else if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && !lockCursor) {
+		if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && !lockCursor) {
 			lockCursor = true;
+		}else if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && lockCursor) {
+			lockCursor = false;
 		}
-		if (!lockCursor) {
+		if (lockCursor) {
 			Gdx.input.setCursorCatched(true);
 		}else Gdx.input.setCursorCatched(false);
 		
@@ -159,7 +159,6 @@ public class Level1 implements Screen{
 		
 		if (!gamePaused) { 
 			cameraUpdate(delta);
-
 			playerOne.handleInput(delta);
 			mapRenderer.render();
 
@@ -180,11 +179,31 @@ public class Level1 implements Screen{
                 bulletManager.get(i).renderSprite(game.batch);
         	}
         }*/
-       
+       //GAME IS PAUSED*******************
         if (gamePaused) {
         	cam.position.x = 0;
         	cam.position.y = 0;
-        	game.batch.draw(pauseMenu, 0 + (2), 0 + 2, 1500 / 200,  800 / 200);
+        	game.batch.draw(pauseMenu, 0 - (350/DunGun.PPM), 0 - (200 / DunGun.PPM), 1500 / 200,  800 / 200);
+        	lockCursor = false;
+        	
+        	if (Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
+        		//RESUME
+        		if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < 0.6 && mousePosition.y > -.02) {
+        			gamePaused = false;
+        		}
+        		//MAIN MENU
+        		else if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < -.13 && mousePosition.y > -.78) {
+        			game.setScreen(new MainMenu(game));
+
+        		}
+        		//QUIT
+        		else if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < -.86 && mousePosition.y > -1.49) {
+					Gdx.app.exit();
+        		}
+        	}
+        	
+        	
+        	cam.update();
         	//game.batch.draw(pauseMenu, playerOne.b2body.getPosition().x - (350 / DunGun.PPM), playerOne.b2body.getPosition().y - (200 / DunGun.PPM), 1500 / 200,  800 / 200);
         	
         }
