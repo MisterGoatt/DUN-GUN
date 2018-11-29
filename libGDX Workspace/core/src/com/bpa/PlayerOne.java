@@ -26,10 +26,13 @@ public class PlayerOne extends Sprite implements Disposable{
 	private boolean running;
 	private TextureAtlas revolverTextureAtlas;
 	private TextureAtlas rifleTextureAtlas;
+	private TextureAtlas shotgunTextureAtlas;
 	private Animation <TextureRegion> revolverAnimation;
 	private Animation <TextureRegion> rifleAnimation;
+	private Animation <TextureRegion> shotgunAnimation;
 	private TextureRegion revolverStandingRegion;
 	private TextureRegion rifleStandingRegion;
+	private TextureRegion shotgunStandingRegion;
 	private float timePassed = 0;
 	private Sound runningSound;
 	private float timeSinceLastShot = 60f;
@@ -50,6 +53,10 @@ public class PlayerOne extends Sprite implements Disposable{
 		rifleTextureAtlas = DunGun.manager.get("sprites/player1/rifleAnimation.atlas", TextureAtlas.class);
 		rifleAnimation = new Animation <TextureRegion>(1f/15f, rifleTextureAtlas.getRegions());
 		rifleStandingRegion = rifleTextureAtlas.findRegion("tile000");
+		
+		shotgunTextureAtlas = DunGun.manager.get("sprites/player1/shotgun.atlas", TextureAtlas.class);
+		shotgunAnimation = new Animation <TextureRegion>(1f/15f, shotgunTextureAtlas.getRegions());
+		shotgunStandingRegion = shotgunTextureAtlas.findRegion("tile000");
 		
 		runningSound = Gdx.audio.newSound(Gdx.files.internal("sound effects/running.mp3"));
 	}
@@ -119,6 +126,19 @@ public class PlayerOne extends Sprite implements Disposable{
 			}else {
 				batch.draw(rifleStandingRegion, posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
 				}
+	    }
+	    else if (GunSelectionScreen.weaponSelected == "shotgun") {
+	    	if (shootAnimation) {
+				batch.draw(shotgunAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
+				timePassed += Gdx.graphics.getDeltaTime();
+		
+				if(shotgunAnimation.isAnimationFinished(timePassed)) {
+					shootAnimation = false;
+					timePassed = 0;
+				}
+			}else {
+				batch.draw(shotgunStandingRegion, posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
+			}
 	    }
 	}
 	

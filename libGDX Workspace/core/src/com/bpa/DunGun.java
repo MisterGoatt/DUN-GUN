@@ -36,6 +36,9 @@ public class DunGun extends Game{
 		manager.load("sprites/player1/playerRevolver.atlas", TextureAtlas.class);
 		manager.load("sound effects/running.mp3", Sound.class);
 		manager.load("sprites/player1/rifleAnimation.atlas", TextureAtlas.class);
+		manager.load("sprites/player1/shotgun.atlas", TextureAtlas.class);
+		manager.load("sprites/player1/assaultRifle.atlas", TextureAtlas.class);
+		
 		
 		//Level1
 		manager.load("crosshair 1.png", Texture.class);
