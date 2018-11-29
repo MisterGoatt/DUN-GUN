@@ -48,8 +48,8 @@ public class MainMenu implements Screen{
 		
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
-		cam.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0); //centers the map to center of screen
-		
+		System.out.println("yeet yett");
+		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
 	}
 	
@@ -71,7 +71,6 @@ public class MainMenu implements Screen{
 		
 		game.batch.begin(); 
 		game.batch.setProjectionMatrix(cam.combined);
-
 
 		//System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
 		System.out.println(mouse_position);
@@ -180,7 +179,7 @@ public class MainMenu implements Screen{
 	@Override
 	public void resize(int width, int height) {
 		gamePort.update(width, height);
-		
+		gamePort.apply();
 	}
 
 	@Override

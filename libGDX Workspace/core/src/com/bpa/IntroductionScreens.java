@@ -28,7 +28,7 @@ public class IntroductionScreens implements Screen{
 		
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
-		cam.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0); //centers the map to center of screen
+		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 		
 		publisherScreen = new Texture("screens/ctm_placeholder.jpg");
 		creditScreen = new Texture("screens/credits_placeholder.jpg");

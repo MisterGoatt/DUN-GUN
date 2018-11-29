@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class GunSelectionScreen implements Screen{
@@ -25,8 +26,9 @@ public class GunSelectionScreen implements Screen{
 		gunPickScreen = DunGun.manager.get("screens/gunPick.jpg", Texture.class);
 
 		cam = new OrthographicCamera();		
-		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
-		cam.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0); //centers the map to center of screen
+		gamePort = new StretchViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+	
 	}
 
 
@@ -36,7 +38,8 @@ public class GunSelectionScreen implements Screen{
 		
 	}
 
-
+	
+	
 	@Override
 	public void render(float delta) {
 		//clears screen
@@ -71,7 +74,7 @@ public class GunSelectionScreen implements Screen{
 	    game.batch.begin();
 
 		game.batch.draw(gunPickScreen, 0, 0);
-		
+		System.out.println(mouse_position.x + " " + mouse_position.y);
 		game.batch.end();
 		cam.update();
 

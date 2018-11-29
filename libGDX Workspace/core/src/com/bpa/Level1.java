@@ -30,6 +30,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
@@ -38,7 +39,7 @@ public class Level1 implements Screen{
 	final DunGun game;
 	//TMapLocations level1Map;
 	public OrthographicCamera cam;
-	public Viewport viewport;
+	public Viewport gamePort;
 	private TmxMapLoader maploader; //what loads map into game
 	private TiledMap map; 
 	private OrthogonalTiledMapRenderer mapRenderer; //renders map to the screen
@@ -62,20 +63,21 @@ public class Level1 implements Screen{
 	private boolean lockCursor = true;
 	private Texture pauseMenu;
 	private boolean gamePaused = false;
-	
+	private boolean once = false;
 	
 	public Level1(final DunGun game) {
 		this.game = game;
 
 		cam = new OrthographicCamera();		
-		viewport = new FitViewport(DunGun.V_WIDTH / DunGun.PPM, DunGun.V_HEIGHT / DunGun.PPM, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+		gamePort = new FitViewport(DunGun.V_WIDTH / DunGun.PPM, DunGun.V_HEIGHT / DunGun.PPM, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+		cam.zoom -= .50;
+		
 		TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
 		params.textureMinFilter = TextureFilter.Linear;
 		params.textureMagFilter = TextureFilter.Linear;
 		map = new TmxMapLoader().load("tileMaps/Level1/customset2.tmx", params);
-		//map = maploader.load("tileMaps/Level1/customset.tmx");
 		mouseCursor = DunGun.manager.get("crosshair 1.png", Texture.class);
-		//maploader.load("tileMaps/Level1/customset.tmx", params);
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / DunGun.PPM);
        
 		//Box2d variables
@@ -83,8 +85,8 @@ public class Level1 implements Screen{
 		b2dr = new Box2DDebugRenderer();
 		playerOne = new PlayerOne(world); //must be created after world creation or will crash
 		new B2DWorldCreator(world, map);
-		cam.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
-		cam.zoom -= .50;
+		
+
 		
 		gunShot = DunGun.manager.get("sound effects/pistol_shot.mp3", Sound.class);
 		rifleShot = DunGun.manager.get("sound effects/rifleShot.mp3", Sound.class);
@@ -128,6 +130,15 @@ public class Level1 implements Screen{
 		cam.position.y = playerOne.b2body.getPosition().y;
 		cam.update();
 	}
+	
+	public void viewPortSwitch() {
+
+		gamePort = new StretchViewport(1500, 800, cam);
+		once = false;
+		
+		
+	}
+	
 	
 	@Override
 	public void render(float delta) {
@@ -185,6 +196,9 @@ public class Level1 implements Screen{
         	cam.position.y = 0;
         	game.batch.draw(pauseMenu, 0 - (350/DunGun.PPM), 0 - (200 / DunGun.PPM), 1500 / 200,  800 / 200);
         	lockCursor = false;
+        	if (once) {
+        		viewPortSwitch();
+        	}
         	
         	if (Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
         		//RESUME
@@ -218,7 +232,6 @@ public class Level1 implements Screen{
         mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
         cam.unproject(mousePosition); //gets mouse coordinates within viewport
         
-        System.out.println(mousePosition);
         game.batch.end(); //starts sprite spriteBatch
         //mapRenderer.render(layerAfterBackground); //renders layer of Tiled that hides p1
 
@@ -235,7 +248,7 @@ public class Level1 implements Screen{
 
 	@Override
 	public void resize(int width, int height) {
-		viewport.update(width, height); //updates the viewport camera
+		gamePort.update(width, height); //updates the viewport camera
 
 	}
 	@Override

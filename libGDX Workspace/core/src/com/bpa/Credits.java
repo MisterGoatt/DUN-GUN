@@ -4,17 +4,31 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+
+
+
+
 
 public class Credits implements Screen{
 	final DunGun game;
 	Texture credits;
+	private Viewport gamePort;
+	private OrthographicCamera cam;
+
+	
+	
 	
 	public Credits(final DunGun game) {
 		this.game = game;
 		credits = new Texture("screens/cScreen.png");
+		cam = new OrthographicCamera();		
+		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
-		
 	}
 
 	@Override
@@ -39,14 +53,15 @@ public class Credits implements Screen{
 			game.setScreen(new MainMenu(game));
 
 		}
-		
+		cam.update();
+
 		game.batch.end();
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-		
+		gamePort.update(width, height);
+	
 	}
 
 	@Override
