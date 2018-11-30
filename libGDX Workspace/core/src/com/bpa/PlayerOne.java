@@ -27,12 +27,15 @@ public class PlayerOne extends Sprite implements Disposable{
 	private TextureAtlas revolverTextureAtlas;
 	private TextureAtlas rifleTextureAtlas;
 	private TextureAtlas shotgunTextureAtlas;
+	private TextureAtlas assaultRifleTextureAtlas;
 	private Animation <TextureRegion> revolverAnimation;
 	private Animation <TextureRegion> rifleAnimation;
 	private Animation <TextureRegion> shotgunAnimation;
+	private Animation <TextureRegion> assaultRifleAnimation;
 	private TextureRegion revolverStandingRegion;
 	private TextureRegion rifleStandingRegion;
 	private TextureRegion shotgunStandingRegion;
+	private TextureRegion assaultRifleStandingRegion;
 	private float timePassed = 0;
 	private Sound runningSound;
 	private float timeSinceLastShot = 60f;
@@ -57,6 +60,10 @@ public class PlayerOne extends Sprite implements Disposable{
 		shotgunTextureAtlas = DunGun.manager.get("sprites/player1/shotgun.atlas", TextureAtlas.class);
 		shotgunAnimation = new Animation <TextureRegion>(1f/15f, shotgunTextureAtlas.getRegions());
 		shotgunStandingRegion = shotgunTextureAtlas.findRegion("tile000");
+		
+		assaultRifleTextureAtlas = DunGun.manager.get("sprites/player1/assaultRifle.atlas", TextureAtlas.class);
+		assaultRifleAnimation = new Animation<TextureRegion>(1f/15f, assaultRifleTextureAtlas.getRegions());
+		assaultRifleStandingRegion = assaultRifleTextureAtlas.findRegion("tile000");
 		
 		runningSound = Gdx.audio.newSound(Gdx.files.internal("sound effects/running.mp3"));
 	}
@@ -100,7 +107,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	    angle2 = MathUtils.atan2(Level1.mousePosition.y - getY(), Level1.mousePosition.x - getX()); //get distance between mouse and player in radians
 	    b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
 		//sprite.setRotation(angle); //rotates sprite
-	    
+	    //revolver
 	    if (GunSelectionScreen.weaponSelected == "revolver") {
 		    if (shootAnimation) {
 				batch.draw(revolverAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
@@ -114,6 +121,7 @@ public class PlayerOne extends Sprite implements Disposable{
 				batch.draw(revolverStandingRegion, posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
 				}
 		    }
+	    //BoltAction Rifle
 	    else if (GunSelectionScreen.weaponSelected == "rifle") {
 	    	if (shootAnimation) {
 				batch.draw(rifleAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
@@ -127,6 +135,7 @@ public class PlayerOne extends Sprite implements Disposable{
 				batch.draw(rifleStandingRegion, posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
 				}
 	    }
+	    //Shotgun
 	    else if (GunSelectionScreen.weaponSelected == "shotgun") {
 	    	if (shootAnimation) {
 				batch.draw(shotgunAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
@@ -139,6 +148,20 @@ public class PlayerOne extends Sprite implements Disposable{
 			}else {
 				batch.draw(shotgunStandingRegion, posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
 			}
+	    }
+	    //Assault Rifle
+	    else if (GunSelectionScreen.weaponSelected == "assault rifle") {
+	    	if (shootAnimation) {
+				batch.draw(assaultRifleAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
+				timePassed += Gdx.graphics.getDeltaTime();
+		
+				if(assaultRifleAnimation.isAnimationFinished(timePassed)) {
+					shootAnimation = false;
+					timePassed = 0;
+				}
+	    	}else {
+	    		batch.draw(assaultRifleStandingRegion,posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle );
+	    	}
 	    }
 	}
 	

@@ -23,7 +23,7 @@ public class GunSelectionScreen implements Screen{
 	
 	public GunSelectionScreen(final DunGun game) {
 		this.game = game;
-		gunPickScreen = DunGun.manager.get("screens/gunPick.jpg", Texture.class);
+		gunPickScreen = DunGun.manager.get("screens/gun_selection.jpg", Texture.class);
 
 		cam = new OrthographicCamera();		
 		gamePort = new StretchViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
@@ -65,6 +65,10 @@ public class GunSelectionScreen implements Screen{
 	    		weaponSelected = "rifle";
 				game.setScreen(new Level1(game));
 
+	    	}
+	    	else if (mouse_position.x > 644 && mouse_position.x < 852 && mouse_position.y > 441 && mouse_position.y < 506) {
+	    		weaponSelected = "assault rifle";
+				game.setScreen(new Level1(game));
 	    	}
 	    	else if ((mouse_position.x > 0 && mouse_position.x < 100 && mouse_position.y > 441 && mouse_position.y < 506)) {
 	    		weaponSelected = "shotgun";

@@ -64,7 +64,7 @@ public class DunGun extends Game{
 		manager.load("sprites/bullet.png", Texture.class);
 		
 		//GunSelectionScreen
-		manager.load("screens/gunPick.jpg", Texture.class);
+		manager.load("screens/gun_selection.jpg", Texture.class);
 		
 		manager.finishLoading();
 		this.setScreen(new IntroductionScreens(this));
