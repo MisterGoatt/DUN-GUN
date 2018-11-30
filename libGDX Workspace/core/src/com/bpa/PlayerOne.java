@@ -206,6 +206,10 @@ public class PlayerOne extends Sprite implements Disposable{
 	    			timeSinceLastShot = 50;
 	    		}else if (GunSelectionScreen.weaponSelected == "rifle") {
 	    			timeSinceLastShot = 90;
+	    		}else if (GunSelectionScreen.weaponSelected == "shotgun") {
+	    			timeSinceLastShot = 80;
+	    		}else if (GunSelectionScreen.weaponSelected == "assault rifle") {
+	    			timeSinceLastShot = 20;
 	    		}
 	    		//timeSinceLastShot = shootDelay; //reset timeSinceLast Shot
 	    	}

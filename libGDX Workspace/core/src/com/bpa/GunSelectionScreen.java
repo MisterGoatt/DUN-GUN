@@ -56,24 +56,28 @@ public class GunSelectionScreen implements Screen{
 		
 	    if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && wait >= 30) {
 	    	//REVOLVER 
-	    	if (mouse_position.x > 570 && mouse_position.x < 933 && mouse_position.y > 546 && mouse_position.y < 610) {
+	    	if (mouse_position.x > 785 && mouse_position.x < 1090 && mouse_position.y > 512 && mouse_position.y < 615) {
 	    		weaponSelected = "revolver";
 				game.setScreen(new Level1(game));
 
 	    	}
-	    	else if (mouse_position.x > 644 && mouse_position.x < 852 && mouse_position.y > 441 && mouse_position.y < 506) {
+	    	//bolt-action rifle
+	    	else if (mouse_position.x > 418 && mouse_position.x < 720 && mouse_position.y > 380 && mouse_position.y < 480) {
 	    		weaponSelected = "rifle";
 				game.setScreen(new Level1(game));
 
 	    	}
-	    	else if (mouse_position.x > 644 && mouse_position.x < 852 && mouse_position.y > 441 && mouse_position.y < 506) {
+	    	//Assault rifle
+	    	else if (mouse_position.x > 418 && mouse_position.x < 720 && mouse_position.y > 520 && mouse_position.y < 619) {
 	    		weaponSelected = "assault rifle";
 				game.setScreen(new Level1(game));
 	    	}
-	    	else if ((mouse_position.x > 0 && mouse_position.x < 100 && mouse_position.y > 441 && mouse_position.y < 506)) {
+	    	//shotgun
+	    	else if ((mouse_position.x > 418 && mouse_position.x < 720 && mouse_position.y > 247 && mouse_position.y < 350)) {
 	    		weaponSelected = "shotgun";
 	    		game.setScreen(new Level1(game));
 	    	}
+	    	//BACK BUTTON
 	    	if (mouse_position.x > 33 && mouse_position.x < 153 && mouse_position.y > 34 && mouse_position.y < 83) {
 				game.setScreen(new MainMenu(game));
 

@@ -12,21 +12,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
-
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
 import com.badlogic.gdx.maps.MapLayer;
-
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -59,6 +53,8 @@ public class Level1 implements Screen{
 	//ArrayList<CreateBullet> bulletManager = new ArrayList<CreateBullet>();
 	private Sound gunShot;
 	private Sound rifleShot;
+	private Sound shotgunShot;
+	private Sound assaultRifleShot;
 	private Texture mouseCursor;
 	private boolean lockCursor = true;
 	private Texture pauseMenu;
@@ -90,7 +86,11 @@ public class Level1 implements Screen{
 		
 		gunShot = DunGun.manager.get("sound effects/pistol_shot.mp3", Sound.class);
 		rifleShot = DunGun.manager.get("sound effects/rifleShot.mp3", Sound.class);
+		shotgunShot = DunGun.manager.get("sound effects/shotgun2.mp3", Sound.class);
+		assaultRifleShot = DunGun.manager.get("sound effects/assaultRifle.mp3", Sound.class);
 		pauseMenu = DunGun.manager.get("screens/Pause.jpg", Texture.class);
+		
+		
 		this.world.setContactListener(new MyContactListener());
 	}
 	
@@ -99,8 +99,14 @@ public class Level1 implements Screen{
 			createBullet = new CreateBullet(world);
 			if (GunSelectionScreen.weaponSelected == "revolver")
 				gunShot.play();
-			if (GunSelectionScreen.weaponSelected == "rifle")
+			else if (GunSelectionScreen.weaponSelected == "rifle")
 				rifleShot.play();
+			else if (GunSelectionScreen.weaponSelected == "shotgun")
+				shotgunShot.play();
+			else if (GunSelectionScreen.weaponSelected == "assault rifle")
+				assaultRifleShot.play();
+			/*else if (GunSelectionScreen.weaponSelected == "laserLance")
+				laserLance.play();*/
 			//bulletManager.add(createBullet);
 			isShooting = false;
 			}
