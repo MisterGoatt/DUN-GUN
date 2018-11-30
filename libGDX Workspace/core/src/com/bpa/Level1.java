@@ -3,6 +3,7 @@ package com.bpa;
 
 import java.util.ArrayList;
 
+import javax.swing.plaf.synth.SynthSplitPaneUI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -46,6 +47,7 @@ public class Level1 implements Screen{
 	private World world;
 	private Box2DDebugRenderer b2dr; //graphical representation of body fixtures
 	private PlayerOne playerOne;
+	private Grunt grunt;
 	public CreateBullet createBullet;
 	//private int[] layerBackround = {0, 1, 2, 3};
 	//private int[] layerAfterBackground = {4};
@@ -80,6 +82,8 @@ public class Level1 implements Screen{
 		world = new World(new Vector2(0, 0), true); // no gravity and yes we want to sleep objects (won't calculate simulations for bodies at rest)
 		b2dr = new Box2DDebugRenderer();
 		playerOne = new PlayerOne(world); //must be created after world creation or will crash
+		grunt = new Grunt(world);
+		
 		new B2DWorldCreator(world, map);
 		
 
@@ -96,15 +100,25 @@ public class Level1 implements Screen{
 	
 	public void shootGun() {
 		if (isShooting) {
-			createBullet = new CreateBullet(world);
-			if (GunSelectionScreen.weaponSelected == "revolver")
+			if (GunSelectionScreen.weaponSelected != "shotgun") {
+				createBullet = new CreateBullet(world);
+			}
+			if (GunSelectionScreen.weaponSelected == "revolver") {
 				gunShot.play();
-			else if (GunSelectionScreen.weaponSelected == "rifle")
+			}
+			else if (GunSelectionScreen.weaponSelected == "rifle") {
 				rifleShot.play();
-			else if (GunSelectionScreen.weaponSelected == "shotgun")
+			}
+			else if (GunSelectionScreen.weaponSelected == "shotgun") {
+				//controls how many shotgun shells are shot
+				for (int i = 0; i < 6; i++) {
+					createBullet = new CreateBullet(world);
+				}
 				shotgunShot.play();
-			else if (GunSelectionScreen.weaponSelected == "assault rifle")
+			}
+			else if (GunSelectionScreen.weaponSelected == "assault rifle") {
 				assaultRifleShot.play();
+			}
 			/*else if (GunSelectionScreen.weaponSelected == "laserLance")
 				laserLance.play();*/
 			//bulletManager.add(createBullet);
@@ -114,17 +128,23 @@ public class Level1 implements Screen{
 
 
 	public void cameraUpdate(float delta) {
+		
+	
 
 		//timeStep = 60 times a second, velocity iterations = 6, position iterations = 2
 		world.step(1/60f, 6, 2); //tells game how many times per second for Box2d to make its calculations
 		
 		//remove bullets
 		Array<Body> bodies = MyContactListener.bodiesToRemove;
+		System.out.println(Grunt.grunt.size);
+		
 		//removes bullets when they collide with wall
 		for (int i = 0; i < bodies.size; i ++) {
 
 			Body b = bodies.get(i);
 			CreateBullet.bullets.removeValue((CreateBullet) b.getUserData(), true);
+			Grunt.grunt.removeValue((Grunt) b.getUserData(), true);
+			
 			world.destroyBody(b);
 			//bulletManager.remove(i);
 		}
@@ -177,11 +197,12 @@ public class Level1 implements Screen{
 		if (!gamePaused) { 
 			cameraUpdate(delta);
 			playerOne.handleInput(delta);
+			grunt.update();
 			mapRenderer.render();
+	        b2dr.render(world, cam.combined); //renders the Box2d world
 
         }
         
-        //b2dr.render(world, cam.combined); //renders the Box2d world
 
 		//mapRenderer.render(layerBackround); //renders layer in Tiled that p1 covers		
 		

@@ -192,9 +192,9 @@ public class PlayerOne extends Sprite implements Disposable{
 	    	this.b2body.setLinearVelocity(speed, speed);
 	    }
 	    if(Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)){
-	        this.b2body.setLinearVelocity(-speed, -speed );
-
-	    }if(Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)){
+	        this.b2body.setLinearVelocity(-speed, -speed );   
+	    }
+	    if(Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)){
 	        this.b2body.setLinearVelocity(speed, -speed);
 	    } 
 	    if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {

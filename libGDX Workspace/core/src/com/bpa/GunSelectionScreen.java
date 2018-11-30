@@ -87,7 +87,6 @@ public class GunSelectionScreen implements Screen{
 	    game.batch.begin();
 
 		game.batch.draw(gunPickScreen, 0, 0);
-		System.out.println(mouse_position.x + " " + mouse_position.y);
 		game.batch.end();
 		cam.update();
 

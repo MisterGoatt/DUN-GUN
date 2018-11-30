@@ -25,8 +25,9 @@ public class CreateBullet extends Sprite implements Disposable{
 	TextureAtlas textureAtlas;
 	TextureRegion textureRegion;
 	public static float angle;
-	private float speed = 1;
-
+	private float speed = 10;
+	private float posX;
+	private float posY;
 	
 	public CreateBullet(World world) {
 		this.world = world;
@@ -53,11 +54,16 @@ public class CreateBullet extends Sprite implements Disposable{
 		b2body.isBullet();
 		FixtureDef fdef = new FixtureDef();
 		CircleShape shape = new CircleShape();
-		shape.setRadius(4 / DunGun.PPM);
 		
+		if (GunSelectionScreen.weaponSelected == "shotgun") {
+			shape.setRadius(2 / DunGun.PPM);
+			}
+		else {
+		shape.setRadius(4 / DunGun.PPM);
+			}
 		fdef.shape = shape;
 		fdef.filter.categoryBits = DunGun.BULLET; //identifies the category bit is
-		fdef.filter.maskBits = DunGun.WALL; // what masking bit the category bit collides with
+		fdef.filter.maskBits = DunGun.WALL | DunGun.GRUNT; // what masking bit the category bit collides with
 		b2body.createFixture(fdef).setUserData("bullets");
 		//b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, PlayerOne.angle2); //sets the position of the body to the position of the body and implements rotation
 		//fdef.shape.dispose();
@@ -69,9 +75,21 @@ public class CreateBullet extends Sprite implements Disposable{
 
 
 		//float posX = (float) (Math.cos(90)) ;
+		if (GunSelectionScreen.weaponSelected == "shotgun") {
+			float speedVary = (int)(Math.random() * 10 + 5);
+			//float speedVary = .5f;
+			float angleVary = (int)(Math.random() * 40 - 19);
+			angleVary = angleVary / 100;
+			angle = angle + angleVary;
+			
+			posX = (float) (Math.cos(angle)) * speedVary;
+			posY = (float) (Math.sin(angle)) * speedVary;
+		}
+		else {
+			posX = (float) (Math.cos(angle)) * speed;
+			posY = (float) (Math.sin(angle)) * speed;
 
-		float posX = (float) (Math.cos(angle)) * speed;
-		float posY = (float) (Math.sin(angle)) * speed;
+		}
 		
 		
 		

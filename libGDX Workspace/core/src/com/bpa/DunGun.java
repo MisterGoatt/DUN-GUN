@@ -23,6 +23,7 @@ public class DunGun extends Game{
 	public static final short PLAYER = 0x0001;
 	public static final short BULLET = 0x0002;
 	public static final short WALL = 0x0004;
+	public static final short GRUNT = 0x0008;
 	
 	public static AssetManager manager;
 	
@@ -72,6 +73,9 @@ public class DunGun extends Game{
 		
 		//GunSelectionScreen
 		manager.load("screens/gun_selection.jpg", Texture.class);
+		
+		//Grunt
+		////////
 		
 		manager.finishLoading();
 		this.setScreen(new IntroductionScreens(this));

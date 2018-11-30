@@ -33,6 +33,12 @@ public class MyContactListener implements ContactListener{
 				//bodiesToRemove.add(fb.getBody());
 			}
 		}
+		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
+			if (fa.getUserData().equals("grunt") || fb.getUserData().equals("grunt")) {
+				bodiesToRemove.add(fa.getBody());
+				bodiesToRemove.add(fb.getBody());
+			}
+		}
 
 
 		}
