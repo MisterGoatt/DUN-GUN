@@ -157,7 +157,6 @@ public class MainMenu implements Screen{
 		
 		//FRAMES PER SECOND
 		//**********************************
-		//System.out.println((System.currentTimeMillis() - startTime) / 1000);
 		counter = (System.currentTimeMillis() - startTime) / 1000;
 		int f = Gdx.graphics.getFramesPerSecond(); // grabs frames per second
 		String frames = Integer.toString(f); //converts frames per second to a string

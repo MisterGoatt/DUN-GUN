@@ -13,6 +13,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -61,8 +63,11 @@ public class Level1 implements Screen{
 	private boolean lockCursor = true;
 	private Texture pauseMenu;
 	private boolean gamePaused = false;
-	private boolean once = false;
-
+	private boolean once = false; //makes sure the viewport on pause menu screen only changes once
+//	BitmapFont framerate; //font for frame rate display
+//	private long startTime = System.currentTimeMillis();
+//	private long counter;
+	
 	public Level1(final DunGun game) {
 		this.game = game;
 
@@ -86,6 +91,7 @@ public class Level1 implements Screen{
 		
 		new B2DWorldCreator(world, map);
 		
+		//framerate = DunGun.manager.get("fonts/CourierNew32.fnt", BitmapFont.class) ;
 
 		
 		gunShot = DunGun.manager.get("sound effects/pistol_shot.mp3", Sound.class);
@@ -135,22 +141,28 @@ public class Level1 implements Screen{
 		world.step(1/60f, 6, 2); //tells game how many times per second for Box2d to make its calculations
 		
 		//remove bullets
-		Array<Body> bodies = MyContactListener.bodiesToRemove;
-		System.out.println(Grunt.gruntManager.size());
+		Array<Body> bulletBodies = MyContactListener.bulletsToRemove;
+		Array<Body> gruntBodies = MyContactListener.gruntsToRemove;
+		
 		//removes bullets when they collide with wall
-		for (int i = 0; i < bodies.size; i ++) {
-			System.out.println(i);
-			Body b = bodies.get(i);
+		for (int i = 0; i < bulletBodies.size; i ++) {
+			Body b = bulletBodies.get(i);
 			CreateBullet.bullets.removeValue((CreateBullet) b.getUserData(), true);
-			Grunt.grunt.removeValue((Grunt) b.getUserData(), true);
-			Grunt.gruntManager.remove(i);
+			//Grunt.gruntManager.remove(i);
 
 			world.destroyBody(b);
 			//bulletManager.remove(i);
 		}
+		System.out.println(gruntBodies.size);
+		for (int e = 0; e < gruntBodies.size; e ++) {
+			Body b = gruntBodies.get(e);
+			Grunt.grunt.removeValue((Grunt) b.getUserData(), true);
+			Grunt.gruntManager.remove(e);
+			world.destroyBody(b);
+		}
 	
-		bodies.clear(); //empties list of bodies
-		
+		bulletBodies.clear(); //empties list of bodies
+		gruntBodies.clear();
 		cam.position.x = playerOne.b2body.getPosition().x;
 
 		cam.position.y = playerOne.b2body.getPosition().y;
@@ -203,9 +215,7 @@ public class Level1 implements Screen{
 
 		//mapRenderer.render(layerBackround); //renders layer in Tiled that p1 covers		
 		
-		game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
 
-        
         
         game.batch.begin(); //starts sprite spriteBatch
         if (Grunt.gruntManager.size() > 0) {
@@ -255,10 +265,26 @@ public class Level1 implements Screen{
         }
 
         mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+        
         cam.unproject(mousePosition); //gets mouse coordinates within viewport
+		
+//		//FRAMES PER SECOND
+//		//**********************************
+//		counter = (System.currentTimeMillis() - startTime) / 1000;
+//		int f = Gdx.graphics.getFramesPerSecond(); // grabs frames per second
+//		String frames = Integer.toString(f); //converts frames per second to a string
+//		framerate.draw(game.batch, frames, 5, 785); //displays frames per second as text in top left
+		
+
+		//**********************************
+		game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
+
         
         game.batch.end(); //starts sprite spriteBatch
         //mapRenderer.render(layerAfterBackground); //renders layer of Tiled that hides p1
+        
+        
+
 
 	}
 	

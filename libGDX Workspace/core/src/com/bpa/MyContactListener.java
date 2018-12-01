@@ -12,10 +12,12 @@ public class MyContactListener implements ContactListener{
 
 	//CreateBullet collisionResult = new CreateBullet(null);
 	//private Array<Body> bodiesToRemove;
-	public static Array<Body> bodiesToRemove;
+	public static Array<Body> bulletsToRemove;
+	public static Array<Body> gruntsToRemove;
 	
 	public MyContactListener() {
-		bodiesToRemove = new Array<Body>();
+		bulletsToRemove = new Array<Body>();
+		gruntsToRemove = new Array<Body>();
 	}
 	
 	@Override
@@ -29,15 +31,15 @@ public class MyContactListener implements ContactListener{
 		
 		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
 			if (fa.getUserData().equals("walls") || fb.getUserData().equals("walls")) {
-				bodiesToRemove.add(fb.getBody()); // bullet
+				bulletsToRemove.add(fb.getBody()); // bullet
 				//bodiesToRemove.add(fb.getBody());
 			}
 		}
 		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
 			if (fa.getUserData().equals("grunt") || fb.getUserData().equals("grunt")) {
-				bodiesToRemove.add(fa.getBody()); //grunt
+				gruntsToRemove.add(fa.getBody()); //grunt
 				
-				bodiesToRemove.add(fb.getBody()); //bullet
+				bulletsToRemove.add(fb.getBody()); //bullet
 			}
 		}
 
