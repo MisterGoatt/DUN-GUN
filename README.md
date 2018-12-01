@@ -11,7 +11,7 @@ Jeremy B  - Programmer (Networking)
 
 
 
-Kyle P    - Level Design/LevelBuilding
+Kyle P    - Level Design/Logging
 
 
 
