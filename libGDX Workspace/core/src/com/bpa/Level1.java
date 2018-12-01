@@ -62,7 +62,7 @@ public class Level1 implements Screen{
 	private Texture pauseMenu;
 	private boolean gamePaused = false;
 	private boolean once = false;
-	
+
 	public Level1(final DunGun game) {
 		this.game = game;
 
@@ -136,15 +136,15 @@ public class Level1 implements Screen{
 		
 		//remove bullets
 		Array<Body> bodies = MyContactListener.bodiesToRemove;
-		System.out.println(Grunt.grunt.size);
-		
+		System.out.println(Grunt.gruntManager.size());
 		//removes bullets when they collide with wall
 		for (int i = 0; i < bodies.size; i ++) {
-
+			System.out.println(i);
 			Body b = bodies.get(i);
 			CreateBullet.bullets.removeValue((CreateBullet) b.getUserData(), true);
 			Grunt.grunt.removeValue((Grunt) b.getUserData(), true);
-			
+			Grunt.gruntManager.remove(i);
+
 			world.destroyBody(b);
 			//bulletManager.remove(i);
 		}
@@ -161,12 +161,9 @@ public class Level1 implements Screen{
 
 		gamePort = new StretchViewport(1500, 800, cam);
 		once = false;
-		
-		
 	}
 	
 	public void gruntDamage() {
-		
 	}
 	
 	
@@ -194,14 +191,10 @@ public class Level1 implements Screen{
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && gamePaused) {
 			gamePaused = false;
 		}
-		
-		
-        
-		
+			
 		if (!gamePaused) { 
 			cameraUpdate(delta);
 			playerOne.handleInput(delta);
-			grunt.update();
 			mapRenderer.render();
 	        b2dr.render(world, cam.combined); //renders the Box2d world
 
@@ -215,12 +208,12 @@ public class Level1 implements Screen{
         
         
         game.batch.begin(); //starts sprite spriteBatch
-        /*if (bulletManager.size() > 0) {
-        	for (int i = 0; i < bulletManager.size(); i++) {
-        		createBullet.renderSprite(game.batch);
-                bulletManager.get(i).renderSprite(game.batch);
+        if (Grunt.gruntManager.size() > 0) {
+        	for (int i = 0; i < Grunt.gruntManager.size(); i++) {
+        		grunt.renderSprite(game.batch);
+                Grunt.gruntManager.get(i).renderSprite(game.batch);
         	}
-        }*/
+        }
        //GAME IS PAUSED*******************
         if (gamePaused) {
         	cam.position.x = 0;
@@ -256,6 +249,7 @@ public class Level1 implements Screen{
             shootGun(); //sees if gun is shooting
 
         	playerOne.renderSprite(game.batch);
+        	//grunt.renderSprite(game.batch);
         	game.batch.draw(mouseCursor, Level1.mousePosition.x - .05f, Level1.mousePosition.y - .05f, 13 / DunGun.PPM, 13 / DunGun.PPM);
         	mapRenderer.setView(cam);
         }

@@ -25,19 +25,26 @@ public class Grunt extends Sprite implements Disposable{
 	private BodyDef bdef = new BodyDef();
 	public static Array<Grunt> grunt;
 	public int health = 100;
-	
-	
 	float angle2;
+	private TextureAtlas gruntAtkAnimation;
+	private TextureRegion gruntStandingRegion;
+	private static int gruntQuantity;
+	static ArrayList<Grunt> gruntManager = new ArrayList<Grunt>();
+
 		
 		public Grunt(World world) {
 			this.world = world;
 			defineGrunt();
+			
 		}
 
 		
 		public void defineGrunt() {
 			//define player body
 			grunt = new Array<Grunt>();
+			gruntManager.add(this);
+			gruntAtkAnimation = DunGun.manager.get("sprites/grunt/mutantAtkAnimation.atlas", TextureAtlas.class);
+			gruntStandingRegion = gruntAtkAnimation.findRegion("tile000");
 
 			bdef.position.set(450 / DunGun.PPM, 400 / DunGun.PPM);
 			
@@ -57,11 +64,20 @@ public class Grunt extends Sprite implements Disposable{
 			shape.dispose();
 		}
 		
-		public void update() {
+		public void renderSprite(SpriteBatch batch) {
 			float differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
 			float differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
 			angle2 = MathUtils.atan2(differenceY, differenceX);
-			b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
+			float angle = angle2 * MathUtils.radDeg;
+	        angle = angle - 90; //makes it a full 360 degrees
+		    if (angle < 0) {
+		    	angle += 360 ;
+		    }
+			b2body.setTransform(this.b2body.getPosition().x, this.b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
+			float posX = this.b2body.getPosition().x;
+			float posY = this.b2body.getPosition().y;
+			batch.draw(gruntStandingRegion, posX - .17f, posY - .13f, 20 / DunGun.PPM, 10 / DunGun.PPM, 40 / DunGun.PPM, 32 / DunGun.PPM, 1, 1, angle);
+
 		}
 		
 		public void damage() {
@@ -74,8 +90,7 @@ public class Grunt extends Sprite implements Disposable{
 
 		@Override
 		public void dispose() {
-			// TODO Auto-generated method stub
-			
+			gruntAtkAnimation.dispose();
 		}
 
 

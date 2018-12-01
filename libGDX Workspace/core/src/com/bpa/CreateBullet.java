@@ -1,5 +1,7 @@
 package com.bpa;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -28,6 +30,8 @@ public class CreateBullet extends Sprite implements Disposable{
 	private float speed = 10;
 	private float posX;
 	private float posY;
+	public static ArrayList gruntList;
+	
 	
 	public CreateBullet(World world) {
 		this.world = world;

@@ -35,7 +35,7 @@ public class MyContactListener implements ContactListener{
 		}
 		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
 			if (fa.getUserData().equals("grunt") || fb.getUserData().equals("grunt")) {
-				//bodiesToRemove.add(fa.getBody()); //grunt
+				bodiesToRemove.add(fa.getBody()); //grunt
 				
 				bodiesToRemove.add(fb.getBody()); //bullet
 			}

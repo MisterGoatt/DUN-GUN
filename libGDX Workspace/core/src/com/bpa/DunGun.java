@@ -24,7 +24,6 @@ public class DunGun extends Game{
 	public static final short BULLET = 0x0002;
 	public static final short WALL = 0x0004;
 	public static final short GRUNT = 0x0008;
-	
 	public static AssetManager manager;
 	
 	@Override
@@ -75,7 +74,8 @@ public class DunGun extends Game{
 		manager.load("screens/gun_selection.jpg", Texture.class);
 		
 		//Grunt
-		////////
+		manager.load("sprites/grunt/mutantAtkAnimation.atlas", TextureAtlas.class);
+		
 		
 		manager.finishLoading();
 		this.setScreen(new IntroductionScreens(this));
