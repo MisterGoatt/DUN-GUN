@@ -165,6 +165,10 @@ public class Level1 implements Screen{
 		
 	}
 	
+	public void gruntDamage() {
+		
+	}
+	
 	
 	@Override
 	public void render(float delta) {

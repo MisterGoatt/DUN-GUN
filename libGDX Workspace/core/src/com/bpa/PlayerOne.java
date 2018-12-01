@@ -22,7 +22,6 @@ public class PlayerOne extends Sprite implements Disposable{
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
-	private float speed = 3 ;
 	private boolean running;
 	private TextureAtlas revolverTextureAtlas;
 	private TextureAtlas rifleTextureAtlas;
@@ -36,13 +35,22 @@ public class PlayerOne extends Sprite implements Disposable{
 	private TextureRegion rifleStandingRegion;
 	private TextureRegion shotgunStandingRegion;
 	private TextureRegion assaultRifleStandingRegion;
+	private Sound runningSound; //sound effect of the player's movement
 	private float timePassed = 0;
-	private Sound runningSound;
-	private float timeSinceLastShot = 60f;
+	private float timeSinceLastShot = 60f; 
+	private float speed = 3 ; //speed of the player
 	public static float p1PosX;
 	public static float p1PosY;
 	public static float angle2; //get distance between mouse and player in radians
 	public static float angle;
+	//amount of damage each weapon deals
+	public static int revolverDamage = 25;
+	public static int rifleDamage = 75;
+	public static int shotgunDamage = 10;
+	public static int assaultRifleDamage = 15;
+	public static int laserLanceDamage = 100;
+	public static int battleAxeDamage = 175;
+	
 	private boolean shootAnimation = false;
 	
 	public PlayerOne(World world) {

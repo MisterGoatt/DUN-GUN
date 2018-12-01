@@ -29,14 +29,15 @@ public class MyContactListener implements ContactListener{
 		
 		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
 			if (fa.getUserData().equals("walls") || fb.getUserData().equals("walls")) {
-				bodiesToRemove.add(fb.getBody());
+				bodiesToRemove.add(fb.getBody()); // bullet
 				//bodiesToRemove.add(fb.getBody());
 			}
 		}
 		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
 			if (fa.getUserData().equals("grunt") || fb.getUserData().equals("grunt")) {
-				bodiesToRemove.add(fa.getBody());
-				bodiesToRemove.add(fb.getBody());
+				//bodiesToRemove.add(fa.getBody()); //grunt
+				
+				bodiesToRemove.add(fb.getBody()); //bullet
 			}
 		}
 

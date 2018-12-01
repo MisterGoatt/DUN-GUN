@@ -24,7 +24,9 @@ public class Grunt extends Sprite implements Disposable{
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
 	public static Array<Grunt> grunt;
-
+	public int health = 100;
+	
+	
 	float angle2;
 		
 		public Grunt(World world) {
@@ -60,6 +62,14 @@ public class Grunt extends Sprite implements Disposable{
 			float differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
 			angle2 = MathUtils.atan2(differenceY, differenceX);
 			b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
+		}
+		
+		public void damage() {
+			
+			if (GunSelectionScreen.weaponSelected == "rifle") {
+				health =  health - PlayerOne.rifleDamage; 
+				
+			}
 		}
 
 		@Override
