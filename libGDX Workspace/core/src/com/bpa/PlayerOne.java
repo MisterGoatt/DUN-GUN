@@ -29,14 +29,19 @@ public class PlayerOne extends Sprite implements Disposable{
 	private TextureAtlas rifleTextureAtlas;
 	private TextureAtlas shotgunTextureAtlas;
 	private TextureAtlas assaultRifleTextureAtlas;
+	private TextureAtlas laserTextureAtlas;
+
 	private Animation <TextureRegion> revolverAnimation;
 	private Animation <TextureRegion> rifleAnimation;
 	private Animation <TextureRegion> shotgunAnimation;
 	private Animation <TextureRegion> assaultRifleAnimation;
+	private Animation <TextureRegion> laserAnimation;
+
 	private TextureRegion revolverStandingRegion;
 	private TextureRegion rifleStandingRegion;
 	private TextureRegion shotgunStandingRegion;
 	private TextureRegion assaultRifleStandingRegion;
+	private TextureRegion laserStandingRegion;
 	private Sound runningSound; //sound effect of the player's movement
 	private float timePassed = 0;
 	private float timeSinceLastShot = 60f; 
@@ -74,6 +79,10 @@ public class PlayerOne extends Sprite implements Disposable{
 		assaultRifleTextureAtlas = DunGun.manager.get("sprites/player1/assaultRifle.atlas", TextureAtlas.class);
 		assaultRifleAnimation = new Animation<TextureRegion>(1f/15f, assaultRifleTextureAtlas.getRegions());
 		assaultRifleStandingRegion = assaultRifleTextureAtlas.findRegion("tile000");
+		
+		laserTextureAtlas = DunGun.manager.get("sprites/player1/laserAnimation.atlas", TextureAtlas.class);
+		laserAnimation = new Animation <TextureRegion>(1f/15f, laserTextureAtlas.getRegions());
+		laserStandingRegion = laserTextureAtlas.findRegion("tile000");
 		
 		runningSound = Gdx.audio.newSound(Gdx.files.internal("sound effects/running.mp3"));
 	}
@@ -117,8 +126,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	    	angle += 360 ;
 	    }
 	    angle2 = MathUtils.atan2(Level1.mousePosition.y - getY(), Level1.mousePosition.x - getX()); //get distance between mouse and player in radians
-	    b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
-		//sprite.setRotation(angle); //rotates sprite
+	    //b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
 	    //revolver
 	    if (GunSelectionScreen.weaponSelected == "revolver") {
 		    if (shootAnimation) {
@@ -175,6 +183,21 @@ public class PlayerOne extends Sprite implements Disposable{
 	    		batch.draw(assaultRifleStandingRegion,posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle );
 	    	}
 	    }
+	    	
+	    //Laser
+		else if (GunSelectionScreen.weaponSelected == "laser") {
+		    	if (shootAnimation) {
+					batch.draw(laserAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
+					timePassed += Gdx.graphics.getDeltaTime();
+			
+					if(laserAnimation.isAnimationFinished(timePassed)) {
+						shootAnimation = false;
+						timePassed = 0;
+					}
+		    	}else {
+		    		batch.draw(laserStandingRegion,posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle );
+		    	}
+	    }
 	}
 	
 	public void handleInput(float delta) {
@@ -187,6 +210,10 @@ public class PlayerOne extends Sprite implements Disposable{
 		
 		this.b2body.setLinearVelocity(0, 0);
 
+		if (GunSelectionScreen.weaponSelected == "laser") {
+			speed = 1.5f;
+		}
+		
 		if(Gdx.input.isKeyPressed(Input.Keys.W)){
 	        this.b2body.setLinearVelocity(0f, speed);
 	    }if(Gdx.input.isKeyPressed(Input.Keys.S)){
@@ -222,6 +249,8 @@ public class PlayerOne extends Sprite implements Disposable{
 	    			timeSinceLastShot = 80;
 	    		}else if (GunSelectionScreen.weaponSelected == "assault rifle") {
 	    			timeSinceLastShot = 20;
+	    		}else if (GunSelectionScreen.weaponSelected == "laser") {
+	    			timeSinceLastShot = 80;
 	    		}
 	    		//timeSinceLastShot = shootDelay; //reset timeSinceLast Shot
 	    	}

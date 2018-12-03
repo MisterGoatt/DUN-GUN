@@ -77,6 +77,12 @@ public class GunSelectionScreen implements Screen{
 	    		weaponSelected = "shotgun";
 	    		game.setScreen(new Level1(game));
 	    	}
+	    	//Laser
+	    	if (mouse_position.x > 785 && mouse_position.x < 1090 && mouse_position.y > 380 && mouse_position.y < 487) {
+	    		weaponSelected = "laser";
+				game.setScreen(new Level1(game));
+	    	}
+				
 	    	//BACK BUTTON
 	    	if (mouse_position.x > 33 && mouse_position.x < 153 && mouse_position.y > 34 && mouse_position.y < 83) {
 				game.setScreen(new MainMenu(game));

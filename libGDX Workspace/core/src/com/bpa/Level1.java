@@ -58,6 +58,7 @@ public class Level1 implements Screen{
 	private Sound gunShot;
 	private Sound rifleShot;
 	private Sound shotgunShot;
+	private Sound laserShot;
 	private Sound assaultRifleShot;
 	private Texture mouseCursor;
 	private boolean lockCursor = true;
@@ -98,6 +99,7 @@ public class Level1 implements Screen{
 		rifleShot = DunGun.manager.get("sound effects/rifleShot.mp3", Sound.class);
 		shotgunShot = DunGun.manager.get("sound effects/shotgun2.mp3", Sound.class);
 		assaultRifleShot = DunGun.manager.get("sound effects/assaultRifle.mp3", Sound.class);
+		laserShot = DunGun.manager.get("sound effects/laser_lance.mp3", Sound.class);
 		pauseMenu = DunGun.manager.get("screens/Pause.jpg", Texture.class);
 		
 		
@@ -114,6 +116,9 @@ public class Level1 implements Screen{
 			}
 			else if (GunSelectionScreen.weaponSelected == "rifle") {
 				rifleShot.play();
+			}
+			else if (GunSelectionScreen.weaponSelected == "laser") {
+				laserShot.play();
 			}
 			else if (GunSelectionScreen.weaponSelected == "shotgun") {
 				//controls how many shotgun shells are shot
@@ -209,13 +214,8 @@ public class Level1 implements Screen{
 			playerOne.handleInput(delta);
 			mapRenderer.render();
 	        b2dr.render(world, cam.combined); //renders the Box2d world
-
         }
-        
-
 		//mapRenderer.render(layerBackround); //renders layer in Tiled that p1 covers		
-		
-
         
         game.batch.begin(); //starts sprite spriteBatch
         if (Grunt.gruntManager.size() > 0) {
@@ -242,7 +242,6 @@ public class Level1 implements Screen{
         		//MAIN MENU
         		else if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < -.13 && mousePosition.y > -.78) {
         			game.setScreen(new MainMenu(game));
-
         		}
         		//QUIT
         		else if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < -.86 && mousePosition.y > -1.49) {
@@ -274,28 +273,13 @@ public class Level1 implements Screen{
 //		int f = Gdx.graphics.getFramesPerSecond(); // grabs frames per second
 //		String frames = Integer.toString(f); //converts frames per second to a string
 //		framerate.draw(game.batch, frames, 5, 785); //displays frames per second as text in top left
-		
 
 		//**********************************
 		game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
 
-        
         game.batch.end(); //starts sprite spriteBatch
         //mapRenderer.render(layerAfterBackground); //renders layer of Tiled that hides p1
-        
-        
-
-
 	}
-	
-	
-	public void gameMenu() {
-		
-		
-		
-	}
-	
-
 
 	@Override
 	public void resize(int width, int height) {
