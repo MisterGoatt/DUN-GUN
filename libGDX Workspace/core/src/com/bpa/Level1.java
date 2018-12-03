@@ -3,7 +3,6 @@ package com.bpa;
 
 import java.util.ArrayList;
 
-import javax.swing.plaf.synth.SynthSplitPaneUI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -13,8 +12,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -50,7 +47,7 @@ public class Level1 implements Screen{
 	private Box2DDebugRenderer b2dr; //graphical representation of body fixtures
 	private PlayerOne playerOne;
 	private Grunt grunt;
-	public CreateBullet createBullet;
+	private CreateBullet createBullet;
 	//private int[] layerBackround = {0, 1, 2, 3};
 	//private int[] layerAfterBackground = {4};
 	public static boolean isShooting = false;
@@ -158,7 +155,6 @@ public class Level1 implements Screen{
 			world.destroyBody(b);
 			//bulletManager.remove(i);
 		}
-		System.out.println(gruntBodies.size);
 		for (int e = 0; e < gruntBodies.size; e ++) {
 			Body b = gruntBodies.get(e);
 			Grunt.grunt.removeValue((Grunt) b.getUserData(), true);
@@ -213,7 +209,7 @@ public class Level1 implements Screen{
 			cameraUpdate(delta);
 			playerOne.handleInput(delta);
 			mapRenderer.render();
-	        b2dr.render(world, cam.combined); //renders the Box2d world
+	        //b2dr.render(world, cam.combined); //renders the Box2d world
         }
 		//mapRenderer.render(layerBackround); //renders layer in Tiled that p1 covers		
         
@@ -257,8 +253,11 @@ public class Level1 implements Screen{
         if (!gamePaused) {
             shootGun(); //sees if gun is shooting
 
+            if (GunSelectionScreen.weaponSelected == "laser") {
+            	createBullet.renderSprite(game.batch);
+            }
+
         	playerOne.renderSprite(game.batch);
-        	//grunt.renderSprite(game.batch);
         	game.batch.draw(mouseCursor, Level1.mousePosition.x - .05f, Level1.mousePosition.y - .05f, 13 / DunGun.PPM, 13 / DunGun.PPM);
         	mapRenderer.setView(cam);
         }

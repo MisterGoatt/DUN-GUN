@@ -70,6 +70,7 @@ public class DunGun extends Game{
 		//CreateBullet
 		manager.load("sprites/bullet.atlas", TextureAtlas.class);
 		manager.load("sprites/bullet.png", Texture.class);
+		manager.load("sprites/player1/laserBlastAnimation.atlas", TextureAtlas.class);
 		
 		//GunSelectionScreen
 		manager.load("screens/gun_selection.jpg", Texture.class);

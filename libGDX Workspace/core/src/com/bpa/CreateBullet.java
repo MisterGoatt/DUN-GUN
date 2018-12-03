@@ -26,24 +26,32 @@ public class CreateBullet extends Sprite implements Disposable{
 	public String id = "BULLET";
 	public static Array<CreateBullet> bullets;
 	Sprite sprite;
-	TextureAtlas textureAtlas;
-	TextureRegion textureRegion;
 	public static float angle;
 	private float speed = 10;
 	private float posX;
 	private float posY;
+//	private float sPosX;
+//	private float sPosY;
+	private float angle2;
+	private TextureAtlas laserTextureAtlas;
+	private TextureRegion laserStandingRegion;
+
 	public static ArrayList gruntList;
 	
 	public CreateBullet(World world) {
 		this.world = world;
 
 		defineBullet();
-		textureAtlas = DunGun.manager.get("sprites/bullet.atlas", TextureAtlas.class);
-		textureRegion = textureAtlas.findRegion("bullet");
-		sprite =new Sprite(DunGun.manager.get("sprites/bullet.png", Texture.class));
-		sprite.setOrigin((sprite.getWidth() / 2) / DunGun.PPM, (float) ((sprite.getHeight() / 2) / DunGun.PPM - .08));
-		sprite.setSize(16 / DunGun.PPM, 16 / DunGun.PPM);
-		sprite.setRotation(PlayerOne.angle); //!!!!!!!!!!
+		
+		laserTextureAtlas = DunGun.manager.get("sprites/player1/laserBlastAnimation.atlas", TextureAtlas.class);
+		laserStandingRegion = laserTextureAtlas.findRegion("tile000");
+		
+		//textureAtlas = DunGun.manager.get("sprites/bullet.atlas", TextureAtlas.class);
+		//textureRegion = textureAtlas.findRegion("bullet");
+//		sprite = new Sprite(DunGun.manager.get("sprites/bullet.png", Texture.class));
+//		sprite.setOrigin((sprite.getWidth() / 2) / DunGun.PPM, (float) ((sprite.getHeight() / 2) / DunGun.PPM - .08));
+//		sprite.setSize(16 / DunGun.PPM, 16 / DunGun.PPM);
+//		sprite.setRotation(PlayerOne.angle); //!!!!!!!!!!
 	}
 	
 	public void defineBullet() {
@@ -90,7 +98,7 @@ public class CreateBullet extends Sprite implements Disposable{
 		float differenceX = Level1.mousePosition.x - b2body.getPosition().x;
 		float differenceY = Level1.mousePosition.y - b2body.getPosition().y;
 		angle = MathUtils.atan2(differenceY, differenceX);
-		//float angle = MathUtils.atan2(Level1.mouse_position.y - b2body.getPosition().y, Level1.mouse_position.x - b2body.getPosition().x) * MathUtils.radDeg; //find the distance between mouse and player
+		angle2 = MathUtils.atan2( differenceY, differenceX)* MathUtils.radDeg; //find the distance between mouse and player
 
 		//float posX = (float) (Math.cos(90)) ;
 		if (GunSelectionScreen.weaponSelected == "shotgun") {
@@ -123,20 +131,33 @@ public class CreateBullet extends Sprite implements Disposable{
 	}
 	
 	public void renderSprite(SpriteBatch batch) {
+		
+		float sPosX = this.b2body.getPosition().x;
+		float sPosY = this.b2body.getPosition().y;
+		System.out.println("X" + sPosX);
+		System.out.println(" + " + sPosY);
+		if ( GunSelectionScreen.weaponSelected == "laser") {
+			
+			batch.draw(laserStandingRegion, sPosX, sPosY, 2.5f / DunGun.PPM, 20 / DunGun.PPM, 5 / DunGun.PPM, 40 / DunGun.PPM, 1, 1, angle2);
+			
+		}else {
+//			sPosX = b2body.getPosition().x - .05f;
+//			sPosY = b2body.getPosition().y;
+//			sprite.setPosition(posX, posY);
+//	
+//			sprite.draw(batch);
+			
+			//batch.draw(laserStandingRegion, posX - .17f, posY - .13f, 20 / DunGun.PPM, 10 / DunGun.PPM, 40 / DunGun.PPM, 32 / DunGun.PPM, 1, 1, angle2);
+		}
+		
 
-		float posX = b2body.getPosition().x - .05f;
-		float posY = b2body.getPosition().y;
-		//System.out.println(getX() + " " + getY());
-		sprite.setPosition(posX, posY);
 
-
-		sprite.draw(batch);
 		
 		
 	}
 	
 	@Override
 	public void dispose() {
-		textureAtlas.dispose();
+		laserTextureAtlas.dispose();
 	}
 }

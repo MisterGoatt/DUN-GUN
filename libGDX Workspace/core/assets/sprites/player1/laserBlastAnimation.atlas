@@ -1,0 +1,13 @@
+
+laserAnimation.png
+size: 16,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+tile000
+  rotate: false
+  xy: 2, 2
+  size: 5, 40
+  orig: 5, 40
+  offset: 0, 0
+  index: -1
