@@ -62,7 +62,9 @@ public class Level1 implements Screen{
 	private Texture pauseMenu;
 	private boolean gamePaused = false;
 	private boolean once = false; //makes sure the viewport on pause menu screen only changes once
-//	BitmapFont framerate; //font for frame rate display
+	private float waitToShootL = 0;
+	private boolean start = false;
+	//	BitmapFont framerate; //font for frame rate display
 //	private long startTime = System.currentTimeMillis();
 //	private long counter;
 	
@@ -96,7 +98,7 @@ public class Level1 implements Screen{
 		rifleShot = DunGun.manager.get("sound effects/rifleShot.mp3", Sound.class);
 		shotgunShot = DunGun.manager.get("sound effects/shotgun2.mp3", Sound.class);
 		assaultRifleShot = DunGun.manager.get("sound effects/assaultRifle.mp3", Sound.class);
-		laserShot = DunGun.manager.get("sound effects/laser_lance.mp3", Sound.class);
+		laserShot = DunGun.manager.get("sound effects/laserBlast3.mp3", Sound.class);
 		pauseMenu = DunGun.manager.get("screens/Pause.jpg", Texture.class);
 		
 		
@@ -104,19 +106,25 @@ public class Level1 implements Screen{
 	}
 	
 	public void shootGun() {
+		System.out.println(waitToShootL);
 		if (isShooting) {
-			if (GunSelectionScreen.weaponSelected != "shotgun") {
+			//waitToShootL += 1;
+			
+			start = true;
+			if (GunSelectionScreen.weaponSelected != "shotgun" && GunSelectionScreen.weaponSelected != "laser") {
+				System.out.println("here");
 				createBullet = new CreateBullet(world);
 			}
+			if (GunSelectionScreen.weaponSelected == "laser") {
+				laserShot.play();
+
 			if (GunSelectionScreen.weaponSelected == "revolver") {
 				gunShot.play();
 			}
 			else if (GunSelectionScreen.weaponSelected == "rifle") {
 				rifleShot.play();
 			}
-			else if (GunSelectionScreen.weaponSelected == "laser") {
-				laserShot.play();
-			}
+
 			else if (GunSelectionScreen.weaponSelected == "shotgun") {
 				//controls how many shotgun shells are shot
 				for (int i = 0; i < 6; i++) {
@@ -132,7 +140,19 @@ public class Level1 implements Screen{
 			//bulletManager.add(createBullet);
 			isShooting = false;
 			}
+	
 		}
+			
+		if (waitToShootL >= 20){
+			System.out.println("yee");
+			createBullet = new CreateBullet(world);
+			waitToShootL = 0;
+			start = false;
+			}
+		
+	}
+
+		
 
 
 	public void cameraUpdate(float delta) {
@@ -150,11 +170,15 @@ public class Level1 implements Screen{
 		for (int i = 0; i < bulletBodies.size; i ++) {
 			Body b = bulletBodies.get(i);
 			CreateBullet.bullets.removeValue((CreateBullet) b.getUserData(), true);
-			//Grunt.gruntManager.remove(i);
+			//remove laser from list 
+		for (int a = 0; a < CreateBullet.laserManager.size(); a ++) {
+			CreateBullet.laserManager.remove(a);
+		}
 
 			world.destroyBody(b);
 			//bulletManager.remove(i);
 		}
+		//REMOVE GRUNT BODIES AND REMOVE FROM MANAGER LIST
 		for (int e = 0; e < gruntBodies.size; e ++) {
 			Body b = gruntBodies.get(e);
 			Grunt.grunt.removeValue((Grunt) b.getUserData(), true);
@@ -164,8 +188,9 @@ public class Level1 implements Screen{
 	
 		bulletBodies.clear(); //empties list of bodies
 		gruntBodies.clear();
+		
+		
 		cam.position.x = playerOne.b2body.getPosition().x;
-
 		cam.position.y = playerOne.b2body.getPosition().y;
 		cam.update();
 	}
@@ -187,6 +212,10 @@ public class Level1 implements Screen{
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
   
+		//laser delay for build up of power effect
+		if (start) {
+			waitToShootL += 1;
+		}
 		
 		//hides the mouse and displays crosshair		
 		if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && !lockCursor) {
@@ -209,15 +238,20 @@ public class Level1 implements Screen{
 			cameraUpdate(delta);
 			playerOne.handleInput(delta);
 			mapRenderer.render();
-	        //b2dr.render(world, cam.combined); //renders the Box2d world
+	        b2dr.render(world, cam.combined); //renders the Box2d world
         }
 		//mapRenderer.render(layerBackround); //renders layer in Tiled that p1 covers		
         
         game.batch.begin(); //starts sprite spriteBatch
         if (Grunt.gruntManager.size() > 0) {
         	for (int i = 0; i < Grunt.gruntManager.size(); i++) {
-        		grunt.renderSprite(game.batch);
+        		//grunt.renderSprite(game.batch);
                 Grunt.gruntManager.get(i).renderSprite(game.batch);
+        	}
+        }
+        if (CreateBullet.laserManager.size() > 0) {
+        	for (int i = 0; i < CreateBullet.laserManager.size(); i++) {
+                CreateBullet.laserManager.get(i).renderSprite(game.batch);
         	}
         }
        //GAME IS PAUSED*******************
@@ -252,10 +286,6 @@ public class Level1 implements Screen{
         }
         if (!gamePaused) {
             shootGun(); //sees if gun is shooting
-
-            if (GunSelectionScreen.weaponSelected == "laser") {
-            	createBullet.renderSprite(game.batch);
-            }
 
         	playerOne.renderSprite(game.batch);
         	game.batch.draw(mouseCursor, Level1.mousePosition.x - .05f, Level1.mousePosition.y - .05f, 13 / DunGun.PPM, 13 / DunGun.PPM);

@@ -52,7 +52,8 @@ public class DunGun extends Game{
 		manager.load("sound effects/shotgun2.mp3", Sound.class);
 		manager.load("sound effects/laser_lance.mp3", Sound.class);
 		manager.load("sound effects/assaultRifle.mp3", Sound.class);
-		
+		manager.load("sound effects/laserBlast3.mp3", Sound.class);
+
 		
 		//IntroductionScreens
 		manager.load("screens/ctm_placeholder.jpg", Texture.class);

@@ -35,6 +35,7 @@ public class CreateBullet extends Sprite implements Disposable{
 	private float angle2;
 	private TextureAtlas laserTextureAtlas;
 	private TextureRegion laserStandingRegion;
+	static ArrayList<CreateBullet> laserManager = new ArrayList<CreateBullet>();
 
 	public static ArrayList gruntList;
 	
@@ -42,7 +43,8 @@ public class CreateBullet extends Sprite implements Disposable{
 		this.world = world;
 
 		defineBullet();
-		
+		laserManager.add(this);
+
 		laserTextureAtlas = DunGun.manager.get("sprites/player1/laserBlastAnimation.atlas", TextureAtlas.class);
 		laserStandingRegion = laserTextureAtlas.findRegion("tile000");
 		
@@ -120,38 +122,16 @@ public class CreateBullet extends Sprite implements Disposable{
 			posY = (float) (Math.sin(angle)) * speed;
 		    angle = angle - 1.6f ;
 			b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angle); //sets the position of the body to the position of the body and implements rotation
-
 		}
 		
-
-		
 		b2body.applyLinearImpulse(posX, posY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);
-		
-	
 	}
 	
 	public void renderSprite(SpriteBatch batch) {
-		
-		float sPosX = this.b2body.getPosition().x;
-		float sPosY = this.b2body.getPosition().y;
-		System.out.println("X" + sPosX);
-		System.out.println(" + " + sPosY);
+
 		if ( GunSelectionScreen.weaponSelected == "laser") {
-			
-			batch.draw(laserStandingRegion, sPosX, sPosY, 2.5f / DunGun.PPM, 20 / DunGun.PPM, 5 / DunGun.PPM, 40 / DunGun.PPM, 1, 1, angle2);
-			
-		}else {
-//			sPosX = b2body.getPosition().x - .05f;
-//			sPosY = b2body.getPosition().y;
-//			sprite.setPosition(posX, posY);
-//	
-//			sprite.draw(batch);
-			
-			//batch.draw(laserStandingRegion, posX - .17f, posY - .13f, 20 / DunGun.PPM, 10 / DunGun.PPM, 40 / DunGun.PPM, 32 / DunGun.PPM, 1, 1, angle2);
+			batch.draw(laserStandingRegion, b2body.getPosition().x, b2body.getPosition().y, 2.5f / DunGun.PPM, 20 / DunGun.PPM, 5 / DunGun.PPM, 40 / DunGun.PPM, 1, 1, angle2 - 90);	
 		}
-		
-
-
 		
 		
 	}
