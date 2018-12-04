@@ -272,8 +272,11 @@ public class PlayerOne extends Sprite implements Disposable{
 	@Override
 	public void dispose() {
 		runningSound.dispose();
-		revolverTextureAtlas.dispose();	
+		revolverTextureAtlas.dispose();
 		rifleTextureAtlas.dispose();
+		assaultRifleTextureAtlas.dispose();
+		laserTextureAtlas.dispose();
+		shotgunTextureAtlas.dispose();
 	}
 }
 

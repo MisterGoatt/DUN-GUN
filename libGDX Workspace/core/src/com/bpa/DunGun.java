@@ -92,5 +92,6 @@ public class DunGun extends Game{
 	@Override
 	public void dispose () {
 		batch.dispose();
+		manager.dispose();
 	}
 }

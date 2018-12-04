@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -30,23 +31,28 @@ public class CreateBullet extends Sprite implements Disposable{
 	private float speed = 10;
 	private float posX;
 	private float posY;
-//	private float sPosX;
-//	private float sPosY;
+	private float timePassed = 0;
 	private float angle2;
+	
 	private TextureAtlas laserTextureAtlas;
 	private TextureRegion laserStandingRegion;
+	private Animation <TextureRegion> laserAnimation;
+	
 	static ArrayList<CreateBullet> laserManager = new ArrayList<CreateBullet>();
 
-	public static ArrayList gruntList;
+	//static ArrayList<Integer> laserDestroyManager;
+	static int lasersToDestroy;
+	
+	//public static ArrayList gruntList;
 	
 	public CreateBullet(World world) {
 		this.world = world;
 
 		defineBullet();
-		laserManager.add(this);
 
 		laserTextureAtlas = DunGun.manager.get("sprites/player1/laserBlastAnimation.atlas", TextureAtlas.class);
-		laserStandingRegion = laserTextureAtlas.findRegion("tile000");
+		laserAnimation = new Animation <TextureRegion>(1f/15f, laserTextureAtlas.getRegions());
+		//laserStandingRegion = laserTextureAtlas.findRegion("tile000");
 		
 		//textureAtlas = DunGun.manager.get("sprites/bullet.atlas", TextureAtlas.class);
 		//textureRegion = textureAtlas.findRegion("bullet");
@@ -58,6 +64,8 @@ public class CreateBullet extends Sprite implements Disposable{
 	
 	public void defineBullet() {
 		bullets = new Array<CreateBullet>();
+
+		laserManager.add(this);
 		bdef.position.set(PlayerOne.p1PosX, PlayerOne.p1PosY);
 	
 		bdef.type = BodyDef.BodyType.DynamicBody;
@@ -68,9 +76,9 @@ public class CreateBullet extends Sprite implements Disposable{
 		if (GunSelectionScreen.weaponSelected == "laser") {
 			PolygonShape shape = new PolygonShape();
 			Vector2[] vertice = new Vector2[4];
-			vertice[0] = new Vector2(3, 50).scl(1/DunGun.PPM);
+			vertice[0] = new Vector2(2, 50).scl(1/DunGun.PPM);
 			vertice[1] = new Vector2(8, 50).scl(1/DunGun.PPM);
-			vertice[2] = new Vector2(3, 10).scl(1/DunGun.PPM);
+			vertice[2] = new Vector2(2, 10).scl(1/DunGun.PPM);
 			vertice[3] = new Vector2(8, 10).scl(1/DunGun.PPM);
 			shape.set(vertice);
 			fdef.shape = shape;
@@ -116,11 +124,11 @@ public class CreateBullet extends Sprite implements Disposable{
 		
 		else {
 			if (GunSelectionScreen.weaponSelected == "laser"){
-				speed = 2f;
+				speed = .5f;
 			}
 			posX = (float) (Math.cos(angle)) * speed;
 			posY = (float) (Math.sin(angle)) * speed;
-		    angle = angle - 1.6f ;
+		    angle = angle - 1.57f ;
 			b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angle); //sets the position of the body to the position of the body and implements rotation
 		}
 		
@@ -130,7 +138,8 @@ public class CreateBullet extends Sprite implements Disposable{
 	public void renderSprite(SpriteBatch batch) {
 
 		if ( GunSelectionScreen.weaponSelected == "laser") {
-			batch.draw(laserStandingRegion, b2body.getPosition().x, b2body.getPosition().y, 2.5f / DunGun.PPM, 20 / DunGun.PPM, 5 / DunGun.PPM, 40 / DunGun.PPM, 1, 1, angle2 - 90);	
+			batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / DunGun.PPM, 45 / DunGun.PPM, 1, 1, angle2 - 90);	
+			timePassed += Gdx.graphics.getDeltaTime();
 		}
 		
 		

@@ -31,20 +31,38 @@ public class MyContactListener implements ContactListener{
 		
 		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
 			if (fa.getUserData().equals("walls") || fb.getUserData().equals("walls")) {
-				bulletsToRemove.add(fb.getBody()); // bullet
-				//bodiesToRemove.add(fb.getBody());
+				if (fa.getUserData().equals("bullets")){
+					System.out.println("fa");
+					bulletsToRemove.add(fa.getBody()); // bullet
+
+				}else if(fb.getUserData().equals("bullets")){
+					bulletsToRemove.add(fb.getBody()); // bullet
+					System.out.println("fb " +bulletsToRemove.size);
+
+				}
+
+					//bodiesToRemove.add(fb.getBody());
 			}
 		}
 		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
 			if (fa.getUserData().equals("grunt") || fb.getUserData().equals("grunt")) {
-				gruntsToRemove.add(fa.getBody()); //grunt
+				if (fa.getUserData().equals("bullets")){
+					bulletsToRemove.add(fa.getBody()); //bullet
+					}
+				}else if(fb.getUserData().equals("bullets")){
+					bulletsToRemove.add(fb.getBody()); //bullet
+				}
 				
-				bulletsToRemove.add(fb.getBody()); //bullet
+				if (fa.getUserData().equals("grunt")){
+					gruntsToRemove.add(fa.getBody()); //grunt
+				}else if(fb.getUserData().equals("grunt")){
+					gruntsToRemove.add(fb.getBody()); //bullet
+				}
+				
+				
 			}
 		}
-
-
-		}
+		
 		
 	
 
