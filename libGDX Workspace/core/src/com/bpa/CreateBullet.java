@@ -35,6 +35,8 @@ public class CreateBullet extends Sprite implements Disposable{
 	
 	private TextureAtlas laserTextureAtlas;
 	private Animation <TextureRegion> laserAnimation;
+	private TextureAtlas pelletTextureAtlas;
+	private TextureRegion pelletTextureRegion;
 
 
 	//static ArrayList<Integer> laserDestroyManager;
@@ -49,6 +51,8 @@ public class CreateBullet extends Sprite implements Disposable{
 		defineBullet();
 		laserTextureAtlas = DunGun.manager.get("sprites/player1/laserBlastAnimation.atlas", TextureAtlas.class);
 		laserAnimation = new Animation <TextureRegion>(1f/15f, laserTextureAtlas.getRegions());
+		laserTextureAtlas = DunGun.manager.get("sprites/player1/pellet.atlas", TextureAtlas.class);
+		pelletTextureRegion = laserTextureAtlas.findRegion("tile000");
 	}
 	
 	public void defineBullet() {
@@ -109,7 +113,7 @@ public class CreateBullet extends Sprite implements Disposable{
 		
 		else {
 			if (GunSelectionScreen.weaponSelected == "laser"){
-				speed = .5f;
+				speed = 2f;
 			}
 			posX = (float) (Math.cos(angle)) * speed;
 			posY = (float) (Math.sin(angle)) * speed;
@@ -121,9 +125,14 @@ public class CreateBullet extends Sprite implements Disposable{
 	}
 	
 	public void renderSprite(SpriteBatch batch) {
-
-		batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / DunGun.PPM, 45 / DunGun.PPM, 1, 1, angle2 - 90);	
-		timePassed += Gdx.graphics.getDeltaTime();
+		if (GunSelectionScreen.weaponSelected == "laser") {
+			batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / DunGun.PPM, 45 / DunGun.PPM, 1, 1, angle2 - 90);	
+			timePassed += Gdx.graphics.getDeltaTime();
+		}else if (GunSelectionScreen.weaponSelected == "shotgun") {
+			batch.draw(pelletTextureRegion, b2body.getPosition().x, b2body.getPosition().y, 0,  0, 9 / DunGun.PPM, 9 / DunGun.PPM, 1, 1, angle2 - 90);	
+			timePassed += Gdx.graphics.getDeltaTime();
+		}
+		
 		}
 	
 

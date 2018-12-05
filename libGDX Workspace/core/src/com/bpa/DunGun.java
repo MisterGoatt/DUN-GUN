@@ -53,6 +53,9 @@ public class DunGun extends Game{
 		manager.load("sound effects/laser_lance.mp3", Sound.class);
 		manager.load("sound effects/assaultRifle.mp3", Sound.class);
 		manager.load("sound effects/laserBlast3.mp3", Sound.class);
+		manager.load("sound effects/bulletImpact.mp3", Sound.class);
+		manager.load("sound effects/laserImpact.mp3", Sound.class);
+		manager.load("sound effects/pelletImpact.mp3", Sound.class);
 
 		
 		//IntroductionScreens
@@ -72,6 +75,8 @@ public class DunGun extends Game{
 		manager.load("sprites/bullet.atlas", TextureAtlas.class);
 		manager.load("sprites/bullet.png", Texture.class);
 		manager.load("sprites/player1/laserBlastAnimation.atlas", TextureAtlas.class);
+		manager.load("sprites/player1/pellet.atlas", TextureAtlas.class);
+		manager.load("sprites/player1/pellet.png", Texture.class);
 		
 		//GunSelectionScreen
 		manager.load("screens/gun_selection.jpg", Texture.class);

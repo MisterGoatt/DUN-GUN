@@ -23,13 +23,10 @@ public class Grunt extends Sprite implements Disposable{
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
-	public static Array<Grunt> grunt;
 	public int health = 100;
 	float angle2;
 	private TextureAtlas gruntAtkAnimation;
 	private TextureRegion gruntStandingRegion;
-	private static int gruntQuantity;
-	static ArrayList<Grunt> gruntManager = new ArrayList<Grunt>();
 
 		
 		public Grunt(World world) {
@@ -41,8 +38,7 @@ public class Grunt extends Sprite implements Disposable{
 		
 		public void defineGrunt() {
 			//define player body
-			grunt = new Array<Grunt>();
-			gruntManager.add(this);
+			
 			gruntAtkAnimation = DunGun.manager.get("sprites/grunt/mutantAtkAnimation.atlas", TextureAtlas.class);
 			gruntStandingRegion = gruntAtkAnimation.findRegion("tile000");
 
@@ -51,7 +47,7 @@ public class Grunt extends Sprite implements Disposable{
 			bdef.type = BodyDef.BodyType.DynamicBody;
 			//create body in the world
 			b2body = world.createBody(bdef);
-			
+			b2body.setUserData(this);
 			FixtureDef fdef = new FixtureDef();
 			CircleShape shape = new CircleShape();
 			shape.setRadius(10 / DunGun.PPM);
