@@ -25,7 +25,6 @@ public class CreateBullet extends Sprite implements Disposable{
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
 	public String id = "BULLET";
-	public static Array<CreateBullet> bullets;
 	Sprite sprite;
 	public static float angle;
 	private float speed = 10;
@@ -35,39 +34,23 @@ public class CreateBullet extends Sprite implements Disposable{
 	private float angle2;
 	
 	private TextureAtlas laserTextureAtlas;
-	private TextureRegion laserStandingRegion;
 	private Animation <TextureRegion> laserAnimation;
 	
-	static ArrayList<CreateBullet> laserManager = new ArrayList<CreateBullet>();
 
 	//static ArrayList<Integer> laserDestroyManager;
-	static int lasersToDestroy;
 	
 	//public static ArrayList gruntList;
 	
 	public CreateBullet(World world) {
 		this.world = world;
-
 		defineBullet();
-
 		laserTextureAtlas = DunGun.manager.get("sprites/player1/laserBlastAnimation.atlas", TextureAtlas.class);
 		laserAnimation = new Animation <TextureRegion>(1f/15f, laserTextureAtlas.getRegions());
-		//laserStandingRegion = laserTextureAtlas.findRegion("tile000");
-		
-		//textureAtlas = DunGun.manager.get("sprites/bullet.atlas", TextureAtlas.class);
-		//textureRegion = textureAtlas.findRegion("bullet");
-//		sprite = new Sprite(DunGun.manager.get("sprites/bullet.png", Texture.class));
-//		sprite.setOrigin((sprite.getWidth() / 2) / DunGun.PPM, (float) ((sprite.getHeight() / 2) / DunGun.PPM - .08));
-//		sprite.setSize(16 / DunGun.PPM, 16 / DunGun.PPM);
-//		sprite.setRotation(PlayerOne.angle); //!!!!!!!!!!
 	}
 	
 	public void defineBullet() {
-		bullets = new Array<CreateBullet>();
 
-		laserManager.add(this);
 		bdef.position.set(PlayerOne.p1PosX, PlayerOne.p1PosY);
-	
 		bdef.type = BodyDef.BodyType.DynamicBody;
 		b2body = world.createBody(bdef);
 		b2body.isBullet();
@@ -85,18 +68,15 @@ public class CreateBullet extends Sprite implements Disposable{
 			//shape.dispose();
 		}
 		else {
-			CircleShape shape = new CircleShape();			
-
+			CircleShape shape = new CircleShape();
 			fdef.shape = shape;
-			
 			if (GunSelectionScreen.weaponSelected == "shotgun") {
 				shape.setRadius(2 / DunGun.PPM);
 				}
 			else {
 				shape.setPosition(new Vector2(5, 7).scl(1/DunGun.PPM));
-
 				shape.setRadius(4 / DunGun.PPM);
-					}
+			}
 			//shape.dispose();
 		}
 		//Sets size of the physics bodies depending on the type of gun

@@ -16,7 +16,9 @@ public class MyContactListener implements ContactListener{
 	public static Array<Body> gruntsToRemove;
 	
 	public MyContactListener() {
+
 		bulletsToRemove = new Array<Body>();
+
 		gruntsToRemove = new Array<Body>();
 	}
 	
@@ -24,44 +26,39 @@ public class MyContactListener implements ContactListener{
 	public void beginContact(Contact contact) {
 		Fixture fa = contact.getFixtureA();
 		Fixture fb = contact.getFixtureB();
-		
 		if (fa == null || fb == null) return;
 		if (fa.getUserData() == null || fb.getUserData() == null) return;
-		
 		
 		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
 			if (fa.getUserData().equals("walls") || fb.getUserData().equals("walls")) {
 				if (fa.getUserData().equals("bullets")){
-					System.out.println("fa");
 					bulletsToRemove.add(fa.getBody()); // bullet
-
-				}else if(fb.getUserData().equals("bullets")){
+				}
+				else if(fb.getUserData().equals("bullets")){
 					bulletsToRemove.add(fb.getBody()); // bullet
-					System.out.println("fb " +bulletsToRemove.size);
 
 				}
-
-					//bodiesToRemove.add(fb.getBody());
 			}
 		}
 		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
 			if (fa.getUserData().equals("grunt") || fb.getUserData().equals("grunt")) {
 				if (fa.getUserData().equals("bullets")){
-					bulletsToRemove.add(fa.getBody()); //bullet
+					bulletsToRemove.add(fa.getBody()); //bullet4
+
 					}
-				}else if(fb.getUserData().equals("bullets")){
+				else if(fb.getUserData().equals("bullets")){
+
 					bulletsToRemove.add(fb.getBody()); //bullet
-				}
-				
+
+				}				
 				if (fa.getUserData().equals("grunt")){
 					gruntsToRemove.add(fa.getBody()); //grunt
 				}else if(fb.getUserData().equals("grunt")){
 					gruntsToRemove.add(fb.getBody()); //bullet
 				}
-				
-				
 			}
 		}
+	}
 		
 		
 	

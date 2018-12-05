@@ -238,7 +238,6 @@ public class PlayerOne extends Sprite implements Disposable{
 	    } 
 	    if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 	    	if (timeSinceLastShot <=0) {
-	    		//createBullet = new CreateBullet(world);
 	    		Level1.isShooting = true;
 	    		shootAnimation = true;
 	    		if (GunSelectionScreen.weaponSelected == "revolver") {
