@@ -64,7 +64,8 @@ public class Level1 implements Screen{
 	private boolean once = false; //makes sure the viewport on pause menu screen only changes once
 	private float waitToShootL = 0;
 	private boolean start = false;
-
+	static Array<CreateBullet> lasers = new Array<CreateBullet>();
+;
 
 	//	BitmapFont framerate; //font for frame rate display
 //	private long startTime = System.currentTimeMillis();
@@ -94,7 +95,6 @@ public class Level1 implements Screen{
 		new B2DWorldCreator(world, map);
 		
 		//framerate = DunGun.manager.get("fonts/CourierNew32.fnt", BitmapFont.class) ;
-
 		
 		gunShot = DunGun.manager.get("sound effects/pistol_shot.mp3", Sound.class);
 		rifleShot = DunGun.manager.get("sound effects/rifleShot.mp3", Sound.class);
@@ -109,11 +109,8 @@ public class Level1 implements Screen{
 		if (isShooting) {
 			//waitToShootL += 1;
 			
-			if (GunSelectionScreen.weaponSelected != "shotgun" && GunSelectionScreen.weaponSelected != "laser") {
-				createBullet = new CreateBullet(world);
-
-			}
-			else if (GunSelectionScreen.weaponSelected == "laser") {
+			
+			if (GunSelectionScreen.weaponSelected == "laser") {
 				start = true;
 				laserShot.play();
 			}
@@ -132,15 +129,20 @@ public class Level1 implements Screen{
 				shotgunShot.play();
 			}
 			else if (GunSelectionScreen.weaponSelected == "assault rifle") {
+				System.out.println("pew pew");
 				assaultRifleShot.play();
 			}
+			if (GunSelectionScreen.weaponSelected != "shotgun" && GunSelectionScreen.weaponSelected != "laser") {
+				createBullet = new CreateBullet(world);
+				
+			}
 			isShooting = false;
-
+			
 		}
 		//laser blast delay
 		if (waitToShootL >= 20){
 			createBullet = new CreateBullet(world);
-
+			lasers.add(createBullet);
 			waitToShootL = 0;
 			start = false;
 			}
@@ -152,7 +154,6 @@ public class Level1 implements Screen{
 	public void cameraUpdate(float delta) {
 		
 	
-
 		//timeStep = 60 times a second, velocity iterations = 6, position iterations = 2
 		world.step(1/60f, 6, 2); //tells game how many times per second for Box2d to make its calculations
 		
@@ -163,14 +164,21 @@ public class Level1 implements Screen{
 		//removes bullets when they collide with wall
 		for (int i = 0; i < bulletBodies.size; i ++) {
 			Body b = bulletBodies.get(i);
-			
-			if (GunSelectionScreen.weaponSelected == "laser") {
-
+			System.out.println(b);
+			System.out.println(lasers);
+		if (GunSelectionScreen.weaponSelected == "laser") {
+//				System.out.println("eyy");
+				lasers.removeValue((CreateBullet)b.getUserData(), true);
 			}
 			world.destroyBody(b);
 		}
 		
 		bulletBodies.clear(); //empties list of bodies
+		
+		
+		
+		
+		
 		//REMOVE GRUNT BODIES AND REMOVE FROM MANAGER LIST
 		for (int e = 0; e < gruntBodies.size; e ++) {
 			Body b = gruntBodies.get(e);
@@ -240,7 +248,9 @@ public class Level1 implements Screen{
                 Grunt.gruntManager.get(i).renderSprite(game.batch);
         	}
         }
-    	
+        for (int i = 0; i < lasers.size; i++) {
+        	lasers.get(i).renderSprite(game.batch);;
+        }
 
 //        if (CreateBullet.laserManager != null) {
 //	        for (int i = 0; i < CreateBullet.laserManager.size; i++) {

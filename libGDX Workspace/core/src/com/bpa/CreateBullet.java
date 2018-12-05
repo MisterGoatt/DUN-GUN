@@ -35,7 +35,7 @@ public class CreateBullet extends Sprite implements Disposable{
 	
 	private TextureAtlas laserTextureAtlas;
 	private Animation <TextureRegion> laserAnimation;
-	
+
 
 	//static ArrayList<Integer> laserDestroyManager;
 	
@@ -43,6 +43,9 @@ public class CreateBullet extends Sprite implements Disposable{
 	
 	public CreateBullet(World world) {
 		this.world = world;
+		
+
+		
 		defineBullet();
 		laserTextureAtlas = DunGun.manager.get("sprites/player1/laserBlastAnimation.atlas", TextureAtlas.class);
 		laserAnimation = new Animation <TextureRegion>(1f/15f, laserTextureAtlas.getRegions());
@@ -53,6 +56,8 @@ public class CreateBullet extends Sprite implements Disposable{
 		bdef.position.set(PlayerOne.p1PosX, PlayerOne.p1PosY);
 		bdef.type = BodyDef.BodyType.DynamicBody;
 		b2body = world.createBody(bdef);
+		b2body.setUserData(this);
+		
 		b2body.isBullet();
 		FixtureDef fdef = new FixtureDef();
 		//polygon shape for the laser
@@ -117,13 +122,11 @@ public class CreateBullet extends Sprite implements Disposable{
 	
 	public void renderSprite(SpriteBatch batch) {
 
-		if ( GunSelectionScreen.weaponSelected == "laser") {
-			batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / DunGun.PPM, 45 / DunGun.PPM, 1, 1, angle2 - 90);	
-			timePassed += Gdx.graphics.getDeltaTime();
+		batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / DunGun.PPM, 45 / DunGun.PPM, 1, 1, angle2 - 90);	
+		timePassed += Gdx.graphics.getDeltaTime();
 		}
-		
-		
-	}
+	
+
 	
 	@Override
 	public void dispose() {
