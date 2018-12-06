@@ -68,6 +68,7 @@ public class Level1 implements Screen{
 	private boolean once = false; //makes sure the viewport on pause menu screen only changes once
 	private float waitToShootL = 0;
 	private boolean start = false;
+	public static boolean axeSwinging = false;
 	public static boolean bulletImpact = false;
 	//arrays of different game objects
 	static Array<CreateBullet> lasers = new Array<CreateBullet>();
@@ -133,13 +134,13 @@ public class Level1 implements Screen{
 			
 			if (GunSelectionScreen.weaponSelected == "laser") {
 				start = true;
-				long lsId = laserShot.play(.7f);
+				long lsId = laserShot.play(.5f);
 			}
 			else if (GunSelectionScreen.weaponSelected == "revolver") {
-				long gsId = gunShot.play(.7f);
+				long gsId = gunShot.play(.5f);
 			}
 			else if (GunSelectionScreen.weaponSelected == "rifle") {
-				long rsId = rifleShot.play(.7f);
+				long rsId = rifleShot.play(.5f);
 			}
 
 			else if (GunSelectionScreen.weaponSelected == "shotgun") {
@@ -151,12 +152,13 @@ public class Level1 implements Screen{
 				shotgunShot.play();
 			}
 			else if (GunSelectionScreen.weaponSelected == "assault rifle") {
-				System.out.println("hello");
-				long arsId = assaultRifleShot.play(.7f);
+				long arsId = assaultRifleShot.play(.5f);
 			}
 			else if (GunSelectionScreen.weaponSelected == "battle axe"){
-				System.out.println("he");
+				createBullet = new CreateBullet(world);
 				long baId = axeSwing.play(.7f);
+				axeSwinging = true;
+				
 				
 			}
 			
@@ -264,17 +266,21 @@ public class Level1 implements Screen{
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && gamePaused) {
 			gamePaused = false;
 		}
-			
+		//GAME NOT PAUSED!!
 		if (!gamePaused) { 
 			cameraUpdate(delta);
 			playerOne.handleInput(delta);
 			mapRenderer.render();
-	        //b2dr.render(world, cam.combined); //renders the Box2d world
+	        //b2dr.render(world, cam.combined);
         }
 		//mapRenderer.render(layerBackround); //renders layer in Tiled that p1 covers		
         
         game.batch.begin(); //starts sprite spriteBatch
-    	
+    	if (axeSwinging) {
+    		
+    		createBullet.renderSprite(game.batch);
+    	}
+        
         //RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER GAME OBJECTS
         for (int i = 0; i < grunts.size; i++) {
     		//grunt.renderSprite(game.batch);

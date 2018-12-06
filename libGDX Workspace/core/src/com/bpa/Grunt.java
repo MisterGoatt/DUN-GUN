@@ -56,7 +56,7 @@ public class Grunt extends Sprite implements Disposable{
 			fdef.filter.categoryBits = DunGun.GRUNT;
 			fdef.filter.maskBits = DunGun.WALL | DunGun.BULLET;
 			b2body.createFixture(fdef).setUserData("grunt");;
-			
+		 
 			shape.dispose();
 		}
 		

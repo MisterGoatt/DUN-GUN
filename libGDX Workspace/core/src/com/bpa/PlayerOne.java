@@ -220,7 +220,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	    else if (GunSelectionScreen.weaponSelected == "battle axe") {
 	    	speed = 3f;
 	    	if (shootAnimation) {
-				batch.draw(axeSwingAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 35 / DunGun.PPM, 30 / DunGun.PPM, 70 / DunGun.PPM, 70 / DunGun.PPM, 1, 1, angle);
+				batch.draw(axeSwingAnimation.getKeyFrame(timePassed), posX - .35f, posY - .3f, 35 / DunGun.PPM, 30 / DunGun.PPM, 70 / DunGun.PPM, 70 / DunGun.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
 		
 				if(axeSwingAnimation.isAnimationFinished(timePassed)) {
@@ -228,7 +228,8 @@ public class PlayerOne extends Sprite implements Disposable{
 					timePassed = 0;
 				}
 			}else {
-				batch.draw(axeStandingRegion, posX - .2f, posY - .2f, 35 / DunGun.PPM, 30 / DunGun.PPM, 70 / DunGun.PPM, 70 / DunGun.PPM, 1, 1, angle);
+				batch.draw(axeStandingRegion, posX - .35f, posY - .3f, 35 / DunGun.PPM, 30 / DunGun.PPM, 70 / DunGun.PPM, 70 / DunGun.PPM, 1, 1, angle);
+				Level1.axeSwinging = false;
 			}
 	    
 	    }

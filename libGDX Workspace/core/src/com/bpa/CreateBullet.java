@@ -70,7 +70,6 @@ public class CreateBullet extends Sprite implements Disposable{
 		b2body = world.createBody(bdef);
 		b2body.setUserData(this);
 		
-		b2body.isBullet();
 		FixtureDef fdef = new FixtureDef();
 		//polygon shape for the laser
 		if (GunSelectionScreen.weaponSelected == "laser") {
@@ -83,6 +82,17 @@ public class CreateBullet extends Sprite implements Disposable{
 			shape.set(vertice);
 			fdef.shape = shape;
 			//shape.dispose();
+		}
+		//polygon shape for battle axe
+		else if(GunSelectionScreen.weaponSelected == "battle axe") {
+			PolygonShape shape = new PolygonShape();
+			Vector2[] vertice = new Vector2[4];
+			vertice[0] = new Vector2(-15, 30).scl(1/DunGun.PPM);
+			vertice[1] = new Vector2(15, 30).scl(1/DunGun.PPM);
+			vertice[2] = new Vector2(-15, 10).scl(1/DunGun.PPM);
+			vertice[3] = new Vector2(15, 10).scl(1/DunGun.PPM);
+			shape.set(vertice);
+			fdef.shape = shape;
 		}
 		else {
 			CircleShape shape = new CircleShape();
@@ -118,21 +128,27 @@ public class CreateBullet extends Sprite implements Disposable{
 			posX = (float) (Math.cos(angle)) * speedVary;
 			posY = (float) (Math.sin(angle)) * speedVary;
 		}
-		
+
 		else {
 			if (GunSelectionScreen.weaponSelected == "laser"){
 				speed = 2f;
 			}
+
 			posX = (float) (Math.cos(angle)) * speed;
 			posY = (float) (Math.sin(angle)) * speed;
 		    angle = angle - 1.57f ;
 			b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angle); //sets the position of the body to the position of the body and implements rotation
 		}
-		
-		b2body.applyLinearImpulse(posX, posY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);
+		if (GunSelectionScreen.weaponSelected != "battle axe") {
+			b2body.applyLinearImpulse(posX, posY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);
+		}
 	}
-	
+	//Render all of the textures for bullets and lasers
 	public void renderSprite(SpriteBatch batch) {
+		float differenceX = Level1.mousePosition.x - b2body.getPosition().x;
+		float differenceY = Level1.mousePosition.y - b2body.getPosition().y;
+		angle = MathUtils.atan2(differenceY, differenceX);
+
 		if (GunSelectionScreen.weaponSelected == "laser") {
 			batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / DunGun.PPM, 45 / DunGun.PPM, 1, 1, angle2 - 90);	
 			timePassed += Gdx.graphics.getDeltaTime();
@@ -140,12 +156,16 @@ public class CreateBullet extends Sprite implements Disposable{
 			batch.draw(pelletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 9 / DunGun.PPM, 9 / DunGun.PPM, 1, 1, angle2 - 90);	
 			timePassed += Gdx.graphics.getDeltaTime();
 		}
+		//all the gun powder weapons
 		else if (GunSelectionScreen.weaponSelected != "shotgun" && GunSelectionScreen.weaponSelected != "laser" && GunSelectionScreen.weaponSelected != "battle axe" ) {
 			batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 5 / DunGun.PPM, 20 / DunGun.PPM, 1, 1, angle2 - 90);	
 			timePassed += Gdx.graphics.getDeltaTime();
 		}
-		
+		else if (GunSelectionScreen.weaponSelected == "battle axe"){
+			b2body.setTransform(PlayerOne.p1PosX, PlayerOne.p1PosY, angle - 1.57f); //sets the position of the body to the position of the body and implements rotation
+			System.out.println("swinging");
 		}
+	}
 	
 
 	
