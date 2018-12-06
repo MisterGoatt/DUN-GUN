@@ -30,18 +30,24 @@ public class PlayerOne extends Sprite implements Disposable{
 	private TextureAtlas shotgunTextureAtlas;
 	private TextureAtlas assaultRifleTextureAtlas;
 	private TextureAtlas laserTextureAtlas;
+	private TextureAtlas axeSwingTextureAtlas;
+
 
 	private Animation <TextureRegion> revolverAnimation;
 	private Animation <TextureRegion> rifleAnimation;
 	private Animation <TextureRegion> shotgunAnimation;
 	private Animation <TextureRegion> assaultRifleAnimation;
 	private Animation <TextureRegion> laserAnimation;
+	private Animation <TextureRegion> axeSwingAnimation;
 
+	
 	private TextureRegion revolverStandingRegion;
 	private TextureRegion rifleStandingRegion;
 	private TextureRegion shotgunStandingRegion;
 	private TextureRegion assaultRifleStandingRegion;
 	private TextureRegion laserStandingRegion;
+	private TextureRegion axeStandingRegion;
+
 	private Sound runningSound; //sound effect of the player's movement
 	private float timePassed = 0;
 	private float timeSinceLastShot = 60f; 
@@ -64,6 +70,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		this.world = world;
 		definePlayer();
 		
+		//Getting the assets for 
 		revolverTextureAtlas = DunGun.manager.get("sprites/player1/playerRevolver.atlas", TextureAtlas.class);
 		revolverAnimation = new Animation <TextureRegion>(1f/15f, revolverTextureAtlas.getRegions());
 		revolverStandingRegion = revolverTextureAtlas.findRegion("tile000");
@@ -83,6 +90,10 @@ public class PlayerOne extends Sprite implements Disposable{
 		laserTextureAtlas = DunGun.manager.get("sprites/player1/laserAnimation.atlas", TextureAtlas.class);
 		laserAnimation = new Animation <TextureRegion>(1f/15f, laserTextureAtlas.getRegions());
 		laserStandingRegion = laserTextureAtlas.findRegion("tile000");
+		
+		axeSwingTextureAtlas = DunGun.manager.get("sprites/player1/axeSwingAnimation.atlas", TextureAtlas.class);
+		axeSwingAnimation = new Animation <TextureRegion>(1f/15f, axeSwingTextureAtlas.getRegions());
+		axeStandingRegion = axeSwingTextureAtlas.findRegion("tile000");
 		
 		runningSound = Gdx.audio.newSound(Gdx.files.internal("sound effects/running.mp3"));
 	}
@@ -129,7 +140,8 @@ public class PlayerOne extends Sprite implements Disposable{
 	    //b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
 	    //revolver
 	    if (GunSelectionScreen.weaponSelected == "revolver") {
-		    if (shootAnimation) {
+		    speed = 2.5f;
+	    	if (shootAnimation) {
 				batch.draw(revolverAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
 		
@@ -143,6 +155,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		    }
 	    //BoltAction Rifle
 	    else if (GunSelectionScreen.weaponSelected == "rifle") {
+	    	speed = 2f;
 	    	if (shootAnimation) {
 				batch.draw(rifleAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
@@ -157,6 +170,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	    }
 	    //Shotgun
 	    else if (GunSelectionScreen.weaponSelected == "shotgun") {
+	    	speed = 1.7f;
 	    	if (shootAnimation) {
 				batch.draw(shotgunAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
@@ -168,9 +182,11 @@ public class PlayerOne extends Sprite implements Disposable{
 			}else {
 				batch.draw(shotgunStandingRegion, posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
 			}
+	    
 	    }
 	    //Assault Rifle
 	    else if (GunSelectionScreen.weaponSelected == "assault rifle") {
+	    	speed = 1.5f;
 	    	if (shootAnimation) {
 				batch.draw(assaultRifleAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
@@ -186,7 +202,8 @@ public class PlayerOne extends Sprite implements Disposable{
 	    	
 	    //Laser
 		else if (GunSelectionScreen.weaponSelected == "laser") {
-		    	if (shootAnimation) {
+		    speed = 1f;	
+			if (shootAnimation) {
 					batch.draw(laserAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
 					timePassed += Gdx.graphics.getDeltaTime();
 			
@@ -197,6 +214,23 @@ public class PlayerOne extends Sprite implements Disposable{
 		    	}else {
 		    		batch.draw(laserStandingRegion,posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle );
 		    	}
+	    }
+	    
+	    //battle axe
+	    else if (GunSelectionScreen.weaponSelected == "battle axe") {
+	    	speed = 3f;
+	    	if (shootAnimation) {
+				batch.draw(axeSwingAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 35 / DunGun.PPM, 30 / DunGun.PPM, 70 / DunGun.PPM, 70 / DunGun.PPM, 1, 1, angle);
+				timePassed += Gdx.graphics.getDeltaTime();
+		
+				if(axeSwingAnimation.isAnimationFinished(timePassed)) {
+					shootAnimation = false;
+					timePassed = 0;
+				}
+			}else {
+				batch.draw(axeStandingRegion, posX - .2f, posY - .2f, 35 / DunGun.PPM, 30 / DunGun.PPM, 70 / DunGun.PPM, 70 / DunGun.PPM, 1, 1, angle);
+			}
+	    
 	    }
 	}
 	
@@ -209,10 +243,6 @@ public class PlayerOne extends Sprite implements Disposable{
 		timeSinceLastShot -= 1f;
 		
 		this.b2body.setLinearVelocity(0, 0);
-
-		if (GunSelectionScreen.weaponSelected == "laser") {
-			speed = 1.5f;
-		}
 		
 		if(Gdx.input.isKeyPressed(Input.Keys.W)){
 	        this.b2body.setLinearVelocity(0f, speed);
@@ -250,6 +280,8 @@ public class PlayerOne extends Sprite implements Disposable{
 	    			timeSinceLastShot = 20;
 	    		}else if (GunSelectionScreen.weaponSelected == "laser") {
 	    			timeSinceLastShot = 80;
+	    		}else if (GunSelectionScreen.weaponSelected == "battle axe") {
+	    			timeSinceLastShot = 120;
 	    		}
 	    		//timeSinceLastShot = shootDelay; //reset timeSinceLast Shot
 	    	}

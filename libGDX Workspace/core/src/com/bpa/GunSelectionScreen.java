@@ -52,8 +52,6 @@ public class GunSelectionScreen implements Screen{
 		
 		cam.unproject(mouse_position); //gets mouse coordinates within viewport
 		
-		//System.out.println(Gdx.input.getX());
-		
 	    if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && wait >= 30) {
 	    	//REVOLVER 
 	    	if (mouse_position.x > 785 && mouse_position.x < 1090 && mouse_position.y > 512 && mouse_position.y < 615) {
@@ -80,6 +78,11 @@ public class GunSelectionScreen implements Screen{
 	    	//Laser
 	    	if (mouse_position.x > 785 && mouse_position.x < 1090 && mouse_position.y > 380 && mouse_position.y < 487) {
 	    		weaponSelected = "laser";
+				game.setScreen(new Level1(game));
+	    	}
+	    	//Battle axe
+	    	if (mouse_position.x > 785 && mouse_position.x < 1090 && mouse_position.y > 248 && mouse_position.y < 365) {
+	    		weaponSelected = "battle axe";
 				game.setScreen(new Level1(game));
 	    	}
 				

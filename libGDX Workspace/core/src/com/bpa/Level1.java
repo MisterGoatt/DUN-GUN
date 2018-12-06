@@ -60,6 +60,7 @@ public class Level1 implements Screen{
 	private Sound bulletHitWall;
 	private Sound laserHitWall;
 	private Sound pelletHitWall;
+	private Sound axeSwing;
 	private Texture mouseCursor;
 	private boolean lockCursor = true;
 	private Texture pauseMenu;
@@ -72,6 +73,7 @@ public class Level1 implements Screen{
 	static Array<CreateBullet> lasers = new Array<CreateBullet>();
 	static Array<Grunt> grunts = new Array<Grunt>();
 	static Array<CreateBullet> pellets = new Array<CreateBullet>();
+	static Array<CreateBullet> bullets = new Array<CreateBullet>();
 
 
 	//	BitmapFont framerate; //font for frame rate display
@@ -80,7 +82,7 @@ public class Level1 implements Screen{
 	
 	public Level1(final DunGun game) {
 		this.game = game;
-
+		
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(DunGun.V_WIDTH / DunGun.PPM, DunGun.V_HEIGHT / DunGun.PPM, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
@@ -97,6 +99,13 @@ public class Level1 implements Screen{
 		world = new World(new Vector2(0, 0), true); // no gravity and yes we want to sleep objects (won't calculate simulations for bodies at rest)
 		b2dr = new Box2DDebugRenderer();
 		playerOne = new PlayerOne(world); //must be created after world creation or will crash
+		
+		//
+		grunts.clear();
+		pellets.clear();
+		lasers.clear();
+		bullets.clear();
+		
 		grunt = new Grunt(world);
 		grunts.add(grunt);
 
@@ -112,10 +121,11 @@ public class Level1 implements Screen{
 		bulletHitWall = DunGun.manager.get("sound effects/bulletImpact.mp3", Sound.class);
 		laserHitWall = DunGun.manager.get("sound effects/laserImpact.mp3", Sound.class);
 		pelletHitWall = DunGun.manager.get("sound effects/pelletImpact.mp3", Sound.class);
+		axeSwing = DunGun.manager.get("sound effects/axeSwing.mp3", Sound.class);
 		pauseMenu = DunGun.manager.get("screens/Pause.jpg", Texture.class);
 		this.world.setContactListener(new MyContactListener());
 	}
-	
+	//Creation of bullet objects and playing shooting and swinging sound effects
 	public void shootGun() {
 		if (isShooting) {
 			//waitToShootL += 1;
@@ -141,12 +151,18 @@ public class Level1 implements Screen{
 				shotgunShot.play();
 			}
 			else if (GunSelectionScreen.weaponSelected == "assault rifle") {
-				System.out.println("pew pew");
+				System.out.println("hello");
 				long arsId = assaultRifleShot.play(.7f);
 			}
-			if (GunSelectionScreen.weaponSelected != "shotgun" && GunSelectionScreen.weaponSelected != "laser") {
-				createBullet = new CreateBullet(world);
+			else if (GunSelectionScreen.weaponSelected == "battle axe"){
+				System.out.println("he");
+				long baId = axeSwing.play(.7f);
 				
+			}
+			
+			if (GunSelectionScreen.weaponSelected != "shotgun" && GunSelectionScreen.weaponSelected != "laser"  && GunSelectionScreen.weaponSelected != "battle axe") {
+				createBullet = new CreateBullet(world);
+				bullets.add(createBullet);
 			}
 			isShooting = false;
 			
@@ -176,13 +192,12 @@ public class Level1 implements Screen{
 		//removes bullets when they collide with wall
 		for (int i = 0; i < bulletBodies.size; i ++) {
 			Body b = bulletBodies.get(i);
-			System.out.println(b);
 			if (GunSelectionScreen.weaponSelected == "rifle" || GunSelectionScreen.weaponSelected == "revolver" 
 					|| GunSelectionScreen.weaponSelected == "assault rifle") {
-				long bhwId = bulletHitWall.play(.1f);				
+				long bhwId = bulletHitWall.play(.1f);
+				bullets.removeValue((CreateBullet)b.getUserData(), true);
 			}
 			if (GunSelectionScreen.weaponSelected == "laser") {
-//			System.out.println("eyy");
 				lasers.removeValue((CreateBullet)b.getUserData(), true);
 				laserHitWall.play();
 			}
@@ -201,9 +216,9 @@ public class Level1 implements Screen{
 		
 		//REMOVE GRUNT BODIES AND REMOVE FROM MANAGER LIST
 		for (int e = 0; e < gruntBodies.size; e ++) {
-			Body b = gruntBodies.get(e);
-			grunts.removeValue((Grunt) b.getUserData(), true);
-			world.destroyBody(b);
+			Body g = gruntBodies.get(e);
+			grunts.removeValue((Grunt) g.getUserData(), true);
+			world.destroyBody(g);
 		}
 	
 		gruntBodies.clear();
@@ -272,6 +287,9 @@ public class Level1 implements Screen{
         for (int i = 0; i < pellets.size; i++) {
         	pellets.get(i).renderSprite(game.batch);
         }
+        for (int i = 0; i < bullets.size; i++) {
+        	bullets.get(i).renderSprite(game.batch);
+        }
 
 //        if (CreateBullet.laserManager != null) {
 //	        for (int i = 0; i < CreateBullet.laserManager.size; i++) {
@@ -312,7 +330,6 @@ public class Level1 implements Screen{
         }
         if (!gamePaused) {
             shootGun(); //sees if gun is shooting
-
         	playerOne.renderSprite(game.batch);
         	game.batch.draw(mouseCursor, Level1.mousePosition.x - .05f, Level1.mousePosition.y - .05f, 13 / DunGun.PPM, 13 / DunGun.PPM);
         	mapRenderer.setView(cam);

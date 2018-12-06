@@ -47,7 +47,6 @@ public class MyContactListener implements ContactListener{
 
 					}
 				else if(fb.getUserData().equals("bullets")){
-
 					bulletsToRemove.add(fb.getBody()); //bullet
 
 				}				

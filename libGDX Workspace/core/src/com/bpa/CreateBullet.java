@@ -36,6 +36,10 @@ public class CreateBullet extends Sprite implements Disposable{
 	private TextureAtlas laserTextureAtlas;
 	private Animation <TextureRegion> laserAnimation;
 	private TextureAtlas pelletTextureAtlas;
+	private Animation <TextureRegion> pelletAnimation;
+	private TextureAtlas bulletTextureAtlas;
+	private Animation <TextureRegion> bulletAnimation;
+
 	private TextureRegion pelletTextureRegion;
 
 
@@ -52,8 +56,12 @@ public class CreateBullet extends Sprite implements Disposable{
 		laserTextureAtlas = DunGun.manager.get("sprites/player1/laserBlastAnimation.atlas", TextureAtlas.class);
 		laserAnimation = new Animation <TextureRegion>(1f/15f, laserTextureAtlas.getRegions());
 		laserTextureAtlas = DunGun.manager.get("sprites/player1/pellet.atlas", TextureAtlas.class);
+		pelletTextureAtlas = DunGun.manager.get("sprites/player1/pellet.atlas", TextureAtlas.class);
+		pelletAnimation = new Animation <TextureRegion>(1f / 15f, pelletTextureAtlas.getRegions());
 		pelletTextureRegion = laserTextureAtlas.findRegion("tile000");
-	}
+		bulletTextureAtlas = DunGun.manager.get("sprites/player1/bulletAnimation.atlas", TextureAtlas.class);
+		bulletAnimation = new Animation <TextureRegion>(1f / 15f, bulletTextureAtlas.getRegions());
+		}
 	
 	public void defineBullet() {
 
@@ -129,7 +137,11 @@ public class CreateBullet extends Sprite implements Disposable{
 			batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / DunGun.PPM, 45 / DunGun.PPM, 1, 1, angle2 - 90);	
 			timePassed += Gdx.graphics.getDeltaTime();
 		}else if (GunSelectionScreen.weaponSelected == "shotgun") {
-			batch.draw(pelletTextureRegion, b2body.getPosition().x, b2body.getPosition().y, 0,  0, 9 / DunGun.PPM, 9 / DunGun.PPM, 1, 1, angle2 - 90);	
+			batch.draw(pelletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 9 / DunGun.PPM, 9 / DunGun.PPM, 1, 1, angle2 - 90);	
+			timePassed += Gdx.graphics.getDeltaTime();
+		}
+		else if (GunSelectionScreen.weaponSelected != "shotgun" && GunSelectionScreen.weaponSelected != "laser" && GunSelectionScreen.weaponSelected != "battle axe" ) {
+			batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 5 / DunGun.PPM, 20 / DunGun.PPM, 1, 1, angle2 - 90);	
 			timePassed += Gdx.graphics.getDeltaTime();
 		}
 		
@@ -140,5 +152,6 @@ public class CreateBullet extends Sprite implements Disposable{
 	@Override
 	public void dispose() {
 		laserTextureAtlas.dispose();
+		pelletTextureAtlas.dispose();
 	}
 }
