@@ -27,7 +27,7 @@ public class CreateBullet extends Sprite implements Disposable{
 	public String id = "BULLET";
 	Sprite sprite;
 	public static float angle;
-	private float speed = 10;
+	private float speed = 2;
 	private float posX;
 	private float posY;
 	private float timePassed = 0;
@@ -64,7 +64,6 @@ public class CreateBullet extends Sprite implements Disposable{
 		}
 	
 	public void defineBullet() {
-
 		bdef.position.set(PlayerOne.p1PosX, PlayerOne.p1PosY);
 		bdef.type = BodyDef.BodyType.DynamicBody;
 		b2body = world.createBody(bdef);
@@ -163,7 +162,7 @@ public class CreateBullet extends Sprite implements Disposable{
 		}
 		else if (GunSelectionScreen.weaponSelected == "battle axe"){
 			b2body.setTransform(PlayerOne.p1PosX, PlayerOne.p1PosY, angle - 1.57f); //sets the position of the body to the position of the body and implements rotation
-			System.out.println("swinging");
+
 		}
 	}
 	

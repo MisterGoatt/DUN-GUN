@@ -63,8 +63,8 @@ public class PlayerOne extends Sprite implements Disposable{
 	public static int assaultRifleDamage = 15;
 	public static int laserLanceDamage = 100;
 	public static int battleAxeDamage = 175;
-	
 	private boolean shootAnimation = false;
+	public static boolean axeBodyRemoval = false;
 	
 	public PlayerOne(World world) {
 		this.world = world;
@@ -215,7 +215,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		    		batch.draw(laserStandingRegion,posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle );
 		    	}
 	    }
-	    
+	   
 	    //battle axe
 	    else if (GunSelectionScreen.weaponSelected == "battle axe") {
 	    	speed = 3f;
@@ -226,10 +226,13 @@ public class PlayerOne extends Sprite implements Disposable{
 				if(axeSwingAnimation.isAnimationFinished(timePassed)) {
 					shootAnimation = false;
 					timePassed = 0;
+					axeBodyRemoval = true;
+
 				}
 			}else {
 				batch.draw(axeStandingRegion, posX - .35f, posY - .3f, 35 / DunGun.PPM, 30 / DunGun.PPM, 70 / DunGun.PPM, 70 / DunGun.PPM, 1, 1, angle);
 				Level1.axeSwinging = false;
+				
 			}
 	    
 	    }

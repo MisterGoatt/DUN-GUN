@@ -31,7 +31,7 @@ public class DunGun extends Game{
 		batch = new SpriteBatch();
 
 		manager = new AssetManager();
-		
+	
 		//PlayerOne
 		manager.load("sprites/player1/playerRevolver.atlas", TextureAtlas.class);
 		manager.load("sprites/player1/rifleAnimation.atlas", TextureAtlas.class);
@@ -40,12 +40,10 @@ public class DunGun extends Game{
 		manager.load("sprites/player1/laserAnimation.atlas", TextureAtlas.class);
 		manager.load("sprites/player1/axeSwingAnimation.atlas", TextureAtlas.class);
 		manager.load("sound effects/running.mp3", Sound.class);
-
 		
 		//Level1
 		manager.load("crosshair 1.png", Texture.class);
-		manager.load("screens/Pause.jpg", Texture.class);
-		
+		manager.load("screens/Pause.jpg", Texture.class);	
 		
 		//Gun sound effects
 		manager.load("sound effects/pistol_shot.mp3", Sound.class);

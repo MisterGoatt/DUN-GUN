@@ -63,7 +63,6 @@ public class GunSelectionScreen implements Screen{
 	    	else if (mouse_position.x > 418 && mouse_position.x < 720 && mouse_position.y > 380 && mouse_position.y < 480) {
 	    		weaponSelected = "rifle";
 				game.setScreen(new Level1(game));
-
 	    	}
 	    	//Assault rifle
 	    	else if (mouse_position.x > 418 && mouse_position.x < 720 && mouse_position.y > 520 && mouse_position.y < 619) {

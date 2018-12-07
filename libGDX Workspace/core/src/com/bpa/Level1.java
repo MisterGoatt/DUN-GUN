@@ -76,7 +76,6 @@ public class Level1 implements Screen{
 	static Array<CreateBullet> pellets = new Array<CreateBullet>();
 	static Array<CreateBullet> bullets = new Array<CreateBullet>();
 
-
 	//	BitmapFont framerate; //font for frame rate display
 //	private long startTime = System.currentTimeMillis();
 //	private long counter;
@@ -87,7 +86,7 @@ public class Level1 implements Screen{
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(DunGun.V_WIDTH / DunGun.PPM, DunGun.V_HEIGHT / DunGun.PPM, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-		cam.zoom -= .50;
+		//cam.zoom -= .50;
 		
 		TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
 		params.textureMinFilter = TextureFilter.Linear;
@@ -155,14 +154,13 @@ public class Level1 implements Screen{
 				long arsId = assaultRifleShot.play(.5f);
 			}
 			else if (GunSelectionScreen.weaponSelected == "battle axe"){
-				createBullet = new CreateBullet(world);
 				long baId = axeSwing.play(.7f);
 				axeSwinging = true;
 				
 				
 			}
 			
-			if (GunSelectionScreen.weaponSelected != "shotgun" && GunSelectionScreen.weaponSelected != "laser"  && GunSelectionScreen.weaponSelected != "battle axe") {
+			if (GunSelectionScreen.weaponSelected != "shotgun" && GunSelectionScreen.weaponSelected != "laser") {
 				createBullet = new CreateBullet(world);
 				bullets.add(createBullet);
 			}
@@ -186,16 +184,16 @@ public class Level1 implements Screen{
 	
 		//timeStep = 60 times a second, velocity iterations = 6, position iterations = 2
 		world.step(1/60f, 6, 2); //tells game how many times per second for Box2d to make its calculations
-		
+		 
 		//remove bullets
-
+		
 		Array<Body> bulletBodies = MyContactListener.bulletsToRemove;
 		Array<Body> gruntBodies = MyContactListener.gruntsToRemove;
 		//removes bullets when they collide with wall
 		for (int i = 0; i < bulletBodies.size; i ++) {
 			Body b = bulletBodies.get(i);
 			if (GunSelectionScreen.weaponSelected == "rifle" || GunSelectionScreen.weaponSelected == "revolver" 
-					|| GunSelectionScreen.weaponSelected == "assault rifle") {
+					|| GunSelectionScreen.weaponSelected == "assault rifle" ) {
 				long bhwId = bulletHitWall.play(.1f);
 				bullets.removeValue((CreateBullet)b.getUserData(), true);
 			}
@@ -208,6 +206,14 @@ public class Level1 implements Screen{
 				long phwId = pelletHitWall.play(.1f);
 			}
 			world.destroyBody(b);
+
+		}
+		
+		if (GunSelectionScreen.weaponSelected == "battle axe" && PlayerOne.axeBodyRemoval) {
+			System.out.println("uh what");
+			System.out.println(PlayerOne.axeBodyRemoval);
+			world.destroyBody(createBullet.b2body);
+			PlayerOne.axeBodyRemoval = false;
 		}
 		
 		bulletBodies.clear(); //empties list of bodies
@@ -271,7 +277,7 @@ public class Level1 implements Screen{
 			cameraUpdate(delta);
 			playerOne.handleInput(delta);
 			mapRenderer.render();
-	        //b2dr.render(world, cam.combined);
+	        b2dr.render(world, cam.combined);
         }
 		//mapRenderer.render(layerBackround); //renders layer in Tiled that p1 covers		
         
@@ -282,7 +288,7 @@ public class Level1 implements Screen{
     	}
         
         //RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER GAME OBJECTS
-        for (int i = 0; i < grunts.size; i++) {
+        /*for (int i = 0; i < grunts.size; i++) {
     		//grunt.renderSprite(game.batch);
             grunts.get(i).renderSprite(game.batch);
     	}
@@ -295,14 +301,7 @@ public class Level1 implements Screen{
         }
         for (int i = 0; i < bullets.size; i++) {
         	bullets.get(i).renderSprite(game.batch);
-        }
-
-//        if (CreateBullet.laserManager != null) {
-//	        for (int i = 0; i < CreateBullet.laserManager.size; i++) {
-//	            CreateBullet.laserManager.get(i).renderSprite(game.batch);
-//	    	}
-//    	}
-        
+        }*/
         
        //GAME IS PAUSED*******************
         if (gamePaused) {
