@@ -30,10 +30,10 @@ public class IntroductionScreens implements Screen{
 		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 		
-		publisherScreen = new Texture("screens/ctm_placeholder.jpg");
-		creditScreen = new Texture("screens/credits_placeholder.jpg");
-		titleScreen = new Texture("screens/titleScreen.jpg");
-		musicScreen = new Texture("screens/musicScreen.jpg");
+		publisherScreen = DunGun.manager.get("screens/ctm_placeholder.jpg");
+		creditScreen = DunGun.manager.get("screens/credits_placeholder.jpg");
+		titleScreen = DunGun.manager.get("screens/titleScreen.jpg");
+		musicScreen = DunGun.manager.get("screens/musicScreen.jpg");
 	
 	}
  

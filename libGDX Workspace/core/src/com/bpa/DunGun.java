@@ -58,6 +58,9 @@ public class DunGun extends Game{
 		manager.load("sound effects/pelletImpact.mp3", Sound.class);
 		manager.load("sound effects/axeSwing.mp3", Sound.class);
 
+		//Credit Screen
+		manager.load("screens/ScrollingC.jpg", Texture.class);
+		manager.load("music/creditsSong.mp3", Music.class);
 
 		
 		//IntroductionScreens

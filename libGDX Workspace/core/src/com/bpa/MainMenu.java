@@ -31,10 +31,10 @@ public class MainMenu implements Screen{
 	private Viewport gamePort;
 	private OrthographicCamera cam;
 	private boolean mStart = false;
-	Music themeMusic = DunGun.manager.get("music/Dun-Gun2.mp3", Music.class);
+	static Music themeMusic = DunGun.manager.get("music/Dun-Gun2.mp3", Music.class);
 	private Vector3 mouse_position = new Vector3(0, 0, 0);
 	private int wait = 0;
-
+	static boolean alreadyPlaying = false;
 
 	
 	public MainMenu(final DunGun game) {
@@ -54,7 +54,8 @@ public class MainMenu implements Screen{
 	
 	public void music(boolean mStart) {
 		themeMusic.setLooping(true);
-		themeMusic.play();		
+		themeMusic.play();
+		alreadyPlaying = true;
 	}
 	
 	@Override
@@ -78,8 +79,11 @@ public class MainMenu implements Screen{
 		float mY = mouse_position.y;
 		
 		//MUSIC START
-		mStart = true;
-		music(mStart);
+		if (!alreadyPlaying) {
+			mStart = true;
+			music(mStart);
+		}
+		
 		game.batch.draw(mainMenuScreen, 0, 0); // draw background screen
 		if (wait < 11) {
 			wait += 1;
@@ -91,7 +95,6 @@ public class MainMenu implements Screen{
 					menuTextRed.draw(game.batch, "start", 710, 560);
 	
 					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-						themeMusic.stop();
 						game.setScreen(new GunSelectionScreen(game));
 					
 					}}else {

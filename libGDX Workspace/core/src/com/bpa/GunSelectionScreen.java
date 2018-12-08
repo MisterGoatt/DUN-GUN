@@ -56,39 +56,50 @@ public class GunSelectionScreen implements Screen{
 	    	//REVOLVER 
 	    	if (mouse_position.x > 785 && mouse_position.x < 1090 && mouse_position.y > 512 && mouse_position.y < 615) {
 	    		weaponSelected = "revolver";
-				game.setScreen(new Level1(game));
+				MainMenu.themeMusic.stop();	
+	    		game.setScreen(new Level1(game));
 
 	    	}
 	    	//bolt-action rifle
 	    	else if (mouse_position.x > 418 && mouse_position.x < 720 && mouse_position.y > 380 && mouse_position.y < 480) {
 	    		weaponSelected = "rifle";
-				game.setScreen(new Level1(game));
+				MainMenu.themeMusic.stop();	
+
+	    		game.setScreen(new Level1(game));
 	    	}
 	    	//Assault rifle
 	    	else if (mouse_position.x > 418 && mouse_position.x < 720 && mouse_position.y > 520 && mouse_position.y < 619) {
 	    		weaponSelected = "assault rifle";
-				game.setScreen(new Level1(game));
+				MainMenu.themeMusic.stop();	
+
+	    		game.setScreen(new Level1(game));
 	    	}
 	    	//shotgun
 	    	else if ((mouse_position.x > 418 && mouse_position.x < 720 && mouse_position.y > 247 && mouse_position.y < 350)) {
 	    		weaponSelected = "shotgun";
+				MainMenu.themeMusic.stop();	
+
 	    		game.setScreen(new Level1(game));
 	    	}
 	    	//Laser
 	    	if (mouse_position.x > 785 && mouse_position.x < 1090 && mouse_position.y > 380 && mouse_position.y < 487) {
 	    		weaponSelected = "laser";
-				game.setScreen(new Level1(game));
+				MainMenu.themeMusic.stop();	
+
+	    		game.setScreen(new Level1(game));
 	    	}
 	    	//Battle axe
 	    	if (mouse_position.x > 785 && mouse_position.x < 1090 && mouse_position.y > 248 && mouse_position.y < 365) {
 	    		weaponSelected = "battle axe";
-				game.setScreen(new Level1(game));
+				MainMenu.themeMusic.stop();	
+
+	    		game.setScreen(new Level1(game));
 	    	}
 				
 	    	//BACK BUTTON
 	    	if (mouse_position.x > 33 && mouse_position.x < 153 && mouse_position.y > 34 && mouse_position.y < 83) {
-				game.setScreen(new MainMenu(game));
-
+				MainMenu.alreadyPlaying = true;
+	    		game.setScreen(new MainMenu(game));
 	    	}
 	    	
 	    }

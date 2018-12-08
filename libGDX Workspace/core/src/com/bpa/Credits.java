@@ -1,8 +1,12 @@
 package com.bpa;
 
+import java.awt.RenderingHints.Key;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,17 +22,17 @@ public class Credits implements Screen{
 	Texture credits;
 	private Viewport gamePort;
 	private OrthographicCamera cam;
+	private float yPos = -5700;
+	Music creditsMusic = DunGun.manager.get("music/creditsSong.mp3");
 
-	
-	
 	
 	public Credits(final DunGun game) {
 		this.game = game;
-		credits = new Texture("screens/cScreen.png");
+		credits = DunGun.manager.get("screens/ScrollingC.jpg", Texture.class);
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-
+		creditsMusic.play();
 	}
 
 	@Override
@@ -44,12 +48,23 @@ public class Credits implements Screen{
 		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		game.batch.draw(credits, 0, 0);
+		
+		if (yPos < 0) {
+			yPos += 4;
+		}
+		game.batch.draw(credits, 0, yPos);
+		
+		
 		//mouse x and y
 		int mX = Gdx.input.getX();
 		int mY = Gdx.graphics.getHeight() - Gdx.input.getY();
-		System.out.println(mX + " " + mY);
+		
+		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+		
+		}
 		if (21 <  mY && mY < 70 && 21 < mX && mX < 142 && Gdx.input.isButtonPressed(Buttons.LEFT)) {
+			creditsMusic.stop();
+			MainMenu.alreadyPlaying = false;
 			game.setScreen(new MainMenu(game));
 
 		}
