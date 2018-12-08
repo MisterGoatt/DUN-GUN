@@ -90,6 +90,7 @@ public class MainMenu implements Screen{
 			}
 		if (wait > 10){
 			if (onMenu == true && justClicked == false) { //prevents hold down mouse click
+				
 				//START
 				if (680 < mX && mX < 836 && 531 < mY && mY < 573)  {
 					menuTextRed.draw(game.batch, "start", 710, 560);
@@ -101,49 +102,58 @@ public class MainMenu implements Screen{
 					menuText.draw(game.batch, "start", 710, 560);
 	
 				}
-				//QUITS GAME
-				if (680 < mX && mX < 836 && 265 < mY && mY < 310){
-					menuTextRed.draw(game.batch, "quit", 720, 295);
-	
-					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-						Gdx.app.exit();
-						
-					}}else {
-					menuText.draw(game.batch, "quit", 720, 295);
-	
-				}
-				//OPTIONS
-				if (680 < mX && mX < 836 && 464 < mY && mY < 504){
-					menuTextRed.draw(game.batch, "options", 687, 492);
-	
-					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-						themeMusic.stop();
-						game.setScreen(new Options(game));
-	
-					}}else {
-						menuText.draw(game.batch, "options", 687, 492);
-					}
+
 				//TUTORIAL
-				if (680 < mX && mX < 836 && 407 < mY && mY < 438){
-					menuTextRed.draw(game.batch, "tutorial", 677, 429);
+				if (680 < mX && mX < 836 && 464 < mY && mY < 504){
+					menuTextRed.draw(game.batch, "tutorial", 676, 492);
 	
 					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 						themeMusic.stop();
 						game.setScreen(new Tutorial(game));
+
 	
-					}}else {
-						menuText.draw(game.batch, "tutorial", 677, 429);
 					}
+				}else {
+					menuText.draw(game.batch, "tutorial", 676, 492);
+				}
+				
+				
 				//CREDITS
-				if (680 < mX && mX < 836 && 338 < mY && mY < 374){
-					menuTextRed.draw(game.batch, "credits", 690, 362);
+				if (680 < mX && mX < 836 && 407 < mY && mY < 438){
+					menuTextRed.draw(game.batch, "credits", 690, 429);
 	
 					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 						themeMusic.stop();
 						game.setScreen(new Credits(game));
-	
+
 					}}else {
-						menuText.draw(game.batch, "credits", 690, 362);
+						menuText.draw(game.batch, "credits", 690, 429);
+					}
+				
+				
+//				//QUITS GAME
+//				if (680 < mX && mX < 836 && 265 < mY && mY < 310){
+//					menuTextRed.draw(game.batch, "quit", 720, 295);
+//	
+//					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+//						
+//					}}else {
+//					menuText.draw(game.batch, "quit", 720, 295);
+//	
+//				}
+				
+				
+				
+				//QUIT
+				if (680 < mX && mX < 836 && 338 < mY && mY < 374){
+					menuTextRed.draw(game.batch, "quit", 720, 362);
+	
+					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+						Gdx.app.exit();
+	
+					}
+				}else {
+					menuText.draw(game.batch, "quit", 720, 362);
 	
 					}
 			}

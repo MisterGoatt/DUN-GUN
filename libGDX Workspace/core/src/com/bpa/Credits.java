@@ -49,9 +49,12 @@ public class Credits implements Screen{
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+		//Controls the speed at which the credits scroll
 		if (yPos < 0) {
-			yPos += 4;
+			yPos += 3;
 		}
+		
+		//displays the credits
 		game.batch.draw(credits, 0, yPos);
 		
 		
@@ -59,15 +62,12 @@ public class Credits implements Screen{
 		int mX = Gdx.input.getX();
 		int mY = Gdx.graphics.getHeight() - Gdx.input.getY();
 		
-		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-		
-		}
-		if (21 <  mY && mY < 70 && 21 < mX && mX < 142 && Gdx.input.isButtonPressed(Buttons.LEFT)) {
+		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
 			creditsMusic.stop();
 			MainMenu.alreadyPlaying = false;
-			game.setScreen(new MainMenu(game));
-
+			game.setScreen(new MainMenu(game));		
 		}
+
 		cam.update();
 
 		game.batch.end();
