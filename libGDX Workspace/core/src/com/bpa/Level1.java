@@ -86,7 +86,7 @@ public class Level1 implements Screen{
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(DunGun.V_WIDTH / DunGun.PPM, DunGun.V_HEIGHT / DunGun.PPM, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-		//cam.zoom -= .50;
+		cam.zoom -= .40;
 		
 		TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
 		params.textureMinFilter = TextureFilter.Linear;
@@ -100,7 +100,7 @@ public class Level1 implements Screen{
 		b2dr = new Box2DDebugRenderer();
 		playerOne = new PlayerOne(world); //must be created after world creation or will crash
 		
-		//
+		//emptying the arrays of bullet textures
 		grunts.clear();
 		pellets.clear();
 		lasers.clear();
@@ -206,7 +206,6 @@ public class Level1 implements Screen{
 				long phwId = pelletHitWall.play(.1f);
 			}
 			world.destroyBody(b);
-
 		}
 		
 		if (GunSelectionScreen.weaponSelected == "battle axe" && PlayerOne.axeBodyRemoval) {
@@ -217,11 +216,7 @@ public class Level1 implements Screen{
 		}
 		
 		bulletBodies.clear(); //empties list of bodies
-		
-		
-		
-		
-		
+
 		//REMOVE GRUNT BODIES AND REMOVE FROM MANAGER LIST
 		for (int e = 0; e < gruntBodies.size; e ++) {
 			Body g = gruntBodies.get(e);
@@ -230,8 +225,7 @@ public class Level1 implements Screen{
 		}
 	
 		gruntBodies.clear();
-		
-		
+
 		cam.position.x = playerOne.b2body.getPosition().x;
 		cam.position.y = playerOne.b2body.getPosition().y;
 		cam.update();
@@ -250,61 +244,28 @@ public class Level1 implements Screen{
 		//clears screen
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-  
-		//laser delay for build up of power effect
-		if (start) {
-			waitToShootL += 1;
-		}
-		
-		//hides the mouse and displays crosshair		
-		if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && !lockCursor) {
-			lockCursor = true;
-		}else if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && lockCursor) {
-			lockCursor = false;
-		}
-		if (lockCursor) {
-			Gdx.input.setCursorCatched(true);
-		}else Gdx.input.setCursorCatched(false);
-		
 		//pauses game and pulls up menu
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !gamePaused) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !gamePaused) {
 			gamePaused = true;
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && gamePaused) {
 			gamePaused = false;
 		}
-		//GAME NOT PAUSED!!
-		if (!gamePaused) { 
-			cameraUpdate(delta);
-			playerOne.handleInput(delta);
-			mapRenderer.render();
-	        b2dr.render(world, cam.combined);
-        }
-		//mapRenderer.render(layerBackround); //renders layer in Tiled that p1 covers		
+        //hides the mouse and displays crosshair		
+  		if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && !lockCursor) {
+  			lockCursor = true;
+  		}else if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && lockCursor) {
+  			lockCursor = false;
+  		}
+  		if (lockCursor) {
+  			Gdx.input.setCursorCatched(true);
+  		}else Gdx.input.setCursorCatched(false);
         
-        game.batch.begin(); //starts sprite spriteBatch
-    	if (axeSwinging) {
-    		
-    		createBullet.renderSprite(game.batch);
-    	}
-        
-        //RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER GAME OBJECTS
-        /*for (int i = 0; i < grunts.size; i++) {
-    		//grunt.renderSprite(game.batch);
-            grunts.get(i).renderSprite(game.batch);
-    	}
-        
-        for (int i = 0; i < lasers.size; i++) {
-        	lasers.get(i).renderSprite(game.batch);
-        }
-        for (int i = 0; i < pellets.size; i++) {
-        	pellets.get(i).renderSprite(game.batch);
-        }
-        for (int i = 0; i < bullets.size; i++) {
-        	bullets.get(i).renderSprite(game.batch);
-        }*/
-        
-       //GAME IS PAUSED*******************
+
+        //*********GAME IS PAUSED*********
         if (gamePaused) {
+            game.batch.begin(); //starts sprite spriteBatch
+
+        	System.out.println("poosed");
         	cam.position.x = 0;
         	cam.position.y = 0;
         	game.batch.draw(pauseMenu, 0 - (350/DunGun.PPM), 0 - (200 / DunGun.PPM), 1500 / 200,  800 / 200);
@@ -317,6 +278,7 @@ public class Level1 implements Screen{
         		//RESUME
         		if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < 0.6 && mousePosition.y > -.02) {
         			gamePaused = false;
+        			lockCursor = true;
         		}
         		//MAIN MENU
         		else if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < -.13 && mousePosition.y > -.78) {
@@ -324,38 +286,55 @@ public class Level1 implements Screen{
         		}
         		//QUIT
         		else if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < -.86 && mousePosition.y > -1.49) {
-					Gdx.app.exit();
+    				Gdx.app.exit();
         		}
         	}
-        	
-        	
         	cam.update();
-        	//game.batch.draw(pauseMenu, playerOne.b2body.getPosition().x - (350 / DunGun.PPM), playerOne.b2body.getPosition().y - (200 / DunGun.PPM), 1500 / 200,  800 / 200);
+            game.batch.end(); //starts sprite spriteBatch
+            
+        }else if (!gamePaused){ //********GAME IS NOT PAUSED********
         	
-        }
-        if (!gamePaused) {
-            shootGun(); //sees if gun is shooting
-        	playerOne.renderSprite(game.batch);
-        	game.batch.draw(mouseCursor, Level1.mousePosition.x - .05f, Level1.mousePosition.y - .05f, 13 / DunGun.PPM, 13 / DunGun.PPM);
-        	mapRenderer.setView(cam);
-        }
+        	//laser delay for build up of power effect
+        	if (start) {
+				waitToShootL += 1;
+			}
+			cameraUpdate(delta);
+
+			playerOne.handleInput(delta);
+			mapRenderer.render();
+	        //b2dr.render(world, cam.combined);
+	        game.batch.begin(); //starts sprite spriteBatch
+
+	        if (axeSwinging) {
+	    		createBullet.renderSprite(game.batch);
+	    	}
+	        
+	        //RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER GAME OBJECTS
+	        for (int i = 0; i < grunts.size; i++) {
+	    		//grunt.renderSprite(game.batch);
+	            grunts.get(i).renderSprite(game.batch);
+	    	}
+	        
+	        for (int i = 0; i < lasers.size; i++) {
+	        	lasers.get(i).renderSprite(game.batch);
+	        }
+	        for (int i = 0; i < pellets.size; i++) {
+	        	pellets.get(i).renderSprite(game.batch);
+	        }
+	        for (int i = 0; i < bullets.size; i++) {
+	        	bullets.get(i).renderSprite(game.batch);
+	        }
+	        
+	        shootGun(); //sees if gun is shooting
+	        playerOne.renderSprite(game.batch);
+	    	game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / DunGun.PPM, 13 / DunGun.PPM);
+	    	mapRenderer.setView(cam);
+	        game.batch.end(); //starts sprite spriteBatch
+        } //closing bracket for game not paused
 
         mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-        
         cam.unproject(mousePosition); //gets mouse coordinates within viewport
-		
-//		//FRAMES PER SECOND
-//		//**********************************
-//		counter = (System.currentTimeMillis() - startTime) / 1000;
-//		int f = Gdx.graphics.getFramesPerSecond(); // grabs frames per second
-//		String frames = Integer.toString(f); //converts frames per second to a string
-//		framerate.draw(game.batch, frames, 5, 785); //displays frames per second as text in top left
-
-		//**********************************
 		game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
-
-        game.batch.end(); //starts sprite spriteBatch
-        //mapRenderer.render(layerAfterBackground); //renders layer of Tiled that hides p1
 	}
 
 	@Override
@@ -365,8 +344,7 @@ public class Level1 implements Screen{
 	}
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
-		
+
 	}
 	@Override
 	public void resume() {
@@ -384,9 +362,6 @@ public class Level1 implements Screen{
 		mapRenderer.dispose();
 		world.dispose();
 		b2dr.dispose();
-		gunShot.dispose();
-		mouseCursor.dispose();
-		pauseMenu.dispose();
 	}
 
 	@Override

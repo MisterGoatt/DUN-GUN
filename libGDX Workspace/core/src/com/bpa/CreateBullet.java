@@ -27,7 +27,7 @@ public class CreateBullet extends Sprite implements Disposable{
 	public String id = "BULLET";
 	Sprite sprite;
 	public static float angle;
-	private float speed = 2;
+	private float speed = 10;
 	private float posX;
 	private float posY;
 	private float timePassed = 0;
@@ -103,7 +103,6 @@ public class CreateBullet extends Sprite implements Disposable{
 				shape.setPosition(new Vector2(5, 7).scl(1/DunGun.PPM));
 				shape.setRadius(4 / DunGun.PPM);
 			}
-			//shape.dispose();
 		}
 		//Sets size of the physics bodies depending on the type of gun
 		fdef.filter.categoryBits = DunGun.BULLET; //identifies the category bit is
@@ -116,7 +115,7 @@ public class CreateBullet extends Sprite implements Disposable{
 		angle = MathUtils.atan2(differenceY, differenceX);
 		angle2 = MathUtils.atan2( differenceY, differenceX)* MathUtils.radDeg; //find the distance between mouse and player
 
-		//float posX = (float) (Math.cos(90)) ;
+
 		if (GunSelectionScreen.weaponSelected == "shotgun") {
 			float speedVary = (int)(Math.random() * 10 + 5);
 			//float speedVary = .5f;

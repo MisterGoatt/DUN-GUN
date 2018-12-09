@@ -121,7 +121,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	}
 	
 	public void renderSprite(SpriteBatch batch) {
-		
+		System.out.println("hole up");
 		float posX = b2body.getPosition().x;
 		float posY = b2body.getPosition().y;
 

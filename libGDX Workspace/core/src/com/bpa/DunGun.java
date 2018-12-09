@@ -83,8 +83,6 @@ public class DunGun extends Game{
 		manager.load("sprites/player1/pellet.atlas", TextureAtlas.class);
 		manager.load("sprites/player1/pellet.png", Texture.class);
 
-
-		
 		//GunSelectionScreen
 		manager.load("screens/gun_selection.jpg", Texture.class);
 		
