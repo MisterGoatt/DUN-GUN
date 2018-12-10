@@ -147,14 +147,6 @@ public class CollisionDetector implements ContactListener{
 	}
 	
 }
-	//checks what kind of fixtures we have --- checks between two different types of user types/objects
-	//if statements check if a or b is a bullet or if a or b are a wall
-	/*private boolean isBulletWallContact(Fixture a, Fixture b) {
-		if (a.getUserData().equals("bullets") || b.getUserData().equals("bullets")) {
-			if (a.getUserData().equals("walls") || b.getUserData().equals("walls")) {
-				return true;
-			}
-		}return false;
-		*/
+
 		
 
