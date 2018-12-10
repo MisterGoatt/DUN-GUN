@@ -57,11 +57,11 @@ public class PlayerOne extends Sprite implements Disposable{
 	public static float angle2; //get distance between mouse and player in radians
 	public static float angle;
 	//amount of damage each weapon deals
-	public static int revolverDamage = 25;
-	public static int rifleDamage = 75;
-	public static int shotgunDamage = 10;
-	public static int assaultRifleDamage = 15;
-	public static int laserLanceDamage = 100;
+	public static int revolverDamage = 35;
+	public static int rifleDamage = 100;
+	public static int shotgunDamage = 30;
+	public static int assaultRifleDamage = 20;
+	public static int laserLanceDamage = 150;
 	public static int battleAxeDamage = 175;
 	private boolean shootAnimation = false;
 	public static boolean axeBodyRemoval = false;
@@ -273,20 +273,23 @@ public class PlayerOne extends Sprite implements Disposable{
 	    	if (timeSinceLastShot <=0) {
 	    		Level1.isShooting = true;
 	    		shootAnimation = true;
-	    		if (GunSelectionScreen.weaponSelected == "revolver") {
-	    			timeSinceLastShot = 50;
-	    		}else if (GunSelectionScreen.weaponSelected == "rifle") {
-	    			timeSinceLastShot = 90;
-	    		}else if (GunSelectionScreen.weaponSelected == "shotgun") {
-	    			timeSinceLastShot = 80;
-	    		}else if (GunSelectionScreen.weaponSelected == "assault rifle") {
-	    			timeSinceLastShot = 20;
-	    		}else if (GunSelectionScreen.weaponSelected == "laser") {
-	    			timeSinceLastShot = 80;
-	    		}else if (GunSelectionScreen.weaponSelected == "battle axe") {
-	    			timeSinceLastShot = 120;
+	    		
+	    		switch (GunSelectionScreen.weaponSelected) {
+	    		
+	    		case "revolver": timeSinceLastShot = 50;
+	    			break;
+	    		case "rifle": timeSinceLastShot = 90;
+	    			break;
+	    		case "shotgun": timeSinceLastShot = 80;
+	    			break;
+	    		case "assault rifle": timeSinceLastShot = 20;
+	    			break;
+	    		case "laser": timeSinceLastShot = 80;
+	    			break;
+	    		case "battle axe": timeSinceLastShot = 120;
+	    			break;
 	    		}
-	    		//timeSinceLastShot = shootDelay; //reset timeSinceLast Shot
+
 	    	}
 	    }
 
@@ -306,11 +309,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	@Override
 	public void dispose() {
 		runningSound.dispose();
-		revolverTextureAtlas.dispose();
-		rifleTextureAtlas.dispose();
-		assaultRifleTextureAtlas.dispose();
-		laserTextureAtlas.dispose();
-		shotgunTextureAtlas.dispose();
+
 	}
 }
 

@@ -129,42 +129,40 @@ public class Level1 implements Screen{
 		if (isShooting) {
 			//waitToShootL += 1;
 
+			switch (GunSelectionScreen.weaponSelected) {
 			
-			if (GunSelectionScreen.weaponSelected == "laser") {
+			case "laser":
 				start = true;
 				long lsId = laserShot.play(.5f);
-			}
-			else if (GunSelectionScreen.weaponSelected == "revolver") {
+				break;
+			case "revolver":
 				long gsId = gunShot.play(.5f);
-			}
-			else if (GunSelectionScreen.weaponSelected == "rifle") {
+				break;
+			case "rifle":
 				long rsId = rifleShot.play(.5f);
-			}
-
-			else if (GunSelectionScreen.weaponSelected == "shotgun") {
+				break;
+			case "shotgun":
 				//controls how many shotgun shells are shot
 				for (int i = 0; i < 6; i++) {
 					createBullet = new CreateBullet(world);
 					pellets.add(createBullet);
 				}
 				shotgunShot.play();
-			}
-			else if (GunSelectionScreen.weaponSelected == "assault rifle") {
+				break;
+			case "assault rifle":
 				long arsId = assaultRifleShot.play(.5f);
-			}
-			else if (GunSelectionScreen.weaponSelected == "battle axe"){
+				break;
+			case "battle axe":
 				long baId = axeSwing.play(.7f);
 				axeSwinging = true;
-				
-				
+				break;
 			}
 			
 			if (GunSelectionScreen.weaponSelected != "shotgun" && GunSelectionScreen.weaponSelected != "laser") {
 				createBullet = new CreateBullet(world);
 				bullets.add(createBullet);
 			}
-			isShooting = false;
-			
+			isShooting = false;	
 		}
 		//laser blast delay
 		if (waitToShootL >= 20){
@@ -174,9 +172,6 @@ public class Level1 implements Screen{
 			start = false;
 			}
 	}
-
-		
-
 
 	public void cameraUpdate(float delta) {
 		

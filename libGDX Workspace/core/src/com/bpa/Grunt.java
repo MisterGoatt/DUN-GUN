@@ -41,11 +41,13 @@ public class Grunt extends Sprite implements Disposable{
 			bdef.type = BodyDef.BodyType.DynamicBody;
 			//create body in the world
 			b2body = world.createBody(bdef);
+			b2body.setLinearDamping(.9f);
 			b2body.setUserData(this);
 			FixtureDef fdef = new FixtureDef();
 			CircleShape shape = new CircleShape();
 			shape.setRadius(10 / DunGun.PPM);
-			
+			fdef.density = 400;
+		
 			fdef.shape = shape;
 			fdef.filter.categoryBits = DunGun.GRUNT;
 			fdef.filter.maskBits = DunGun.WALL | DunGun.BULLET;

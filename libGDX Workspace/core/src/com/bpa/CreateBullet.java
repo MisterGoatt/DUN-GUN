@@ -141,22 +141,24 @@ public class CreateBullet extends Sprite implements Disposable{
 		float differenceX = Level1.mousePosition.x - b2body.getPosition().x;
 		float differenceY = Level1.mousePosition.y - b2body.getPosition().y;
 		angle = MathUtils.atan2(differenceY, differenceX);
-
-		if (GunSelectionScreen.weaponSelected == "laser") {
-			batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / DunGun.PPM, 45 / DunGun.PPM, 1, 1, angle2 - 90);	
+		
+		switch (GunSelectionScreen.weaponSelected) {
+		case "laser":
+			batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / DunGun.PPM, 45 / DunGun.PPM, 1, 1, angle2 - 90);
 			timePassed += Gdx.graphics.getDeltaTime();
-		}else if (GunSelectionScreen.weaponSelected == "shotgun") {
-			batch.draw(pelletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 9 / DunGun.PPM, 9 / DunGun.PPM, 1, 1, angle2 - 90);	
+			break;
+		case "shotgun":
+			batch.draw(pelletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 9 / DunGun.PPM, 9 / DunGun.PPM, 1, 1, angle2 - 90);
 			timePassed += Gdx.graphics.getDeltaTime();
-		}
-		//all the gun powder weapons
-		else if (GunSelectionScreen.weaponSelected != "shotgun" && GunSelectionScreen.weaponSelected != "laser" && GunSelectionScreen.weaponSelected != "battle axe" ) {
+			break;
+		case "battle axe": b2body.setTransform(PlayerOne.p1PosX, PlayerOne.p1PosY, angle - 1.57f); //sets the position of the body to the position of the body and implements rotation
+			break;
+		default: 
 			batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 5 / DunGun.PPM, 20 / DunGun.PPM, 1, 1, angle2 - 90);	
 			timePassed += Gdx.graphics.getDeltaTime();
-		}
-		else if (GunSelectionScreen.weaponSelected == "battle axe"){
-			b2body.setTransform(PlayerOne.p1PosX, PlayerOne.p1PosY, angle - 1.57f); //sets the position of the body to the position of the body and implements rotation
-
+			break;
+		
+		
 		}
 	}
 	
@@ -164,7 +166,6 @@ public class CreateBullet extends Sprite implements Disposable{
 	
 	@Override
 	public void dispose() {
-		laserTextureAtlas.dispose();
-		pelletTextureAtlas.dispose();
+
 	}
 }
