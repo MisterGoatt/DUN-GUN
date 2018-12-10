@@ -226,11 +226,12 @@ public class PlayerOne extends Sprite implements Disposable{
 					shootAnimation = false;
 					timePassed = 0;
 					axeBodyRemoval = true;
+					Level1.axeSwinging = false;
 
 				}
 			}else {
 				batch.draw(axeStandingRegion, posX - .35f, posY - .3f, 35 / DunGun.PPM, 30 / DunGun.PPM, 70 / DunGun.PPM, 70 / DunGun.PPM, 1, 1, angle);
-				Level1.axeSwinging = false;
+				
 				
 			}
 	    

@@ -297,9 +297,9 @@ public class Level1 implements Screen{
 	        //b2dr.render(world, cam.combined);
 	        game.batch.begin(); //starts sprite spriteBatch
 
-	        if (axeSwinging) {
-	    		createBullet.renderSprite(game.batch);
-	    	}
+//	        if (axeSwinging) {
+//	    		createBullet.renderSprite(game.batch);
+//	    	}
 	        
 	        //RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER GAME OBJECTS
 	        for (int i = 0; i < grunts.size; i++) {
