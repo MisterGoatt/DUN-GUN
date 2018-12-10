@@ -2,10 +2,7 @@ package com.bpa;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.g2d.Animation;
+
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -16,7 +13,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 public class Grunt extends Sprite implements Disposable{
@@ -27,12 +23,10 @@ public class Grunt extends Sprite implements Disposable{
 	float angle2;
 	private TextureAtlas gruntAtkAnimation;
 	private TextureRegion gruntStandingRegion;
-
 		
 		public Grunt(World world) {
 			this.world = world;
 			defineGrunt();
-			
 		}
 
 		
@@ -75,14 +69,7 @@ public class Grunt extends Sprite implements Disposable{
 			batch.draw(gruntStandingRegion, posX - .17f, posY - .13f, 20 / DunGun.PPM, 10 / DunGun.PPM, 40 / DunGun.PPM, 32 / DunGun.PPM, 1, 1, angle);
 
 		}
-		
-		public void damage() {
-			
-			if (GunSelectionScreen.weaponSelected == "rifle") {
-				health =  health - PlayerOne.rifleDamage; 
-				
-			}
-		}
+
 
 		@Override
 		public void dispose() {

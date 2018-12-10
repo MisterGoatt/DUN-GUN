@@ -48,6 +48,7 @@ public class Level1 implements Screen{
 	private PlayerOne playerOne;
 	private Grunt grunt;
 	public CreateBullet createBullet;
+	public CollisionDetector cd;
 	//private int[] layerBackround = {0, 1, 2, 3};
 	//private int[] layerAfterBackground = {4};
 	public static boolean isShooting = false;
@@ -75,10 +76,7 @@ public class Level1 implements Screen{
 	static Array<Grunt> grunts = new Array<Grunt>();
 	static Array<CreateBullet> pellets = new Array<CreateBullet>();
 	static Array<CreateBullet> bullets = new Array<CreateBullet>();
-
-	//	BitmapFont framerate; //font for frame rate display
-//	private long startTime = System.currentTimeMillis();
-//	private long counter;
+	
 	
 	public Level1(final DunGun game) {
 		this.game = game;
@@ -108,6 +106,7 @@ public class Level1 implements Screen{
 		
 		grunt = new Grunt(world);
 		grunts.add(grunt);
+		
 
 		new B2DWorldCreator(world, map);
 		
@@ -123,13 +122,13 @@ public class Level1 implements Screen{
 		pelletHitWall = DunGun.manager.get("sound effects/pelletImpact.mp3", Sound.class);
 		axeSwing = DunGun.manager.get("sound effects/axeSwing.mp3", Sound.class);
 		pauseMenu = DunGun.manager.get("screens/Pause.jpg", Texture.class);
-		this.world.setContactListener(new MyContactListener());
+		this.world.setContactListener(new CollisionDetector());
 	}
 	//Creation of bullet objects and playing shooting and swinging sound effects
 	public void shootGun() {
 		if (isShooting) {
 			//waitToShootL += 1;
-			
+
 			
 			if (GunSelectionScreen.weaponSelected == "laser") {
 				start = true;
@@ -187,8 +186,8 @@ public class Level1 implements Screen{
 		 
 		//remove bullets
 		
-		Array<Body> bulletBodies = MyContactListener.bulletsToRemove;
-		Array<Body> gruntBodies = MyContactListener.gruntsToRemove;
+		Array<Body> bulletBodies = CollisionDetector.bulletsToRemove;
+		Array<Body> gruntBodies = CollisionDetector.gruntsToRemove;
 		//removes bullets when they collide with wall
 		for (int i = 0; i < bulletBodies.size; i ++) {
 			Body b = bulletBodies.get(i);
@@ -209,8 +208,6 @@ public class Level1 implements Screen{
 		}
 		
 		if (GunSelectionScreen.weaponSelected == "battle axe" && PlayerOne.axeBodyRemoval) {
-			System.out.println("uh what");
-			System.out.println(PlayerOne.axeBodyRemoval);
 			world.destroyBody(createBullet.b2body);
 			PlayerOne.axeBodyRemoval = false;
 		}
@@ -219,6 +216,7 @@ public class Level1 implements Screen{
 
 		//REMOVE GRUNT BODIES AND REMOVE FROM MANAGER LIST
 		for (int e = 0; e < gruntBodies.size; e ++) {
+			
 			Body g = gruntBodies.get(e);
 			grunts.removeValue((Grunt) g.getUserData(), true);
 			world.destroyBody(g);
@@ -265,7 +263,6 @@ public class Level1 implements Screen{
         if (gamePaused) {
             game.batch.begin(); //starts sprite spriteBatch
 
-        	System.out.println("poosed");
         	cam.position.x = 0;
         	cam.position.y = 0;
         	game.batch.draw(pauseMenu, 0 - (350/DunGun.PPM), 0 - (200 / DunGun.PPM), 1500 / 200,  800 / 200);
@@ -312,8 +309,9 @@ public class Level1 implements Screen{
 	        //RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER GAME OBJECTS
 	        for (int i = 0; i < grunts.size; i++) {
 	    		//grunt.renderSprite(game.batch);
-	            grunts.get(i).renderSprite(game.batch);
-	    	}
+	        	grunts.get(i).renderSprite(game.batch);
+	        	grunt = grunts.get(i);
+	        }
 	        
 	        for (int i = 0; i < lasers.size; i++) {
 	        	lasers.get(i).renderSprite(game.batch);
@@ -324,14 +322,14 @@ public class Level1 implements Screen{
 	        for (int i = 0; i < bullets.size; i++) {
 	        	bullets.get(i).renderSprite(game.batch);
 	        }
-	        
 	        shootGun(); //sees if gun is shooting
 	        playerOne.renderSprite(game.batch);
 	    	game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / DunGun.PPM, 13 / DunGun.PPM);
 	    	mapRenderer.setView(cam);
 	        game.batch.end(); //starts sprite spriteBatch
+	        
         } //closing bracket for game not paused
-
+        
         mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
         cam.unproject(mousePosition); //gets mouse coordinates within viewport
 		game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement

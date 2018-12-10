@@ -40,9 +40,6 @@ public class CreateBullet extends Sprite implements Disposable{
 	private TextureAtlas bulletTextureAtlas;
 	private Animation <TextureRegion> bulletAnimation;
 
-	private TextureRegion pelletTextureRegion;
-
-
 	//static ArrayList<Integer> laserDestroyManager;
 	
 	//public static ArrayList gruntList;
@@ -58,7 +55,6 @@ public class CreateBullet extends Sprite implements Disposable{
 		laserTextureAtlas = DunGun.manager.get("sprites/player1/pellet.atlas", TextureAtlas.class);
 		pelletTextureAtlas = DunGun.manager.get("sprites/player1/pellet.atlas", TextureAtlas.class);
 		pelletAnimation = new Animation <TextureRegion>(1f / 15f, pelletTextureAtlas.getRegions());
-		pelletTextureRegion = laserTextureAtlas.findRegion("tile000");
 		bulletTextureAtlas = DunGun.manager.get("sprites/player1/bulletAnimation.atlas", TextureAtlas.class);
 		bulletAnimation = new Animation <TextureRegion>(1f / 15f, bulletTextureAtlas.getRegions());
 		}
@@ -131,7 +127,6 @@ public class CreateBullet extends Sprite implements Disposable{
 			if (GunSelectionScreen.weaponSelected == "laser"){
 				speed = 2f;
 			}
-
 			posX = (float) (Math.cos(angle)) * speed;
 			posY = (float) (Math.sin(angle)) * speed;
 		    angle = angle - 1.57f ;
