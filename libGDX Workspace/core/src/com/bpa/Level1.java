@@ -106,7 +106,6 @@ public class Level1 implements Screen{
 		
 		grunt = new Grunt(world);
 		grunts.add(grunt);
-		System.out.println(grunts);
 		
 
 		new B2DWorldCreator(world, map);
@@ -118,9 +117,6 @@ public class Level1 implements Screen{
 		shotgunShot = DunGun.manager.get("sound effects/shotgun2.mp3", Sound.class);
 		assaultRifleShot = DunGun.manager.get("sound effects/assaultRifle.mp3", Sound.class);
 		laserShot = DunGun.manager.get("sound effects/laserBlast3.mp3", Sound.class);
-//		bulletHitWall = DunGun.manager.get("sound effects/bulletImpact.mp3", Sound.class);
-//		laserHitWall = DunGun.manager.get("sound effects/laserImpact.mp3", Sound.class);
-//		pelletHitWall = DunGun.manager.get("sound effects/pelletImpact.mp3", Sound.class);
 		axeSwing = DunGun.manager.get("sound effects/axeSwing.mp3", Sound.class);
 		pauseMenu = DunGun.manager.get("screens/Pause.jpg", Texture.class);
 		this.world.setContactListener(new CollisionDetector());
@@ -189,23 +185,22 @@ public class Level1 implements Screen{
 			Body b = bulletBodies.get(i);
 			if (GunSelectionScreen.weaponSelected == "rifle" || GunSelectionScreen.weaponSelected == "revolver" 
 					|| GunSelectionScreen.weaponSelected == "assault rifle" ) {
-				//long bhwId = bulletHitWall.play(.1f);
 				bullets.removeValue((CreateBullet)b.getUserData(), true);
 			}
 			else if (GunSelectionScreen.weaponSelected == "laser") {
 				lasers.removeValue((CreateBullet)b.getUserData(), true);
-				//laserHitWall.play();
 			}
 			else if (GunSelectionScreen.weaponSelected == "shotgun") {
 				pellets.removeValue((CreateBullet)b.getUserData(), true);
-				//long phwId = pelletHitWall.play(.1f);
 			}
 			world.destroyBody(b);
 		}
 		
 		if (GunSelectionScreen.weaponSelected == "battle axe" && PlayerOne.axeBodyRemoval) {
+			System.out.println(" asdad");
 			world.destroyBody(createBullet.b2body);
 			PlayerOne.axeBodyRemoval = false;
+			bullets.clear();
 		}
 		
 		bulletBodies.clear(); //empties list of bodies
@@ -258,9 +253,9 @@ public class Level1 implements Screen{
   		if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
   			grunt = new Grunt(world);
   			grunts.add(grunt);
-  			System.out.println(grunts);
-
   		}
+
+
 
         //*********GAME IS PAUSED*********
         if (gamePaused) {

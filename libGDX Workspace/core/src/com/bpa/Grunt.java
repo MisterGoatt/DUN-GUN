@@ -20,7 +20,7 @@ public class Grunt extends Sprite implements Disposable{
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
-	public int health = 100;
+	public int health = 300;
 	float angle2;
 	private TextureAtlas gruntAtkAnimation;
 	private TextureAtlas gruntDamagedAtlas;
@@ -41,7 +41,10 @@ public class Grunt extends Sprite implements Disposable{
 		
 		public void defineGrunt() {
 			//define player body
-			bdef.position.set(450 / DunGun.PPM, 400 / DunGun.PPM);
+			
+			float yRan = (int)(Math.random() * 	4 + 3.5f);
+			
+			bdef.position.set(450 / DunGun.PPM, yRan);
 			
 			bdef.type = BodyDef.BodyType.DynamicBody;
 			//create body in the world
@@ -56,7 +59,7 @@ public class Grunt extends Sprite implements Disposable{
 			fdef.shape = shape;
 			fdef.filter.categoryBits = DunGun.GRUNT;
 			fdef.filter.maskBits = DunGun.WALL | DunGun.BULLET;
-			b2body.createFixture(fdef).setUserData("grunt");;	
+			b2body.createFixture(fdef).setUserData("grunt");	
 		}
 		
 		public void renderSprite(SpriteBatch batch) {
@@ -74,7 +77,7 @@ public class Grunt extends Sprite implements Disposable{
 			if (!tookDamage) {
 				batch.draw(gruntStandingRegion, posX - .17f, posY - .13f, 20 / DunGun.PPM, 10 / DunGun.PPM, 40 / DunGun.PPM, 32 / DunGun.PPM, 1, 1, angle);
 			}else {
-				batch.draw(gruntDamagedAnimation.getKeyFrame(timePassed), posX - .2f, posY -.23f, 20 / DunGun.PPM, 25 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1.15f, 1.15f, angle);
+				batch.draw(gruntDamagedAnimation.getKeyFrame(timePassed), posX - .20f, posY -.27f, 20 / DunGun.PPM, 25 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1.18f, 1.18f, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
 				if(gruntDamagedAnimation.isAnimationFinished(timePassed)) {
 					timePassed = 0;

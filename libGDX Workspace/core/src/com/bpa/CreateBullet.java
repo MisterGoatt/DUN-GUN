@@ -157,9 +157,8 @@ public class CreateBullet extends Sprite implements Disposable{
 		default: 
 			batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 5 / DunGun.PPM, 20 / DunGun.PPM, 1, 1, angle2 - 90);	
 			timePassed += Gdx.graphics.getDeltaTime();
+			
 			break;
-		
-		
 		}
 	}
 	

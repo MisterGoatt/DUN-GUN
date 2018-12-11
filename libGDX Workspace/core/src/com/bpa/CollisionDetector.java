@@ -32,7 +32,6 @@ public class CollisionDetector implements ContactListener{
 		laserHitWall = DunGun.manager.get("sound effects/laserImpact.mp3");
 		pelletHitWall = DunGun.manager.get("sound effects/pelletImpact.mp3");
 		bulletBodyImpact = DunGun.manager.get("sound effects/bulletBodyImpact.mp3");
-		System.out.println("asdasdsad");
 		gruntHealth.clear();
 		enemies.clear();
 	}
@@ -83,11 +82,14 @@ public class CollisionDetector implements ContactListener{
 		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
 			if (fa.getUserData().equals("grunt") || fb.getUserData().equals("grunt")) {
 				if (fa.getUserData().equals("bullets")){
-					bulletsToRemove.add(fa.getBody()); //bullet
-
+					if (GunSelectionScreen.weaponSelected != "battle axe") {
+						bulletsToRemove.add(fa.getBody()); //bullet
 					}
+				}
 				else if(fb.getUserData().equals("bullets")){
-					bulletsToRemove.add(fb.getBody()); //bullet
+					if (GunSelectionScreen.weaponSelected != "battle axe") {
+						bulletsToRemove.add(fb.getBody()); //bullet
+					}
 
 				}				
 				if (fa.getUserData().equals("grunt")){
