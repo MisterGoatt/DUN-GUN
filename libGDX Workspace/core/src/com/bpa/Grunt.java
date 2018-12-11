@@ -2,7 +2,8 @@ package com.bpa;
 
 import java.util.ArrayList;
 
-
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -22,31 +23,35 @@ public class Grunt extends Sprite implements Disposable{
 	public int health = 100;
 	float angle2;
 	private TextureAtlas gruntAtkAnimation;
+	private TextureAtlas gruntDamagedAtlas;
+	private Animation <TextureRegion> gruntDamagedAnimation;
+	private float timePassed = 0;
 	private TextureRegion gruntStandingRegion;
+	static boolean tookDamage = false;
 		
 		public Grunt(World world) {
 			this.world = world;
+			gruntAtkAnimation = DunGun.manager.get("sprites/grunt/mutantAtkAnimation.atlas");
+			gruntStandingRegion = gruntAtkAnimation.findRegion("tile000");
+			gruntDamagedAtlas = DunGun.manager.get("sprites/grunt/gruntDamaged.atlas");
+			gruntDamagedAnimation = new Animation <TextureRegion>(1f/15f, gruntDamagedAtlas.getRegions());			
 			defineGrunt();
 		}
 
 		
 		public void defineGrunt() {
 			//define player body
-			
-			gruntAtkAnimation = DunGun.manager.get("sprites/grunt/mutantAtkAnimation.atlas", TextureAtlas.class);
-			gruntStandingRegion = gruntAtkAnimation.findRegion("tile000");
-
 			bdef.position.set(450 / DunGun.PPM, 400 / DunGun.PPM);
 			
 			bdef.type = BodyDef.BodyType.DynamicBody;
 			//create body in the world
 			b2body = world.createBody(bdef);
-			b2body.setLinearDamping(.9f);
+			b2body.setLinearDamping(5f);
 			b2body.setUserData(this);
 			FixtureDef fdef = new FixtureDef();
 			CircleShape shape = new CircleShape();
 			shape.setRadius(10 / DunGun.PPM);
-			fdef.density = 400;
+			fdef.density = 500;
 		
 			fdef.shape = shape;
 			fdef.filter.categoryBits = DunGun.GRUNT;
@@ -68,8 +73,20 @@ public class Grunt extends Sprite implements Disposable{
 			b2body.setTransform(this.b2body.getPosition().x, this.b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
 			float posX = this.b2body.getPosition().x;
 			float posY = this.b2body.getPosition().y;
-			batch.draw(gruntStandingRegion, posX - .17f, posY - .13f, 20 / DunGun.PPM, 10 / DunGun.PPM, 40 / DunGun.PPM, 32 / DunGun.PPM, 1, 1, angle);
+			if (!tookDamage) {
+				batch.draw(gruntStandingRegion, posX - .17f, posY - .13f, 20 / DunGun.PPM, 10 / DunGun.PPM, 40 / DunGun.PPM, 32 / DunGun.PPM, 1, 1, angle);
+			}else {
+				System.out.println("You've shot me!");
+				batch.draw(gruntDamagedAnimation.getKeyFrame(timePassed), posX - .2f, posY -.23f, 20 / DunGun.PPM, 25 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1.15f, 1.15f, angle);
+				timePassed += Gdx.graphics.getDeltaTime();
+				if(gruntDamagedAnimation.isAnimationFinished(timePassed)) {
+					timePassed = 0;
+					tookDamage = false;
+				}
+			}
 
+			
+			
 		}
 
 

@@ -287,7 +287,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	    			break;
 	    		case "laser": timeSinceLastShot = 80;
 	    			break;
-	    		case "battle axe": timeSinceLastShot = 120;
+	    		case "battle axe": timeSinceLastShot = 110;
 	    			break;
 	    		}
 

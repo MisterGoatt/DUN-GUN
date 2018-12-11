@@ -29,7 +29,6 @@ public class DunGun extends Game{
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-
 		manager = new AssetManager();
 	
 		//PlayerOne
@@ -56,12 +55,12 @@ public class DunGun extends Game{
 		manager.load("sound effects/laserImpact.mp3", Sound.class);
 		manager.load("sound effects/pelletImpact.mp3", Sound.class);
 		manager.load("sound effects/pelletImpact.mp3", Sound.class);
+		manager.load("sound effects/bulletBodyImpact.mp3", Sound.class);
 		manager.load("sound effects/axeSwing.mp3", Sound.class);
 
 		//Credit Screen
 		manager.load("screens/ScrollingC.jpg", Texture.class);
 		manager.load("music/creditsSong.mp3", Music.class);
-
 		
 		//IntroductionScreens
 		manager.load("screens/ctm_placeholder.jpg", Texture.class);
@@ -88,7 +87,8 @@ public class DunGun extends Game{
 		
 		//Grunt
 		manager.load("sprites/grunt/mutantAtkAnimation.atlas", TextureAtlas.class);
-		
+		manager.load("sprites/grunt/gruntDamaged.atlas", TextureAtlas.class);
+
 		
 		manager.finishLoading();
 		this.setScreen(new IntroductionScreens(this));

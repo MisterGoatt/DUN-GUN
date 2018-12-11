@@ -58,9 +58,9 @@ public class Level1 implements Screen{
 	private Sound shotgunShot;
 	private Sound laserShot;
 	private Sound assaultRifleShot;
-	private Sound bulletHitWall;
-	private Sound laserHitWall;
-	private Sound pelletHitWall;
+//	private Sound bulletHitWall;
+//	private Sound laserHitWall;
+//	private Sound pelletHitWall;
 	private Sound axeSwing;
 	private Texture mouseCursor;
 	private boolean lockCursor = true;
@@ -117,9 +117,9 @@ public class Level1 implements Screen{
 		shotgunShot = DunGun.manager.get("sound effects/shotgun2.mp3", Sound.class);
 		assaultRifleShot = DunGun.manager.get("sound effects/assaultRifle.mp3", Sound.class);
 		laserShot = DunGun.manager.get("sound effects/laserBlast3.mp3", Sound.class);
-		bulletHitWall = DunGun.manager.get("sound effects/bulletImpact.mp3", Sound.class);
-		laserHitWall = DunGun.manager.get("sound effects/laserImpact.mp3", Sound.class);
-		pelletHitWall = DunGun.manager.get("sound effects/pelletImpact.mp3", Sound.class);
+//		bulletHitWall = DunGun.manager.get("sound effects/bulletImpact.mp3", Sound.class);
+//		laserHitWall = DunGun.manager.get("sound effects/laserImpact.mp3", Sound.class);
+//		pelletHitWall = DunGun.manager.get("sound effects/pelletImpact.mp3", Sound.class);
 		axeSwing = DunGun.manager.get("sound effects/axeSwing.mp3", Sound.class);
 		pauseMenu = DunGun.manager.get("screens/Pause.jpg", Texture.class);
 		this.world.setContactListener(new CollisionDetector());
@@ -136,10 +136,10 @@ public class Level1 implements Screen{
 				long lsId = laserShot.play(.5f);
 				break;
 			case "revolver":
-				long gsId = gunShot.play(.5f);
+				long gsId = gunShot.play(.3f);
 				break;
 			case "rifle":
-				long rsId = rifleShot.play(.5f);
+				long rsId = rifleShot.play(.3f);
 				break;
 			case "shotgun":
 				//controls how many shotgun shells are shot
@@ -147,10 +147,10 @@ public class Level1 implements Screen{
 					createBullet = new CreateBullet(world);
 					pellets.add(createBullet);
 				}
-				shotgunShot.play();
+				long sS = shotgunShot.play(.3f);
 				break;
 			case "assault rifle":
-				long arsId = assaultRifleShot.play(.5f);
+				long arsId = assaultRifleShot.play(.3f);
 				break;
 			case "battle axe":
 				long baId = axeSwing.play(.7f);
@@ -188,16 +188,16 @@ public class Level1 implements Screen{
 			Body b = bulletBodies.get(i);
 			if (GunSelectionScreen.weaponSelected == "rifle" || GunSelectionScreen.weaponSelected == "revolver" 
 					|| GunSelectionScreen.weaponSelected == "assault rifle" ) {
-				long bhwId = bulletHitWall.play(.1f);
+				//long bhwId = bulletHitWall.play(.1f);
 				bullets.removeValue((CreateBullet)b.getUserData(), true);
 			}
-			if (GunSelectionScreen.weaponSelected == "laser") {
+			else if (GunSelectionScreen.weaponSelected == "laser") {
 				lasers.removeValue((CreateBullet)b.getUserData(), true);
-				laserHitWall.play();
+				//laserHitWall.play();
 			}
 			else if (GunSelectionScreen.weaponSelected == "shotgun") {
 				pellets.removeValue((CreateBullet)b.getUserData(), true);
-				long phwId = pelletHitWall.play(.1f);
+				//long phwId = pelletHitWall.play(.1f);
 			}
 			world.destroyBody(b);
 		}
