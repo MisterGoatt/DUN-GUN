@@ -36,8 +36,8 @@ public class Grunt extends Sprite implements Disposable{
 			gruntDamagedAtlas = DunGun.manager.get("sprites/grunt/gruntDamaged.atlas");
 			gruntDamagedAnimation = new Animation <TextureRegion>(1f/15f, gruntDamagedAtlas.getRegions());			
 			defineGrunt();
+			System.out.println(health);
 		}
-
 		
 		public void defineGrunt() {
 			//define player body
@@ -56,9 +56,7 @@ public class Grunt extends Sprite implements Disposable{
 			fdef.shape = shape;
 			fdef.filter.categoryBits = DunGun.GRUNT;
 			fdef.filter.maskBits = DunGun.WALL | DunGun.BULLET;
-			b2body.createFixture(fdef).setUserData("grunt");;
-		 
-			shape.dispose();
+			b2body.createFixture(fdef).setUserData("grunt");;	
 		}
 		
 		public void renderSprite(SpriteBatch batch) {
@@ -76,7 +74,6 @@ public class Grunt extends Sprite implements Disposable{
 			if (!tookDamage) {
 				batch.draw(gruntStandingRegion, posX - .17f, posY - .13f, 20 / DunGun.PPM, 10 / DunGun.PPM, 40 / DunGun.PPM, 32 / DunGun.PPM, 1, 1, angle);
 			}else {
-				System.out.println("You've shot me!");
 				batch.draw(gruntDamagedAnimation.getKeyFrame(timePassed), posX - .2f, posY -.23f, 20 / DunGun.PPM, 25 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1.15f, 1.15f, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
 				if(gruntDamagedAnimation.isAnimationFinished(timePassed)) {

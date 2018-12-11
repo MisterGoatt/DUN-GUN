@@ -32,7 +32,7 @@ public class CollisionDetector implements ContactListener{
 		laserHitWall = DunGun.manager.get("sound effects/laserImpact.mp3");
 		pelletHitWall = DunGun.manager.get("sound effects/pelletImpact.mp3");
 		bulletBodyImpact = DunGun.manager.get("sound effects/bulletBodyImpact.mp3");
-		
+		System.out.println("asdasdsad");
 		gruntHealth.clear();
 		enemies.clear();
 	}
@@ -115,9 +115,13 @@ public class CollisionDetector implements ContactListener{
 						break;
 					default: break;
 					}
+					gruntHealth.clear();
+					enemies.clear();
 					
 					if (grunt.health <= 0) {
 						gruntsToRemove.add(fa.getBody()); //grunt
+						Grunt.tookDamage = false;
+
 					}
 					System.out.println(grunt.health);
 
@@ -145,10 +149,15 @@ public class CollisionDetector implements ContactListener{
 					case "shotgun": grunt.health -= PlayerOne.shotgunDamage;
 						break;
 					default: break;
+					
+					
 					}
+					gruntHealth.clear();
+					enemies.clear();
 					
 					if (grunt.health <= 0) {
 						gruntsToRemove.add(fb.getBody()); //grunt
+						Grunt.tookDamage = false;
 					}
 					System.out.println(grunt.health);
 				}

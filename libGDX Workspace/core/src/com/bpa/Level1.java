@@ -106,6 +106,7 @@ public class Level1 implements Screen{
 		
 		grunt = new Grunt(world);
 		grunts.add(grunt);
+		System.out.println(grunts);
 		
 
 		new B2DWorldCreator(world, map);
@@ -252,7 +253,14 @@ public class Level1 implements Screen{
   		if (lockCursor) {
   			Gdx.input.setCursorCatched(true);
   		}else Gdx.input.setCursorCatched(false);
-        
+  		
+  		
+  		if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
+  			grunt = new Grunt(world);
+  			grunts.add(grunt);
+  			System.out.println(grunts);
+
+  		}
 
         //*********GAME IS PAUSED*********
         if (gamePaused) {
@@ -297,9 +305,6 @@ public class Level1 implements Screen{
 	        //b2dr.render(world, cam.combined);
 	        game.batch.begin(); //starts sprite spriteBatch
 
-//	        if (axeSwinging) {
-//	    		createBullet.renderSprite(game.batch);
-//	    	}
 	        
 	        //RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER GAME OBJECTS
 	        for (int i = 0; i < grunts.size; i++) {
