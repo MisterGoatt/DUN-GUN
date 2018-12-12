@@ -64,7 +64,11 @@ public class Level1 implements Screen{
 	private boolean gamePaused = false;
 	private boolean once = false; //makes sure the viewport on pause menu screen only changes once
 	private float waitToShootL = 0;
-	private boolean start = false;
+	private float waitToShootS = 0;
+
+	private boolean startLaserCount = false;
+	private boolean startShotgunCount = false;
+
 	public static boolean axeSwinging = false;
 	public static boolean bulletImpact = false;
 	//arrays of different game objects
@@ -125,7 +129,7 @@ public class Level1 implements Screen{
 			switch (GunSelectionScreen.weaponSelected) {
 			
 			case "laser":
-				start = true;
+				startLaserCount = true;
 				long lsId = laserShot.play(.5f);
 				break;
 			case "revolver":
@@ -137,8 +141,10 @@ public class Level1 implements Screen{
 			case "shotgun":
 				//controls how many shotgun shells are shot
 				for (int i = 0; i < 6; i++) {
+
 					createBullet = new CreateBullet(world);
 					pellets.add(createBullet);
+					waitToShootS = 0;
 				}
 				long sS = shotgunShot.play(.3f);
 				break;
@@ -152,11 +158,8 @@ public class Level1 implements Screen{
 			}
 			
 			if (GunSelectionScreen.weaponSelected != "shotgun" && GunSelectionScreen.weaponSelected != "laser") {
-				System.out.println("before bullet");
 				createBullet = new CreateBullet(world);
-				System.out.println("after bullet");
 				bullets.add(createBullet);
-				System.out.println("after added to array");
 			}
 			isShooting = false;	
 		}
@@ -165,19 +168,17 @@ public class Level1 implements Screen{
 			createBullet = new CreateBullet(world);
 			lasers.add(createBullet);
 			waitToShootL = 0;
-			start = false;
+			startLaserCount = false;
 			}
 	}
 
 	public void cameraUpdate(float delta) {
 		
-    	System.out.println("before render");
 
 		//timeStep = 60 times a second, velocity iterations = 6, position iterations = 2
 		world.step(1/60f, 6, 2); //tells game how many times per second for Box2d to make its calculations
-		 
+        shootGun(); //sees if gun is shooting
 		//remove bullets
-    	System.out.println("after render");
 
 		Array<Body> bulletBodies = CollisionDetector.bulletsToRemove;
 		Array<Body> gruntBodies = CollisionDetector.gruntsToRemove;
@@ -284,14 +285,16 @@ public class Level1 implements Screen{
             
         }else if (!gamePaused){ //********GAME IS NOT PAUSED********
         	//laser delay for build up of power effect
-        	if (start) {
+        	if (startLaserCount) {
 				waitToShootL += 1;
 			}
+
+        	
 
 			cameraUpdate(delta);
 			playerOne.handleInput(delta);
 			mapRenderer.render();
-	        b2dr.render(world, cam.combined);
+	        //b2dr.render(world, cam.combined);
 	        game.batch.begin(); //starts sprite spriteBatch
 	        
 	        //RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER GAME OBJECTS
@@ -312,7 +315,7 @@ public class Level1 implements Screen{
 	        	bullets.get(i).renderSprite(game.batch);
 
 	        }
-	        shootGun(); //sees if gun is shooting
+
 	        playerOne.renderSprite(game.batch);
 	    	game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / DunGun.PPM, 13 / DunGun.PPM);
 	    	mapRenderer.setView(cam);

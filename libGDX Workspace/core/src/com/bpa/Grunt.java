@@ -26,7 +26,7 @@ public class Grunt extends Sprite implements Disposable{
 	private float timePassed = 0;
 	private TextureRegion gruntStandingRegion;
 	static boolean tookDamage = false;
-	private float runSpeed = 3;
+	private float runSpeed = 2;
 		
 		public Grunt(World world) {
 			this.world = world;
@@ -56,7 +56,7 @@ public class Grunt extends Sprite implements Disposable{
 			fdef.density = 500;
 			fdef.shape = shape;
 			fdef.filter.categoryBits = DunGun.GRUNT;
-			fdef.filter.maskBits = DunGun.WALL | DunGun.BULLET | DunGun.GRUNT;
+			fdef.filter.maskBits = DunGun.WALL | DunGun.BULLET | DunGun.GRUNT | DunGun.PLAYER;
 			b2body.createFixture(fdef).setUserData("grunt");
 		}
 		
@@ -65,14 +65,16 @@ public class Grunt extends Sprite implements Disposable{
 			float differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
 			angle2 = MathUtils.atan2(differenceY, differenceX);
 			float angle = angle2 * MathUtils.radDeg;
-	        angle = angle - 90; //makes it a full 360 degrees
+	        
+			
+			angle = angle - 90; //makes it a full 360 degrees
 		    if (angle < 0) {
 		    	angle += 360 ;
 		    }
 			float posX = this.b2body.getPosition().x;
 			float posY = this.b2body.getPosition().y;
-			float gposX = (float) (Math.cos(angle)) * runSpeed;
-			float gposY = (float) (Math.sin(angle)) * runSpeed;
+			float gposX = (float) (Math.cos(angle2)) * runSpeed;
+			float gposY = (float) (Math.sin(angle2)) * runSpeed;
 			
 			if (!tookDamage) {
 				batch.draw(gruntStandingRegion, posX - .17f, posY - .13f, 20 / DunGun.PPM, 10 / DunGun.PPM, 40 / DunGun.PPM, 32 / DunGun.PPM, 1, 1, angle);
@@ -86,6 +88,8 @@ public class Grunt extends Sprite implements Disposable{
 			}
 			
 			b2body.applyLinearImpulse(gposX, gposY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);
+	        //this.b2body.setLinearVelocity(gposX, gposY);
+
 			b2body.setTransform(this.b2body.getPosition().x, this.b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
 
 

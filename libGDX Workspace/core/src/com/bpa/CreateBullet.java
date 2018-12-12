@@ -109,13 +109,14 @@ public class CreateBullet extends Sprite implements Disposable{
 
 
 		if (GunSelectionScreen.weaponSelected == "shotgun") {
-			float speedVary = (int)(Math.random() * 10 + 5);
+			float speedVary = (int)(Math.random() * 10 + 5f);
 			float angleVary = (int)(Math.random() * 40 - 19);
-			angleVary = angleVary / 100;
+			angleVary = angleVary / DunGun.PPM;
 			angle = angle + angleVary;
 			
 			posX = (float) (Math.cos(angle)) * speedVary;
 			posY = (float) (Math.sin(angle)) * speedVary;
+			System.out.println(posX +" " + posY);
 		}
 
 		else {
