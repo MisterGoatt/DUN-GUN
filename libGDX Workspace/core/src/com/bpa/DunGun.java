@@ -30,10 +30,7 @@ public class DunGun extends Game{
 	public void create() {
 		batch = new SpriteBatch();
 		manager = new AssetManager();
-		
-		//Creates the logging file and wipes the previous run
-		LogFileCreator lfc = new LogFileCreator();
-		lfc.fileCreate();
+
 	
 		//PlayerOne
 		manager.load("sprites/player1/playerRevolver.atlas", TextureAtlas.class);
