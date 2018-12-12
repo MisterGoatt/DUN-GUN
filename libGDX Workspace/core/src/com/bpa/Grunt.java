@@ -1,7 +1,5 @@
 package com.bpa;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -20,7 +18,7 @@ public class Grunt extends Sprite implements Disposable{
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
-	public int health = 300;
+	public int health = 100;
 	float angle2;
 	private TextureAtlas gruntAtkAnimation;
 	private TextureAtlas gruntDamagedAtlas;
@@ -28,6 +26,7 @@ public class Grunt extends Sprite implements Disposable{
 	private float timePassed = 0;
 	private TextureRegion gruntStandingRegion;
 	static boolean tookDamage = false;
+	private float runSpeed = 3;
 		
 		public Grunt(World world) {
 			this.world = world;
@@ -36,15 +35,15 @@ public class Grunt extends Sprite implements Disposable{
 			gruntDamagedAtlas = DunGun.manager.get("sprites/grunt/gruntDamaged.atlas");
 			gruntDamagedAnimation = new Animation <TextureRegion>(1f/15f, gruntDamagedAtlas.getRegions());			
 			defineGrunt();
-			System.out.println(health);
 		}
 		
 		public void defineGrunt() {
 			//define player body
+			float xRan = (int)(Math.random() * 	4.5 + 2f);
+
+			float yRan = (int)(Math.random() * 5 + 2);
 			
-			float yRan = (int)(Math.random() * 	4 + 3.5f);
-			
-			bdef.position.set(450 / DunGun.PPM, yRan);
+			bdef.position.set(xRan, yRan);
 			
 			bdef.type = BodyDef.BodyType.DynamicBody;
 			//create body in the world
@@ -55,11 +54,10 @@ public class Grunt extends Sprite implements Disposable{
 			CircleShape shape = new CircleShape();
 			shape.setRadius(10 / DunGun.PPM);
 			fdef.density = 500;
-		
 			fdef.shape = shape;
 			fdef.filter.categoryBits = DunGun.GRUNT;
-			fdef.filter.maskBits = DunGun.WALL | DunGun.BULLET;
-			b2body.createFixture(fdef).setUserData("grunt");	
+			fdef.filter.maskBits = DunGun.WALL | DunGun.BULLET | DunGun.GRUNT;
+			b2body.createFixture(fdef).setUserData("grunt");
 		}
 		
 		public void renderSprite(SpriteBatch batch) {
@@ -71,9 +69,11 @@ public class Grunt extends Sprite implements Disposable{
 		    if (angle < 0) {
 		    	angle += 360 ;
 		    }
-			b2body.setTransform(this.b2body.getPosition().x, this.b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
 			float posX = this.b2body.getPosition().x;
 			float posY = this.b2body.getPosition().y;
+			float gposX = (float) (Math.cos(angle)) * runSpeed;
+			float gposY = (float) (Math.sin(angle)) * runSpeed;
+			
 			if (!tookDamage) {
 				batch.draw(gruntStandingRegion, posX - .17f, posY - .13f, 20 / DunGun.PPM, 10 / DunGun.PPM, 40 / DunGun.PPM, 32 / DunGun.PPM, 1, 1, angle);
 			}else {
@@ -84,6 +84,10 @@ public class Grunt extends Sprite implements Disposable{
 					tookDamage = false;
 				}
 			}
+			
+			b2body.applyLinearImpulse(gposX, gposY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);
+			b2body.setTransform(this.b2body.getPosition().x, this.b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
+
 
 			
 			
@@ -92,7 +96,6 @@ public class Grunt extends Sprite implements Disposable{
 
 		@Override
 		public void dispose() {
-			gruntAtkAnimation.dispose();
 		}
 
 

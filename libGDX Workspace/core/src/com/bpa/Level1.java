@@ -1,9 +1,5 @@
 package com.bpa;
 
-
-import java.util.ArrayList;
-
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
@@ -89,7 +85,7 @@ public class Level1 implements Screen{
 		TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
 		params.textureMinFilter = TextureFilter.Linear;
 		params.textureMagFilter = TextureFilter.Linear;
-		map = new TmxMapLoader().load("tileMaps/Level1/customset2.tmx", params);
+		map = new TmxMapLoader().load("tileMaps/Level1/customset3.tmx", params);
 		mouseCursor = DunGun.manager.get("crosshair 1.png", Texture.class);
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / DunGun.PPM);
        
@@ -156,8 +152,11 @@ public class Level1 implements Screen{
 			}
 			
 			if (GunSelectionScreen.weaponSelected != "shotgun" && GunSelectionScreen.weaponSelected != "laser") {
+				System.out.println("before bullet");
 				createBullet = new CreateBullet(world);
+				System.out.println("after bullet");
 				bullets.add(createBullet);
+				System.out.println("after added to array");
 			}
 			isShooting = false;	
 		}
@@ -172,12 +171,14 @@ public class Level1 implements Screen{
 
 	public void cameraUpdate(float delta) {
 		
-	
+    	System.out.println("before render");
+
 		//timeStep = 60 times a second, velocity iterations = 6, position iterations = 2
 		world.step(1/60f, 6, 2); //tells game how many times per second for Box2d to make its calculations
 		 
 		//remove bullets
-		
+    	System.out.println("after render");
+
 		Array<Body> bulletBodies = CollisionDetector.bulletsToRemove;
 		Array<Body> gruntBodies = CollisionDetector.gruntsToRemove;
 		//removes bullets when they collide with wall
@@ -197,7 +198,6 @@ public class Level1 implements Screen{
 		}
 		
 		if (GunSelectionScreen.weaponSelected == "battle axe" && PlayerOne.axeBodyRemoval) {
-			System.out.println(" asdad");
 			world.destroyBody(createBullet.b2body);
 			PlayerOne.axeBodyRemoval = false;
 			bullets.clear();
@@ -207,7 +207,6 @@ public class Level1 implements Screen{
 
 		//REMOVE GRUNT BODIES AND REMOVE FROM MANAGER LIST
 		for (int e = 0; e < gruntBodies.size; e ++) {
-			
 			Body g = gruntBodies.get(e);
 			grunts.removeValue((Grunt) g.getUserData(), true);
 			world.destroyBody(g);
@@ -224,9 +223,7 @@ public class Level1 implements Screen{
 		gamePort = new StretchViewport(1500, 800, cam);
 		once = false;
 	}
-	
-	
-	
+
 	@Override
 	public void render(float delta) {
 
@@ -254,8 +251,6 @@ public class Level1 implements Screen{
   			grunt = new Grunt(world);
   			grunts.add(grunt);
   		}
-
-
 
         //*********GAME IS PAUSED*********
         if (gamePaused) {
@@ -288,20 +283,19 @@ public class Level1 implements Screen{
             game.batch.end(); //starts sprite spriteBatch
             
         }else if (!gamePaused){ //********GAME IS NOT PAUSED********
-        	
         	//laser delay for build up of power effect
         	if (start) {
 				waitToShootL += 1;
 			}
-			cameraUpdate(delta);
 
+			cameraUpdate(delta);
 			playerOne.handleInput(delta);
 			mapRenderer.render();
-	        //b2dr.render(world, cam.combined);
+	        b2dr.render(world, cam.combined);
 	        game.batch.begin(); //starts sprite spriteBatch
-
 	        
 	        //RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER GAME OBJECTS
+
 	        for (int i = 0; i < grunts.size; i++) {
 	    		//grunt.renderSprite(game.batch);
 	        	grunts.get(i).renderSprite(game.batch);
@@ -316,6 +310,7 @@ public class Level1 implements Screen{
 	        }
 	        for (int i = 0; i < bullets.size; i++) {
 	        	bullets.get(i).renderSprite(game.batch);
+
 	        }
 	        shootGun(); //sees if gun is shooting
 	        playerOne.renderSprite(game.batch);

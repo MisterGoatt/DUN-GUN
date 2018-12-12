@@ -46,9 +46,7 @@ public class CreateBullet extends Sprite implements Disposable{
 	
 	public CreateBullet(World world) {
 		this.world = world;
-		
 
-		
 		defineBullet();
 		laserTextureAtlas = DunGun.manager.get("sprites/player1/laserBlastAnimation.atlas", TextureAtlas.class);
 		laserAnimation = new Animation <TextureRegion>(1f/15f, laserTextureAtlas.getRegions());
@@ -104,8 +102,6 @@ public class CreateBullet extends Sprite implements Disposable{
 		fdef.filter.categoryBits = DunGun.BULLET; //identifies the category bit is
 		fdef.filter.maskBits = DunGun.WALL | DunGun.GRUNT; // what masking bit the category bit collides with
 		b2body.createFixture(fdef).setUserData("bullets");
-		//b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, PlayerOne.angle2); //sets the position of the body to the position of the body and implements rotation
-		//fdef.shape.dispose();
 		float differenceX = Level1.mousePosition.x - b2body.getPosition().x;
 		float differenceY = Level1.mousePosition.y - b2body.getPosition().y;
 		angle = MathUtils.atan2(differenceY, differenceX);
@@ -114,7 +110,6 @@ public class CreateBullet extends Sprite implements Disposable{
 
 		if (GunSelectionScreen.weaponSelected == "shotgun") {
 			float speedVary = (int)(Math.random() * 10 + 5);
-			//float speedVary = .5f;
 			float angleVary = (int)(Math.random() * 40 - 19);
 			angleVary = angleVary / 100;
 			angle = angle + angleVary;
