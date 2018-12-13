@@ -245,7 +245,6 @@ public class PlayerOne extends Sprite implements Disposable{
 		if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)){
 			
 			this.b2body.setLinearVelocity(-speed * speedAB, speed * speedAB);
-			System.out.print(this.b2body.getLinearVelocity());
 		}else if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)){
 			this.b2body.setLinearVelocity(speed * speedAB, speed * speedAB);
 		}else if(Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)){
@@ -255,7 +254,6 @@ public class PlayerOne extends Sprite implements Disposable{
 		}
 		else if(Gdx.input.isKeyPressed(Input.Keys.W)){
 			this.b2body.setLinearVelocity(0f, speed);
-			System.out.println(this.b2body.getLinearVelocity());
 
 		}else if(Gdx.input.isKeyPressed(Input.Keys.S)){
 			this.b2body.setLinearVelocity(0f, -speed);

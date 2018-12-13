@@ -25,7 +25,7 @@ public class Grunt extends Sprite implements Disposable{
 	private Animation <TextureRegion> gruntDamagedAnimation;
 	private float timePassed = 0;
 	private TextureRegion gruntStandingRegion;
-	static boolean tookDamage = false;
+	boolean tookDamage = false;
 	private float runSpeed = 2;
 		
 		public Grunt(World world) {
@@ -39,11 +39,8 @@ public class Grunt extends Sprite implements Disposable{
 		
 		public void defineGrunt() {
 			//define player body
-			float xRan = (int)(Math.random() * 	4.5 + 2f);
-
-			float yRan = (int)(Math.random() * 5 + 2);
 			
-			bdef.position.set(xRan, yRan);
+			bdef.position.set(Level1.gruntPos);
 			
 			bdef.type = BodyDef.BodyType.DynamicBody;
 			//create body in the world

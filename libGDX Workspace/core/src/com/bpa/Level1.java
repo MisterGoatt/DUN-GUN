@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -67,8 +68,9 @@ public class Level1 implements Screen{
 	private float waitToShootS = 0;
 
 	private boolean startLaserCount = false;
-	private boolean startShotgunCount = false;
-
+	private boolean spawnEnemies = false;
+	private boolean spawnOnce = true;
+	
 	public static boolean axeSwinging = false;
 	public static boolean bulletImpact = false;
 	//arrays of different game objects
@@ -76,6 +78,7 @@ public class Level1 implements Screen{
 	static Array<Grunt> grunts = new Array<Grunt>();
 	static Array<CreateBullet> pellets = new Array<CreateBullet>();
 	static Array<CreateBullet> bullets = new Array<CreateBullet>();
+	public static Vector2 gruntPos = new Vector2(0,0);
 	
 	
 	public Level1(final DunGun game) {
@@ -87,8 +90,8 @@ public class Level1 implements Screen{
 		cam.zoom -= .40;
 		
 		TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
-		params.textureMinFilter = TextureFilter.Linear;
-		params.textureMagFilter = TextureFilter.Linear;
+		params.textureMinFilter = TextureFilter.Nearest;
+		params.textureMagFilter = TextureFilter.Nearest;
 		map = new TmxMapLoader().load("tileMaps/Level1/customset3.tmx", params);
 		mouseCursor = DunGun.manager.get("crosshair 1.png", Texture.class);
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / DunGun.PPM);
@@ -103,11 +106,6 @@ public class Level1 implements Screen{
 		pellets.clear();
 		lasers.clear();
 		bullets.clear();
-		
-		grunt = new Grunt(world);
-		grunts.add(grunt);
-		
-
 		new B2DWorldCreator(world, map);
 		
 		//framerate = DunGun.manager.get("fonts/CourierNew32.fnt", BitmapFont.class) ;
@@ -121,6 +119,25 @@ public class Level1 implements Screen{
 		pauseMenu = DunGun.manager.get("screens/Pause.jpg", Texture.class);
 		this.world.setContactListener(new CollisionDetector());
 	}
+	
+	
+	public void createGrunts() {
+		if (spawnEnemies) {
+			System.out.println("spawnEnemies");
+			MapLayer layer = map.getLayers().get("room1G");
+			for (MapObject mo : layer.getObjects()) {
+				System.out.println("spawning");
+				gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
+				gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+				grunt = new Grunt(world);
+				grunts.add(grunt);
+			}
+			spawnEnemies = false;
+		}	
+	}
+	
+	
+	
 	//Creation of bullet objects and playing shooting and swinging sound effects
 	public void shootGun() {
 		if (isShooting) {
@@ -224,6 +241,26 @@ public class Level1 implements Screen{
 		gamePort = new StretchViewport(1500, 800, cam);
 		once = false;
 	}
+	
+	
+	public void spawningLocations() {
+		 
+		
+
+		if (playerOne.b2body.getPosition().x < 16 && playerOne.b2body.getPosition().x > 15 && 
+				playerOne.b2body.getPosition().y < 11 && playerOne.b2body.getPosition().y > 10.5f){
+			
+			if (spawnOnce) {
+				spawnEnemies = true;
+				spawnOnce = false;
+				createGrunts();
+				
+			}
+
+		}
+		
+	}
+	
 
 	@Override
 	public void render(float delta) {
@@ -247,12 +284,6 @@ public class Level1 implements Screen{
   			Gdx.input.setCursorCatched(true);
   		}else Gdx.input.setCursorCatched(false);
   		
-  		
-  		if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
-  			grunt = new Grunt(world);
-  			grunts.add(grunt);
-  		}
-
         //*********GAME IS PAUSED*********
         if (gamePaused) {
             game.batch.begin(); //starts sprite spriteBatch
@@ -315,7 +346,8 @@ public class Level1 implements Screen{
 	        	bullets.get(i).renderSprite(game.batch);
 
 	        }
-
+	        
+	        spawningLocations();
 	        playerOne.renderSprite(game.batch);
 	    	game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / DunGun.PPM, 13 / DunGun.PPM);
 	    	mapRenderer.setView(cam);

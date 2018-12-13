@@ -116,7 +116,6 @@ public class CreateBullet extends Sprite implements Disposable{
 			
 			posX = (float) (Math.cos(angle)) * speedVary;
 			posY = (float) (Math.sin(angle)) * speedVary;
-			System.out.println(posX +" " + posY);
 		}
 
 		else {

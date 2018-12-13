@@ -122,7 +122,7 @@ public class CollisionDetector implements ContactListener{
 					
 					if (grunt.health <= 0) {
 						gruntsToRemove.add(fa.getBody()); //grunt
-						Grunt.tookDamage = false;
+						grunt.tookDamage = false;
 
 					}
 					System.out.println(grunt.health);
@@ -159,7 +159,7 @@ public class CollisionDetector implements ContactListener{
 					
 					if (grunt.health <= 0) {
 						gruntsToRemove.add(fb.getBody()); //grunt
-						Grunt.tookDamage = false;
+						grunt.tookDamage = false;
 					}
 					System.out.println(grunt.health);
 				}
