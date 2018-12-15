@@ -7,7 +7,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -45,7 +44,8 @@ public class Level1 implements Screen{
 	private PlayerOne playerOne;
 	private Grunt grunt;
 	public CreateBullet createBullet;
-	public CollisionDetector cd;
+	private CollisionDetector cd;
+;
 	//private int[] layerBackround = {0, 1, 2, 3};
 	//private int[] layerAfterBackground = {4};
 	public static boolean isShooting = false;
@@ -65,8 +65,6 @@ public class Level1 implements Screen{
 	private boolean gamePaused = false;
 	private boolean once = false; //makes sure the viewport on pause menu screen only changes once
 	private float waitToShootL = 0;
-	private float waitToShootS = 0;
-
 	private boolean startLaserCount = false;
 	private boolean spawnEnemies = false;
 	private boolean spawnOnce = true;
@@ -89,10 +87,10 @@ public class Level1 implements Screen{
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 		cam.zoom -= .40;
 		
-		TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
-		params.textureMinFilter = TextureFilter.Nearest;
-		params.textureMagFilter = TextureFilter.Nearest;
-		map = new TmxMapLoader().load("tileMaps/Level1/customset3.tmx", params);
+//		TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
+//		params.textureMinFilter = TextureFilter.Nearest;
+//		params.textureMagFilter = TextureFilter.Nearest;
+		map = new TmxMapLoader().load("tileMaps/Level1/customset3.tmx");
 		mouseCursor = DunGun.manager.get("crosshair 1.png", Texture.class);
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / DunGun.PPM);
        
@@ -100,12 +98,14 @@ public class Level1 implements Screen{
 		world = new World(new Vector2(0, 0), true); // no gravity and yes we want to sleep objects (won't calculate simulations for bodies at rest)
 		b2dr = new Box2DDebugRenderer();
 		playerOne = new PlayerOne(world); //must be created after world creation or will crash
-		
+		cd = new CollisionDetector();
 		//emptying the arrays of bullet textures
 		grunts.clear();
 		pellets.clear();
 		lasers.clear();
 		bullets.clear();
+		
+		
 		new B2DWorldCreator(world, map);
 		
 		//framerate = DunGun.manager.get("fonts/CourierNew32.fnt", BitmapFont.class) ;
@@ -117,16 +117,14 @@ public class Level1 implements Screen{
 		laserShot = DunGun.manager.get("sound effects/laserBlast3.mp3", Sound.class);
 		axeSwing = DunGun.manager.get("sound effects/axeSwing.mp3", Sound.class);
 		pauseMenu = DunGun.manager.get("screens/Pause.jpg", Texture.class);
-		this.world.setContactListener(new CollisionDetector());
+		this.world.setContactListener(cd);
 	}
 	
 	
 	public void createGrunts() {
 		if (spawnEnemies) {
-			System.out.println("spawnEnemies");
 			MapLayer layer = map.getLayers().get("room1G");
 			for (MapObject mo : layer.getObjects()) {
-				System.out.println("spawning");
 				gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
 				gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
 				grunt = new Grunt(world);
@@ -142,7 +140,6 @@ public class Level1 implements Screen{
 	public void shootGun() {
 		if (isShooting) {
 			//waitToShootL += 1;
-
 			switch (GunSelectionScreen.weaponSelected) {
 			
 			case "laser":
@@ -151,6 +148,7 @@ public class Level1 implements Screen{
 				break;
 			case "revolver":
 				long gsId = gunShot.play(.3f);
+
 				break;
 			case "rifle":
 				long rsId = rifleShot.play(.3f);
@@ -158,10 +156,8 @@ public class Level1 implements Screen{
 			case "shotgun":
 				//controls how many shotgun shells are shot
 				for (int i = 0; i < 6; i++) {
-
 					createBullet = new CreateBullet(world);
 					pellets.add(createBullet);
-					waitToShootS = 0;
 				}
 				long sS = shotgunShot.play(.3f);
 				break;
@@ -178,7 +174,7 @@ public class Level1 implements Screen{
 				createBullet = new CreateBullet(world);
 				bullets.add(createBullet);
 			}
-			isShooting = false;	
+			isShooting = false;
 		}
 		//laser blast delay
 		if (waitToShootL >= 20){
@@ -194,26 +190,41 @@ public class Level1 implements Screen{
 
 		//timeStep = 60 times a second, velocity iterations = 6, position iterations = 2
 		world.step(1/60f, 6, 2); //tells game how many times per second for Box2d to make its calculations
-        shootGun(); //sees if gun is shooting
 		//remove bullets
+		Array<Body> bodiesToRemove = cd.getbodiesToRemove();
 
-		Array<Body> bulletBodies = CollisionDetector.bulletsToRemove;
-		Array<Body> gruntBodies = CollisionDetector.gruntsToRemove;
+
 		//removes bullets when they collide with wall
-		for (int i = 0; i < bulletBodies.size; i ++) {
-			Body b = bulletBodies.get(i);
-			if (GunSelectionScreen.weaponSelected == "rifle" || GunSelectionScreen.weaponSelected == "revolver" 
-					|| GunSelectionScreen.weaponSelected == "assault rifle" ) {
-				bullets.removeValue((CreateBullet)b.getUserData(), true);
+		for (int i = 0; i < bodiesToRemove.size; i ++) {
+			Body b = bodiesToRemove.get(i);
+				
+			Object u = b.getUserData();
+			if (u instanceof CreateBullet) {	
+				if (GunSelectionScreen.weaponSelected == "rifle" || GunSelectionScreen.weaponSelected == "revolver" 
+						|| GunSelectionScreen.weaponSelected == "assault rifle" ) {
+					bullets.removeValue((CreateBullet)b.getUserData(), true);
+				}
+				else if (GunSelectionScreen.weaponSelected == "laser") {
+					lasers.removeValue((CreateBullet)b.getUserData(), true);
+				}
+				else if (GunSelectionScreen.weaponSelected == "shotgun") {
+					pellets.removeValue((CreateBullet)b.getUserData(), true);
+				}
+				world.destroyBody(b);
+				b = null;
 			}
-			else if (GunSelectionScreen.weaponSelected == "laser") {
-				lasers.removeValue((CreateBullet)b.getUserData(), true);
+			if (u instanceof Grunt) {
+				grunts.removeValue((Grunt) b.getUserData(), true);
+				world.destroyBody(b);
+
+				b = null;
 			}
-			else if (GunSelectionScreen.weaponSelected == "shotgun") {
-				pellets.removeValue((CreateBullet)b.getUserData(), true);
-			}
-			world.destroyBody(b);
+			//b = null;
+		
 		}
+		bodiesToRemove.clear();
+
+		
 		
 		if (GunSelectionScreen.weaponSelected == "battle axe" && PlayerOne.axeBodyRemoval) {
 			world.destroyBody(createBullet.b2body);
@@ -221,16 +232,19 @@ public class Level1 implements Screen{
 			bullets.clear();
 		}
 		
-		bulletBodies.clear(); //empties list of bodies
-
-		//REMOVE GRUNT BODIES AND REMOVE FROM MANAGER LIST
-		for (int e = 0; e < gruntBodies.size; e ++) {
-			Body g = gruntBodies.get(e);
-			grunts.removeValue((Grunt) g.getUserData(), true);
-			world.destroyBody(g);
-		}
-	
-		gruntBodies.clear();
+		
+		//empties list of bodies
+		
+		
+		
+//		//REMOVE GRUNT BODIES AND REMOVE FROM MANAGER LIST
+//		for (int e = 0; e < bodiesToRemove.size; e ++) {
+//			Body g = bodiesToRemove.get(e);
+//			grunts.removeValue((Grunt) g.getUserData(), true);
+//			world.destroyBody(g);
+//		}
+//	
+        shootGun(); //sees if gun is shooting
 
 		cam.position.x = playerOne.b2body.getPosition().x;
 		cam.position.y = playerOne.b2body.getPosition().y;
@@ -244,17 +258,13 @@ public class Level1 implements Screen{
 	
 	
 	public void spawningLocations() {
-		 
-		
 
 		if (playerOne.b2body.getPosition().x < 16 && playerOne.b2body.getPosition().x > 15 && 
 				playerOne.b2body.getPosition().y < 11 && playerOne.b2body.getPosition().y > 10.5f){
-			
 			if (spawnOnce) {
 				spawnEnemies = true;
 				spawnOnce = false;
 				createGrunts();
-				
 			}
 
 		}
@@ -325,7 +335,7 @@ public class Level1 implements Screen{
 			cameraUpdate(delta);
 			playerOne.handleInput(delta);
 			mapRenderer.render();
-	        //b2dr.render(world, cam.combined);
+	        b2dr.render(world, cam.combined);
 	        game.batch.begin(); //starts sprite spriteBatch
 	        
 	        //RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER GAME OBJECTS

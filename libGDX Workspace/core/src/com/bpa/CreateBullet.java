@@ -1,9 +1,6 @@
 package com.bpa;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,7 +14,6 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 public class CreateBullet extends Sprite implements Disposable{
@@ -48,6 +44,8 @@ public class CreateBullet extends Sprite implements Disposable{
 		this.world = world;
 
 		defineBullet();
+		
+		
 		laserTextureAtlas = DunGun.manager.get("sprites/player1/laserBlastAnimation.atlas", TextureAtlas.class);
 		laserAnimation = new Animation <TextureRegion>(1f/15f, laserTextureAtlas.getRegions());
 		laserTextureAtlas = DunGun.manager.get("sprites/player1/pellet.atlas", TextureAtlas.class);
@@ -55,7 +53,7 @@ public class CreateBullet extends Sprite implements Disposable{
 		pelletAnimation = new Animation <TextureRegion>(1f / 15f, pelletTextureAtlas.getRegions());
 		bulletTextureAtlas = DunGun.manager.get("sprites/player1/bulletAnimation.atlas", TextureAtlas.class);
 		bulletAnimation = new Animation <TextureRegion>(1f / 15f, bulletTextureAtlas.getRegions());
-		}
+	}
 	
 	public void defineBullet() {
 		bdef.position.set(PlayerOne.p1PosX, PlayerOne.p1PosY);
@@ -75,6 +73,7 @@ public class CreateBullet extends Sprite implements Disposable{
 			shape.set(vertice);
 			fdef.shape = shape;
 			//shape.dispose();
+			
 		}
 		//polygon shape for battle axe
 		else if(GunSelectionScreen.weaponSelected == "battle axe") {
@@ -91,6 +90,7 @@ public class CreateBullet extends Sprite implements Disposable{
 			CircleShape shape = new CircleShape();
 			fdef.shape = shape;
 			if (GunSelectionScreen.weaponSelected == "shotgun") {
+				shape.setPosition(new Vector2(5, 7).scl(1/DunGun.PPM));
 				shape.setRadius(2 / DunGun.PPM);
 				}
 			else {

@@ -1,5 +1,7 @@
 package com.bpa;
 
+import javax.swing.plaf.synth.SynthSplitPaneUI;
+
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -11,23 +13,21 @@ import com.badlogic.gdx.utils.Array;
 
 public class CollisionDetector implements ContactListener{
 
-	//CreateBullet collisionResult = new CreateBullet(null);
-	//private Array<Body> bodiesToRemove;
-	public static Array<Body> bulletsToRemove;
-	public static Array<Body> gruntsToRemove;
 	private Array<Body> enemies;
 	private Array<Grunt> gruntHealth = new Array<Grunt>();
+	private Array<Body> bodiesToRemove;
 	Grunt grunt;
 	private Sound bulletHitWall;
 	private Sound laserHitWall;
 	private Sound pelletHitWall;
 	private Sound bulletBodyImpact;
+
 	
-	public CollisionDetector() {
-		
+	public CollisionDetector() {	
 		enemies= new Array<Body>();
-		bulletsToRemove = new Array<Body>();
-		gruntsToRemove = new Array<Body>();
+//		bulletsToRemove = new Array<Body>();
+//		gruntsToRemove = new Array<Body>();
+		bodiesToRemove = new Array<Body>();
 		bulletHitWall = DunGun.manager.get("sound effects/bulletImpact.mp3");
 		laserHitWall = DunGun.manager.get("sound effects/laserImpact.mp3");
 		pelletHitWall = DunGun.manager.get("sound effects/pelletImpact.mp3");
@@ -42,7 +42,6 @@ public class CollisionDetector implements ContactListener{
 		Fixture fb = contact.getFixtureB();
 		if (fa == null || fb == null) return;
 		if (fa.getUserData() == null || fb.getUserData() == null) return;
-		
 		//BULLET AND WALL COLLISIONS
 		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
 			if (fa.getUserData().equals("walls") || fb.getUserData().equals("walls")) {
@@ -58,11 +57,11 @@ public class CollisionDetector implements ContactListener{
 					else if (GunSelectionScreen.weaponSelected == "shotgun") {
 						long phwId = pelletHitWall.play(.1f);
 					}
-					bulletsToRemove.add(fa.getBody()); // bullet
+					bodiesToRemove.add(fa.getBody()); // bullet
 
 				}
 				//FB
-				else if(fb.getUserData().equals("bullets")){
+				if(fb.getUserData().equals("bullets")){
 					if (GunSelectionScreen.weaponSelected == "rifle" || GunSelectionScreen.weaponSelected == "revolver" 
 							|| GunSelectionScreen.weaponSelected == "assault rifle" ) {
 						long bhwId = bulletHitWall.play(.1f);
@@ -73,8 +72,8 @@ public class CollisionDetector implements ContactListener{
 					else if (GunSelectionScreen.weaponSelected == "shotgun") {
 						long phwId = pelletHitWall.play(.1f);
 					}
-					bulletsToRemove.add(fb.getBody()); // bullet
-					
+					bodiesToRemove.add(fb.getBody()); // bullet
+
 				}
 			}
 		}
@@ -83,12 +82,12 @@ public class CollisionDetector implements ContactListener{
 			if (fa.getUserData().equals("grunt") || fb.getUserData().equals("grunt")) {
 				if (fa.getUserData().equals("bullets")){
 					if (GunSelectionScreen.weaponSelected != "battle axe") {
-						bulletsToRemove.add(fa.getBody()); //bullet
+						bodiesToRemove.add(fa.getBody()); //bullet
 					}
 				}
-				else if(fb.getUserData().equals("bullets")){
+				if(fb.getUserData().equals("bullets")){
 					if (GunSelectionScreen.weaponSelected != "battle axe") {
-						bulletsToRemove.add(fb.getBody()); //bullet
+						bodiesToRemove.add(fb.getBody()); //bullet
 					}
 
 				}				
@@ -101,7 +100,6 @@ public class CollisionDetector implements ContactListener{
 					grunt = gruntHealth.get(0);
 					grunt.tookDamage = true;
 
-					
 					switch (GunSelectionScreen.weaponSelected){
 					case "battle axe": grunt.health -= PlayerOne.battleAxeDamage;
 						break;
@@ -121,14 +119,16 @@ public class CollisionDetector implements ContactListener{
 					enemies.clear();
 					
 					if (grunt.health <= 0) {
-						gruntsToRemove.add(fa.getBody()); //grunt
+						bodiesToRemove.add(fa.getBody()); //grunt
 						grunt.tookDamage = false;
 
 					}
-					System.out.println(grunt.health);
+					bodiesToRemove.add(fa.getBody()); //grunt
+
 
 				}
-				else if(fb.getUserData().equals("grunt")){
+				
+				if(fb.getUserData().equals("grunt")){
 					
 					long bBI = bulletBodyImpact.play(.8f);
 					enemies.add(fb.getBody());
@@ -158,18 +158,25 @@ public class CollisionDetector implements ContactListener{
 					enemies.clear();
 					
 					if (grunt.health <= 0) {
-						gruntsToRemove.add(fb.getBody()); //grunt
+						bodiesToRemove.add(fb.getBody()); //grunt
 						grunt.tookDamage = false;
 					}
-					System.out.println(grunt.health);
+					bodiesToRemove.add(fb.getBody()); //grunt
+
 				}
 			}
 		}
+
 	}
 
 		
-	
+	public Array <Body> getbodiesToRemove(){
+		return bodiesToRemove;
+	}		
 
+
+	
+	
 	@Override
 	public void endContact(Contact contact) {
 		// TODO Auto-generated method stub

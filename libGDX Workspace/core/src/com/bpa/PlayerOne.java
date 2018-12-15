@@ -163,7 +163,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		}
 		//Shotgun
 		else if (GunSelectionScreen.weaponSelected == "shotgun") {
-			speed = 1.7f;
+			speed = 1.2f;
 			if (shootAnimation) {
 				batch.draw(shotgunAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
@@ -275,9 +275,9 @@ public class PlayerOne extends Sprite implements Disposable{
 				break;
 				case "rifle": timeSinceLastShot = 90;
 				break;
-				case "shotgun": timeSinceLastShot = 80;
+				case "shotgun": timeSinceLastShot = 10;
 				break;
-				case "assault rifle": timeSinceLastShot = 20;
+				case "assault rifle": timeSinceLastShot = 10;
 				break;
 				case "laser": timeSinceLastShot = 80;
 				break;
