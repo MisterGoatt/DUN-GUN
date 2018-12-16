@@ -26,7 +26,7 @@ public class Grunt extends Sprite implements Disposable{
 	private float timePassed = 0;
 	private TextureRegion gruntStandingRegion;
 	boolean tookDamage = false;
-	private float runSpeed = 2;
+	private float runSpeed = 1.5f;
 		
 		public Grunt(World world) {
 			this.world = world;

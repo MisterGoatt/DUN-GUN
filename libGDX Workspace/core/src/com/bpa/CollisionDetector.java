@@ -123,7 +123,6 @@ public class CollisionDetector implements ContactListener{
 						grunt.tookDamage = false;
 
 					}
-					bodiesToRemove.add(fa.getBody()); //grunt
 
 
 				}
@@ -161,7 +160,6 @@ public class CollisionDetector implements ContactListener{
 						bodiesToRemove.add(fb.getBody()); //grunt
 						grunt.tookDamage = false;
 					}
-					bodiesToRemove.add(fb.getBody()); //grunt
 
 				}
 			}

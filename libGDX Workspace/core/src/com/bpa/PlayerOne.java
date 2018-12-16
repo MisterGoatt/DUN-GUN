@@ -99,7 +99,7 @@ public class PlayerOne extends Sprite implements Disposable{
 
 	public void definePlayer() {
 		//define player body
-		bdef.position.set(750 / DunGun.PPM, 400 / DunGun.PPM);
+		bdef.position.set(Level1.player1SpawnPos);
 
 		bdef.type = BodyDef.BodyType.DynamicBody;
 		//create body in the world
@@ -275,9 +275,9 @@ public class PlayerOne extends Sprite implements Disposable{
 				break;
 				case "rifle": timeSinceLastShot = 90;
 				break;
-				case "shotgun": timeSinceLastShot = 10;
+				case "shotgun": timeSinceLastShot = 80;
 				break;
-				case "assault rifle": timeSinceLastShot = 10;
+				case "assault rifle": timeSinceLastShot = 25;
 				break;
 				case "laser": timeSinceLastShot = 80;
 				break;

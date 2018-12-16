@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -77,7 +78,8 @@ public class Level1 implements Screen{
 	static Array<CreateBullet> pellets = new Array<CreateBullet>();
 	static Array<CreateBullet> bullets = new Array<CreateBullet>();
 	public static Vector2 gruntPos = new Vector2(0,0);
-	
+	public static Vector2 player1SpawnPos = new Vector2(0,0);
+
 	
 	public Level1(final DunGun game) {
 		this.game = game;
@@ -87,17 +89,25 @@ public class Level1 implements Screen{
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 		cam.zoom -= .40;
 		
-//		TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
-//		params.textureMinFilter = TextureFilter.Nearest;
-//		params.textureMagFilter = TextureFilter.Nearest;
-		map = new TmxMapLoader().load("tileMaps/Level1/customset3.tmx");
+		TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
+		params.textureMinFilter = TextureFilter.Linear;
+		params.textureMagFilter = TextureFilter.Linear;
+		map = new TmxMapLoader().load("tileMaps/Level1/untitled.tmx", params);
 		mouseCursor = DunGun.manager.get("crosshair 1.png", Texture.class);
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / DunGun.PPM);
        
 		//Box2d variables
 		world = new World(new Vector2(0, 0), true); // no gravity and yes we want to sleep objects (won't calculate simulations for bodies at rest)
 		b2dr = new Box2DDebugRenderer();
-		playerOne = new PlayerOne(world); //must be created after world creation or will crash
+		
+		MapLayer playerLayer = map.getLayers().get("player");
+		for (MapObject mo : playerLayer.getObjects()) {
+			player1SpawnPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
+			player1SpawnPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+			playerOne = new PlayerOne(world); //must be created after world creation or will crash
+
+		}
+		
 		cd = new CollisionDetector();
 		//emptying the arrays of bullet textures
 		grunts.clear();
@@ -123,7 +133,7 @@ public class Level1 implements Screen{
 	
 	public void createGrunts() {
 		if (spawnEnemies) {
-			MapLayer layer = map.getLayers().get("room1G");
+			MapLayer layer = map.getLayers().get("room1g");
 			for (MapObject mo : layer.getObjects()) {
 				gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
 				gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
@@ -232,18 +242,6 @@ public class Level1 implements Screen{
 			bullets.clear();
 		}
 		
-		
-		//empties list of bodies
-		
-		
-		
-//		//REMOVE GRUNT BODIES AND REMOVE FROM MANAGER LIST
-//		for (int e = 0; e < bodiesToRemove.size; e ++) {
-//			Body g = bodiesToRemove.get(e);
-//			grunts.removeValue((Grunt) g.getUserData(), true);
-//			world.destroyBody(g);
-//		}
-//	
         shootGun(); //sees if gun is shooting
 
 		cam.position.x = playerOne.b2body.getPosition().x;
@@ -259,8 +257,8 @@ public class Level1 implements Screen{
 	
 	public void spawningLocations() {
 
-		if (playerOne.b2body.getPosition().x < 16 && playerOne.b2body.getPosition().x > 15 && 
-				playerOne.b2body.getPosition().y < 11 && playerOne.b2body.getPosition().y > 10.5f){
+		if (playerOne.b2body.getPosition().x < 7.8 && playerOne.b2body.getPosition().x > 6.4 && 
+				playerOne.b2body.getPosition().y < 1.3 && playerOne.b2body.getPosition().y > 1.2){
 			if (spawnOnce) {
 				spawnEnemies = true;
 				spawnOnce = false;
@@ -335,7 +333,7 @@ public class Level1 implements Screen{
 			cameraUpdate(delta);
 			playerOne.handleInput(delta);
 			mapRenderer.render();
-	        b2dr.render(world, cam.combined);
+	        //b2dr.render(world, cam.combined);
 	        game.batch.begin(); //starts sprite spriteBatch
 	        
 	        //RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER GAME OBJECTS
@@ -367,7 +365,8 @@ public class Level1 implements Screen{
         
         mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
         cam.unproject(mousePosition); //gets mouse coordinates within viewport
-		game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
+		System.out.println(mousePosition);
+        game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
 	}
 
 	@Override
