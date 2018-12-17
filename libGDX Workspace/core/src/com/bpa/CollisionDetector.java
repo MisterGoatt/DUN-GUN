@@ -81,14 +81,12 @@ public class CollisionDetector implements ContactListener{
 		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
 			if (fa.getUserData().equals("grunt") || fb.getUserData().equals("grunt")) {
 				if (fa.getUserData().equals("bullets")){
-					if (GunSelectionScreen.weaponSelected != "battle axe" ) {
-						bodiesToRemove.add(fa.getBody()); //bullet
-					}
+					bodiesToRemove.add(fa.getBody()); //bullet
+					
 				}
 				if(fb.getUserData().equals("bullets")){
-					if (GunSelectionScreen.weaponSelected != "battle axe") {
-						bodiesToRemove.add(fb.getBody()); //bullet
-					}
+					bodiesToRemove.add(fb.getBody()); //bullet
+					
 
 				}				
 				if (fa.getUserData().equals("grunt")){

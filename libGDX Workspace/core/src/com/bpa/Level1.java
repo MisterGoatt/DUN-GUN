@@ -115,22 +115,6 @@ public class Level1 implements Screen{
 		this.world.setContactListener(cd);
 	}
 	
-	
-	public void createGrunts() {
-//		if (spawnEnemies) {
-//			MapLayer layer = map.getLayers().get("room1g");
-//			for (MapObject mo : layer.getObjects()) {
-//				gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
-//				gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
-//				grunt = new Grunt(world);
-//				grunts.add(grunt);
-//			}
-//			spawnEnemies = false;
-//		}	
-	}
-	
-	
-	
 	//Creation of bullet objects and playing shooting and swinging sound effects
 	public void shootGun() {
 		if (isShooting) {
@@ -166,6 +150,7 @@ public class Level1 implements Screen{
 			}
 			
 			if (GunSelectionScreen.weaponSelected != "shotgun" && GunSelectionScreen.weaponSelected != "laser") {
+				System.out.println("here");
 				createBullet = new CreateBullet(world);
 				bullets.add(createBullet);
 			}
@@ -196,7 +181,7 @@ public class Level1 implements Screen{
 			Object u = b.getUserData();
 			if (u instanceof CreateBullet) {	
 				if (GunSelectionScreen.weaponSelected == "rifle" || GunSelectionScreen.weaponSelected == "revolver" 
-						|| GunSelectionScreen.weaponSelected == "assault rifle" ) {
+						|| GunSelectionScreen.weaponSelected == "assault rifle" || GunSelectionScreen.weaponSelected == "battle axe" ) {
 					bullets.removeValue((CreateBullet)b.getUserData(), true);
 				}
 				else if (GunSelectionScreen.weaponSelected == "laser") {
@@ -214,18 +199,16 @@ public class Level1 implements Screen{
 
 				b = null;
 			}
-			//b = null;
-		
 		}
 		bodiesToRemove.clear();
 
 		
 		
-		if (GunSelectionScreen.weaponSelected == "battle axe" && PlayerOne.axeBodyRemoval) {
-			world.destroyBody(createBullet.b2body);
-			PlayerOne.axeBodyRemoval = false;
-			bullets.clear();
-		}
+//		if (GunSelectionScreen.weaponSelected == "battle axe" && PlayerOne.axeBodyRemoval) {
+//			world.destroyBody(createBullet.b2body);
+//			PlayerOne.axeBodyRemoval = false;
+//			bullets.clear();
+//		}
 		
         shootGun(); //sees if gun is shooting
 
@@ -421,9 +404,7 @@ public class Level1 implements Screen{
         	if (startLaserCount) {
 				waitToShootL += 1;
 			}
-
         	
-
 			cameraUpdate(delta);
 			mapRenderer.render();
 	        //b2dr.render(world, cam.combined);
@@ -467,7 +448,7 @@ public class Level1 implements Screen{
         mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
         cam.unproject(mousePosition); //gets mouse coordinates within viewport
         game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
-        System.out.println(mousePosition);
+        //System.out.println(mousePosition);
 	}
 
 	@Override

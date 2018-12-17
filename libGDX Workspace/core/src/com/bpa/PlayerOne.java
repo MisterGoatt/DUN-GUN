@@ -59,7 +59,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	public static int revolverDamage = 50;
 	public static int rifleDamage = 100;
 	public static float shotgunDamage = 16.6f;
-	public static int assaultRifleDamage = 100;
+	public static int assaultRifleDamage = 34;
 	public static int laserLanceDamage = 150;
 	public static int battleAxeDamage = 175;
 	public static int player1HP;
