@@ -13,8 +13,8 @@ import com.badlogic.gdx.utils.Array;
 
 public class CollisionDetector implements ContactListener{
 
-	private Array<Body> enemies;
-	private Array<Grunt> gruntHealth = new Array<Grunt>();
+	private Array<Body> tempBodyArray;
+	private Array<Grunt> bodyTarget = new Array<Grunt>();
 	private Array<Body> bodiesToRemove;
 	Grunt grunt;
 	private Sound bulletHitWall;
@@ -24,7 +24,7 @@ public class CollisionDetector implements ContactListener{
 
 	
 	public CollisionDetector() {	
-		enemies= new Array<Body>();
+		tempBodyArray= new Array<Body>();
 //		bulletsToRemove = new Array<Body>();
 //		gruntsToRemove = new Array<Body>();
 		bodiesToRemove = new Array<Body>();
@@ -32,8 +32,8 @@ public class CollisionDetector implements ContactListener{
 		laserHitWall = DunGun.manager.get("sound effects/laserImpact.mp3");
 		pelletHitWall = DunGun.manager.get("sound effects/pelletImpact.mp3");
 		bulletBodyImpact = DunGun.manager.get("sound effects/bulletBodyImpact.mp3");
-		gruntHealth.clear();
-		enemies.clear();
+		bodyTarget.clear();
+		tempBodyArray.clear();
 	}
 	
 	@Override
@@ -94,10 +94,10 @@ public class CollisionDetector implements ContactListener{
 				if (fa.getUserData().equals("grunt")){
 					long bBI = bulletBodyImpact.play(.8f);
 
-					enemies.add(fa.getBody());
-					Body b = enemies.first();
-					gruntHealth.add((Grunt) b.getUserData()); //casts Grunt on the physics body to get the class instance
-					grunt = gruntHealth.get(0);
+					tempBodyArray.add(fa.getBody());
+					Body b = tempBodyArray.first();
+					bodyTarget.add((Grunt) b.getUserData()); //casts Grunt on the physics body to get the class instance
+					grunt = bodyTarget.get(0);
 					grunt.tookDamage = true;
 
 					switch (GunSelectionScreen.weaponSelected){
@@ -115,8 +115,8 @@ public class CollisionDetector implements ContactListener{
 						break;
 					default: break;
 					}
-					gruntHealth.clear();
-					enemies.clear();
+					bodyTarget.clear();
+					tempBodyArray.clear();
 					
 					if (grunt.health <= 0) {
 						bodiesToRemove.add(fa.getBody()); //grunt
@@ -130,10 +130,10 @@ public class CollisionDetector implements ContactListener{
 				if(fb.getUserData().equals("grunt")){
 					
 					long bBI = bulletBodyImpact.play(.8f);
-					enemies.add(fb.getBody());
-					Body b = enemies.first();
-					gruntHealth.add((Grunt) b.getUserData());
-					grunt = gruntHealth.get(0);
+					tempBodyArray.add(fb.getBody());
+					Body b = tempBodyArray.first();
+					bodyTarget.add((Grunt) b.getUserData());
+					grunt = bodyTarget.get(0);
 					grunt.tookDamage = true;
 
 					switch (GunSelectionScreen.weaponSelected){					
@@ -153,8 +153,8 @@ public class CollisionDetector implements ContactListener{
 					
 					
 					}
-					gruntHealth.clear();
-					enemies.clear();
+					bodyTarget.clear();
+					tempBodyArray.clear();
 					
 					if (grunt.health <= 0) {
 						bodiesToRemove.add(fb.getBody()); //grunt
@@ -162,6 +162,43 @@ public class CollisionDetector implements ContactListener{
 					}
 
 				}
+			}
+		}
+		//GRUNT AND PLAYER COLLISIONS
+		if (fa.getUserData().equals("player") || fb.getUserData().equals("player")) {
+			if (fa.getUserData().equals("grunt") || fb.getUserData().equals("grunt")) {
+
+				
+				
+				if(fa.getUserData().equals("grunt")){
+					tempBodyArray.add(fa.getBody());
+					Body b = tempBodyArray.first();
+					bodyTarget.add((Grunt) b.getUserData());
+					grunt = bodyTarget.get(0);
+					grunt.contAtk = true;
+					bodyTarget.clear();
+					tempBodyArray.clear();
+					
+
+				}
+
+				
+				
+				if(fb.getUserData().equals("grunt")){
+					tempBodyArray.add(fb.getBody());
+					Body b = tempBodyArray.first();
+					bodyTarget.add((Grunt) b.getUserData());
+					grunt = bodyTarget.get(0);
+					grunt.contAtk = true;
+
+					
+					bodyTarget.clear();
+					tempBodyArray.clear();
+
+				}
+
+
+				
 			}
 		}
 
@@ -177,8 +214,39 @@ public class CollisionDetector implements ContactListener{
 	
 	@Override
 	public void endContact(Contact contact) {
-		// TODO Auto-generated method stub
+		Fixture fa = contact.getFixtureA();
+		Fixture fb = contact.getFixtureB();
+		if (fa == null || fb == null) return;
+		if (fa.getUserData() == null || fb.getUserData() == null) return;
 		
+		//GRUNT AND PLAYER COLLISIONS
+		if (fa.getUserData().equals("player") || fb.getUserData().equals("player")) {
+			if (fa.getUserData().equals("grunt") || fb.getUserData().equals("grunt")) {
+
+				if(fa.getUserData().equals("grunt")){
+					tempBodyArray.add(fa.getBody());
+					Body b = tempBodyArray.first();
+					bodyTarget.add((Grunt) b.getUserData());
+					grunt = bodyTarget.get(0);
+					grunt.contAtk = false;
+					bodyTarget.clear();
+					tempBodyArray.clear();
+				}
+				
+				if(fb.getUserData().equals("grunt")){
+					tempBodyArray.add(fb.getBody());
+					Body b = tempBodyArray.first();
+					bodyTarget.add((Grunt) b.getUserData());
+					grunt = bodyTarget.get(0);
+					grunt.contAtk = false;
+					bodyTarget.clear();
+					tempBodyArray.clear();
+				}
+
+
+				
+			}
+		}
 	}
 
 	@Override

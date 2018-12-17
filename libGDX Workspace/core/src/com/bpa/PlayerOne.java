@@ -59,18 +59,19 @@ public class PlayerOne extends Sprite implements Disposable{
 	public static int revolverDamage = 50;
 	public static int rifleDamage = 100;
 	public static float shotgunDamage = 16.6f;
-	public static int assaultRifleDamage = 20;
+	public static int assaultRifleDamage = 100;
 	public static int laserLanceDamage = 150;
 	public static int battleAxeDamage = 175;
-	public static int player1HP = 1000;
-	
+	public static int player1HP;
+	public static boolean p1Dead = false;
 	private boolean shootAnimation = false;
 	public static boolean axeBodyRemoval = false;
 
 	public PlayerOne(World world) {
 		this.world = world;
 		definePlayer();
-
+		player1HP = 100;
+		PlayerOne.p1Dead = false;
 		//Getting the assets for 
 		revolverTextureAtlas = DunGun.manager.get("sprites/player1/playerRevolver.atlas", TextureAtlas.class);
 		revolverAnimation = new Animation <TextureRegion>(1f/15f, revolverTextureAtlas.getRegions());
@@ -135,7 +136,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		angle2 = MathUtils.atan2(Level1.mousePosition.y - getY(), Level1.mousePosition.x - getX()); //get distance between mouse and player in radians
 		//revolver
 		if (GunSelectionScreen.weaponSelected == "revolver") {
-			speed = 2.5f;
+			speed = 2.1f;
 			if (shootAnimation) {
 				batch.draw(revolverAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
@@ -213,7 +214,7 @@ public class PlayerOne extends Sprite implements Disposable{
 
 		//battle axe
 		else if (GunSelectionScreen.weaponSelected == "battle axe") {
-			speed = 3f;
+			speed = 2.3f;
 			if (shootAnimation) {
 				batch.draw(axeSwingAnimation.getKeyFrame(timePassed), posX - .35f, posY - .3f, 35 / DunGun.PPM, 30 / DunGun.PPM, 70 / DunGun.PPM, 70 / DunGun.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
@@ -232,6 +233,15 @@ public class PlayerOne extends Sprite implements Disposable{
 			}
 
 		}
+		
+		
+		
+		//PLAYER DIES
+		if (player1HP <= 0) {
+			world.destroyBody(this.b2body);
+			p1Dead = true;
+		}
+		
 	}
 
 	public void handleInput(float delta) {

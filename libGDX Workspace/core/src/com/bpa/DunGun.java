@@ -41,6 +41,7 @@ public class DunGun extends Game{
 		manager.load("sprites/player1/laserAnimation.atlas", TextureAtlas.class);
 		manager.load("sprites/player1/axeSwingAnimation.atlas", TextureAtlas.class);
 		manager.load("sound effects/running.mp3", Sound.class);
+		manager.load("sprites/player1/hp.png", Texture.class);
 		
 		//Level1
 		manager.load("crosshair 1.png", Texture.class);
@@ -90,7 +91,7 @@ public class DunGun extends Game{
 		//Grunt
 		manager.load("sprites/grunt/mutantAtkAnimation.atlas", TextureAtlas.class);
 		manager.load("sprites/grunt/gruntDamaged.atlas", TextureAtlas.class);
-
+		manager.load("sound effects/gruntSwoosh.mp3", Sound.class);
 		
 		manager.finishLoading();
 		this.setScreen(new IntroductionScreens(this));

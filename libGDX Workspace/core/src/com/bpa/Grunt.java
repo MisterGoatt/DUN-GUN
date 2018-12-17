@@ -1,6 +1,7 @@
 package com.bpa;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,20 +21,28 @@ public class Grunt extends Sprite implements Disposable{
 	private BodyDef bdef = new BodyDef();
 	public int health = 100;
 	float angle2;
-	private TextureAtlas gruntAtkAnimation;
+	private TextureAtlas gruntAtkAtlas;
+	private Animation <TextureRegion> gruntAtkAnimation;
 	private TextureAtlas gruntDamagedAtlas;
 	private Animation <TextureRegion> gruntDamagedAnimation;
 	private float timePassed = 0;
 	private TextureRegion gruntStandingRegion;
+	private Sound atkSwoosh;
 	boolean tookDamage = false;
-	private float runSpeed = 1.5f;
+	private float runSpeed = 2f;
+	public boolean attack = false;
+	public int atkdmg = 2;
+	public boolean contAtk = false;
 		
 		public Grunt(World world) {
 			this.world = world;
-			gruntAtkAnimation = DunGun.manager.get("sprites/grunt/mutantAtkAnimation.atlas");
-			gruntStandingRegion = gruntAtkAnimation.findRegion("tile000");
+			gruntAtkAtlas = DunGun.manager.get("sprites/grunt/mutantAtkAnimation.atlas");
+			gruntAtkAnimation = new Animation <TextureRegion>(1f/15f, gruntAtkAtlas.getRegions());			
+			gruntStandingRegion = gruntAtkAtlas.findRegion("tile000");
 			gruntDamagedAtlas = DunGun.manager.get("sprites/grunt/gruntDamaged.atlas");
-			gruntDamagedAnimation = new Animation <TextureRegion>(1f/15f, gruntDamagedAtlas.getRegions());			
+			gruntDamagedAnimation = new Animation <TextureRegion>(1f/15f, gruntDamagedAtlas.getRegions());
+			atkSwoosh = DunGun.manager.get("sound effects/gruntSwoosh.mp3");
+
 			defineGrunt();
 		}
 		
@@ -73,9 +82,25 @@ public class Grunt extends Sprite implements Disposable{
 			float gposX = (float) (Math.cos(angle2)) * runSpeed;
 			float gposY = (float) (Math.sin(angle2)) * runSpeed;
 			
-			if (!tookDamage) {
+			if (!tookDamage && !attack && !contAtk) {
 				batch.draw(gruntStandingRegion, posX - .17f, posY - .13f, 20 / DunGun.PPM, 10 / DunGun.PPM, 40 / DunGun.PPM, 32 / DunGun.PPM, 1, 1, angle);
-			}else {
+			}
+			else if (contAtk) {
+				batch.draw(gruntAtkAnimation.getKeyFrame(timePassed), posX - .17f, posY - .13f, 20 / DunGun.PPM, 10 / DunGun.PPM, 40 / DunGun.PPM, 32 / DunGun.PPM, 1, 1, angle);
+				timePassed += Gdx.graphics.getDeltaTime();
+
+				if(gruntAtkAnimation.isAnimationFinished(timePassed)) {
+					long aSId = atkSwoosh.play(1f);
+
+					timePassed = 0;
+					PlayerOne.player1HP -= atkdmg;
+					System.out.println(PlayerOne.player1HP);
+
+				}
+				
+			}
+			
+			else {
 				batch.draw(gruntDamagedAnimation.getKeyFrame(timePassed), posX - .20f, posY -.27f, 20 / DunGun.PPM, 25 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1.18f, 1.18f, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
 				if(gruntDamagedAnimation.isAnimationFinished(timePassed)) {
@@ -84,11 +109,12 @@ public class Grunt extends Sprite implements Disposable{
 				}
 			}
 			
-			b2body.applyLinearImpulse(gposX, gposY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);
-	        //this.b2body.setLinearVelocity(gposX, gposY);
-
-			b2body.setTransform(this.b2body.getPosition().x, this.b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
-
+			if (!PlayerOne.p1Dead) {
+				b2body.applyLinearImpulse(gposX, gposY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);
+		        //this.b2body.setLinearVelocity(gposX, gposY);
+	
+				b2body.setTransform(this.b2body.getPosition().x, this.b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
+			}
 
 			
 			

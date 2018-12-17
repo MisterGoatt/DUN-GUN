@@ -37,7 +37,6 @@ public class Level1 implements Screen{
 	//Sprite p1;
 	TextureRegion textureRegion;
 	MapLayer objectLayer;
-	public static Vector3 mousePosition = new Vector3(0, 0, 0);
 	
 	//Box2d variables
 	private World world;
@@ -49,29 +48,13 @@ public class Level1 implements Screen{
 ;
 	//private int[] layerBackround = {0, 1, 2, 3};
 	//private int[] layerAfterBackground = {4};
-	public static boolean isShooting = false;
-	//ArrayList<CreateBullet> bulletManager = new ArrayList<CreateBullet>();
-	private Sound gunShot;
-	private Sound rifleShot;
-	private Sound shotgunShot;
-	private Sound laserShot;
-	private Sound assaultRifleShot;
-//	private Sound bulletHitWall;
-//	private Sound laserHitWall;
-//	private Sound pelletHitWall;
-	private Sound axeSwing;
-	private Texture mouseCursor;
+	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot;
+	private Texture p1HP, mouseCursor, pauseMenu;
 	private boolean lockCursor = true;
-	private Texture pauseMenu;
-	private boolean gamePaused = false;
-	private boolean once = false; //makes sure the viewport on pause menu screen only changes once
-	private float waitToShootL = 0;
-	private boolean startLaserCount = false;
-	private boolean spawnEnemies = false;
-	private boolean spawnOnce = true;
-	
-	public static boolean axeSwinging = false;
-	public static boolean bulletImpact = false;
+	private boolean gamePaused = false, viewPortChangeOnce = false, startLaserCount = false, spawnEnemies = false, spawnOnce = true;
+	private float waitToShootL = 0;	
+	public static boolean axeSwinging = false, bulletImpact = false, isShooting = false;
+	private boolean room1 = true, room2 = true, room3 = true, room4 = true, room5 = true, room6 = true, room7 = true, room8 = true, room9 = true; //room spawn control
 	//arrays of different game objects
 	static Array<CreateBullet> lasers = new Array<CreateBullet>();
 	static Array<Grunt> grunts = new Array<Grunt>();
@@ -79,6 +62,8 @@ public class Level1 implements Screen{
 	static Array<CreateBullet> bullets = new Array<CreateBullet>();
 	public static Vector2 gruntPos = new Vector2(0,0);
 	public static Vector2 player1SpawnPos = new Vector2(0,0);
+	public static Vector3 mousePosition = new Vector3(0, 0, 0);
+
 
 	
 	public Level1(final DunGun game) {
@@ -109,16 +94,15 @@ public class Level1 implements Screen{
 		}
 		
 		cd = new CollisionDetector();
-		//emptying the arrays of bullet textures
+		//emptying the arrays of bullet textures and setting static variables to default
 		grunts.clear();
 		pellets.clear();
 		lasers.clear();
-		bullets.clear();
-		
+		bullets.clear();		
 		
 		new B2DWorldCreator(world, map);
 		
-		//framerate = DunGun.manager.get("fonts/CourierNew32.fnt", BitmapFont.class) ;
+		//frame rate = DunGun.manager.get("fonts/CourierNew32.fnt", BitmapFont.class) ;
 		
 		gunShot = DunGun.manager.get("sound effects/pistol_shot.mp3", Sound.class);
 		rifleShot = DunGun.manager.get("sound effects/rifleShot.mp3", Sound.class);
@@ -127,21 +111,22 @@ public class Level1 implements Screen{
 		laserShot = DunGun.manager.get("sound effects/laserBlast3.mp3", Sound.class);
 		axeSwing = DunGun.manager.get("sound effects/axeSwing.mp3", Sound.class);
 		pauseMenu = DunGun.manager.get("screens/Pause.jpg", Texture.class);
+		p1HP = DunGun.manager.get("sprites/player1/hp.png");
 		this.world.setContactListener(cd);
 	}
 	
 	
 	public void createGrunts() {
-		if (spawnEnemies) {
-			MapLayer layer = map.getLayers().get("room1g");
-			for (MapObject mo : layer.getObjects()) {
-				gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
-				gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
-				grunt = new Grunt(world);
-				grunts.add(grunt);
-			}
-			spawnEnemies = false;
-		}	
+//		if (spawnEnemies) {
+//			MapLayer layer = map.getLayers().get("room1g");
+//			for (MapObject mo : layer.getObjects()) {
+//				gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
+//				gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+//				grunt = new Grunt(world);
+//				grunts.add(grunt);
+//			}
+//			spawnEnemies = false;
+//		}	
 	}
 	
 	
@@ -251,21 +236,130 @@ public class Level1 implements Screen{
 	
 	public void viewPortSwitch() {
 		gamePort = new StretchViewport(1500, 800, cam);
-		once = false;
+		viewPortChangeOnce = false;
 	}
 	
 	
 	public void spawningLocations() {
 
-		if (playerOne.b2body.getPosition().x < 4.8 && playerOne.b2body.getPosition().x > 4.1 && 
-				playerOne.b2body.getPosition().y < 1.4 && playerOne.b2body.getPosition().y > 1.3){
-			if (spawnOnce) {
-				spawnEnemies = true;
-				spawnOnce = false;
-				createGrunts();
+		if (playerOne.b2body.getPosition().x < 6.6 && playerOne.b2body.getPosition().x > 6.5 && 
+				playerOne.b2body.getPosition().y < 3.9 && playerOne.b2body.getPosition().y > 3.2){
+			if (room2) {
+				MapLayer layer = map.getLayers().get("room2g");
+				for (MapObject mo : layer.getObjects()) {
+					gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
+					gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					grunt = new Grunt(world);
+					grunts.add(grunt);
+				}
+				room2 = false;
 			}
 
 		}
+		
+		if (playerOne.b2body.getPosition().x < 4.8 && playerOne.b2body.getPosition().x > 4.1 && 
+				playerOne.b2body.getPosition().y < 1.4 && playerOne.b2body.getPosition().y > 1.3){
+			if (room1) {
+				MapLayer layer = map.getLayers().get("room1g");
+				for (MapObject mo : layer.getObjects()) {
+					gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
+					gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					grunt = new Grunt(world);
+					grunts.add(grunt);
+				}
+				room1 = false;
+			}
+
+		
+		}
+		if (playerOne.b2body.getPosition().x < 8.6 && playerOne.b2body.getPosition().x > 8 && 
+				playerOne.b2body.getPosition().y < 4.2 && playerOne.b2body.getPosition().y > 4.1){
+			if (room3) {
+				MapLayer layer = map.getLayers().get("room3g");
+				for (MapObject mo : layer.getObjects()) {
+					gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
+					gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					grunt = new Grunt(world);
+					grunts.add(grunt);
+				}
+				room3 = false;
+			}
+
+		
+		}
+		if (playerOne.b2body.getPosition().x < 8.6 && playerOne.b2body.getPosition().x > 8 && 
+				playerOne.b2body.getPosition().y < 6.5 && playerOne.b2body.getPosition().y > 6.4){
+			if (room4) {
+				MapLayer layer = map.getLayers().get("room4g");
+				for (MapObject mo : layer.getObjects()) {
+					gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
+					gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					grunt = new Grunt(world);
+					grunts.add(grunt);
+				}
+				room4 = false;
+			}
+
+		
+		}
+		if (playerOne.b2body.getPosition().x < 11.8 && playerOne.b2body.getPosition().x > 11.1 && 
+				playerOne.b2body.getPosition().y < 10.3 && playerOne.b2body.getPosition().y > 10.2){
+			if (room5) {
+				MapLayer layer = map.getLayers().get("room5g");
+				for (MapObject mo : layer.getObjects()) {
+					gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
+					gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					grunt = new Grunt(world);
+					grunts.add(grunt);
+				}
+				room5 = false;
+			}
+		}
+		if (playerOne.b2body.getPosition().x < 7.4 && playerOne.b2body.getPosition().x > 7.3 && 
+				playerOne.b2body.getPosition().y < 12.8 && playerOne.b2body.getPosition().y > 12.1){
+			System.out.println("room 6");
+
+			if (room6) {
+				MapLayer layer = map.getLayers().get("room6g");
+				for (MapObject mo : layer.getObjects()) {
+					gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
+					gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					grunt = new Grunt(world);
+					grunts.add(grunt);
+				}
+				room6 = false;
+			}
+		}
+		if (playerOne.b2body.getPosition().x < 10.1 && playerOne.b2body.getPosition().x > 10 && 
+				playerOne.b2body.getPosition().y < 21.4 && playerOne.b2body.getPosition().y > 20.7){
+			System.out.println("room 8");
+			if (room8) {
+				MapLayer layer = map.getLayers().get("room8g");
+				for (MapObject mo : layer.getObjects()) {
+					gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
+					gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					grunt = new Grunt(world);
+					grunts.add(grunt);
+				}
+				room8 = false;
+			}
+		}
+		if (playerOne.b2body.getPosition().x < 4.8 && playerOne.b2body.getPosition().x > 4.7 && 
+				playerOne.b2body.getPosition().y < 20.8 && playerOne.b2body.getPosition().y > 20.1){
+			System.out.println("room 9");
+
+			if (room9) {
+				MapLayer layer = map.getLayers().get("room9g");
+				for (MapObject mo : layer.getObjects()) {
+					gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
+					gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					grunt = new Grunt(world);
+					grunts.add(grunt);
+				}
+				room9 = false;
+			}
+		}
+			
 		
 	}
 	
@@ -300,7 +394,7 @@ public class Level1 implements Screen{
         	cam.position.y = 0;
         	game.batch.draw(pauseMenu, 0 - (350/DunGun.PPM), 0 - (200 / DunGun.PPM), 1500 / 200,  800 / 200);
         	lockCursor = false;
-        	if (once) {
+        	if (viewPortChangeOnce) {
         		viewPortSwitch();
         	}
         	
@@ -331,7 +425,6 @@ public class Level1 implements Screen{
         	
 
 			cameraUpdate(delta);
-			playerOne.handleInput(delta);
 			mapRenderer.render();
 	        //b2dr.render(world, cam.combined);
 	        game.batch.begin(); //starts sprite spriteBatch
@@ -356,8 +449,16 @@ public class Level1 implements Screen{
 	        }
 	        
 	        spawningLocations();
-	        playerOne.renderSprite(game.batch);
+	        
+	        if (!PlayerOne.p1Dead) {
+				playerOne.handleInput(delta);
+
+	        	playerOne.renderSprite(game.batch);	        	
+		    	game.batch.draw(p1HP, PlayerOne.p1PosX - .35f, PlayerOne.p1PosY - .18f, PlayerOne.player1HP / (DunGun.PPM + 50), 3f / DunGun.PPM);
+
+	        }
 	    	game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / DunGun.PPM, 13 / DunGun.PPM);
+	    	//game.batch.draw(p1HP, PlayerOne.p1PosX, PlayerOne.p1PosY - .5f, PlayerOne.player1HP, 1);
 	    	mapRenderer.setView(cam);
 	        game.batch.end(); //starts sprite spriteBatch
 	        
