@@ -56,12 +56,14 @@ public class PlayerOne extends Sprite implements Disposable{
 	public static float angle2; //get distance between mouse and player in radians
 	public static float angle;
 	//amount of damage each weapon deals
-	public static int revolverDamage = 35;
+	public static int revolverDamage = 50;
 	public static int rifleDamage = 100;
-	public static int shotgunDamage = 30;
+	public static float shotgunDamage = 16.6f;
 	public static int assaultRifleDamage = 20;
 	public static int laserLanceDamage = 150;
 	public static int battleAxeDamage = 175;
+	public static int player1HP = 1000;
+	
 	private boolean shootAnimation = false;
 	public static boolean axeBodyRemoval = false;
 

@@ -257,8 +257,8 @@ public class Level1 implements Screen{
 	
 	public void spawningLocations() {
 
-		if (playerOne.b2body.getPosition().x < 7.8 && playerOne.b2body.getPosition().x > 6.4 && 
-				playerOne.b2body.getPosition().y < 1.3 && playerOne.b2body.getPosition().y > 1.2){
+		if (playerOne.b2body.getPosition().x < 4.8 && playerOne.b2body.getPosition().x > 4.1 && 
+				playerOne.b2body.getPosition().y < 1.4 && playerOne.b2body.getPosition().y > 1.3){
 			if (spawnOnce) {
 				spawnEnemies = true;
 				spawnOnce = false;
@@ -365,8 +365,8 @@ public class Level1 implements Screen{
         
         mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
         cam.unproject(mousePosition); //gets mouse coordinates within viewport
-		System.out.println(mousePosition);
         game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
+        System.out.println(mousePosition);
 	}
 
 	@Override

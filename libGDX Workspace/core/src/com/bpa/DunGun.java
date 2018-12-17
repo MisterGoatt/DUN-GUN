@@ -31,7 +31,8 @@ public class DunGun extends Game{
 		batch = new SpriteBatch();
 		manager = new AssetManager();
 
-	
+		//load all of the graphics into memory before game starts
+		
 		//PlayerOne
 		manager.load("sprites/player1/playerRevolver.atlas", TextureAtlas.class);
 		manager.load("sprites/player1/rifleAnimation.atlas", TextureAtlas.class);
