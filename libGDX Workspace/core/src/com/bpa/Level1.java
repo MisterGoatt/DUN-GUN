@@ -150,9 +150,11 @@ public class Level1 implements Screen{
 			}
 			
 			if (GunSelectionScreen.weaponSelected != "shotgun" && GunSelectionScreen.weaponSelected != "laser") {
-				System.out.println("here");
+				
 				createBullet = new CreateBullet(world);
-				bullets.add(createBullet);
+				bullets.add(createBullet);	
+				
+				
 			}
 			isShooting = false;
 		}
@@ -181,7 +183,7 @@ public class Level1 implements Screen{
 			Object u = b.getUserData();
 			if (u instanceof CreateBullet) {	
 				if (GunSelectionScreen.weaponSelected == "rifle" || GunSelectionScreen.weaponSelected == "revolver" 
-						|| GunSelectionScreen.weaponSelected == "assault rifle" || GunSelectionScreen.weaponSelected == "battle axe" ) {
+						|| GunSelectionScreen.weaponSelected == "assault rifle") {
 					bullets.removeValue((CreateBullet)b.getUserData(), true);
 				}
 				else if (GunSelectionScreen.weaponSelected == "laser") {
@@ -196,19 +198,17 @@ public class Level1 implements Screen{
 			if (u instanceof Grunt) {
 				grunts.removeValue((Grunt) b.getUserData(), true);
 				world.destroyBody(b);
-
 				b = null;
 			}
 		}
 		bodiesToRemove.clear();
 
-		
-		
-//		if (GunSelectionScreen.weaponSelected == "battle axe" && PlayerOne.axeBodyRemoval) {
-//			world.destroyBody(createBullet.b2body);
-//			PlayerOne.axeBodyRemoval = false;
-//			bullets.clear();
-//		}
+		if (GunSelectionScreen.weaponSelected == "battle axe" && PlayerOne.axeBodyRemoval) {
+			world.destroyBody(createBullet.b2body);
+			PlayerOne.axeBodyRemoval = false;
+			bullets.clear();
+			createBullet.b2body = null;
+		}
 		
         shootGun(); //sees if gun is shooting
 
@@ -329,8 +329,6 @@ public class Level1 implements Screen{
 		}
 		if (playerOne.b2body.getPosition().x < 4.8 && playerOne.b2body.getPosition().x > 4.7 && 
 				playerOne.b2body.getPosition().y < 20.8 && playerOne.b2body.getPosition().y > 20.1){
-			System.out.println("room 9");
-
 			if (room9) {
 				MapLayer layer = map.getLayers().get("room9g");
 				for (MapObject mo : layer.getObjects()) {
@@ -342,8 +340,11 @@ public class Level1 implements Screen{
 				room9 = false;
 			}
 		}
-			
 		
+		if (playerOne.b2body.getPosition().x < .6 && playerOne.b2body.getPosition().x > 0 &&
+				playerOne.b2body.getPosition().y < 20.8 && playerOne.b2body.getPosition().y > 19.8) {
+			System.out.println("game over!");
+		}
 	}
 	
 
@@ -359,7 +360,7 @@ public class Level1 implements Screen{
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && gamePaused) {
 			gamePaused = false;
 		}
-        //hides the mouse and displays crosshair		
+        //hides the mouse and displays cross hair		
   		if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && !lockCursor) {
   			lockCursor = true;
   		}else if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && lockCursor) {
@@ -407,7 +408,7 @@ public class Level1 implements Screen{
         	
 			cameraUpdate(delta);
 			mapRenderer.render();
-	        //b2dr.render(world, cam.combined);
+	        b2dr.render(world, cam.combined);
 	        game.batch.begin(); //starts sprite spriteBatch
 	        
 	        //RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER GAME OBJECTS

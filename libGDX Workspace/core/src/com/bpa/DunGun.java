@@ -64,6 +64,7 @@ public class DunGun extends Game{
 		//Credit Screen
 		manager.load("screens/ScrollingC.jpg", Texture.class);
 		manager.load("music/creditsSong.mp3", Music.class);
+		manager.load("music/whistling masterpiece.mp3", Music.class);
 		
 		//IntroductionScreens
 		manager.load("screens/ctm_placeholder.jpg", Texture.class);

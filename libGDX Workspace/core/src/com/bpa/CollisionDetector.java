@@ -57,7 +57,10 @@ public class CollisionDetector implements ContactListener{
 					else if (GunSelectionScreen.weaponSelected == "shotgun") {
 						long phwId = pelletHitWall.play(.1f);
 					}
-					bodiesToRemove.add(fa.getBody()); // bullet
+					
+					if (GunSelectionScreen.weaponSelected != "battle axe") {
+						bodiesToRemove.add(fa.getBody());
+					}
 
 				}
 				//FB
@@ -72,8 +75,10 @@ public class CollisionDetector implements ContactListener{
 					else if (GunSelectionScreen.weaponSelected == "shotgun") {
 						long phwId = pelletHitWall.play(.1f);
 					}
-					bodiesToRemove.add(fb.getBody()); // bullet
-
+					if (GunSelectionScreen.weaponSelected != "battle axe") {
+						bodiesToRemove.add(fb.getBody());
+					}
+					
 				}
 			}
 		}
@@ -81,12 +86,16 @@ public class CollisionDetector implements ContactListener{
 		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
 			if (fa.getUserData().equals("grunt") || fb.getUserData().equals("grunt")) {
 				if (fa.getUserData().equals("bullets")){
-					bodiesToRemove.add(fa.getBody()); //bullet
 					
+					if (GunSelectionScreen.weaponSelected != "battle axe") {
+						bodiesToRemove.add(fa.getBody()); //bullet
+						
+					}
 				}
 				if(fb.getUserData().equals("bullets")){
-					bodiesToRemove.add(fb.getBody()); //bullet
-					
+					if (GunSelectionScreen.weaponSelected != "battle axe") {
+						bodiesToRemove.add(fb.getBody()); //bullet
+					}
 
 				}				
 				if (fa.getUserData().equals("grunt")){
@@ -119,10 +128,7 @@ public class CollisionDetector implements ContactListener{
 					if (grunt.health <= 0) {
 						bodiesToRemove.add(fa.getBody()); //grunt
 						grunt.tookDamage = false;
-
 					}
-
-
 				}
 				
 				if(fb.getUserData().equals("grunt")){
@@ -148,8 +154,6 @@ public class CollisionDetector implements ContactListener{
 					case "shotgun": grunt.health -= PlayerOne.shotgunDamage;
 						break;
 					default: break;
-					
-					
 					}
 					bodyTarget.clear();
 					tempBodyArray.clear();
@@ -158,7 +162,6 @@ public class CollisionDetector implements ContactListener{
 						bodiesToRemove.add(fb.getBody()); //grunt
 						grunt.tookDamage = false;
 					}
-
 				}
 			}
 		}
@@ -166,8 +169,6 @@ public class CollisionDetector implements ContactListener{
 		if (fa.getUserData().equals("player") || fb.getUserData().equals("player")) {
 			if (fa.getUserData().equals("grunt") || fb.getUserData().equals("grunt")) {
 
-				
-				
 				if(fa.getUserData().equals("grunt")){
 					tempBodyArray.add(fa.getBody());
 					Body b = tempBodyArray.first();
@@ -176,27 +177,16 @@ public class CollisionDetector implements ContactListener{
 					grunt.contAtk = true;
 					bodyTarget.clear();
 					tempBodyArray.clear();
-					
-
 				}
-
-				
-				
 				if(fb.getUserData().equals("grunt")){
 					tempBodyArray.add(fb.getBody());
 					Body b = tempBodyArray.first();
 					bodyTarget.add((Grunt) b.getUserData());
 					grunt = bodyTarget.get(0);
 					grunt.contAtk = true;
-
-					
 					bodyTarget.clear();
 					tempBodyArray.clear();
-
 				}
-
-
-				
 			}
 		}
 

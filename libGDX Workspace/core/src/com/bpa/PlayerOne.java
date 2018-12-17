@@ -66,6 +66,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	public static boolean p1Dead = false;
 	private boolean shootAnimation = false;
 	public static boolean axeBodyRemoval = false;
+	public static float axeSwingTimer = 0;
 
 	public PlayerOne(World world) {
 		this.world = world;
@@ -233,15 +234,15 @@ public class PlayerOne extends Sprite implements Disposable{
 			}
 
 		}
-		
-		
-		
+
+
+
 		//PLAYER DIES
 		if (player1HP <= 0) {
 			world.destroyBody(this.b2body);
 			p1Dead = true;
 		}
-		
+
 	}
 
 	public void handleInput(float delta) {
@@ -255,7 +256,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		this.b2body.setLinearVelocity(0, 0);
 
 		if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)){
-			
+
 			this.b2body.setLinearVelocity(-speed * speedAB, speed * speedAB);
 		}else if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)){
 			this.b2body.setLinearVelocity(speed * speedAB, speed * speedAB);
@@ -296,10 +297,11 @@ public class PlayerOne extends Sprite implements Disposable{
 				case "battle axe": timeSinceLastShot = 110;
 				break;
 				}
-
 			}
+
 		}
 
+		
 		if (b2body.getLinearVelocity().x > 0 || b2body.getLinearVelocity().x < 0 || b2body.getLinearVelocity().y > 0 || b2body.getLinearVelocity().y < 0) {
 			if (!running) {	
 				runningSound.loop();
@@ -310,6 +312,7 @@ public class PlayerOne extends Sprite implements Disposable{
 			runningSound.stop();
 			running = false;
 		}
+
 	}
 
 
