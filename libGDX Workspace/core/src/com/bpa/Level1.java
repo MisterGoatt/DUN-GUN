@@ -43,24 +43,28 @@ public class Level1 implements Screen{
 	private Box2DDebugRenderer b2dr; //graphical representation of body fixtures
 	private PlayerOne playerOne;
 	private Grunt grunt;
+	private Scientist scientist;
 	public CreateBullet createBullet;
 	private CollisionDetector cd;
 ;
 	//private int[] layerBackround = {0, 1, 2, 3};
 	//private int[] layerAfterBackground = {4};
 	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot;
-	private Texture p1HP, mouseCursor, pauseMenu;
+	private Texture mouseCursor, pauseMenu;
 	private boolean lockCursor = true;
 	private boolean gamePaused = false, viewPortChangeOnce = false, startLaserCount = false, spawnEnemies = false, spawnOnce = true;
 	private float waitToShootL = 0;	
 	public static boolean axeSwinging = false, bulletImpact = false, isShooting = false;
 	private boolean room1 = true, room2 = true, room3 = true, room4 = true, room5 = true, room6 = true, room7 = true, room8 = true, room9 = true; //room spawn control
+
 	//arrays of different game objects
 	static Array<CreateBullet> lasers = new Array<CreateBullet>();
 	static Array<Grunt> grunts = new Array<Grunt>();
+	static Array<Scientist> scientists = new Array<Scientist>();
 	static Array<CreateBullet> pellets = new Array<CreateBullet>();
 	static Array<CreateBullet> bullets = new Array<CreateBullet>();
 	public static Vector2 gruntPos = new Vector2(0,0);
+	public static Vector2 scientistPos = new Vector2(0,0);
 	public static Vector2 player1SpawnPos = new Vector2(0,0);
 	public static Vector3 mousePosition = new Vector3(0, 0, 0);
 
@@ -90,15 +94,16 @@ public class Level1 implements Screen{
 			player1SpawnPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
 			player1SpawnPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
 			playerOne = new PlayerOne(world); //must be created after world creation or will crash
-
 		}
 		
 		cd = new CollisionDetector();
 		//emptying the arrays of bullet textures and setting static variables to default
 		grunts.clear();
+		scientists.clear();
 		pellets.clear();
 		lasers.clear();
-		bullets.clear();		
+		bullets.clear();
+		
 		
 		new B2DWorldCreator(world, map);
 		
@@ -111,7 +116,6 @@ public class Level1 implements Screen{
 		laserShot = DunGun.manager.get("sound effects/laserBlast3.mp3", Sound.class);
 		axeSwing = DunGun.manager.get("sound effects/axeSwing.mp3", Sound.class);
 		pauseMenu = DunGun.manager.get("screens/Pause.jpg", Texture.class);
-		p1HP = DunGun.manager.get("sprites/player1/hp.png");
 		this.world.setContactListener(cd);
 	}
 	
@@ -149,12 +153,9 @@ public class Level1 implements Screen{
 				break;
 			}
 			
-			if (GunSelectionScreen.weaponSelected != "shotgun" && GunSelectionScreen.weaponSelected != "laser") {
-				
+			if (GunSelectionScreen.weaponSelected != "shotgun" && GunSelectionScreen.weaponSelected != "laser") {				
 				createBullet = new CreateBullet(world);
 				bullets.add(createBullet);	
-				
-				
 			}
 			isShooting = false;
 		}
@@ -174,8 +175,6 @@ public class Level1 implements Screen{
 		world.step(1/60f, 6, 2); //tells game how many times per second for Box2d to make its calculations
 		//remove bullets
 		Array<Body> bodiesToRemove = cd.getbodiesToRemove();
-
-
 		//removes bullets when they collide with wall
 		for (int i = 0; i < bodiesToRemove.size; i ++) {
 			Body b = bodiesToRemove.get(i);
@@ -197,6 +196,11 @@ public class Level1 implements Screen{
 			}
 			if (u instanceof Grunt) {
 				grunts.removeValue((Grunt) b.getUserData(), true);
+				world.destroyBody(b);
+				b = null;
+			}
+			if (u instanceof Scientist) {
+				scientists.removeValue((Scientist) b.getUserData(), true);
 				world.destroyBody(b);
 				b = null;
 			}
@@ -280,6 +284,13 @@ public class Level1 implements Screen{
 					grunt = new Grunt(world);
 					grunts.add(grunt);
 				}
+				MapLayer layer2 = map.getLayers().get("room4s");
+				for (MapObject mo : layer2.getObjects()) {
+					scientistPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
+					scientistPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					scientist = new Scientist(world);
+					scientists.add(scientist);
+				}
 				room4 = false;
 			}
 
@@ -295,12 +306,18 @@ public class Level1 implements Screen{
 					grunt = new Grunt(world);
 					grunts.add(grunt);
 				}
+				MapLayer layer2 = map.getLayers().get("room5s");
+				for (MapObject mo : layer2.getObjects()) {
+					scientistPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
+					scientistPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					scientist = new Scientist(world);
+					scientists.add(scientist);
+				}
 				room5 = false;
 			}
 		}
 		if (playerOne.b2body.getPosition().x < 7.4 && playerOne.b2body.getPosition().x > 7.3 && 
 				playerOne.b2body.getPosition().y < 12.8 && playerOne.b2body.getPosition().y > 12.1){
-			System.out.println("room 6");
 
 			if (room6) {
 				MapLayer layer = map.getLayers().get("room6g");
@@ -315,7 +332,6 @@ public class Level1 implements Screen{
 		}
 		if (playerOne.b2body.getPosition().x < 10.1 && playerOne.b2body.getPosition().x > 10 && 
 				playerOne.b2body.getPosition().y < 21.4 && playerOne.b2body.getPosition().y > 20.7){
-			System.out.println("room 8");
 			if (room8) {
 				MapLayer layer = map.getLayers().get("room8g");
 				for (MapObject mo : layer.getObjects()) {
@@ -330,12 +346,12 @@ public class Level1 implements Screen{
 		if (playerOne.b2body.getPosition().x < 4.8 && playerOne.b2body.getPosition().x > 4.7 && 
 				playerOne.b2body.getPosition().y < 20.8 && playerOne.b2body.getPosition().y > 20.1){
 			if (room9) {
-				MapLayer layer = map.getLayers().get("room9g");
+				MapLayer layer = map.getLayers().get("room9s");
 				for (MapObject mo : layer.getObjects()) {
-					gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
-					gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
-					grunt = new Grunt(world);
-					grunts.add(grunt);
+					scientistPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
+					scientistPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					scientist = new Scientist(world);
+					scientists.add(scientist);
 				}
 				room9 = false;
 			}
@@ -372,8 +388,8 @@ public class Level1 implements Screen{
   		
         //*********GAME IS PAUSED*********
         if (gamePaused) {
-            game.batch.begin(); //starts sprite spriteBatch
-
+        	playerOne.runningSound.stop();
+        	game.batch.begin(); //starts sprite spriteBatch
         	cam.position.x = 0;
         	cam.position.y = 0;
         	game.batch.draw(pauseMenu, 0 - (350/DunGun.PPM), 0 - (200 / DunGun.PPM), 1500 / 200,  800 / 200);
@@ -402,21 +418,25 @@ public class Level1 implements Screen{
             
         }else if (!gamePaused){ //********GAME IS NOT PAUSED********
         	//laser delay for build up of power effect
+
         	if (startLaserCount) {
 				waitToShootL += 1;
 			}
         	
 			cameraUpdate(delta);
 			mapRenderer.render();
-	        b2dr.render(world, cam.combined);
+	        //b2dr.render(world, cam.combined);
 	        game.batch.begin(); //starts sprite spriteBatch
 	        
 	        //RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER GAME OBJECTS
 
 	        for (int i = 0; i < grunts.size; i++) {
-	    		//grunt.renderSprite(game.batch);
 	        	grunts.get(i).renderSprite(game.batch);
 	        	grunt = grunts.get(i);
+	        }
+	        for (int i = 0; i < scientists.size; i++) {
+	        	scientists.get(i).renderSprite(game.batch);
+	        	scientist = scientists.get(i);
 	        }
 	        
 	        for (int i = 0; i < lasers.size; i++) {
@@ -436,7 +456,6 @@ public class Level1 implements Screen{
 				playerOne.handleInput(delta);
 
 	        	playerOne.renderSprite(game.batch);	        	
-		    	game.batch.draw(p1HP, PlayerOne.p1PosX - .35f, PlayerOne.p1PosY - .18f, PlayerOne.player1HP / (DunGun.PPM + 50), 3f / DunGun.PPM);
 
 	        }
 	    	game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / DunGun.PPM, 13 / DunGun.PPM);

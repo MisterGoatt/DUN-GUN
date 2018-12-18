@@ -5,18 +5,17 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -24,55 +23,36 @@ public class PlayerOne extends Sprite implements Disposable{
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
-	private boolean running;
-	private TextureAtlas revolverTextureAtlas;
-	private TextureAtlas rifleTextureAtlas;
-	private TextureAtlas shotgunTextureAtlas;
-	private TextureAtlas assaultRifleTextureAtlas;
-	private TextureAtlas laserTextureAtlas;
-	private TextureAtlas axeSwingTextureAtlas;
+	private TextureAtlas revolverTextureAtlas, axeSwingTextureAtlas, rifleTextureAtlas, shotgunTextureAtlas, 
+		assaultRifleTextureAtlas, laserTextureAtlas;
 
-	private Animation <TextureRegion> revolverAnimation;
-	private Animation <TextureRegion> rifleAnimation;
-	private Animation <TextureRegion> shotgunAnimation;
-	private Animation <TextureRegion> assaultRifleAnimation;
-	private Animation <TextureRegion> laserAnimation;
-	private Animation <TextureRegion> axeSwingAnimation;
+	private Texture p1HP, p1HPBG;
+	private Animation <TextureRegion> revolverAnimation, rifleAnimation, shotgunAnimation, assaultRifleAnimation, 
+		laserAnimation, axeSwingAnimation;
 
-	private TextureRegion revolverStandingRegion;
-	private TextureRegion rifleStandingRegion;
-	private TextureRegion shotgunStandingRegion;
-	private TextureRegion assaultRifleStandingRegion;
-	private TextureRegion laserStandingRegion;
-	private TextureRegion axeStandingRegion;
+	private TextureRegion revolverStandingRegion, axeStandingRegion, rifleStandingRegion, 
+		shotgunStandingRegion, assaultRifleStandingRegion, laserStandingRegion;
 
-	private Sound runningSound; //sound effect of the player's movement
-	private float timePassed = 0;
-	private float timeSinceLastShot = 60f; 
-	private float speed = 3 ; //speed of the player
-	private float speedAB = .707f; //Sqrt 2 divided by 2
-	public static float p1PosX;
-	public static float p1PosY;
-	public static float angle2; //get distance between mouse and player in radians
-	public static float angle;
+
+	public Sound runningSound; //sound effect of the player's movement
+	private float speed = 3, oldSpeed, speedAB = .707f, timeSinceLastShot = 60f, timePassed = 0, slowedCounter; //speed of the player, Sqrt 2 divided by 2
+	public static float  angle, angle2, p1PosX,p1PosY; //get distance between mouse and player in radians
 	//amount of damage each weapon deals
-	public static int revolverDamage = 50;
-	public static int rifleDamage = 100;
-	public static float shotgunDamage = 16.6f;
-	public static int assaultRifleDamage = 34;
-	public static int laserLanceDamage = 150;
-	public static int battleAxeDamage = 175;
+	public static float laserLanceDamage = 150, battleAxeDamage = 175, assaultRifleDamage = 35, shotgunDamage = 16.6f, 
+			rifleDamage = 100, revolverDamage = 50;
 	public static int player1HP;
 	public static boolean p1Dead = false;
-	private boolean shootAnimation = false;
-	public static boolean axeBodyRemoval = false;
+	private boolean shootAnimation = false, running = false;
+	public static boolean axeBodyRemoval = false, slowed = false, slowRestart = false, soundStop = false;
 	public static float axeSwingTimer = 0;
 
 	public PlayerOne(World world) {
 		this.world = world;
 		definePlayer();
 		player1HP = 100;
-		PlayerOne.p1Dead = false;
+		slowedCounter = 0;
+		p1Dead = false;
+		slowRestart = false;
 		//Getting the assets for 
 		revolverTextureAtlas = DunGun.manager.get("sprites/player1/playerRevolver.atlas", TextureAtlas.class);
 		revolverAnimation = new Animation <TextureRegion>(1f/15f, revolverTextureAtlas.getRegions());
@@ -99,6 +79,10 @@ public class PlayerOne extends Sprite implements Disposable{
 		axeStandingRegion = axeSwingTextureAtlas.findRegion("tile000");
 
 		runningSound = Gdx.audio.newSound(Gdx.files.internal("sound effects/running.mp3"));
+		
+		
+		p1HP = DunGun.manager.get("sprites/player1/hp.png");
+		p1HPBG = DunGun.manager.get("sprites/player1/hpBG.png");
 	}
 
 	public void definePlayer() {
@@ -115,7 +99,7 @@ public class PlayerOne extends Sprite implements Disposable{
 
 		fdef.shape = shape;
 		fdef.filter.categoryBits = DunGun.PLAYER;
-		fdef.filter.maskBits = DunGun.WALL | DunGun.GRUNT;
+		fdef.filter.maskBits = DunGun.WALL | DunGun.GRUNT | DunGun.SCIENTIST;
 		b2body.createFixture(fdef).setUserData("player");;
 
 
@@ -126,7 +110,6 @@ public class PlayerOne extends Sprite implements Disposable{
 	public void renderSprite(SpriteBatch batch) {
 		float posX = b2body.getPosition().x;
 		float posY = b2body.getPosition().y;
-
 
 		angle = MathUtils.atan2(Level1.mousePosition.y - getY(), Level1.mousePosition.x - getX()) * MathUtils.radDeg; //find the distance between mouse and player
 
@@ -229,18 +212,18 @@ public class PlayerOne extends Sprite implements Disposable{
 				}
 			}else {
 				batch.draw(axeStandingRegion, posX - .35f, posY - .3f, 35 / DunGun.PPM, 30 / DunGun.PPM, 70 / DunGun.PPM, 70 / DunGun.PPM, 1, 1, angle);
-
-
 			}
 
 		}
-
-
+		oldSpeed = speed; //original speed to go back to after being slowed
+    	batch.draw(p1HPBG, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, .5f, 3f / DunGun.PPM); //gray backing behind HP bar		
+    	batch.draw(p1HP, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, PlayerOne.player1HP / (DunGun.PPM + 100), 3f / DunGun.PPM); //HP bar
 
 		//PLAYER DIES
 		if (player1HP <= 0) {
 			world.destroyBody(this.b2body);
 			p1Dead = true;
+			runningSound.stop();
 		}
 
 	}
@@ -255,6 +238,27 @@ public class PlayerOne extends Sprite implements Disposable{
 
 		this.b2body.setLinearVelocity(0, 0);
 
+		
+		if (slowed) {
+			if (slowRestart) {
+				System.out.println("sr");
+				slowedCounter = 0;
+				slowRestart = false;
+			}
+			speed = speed / 2;
+			slowedCounter +=1;
+			System.out.println("sc "+ slowedCounter);
+			
+		}else {
+			speed = oldSpeed;
+		}
+		if (slowed && slowedCounter > 200) {
+			slowedCounter = 0;
+			slowed = false;
+		}
+
+		
+		
 		if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)){
 
 			this.b2body.setLinearVelocity(-speed * speedAB, speed * speedAB);
@@ -303,14 +307,14 @@ public class PlayerOne extends Sprite implements Disposable{
 
 		
 		if (b2body.getLinearVelocity().x > 0 || b2body.getLinearVelocity().x < 0 || b2body.getLinearVelocity().y > 0 || b2body.getLinearVelocity().y < 0) {
-			if (!running) {	
+			if (running) {	
 				runningSound.loop();
-				running = true;
+				running = false;
 			}
 
-		}else {
+		}else if (!running && !p1Dead && !soundStop) {
 			runningSound.stop();
-			running = false;
+			running = true;
 		}
 
 	}
@@ -318,7 +322,6 @@ public class PlayerOne extends Sprite implements Disposable{
 
 	@Override
 	public void dispose() {
-		runningSound.dispose();
 
 	}
 }

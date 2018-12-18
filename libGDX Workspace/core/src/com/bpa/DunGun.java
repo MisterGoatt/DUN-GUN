@@ -24,6 +24,7 @@ public class DunGun extends Game{
 	public static final short BULLET = 0x0002;
 	public static final short WALL = 0x0004;
 	public static final short GRUNT = 0x0008;
+	public static final short SCIENTIST = 0x0016;
 	public static AssetManager manager;
 	
 	@Override
@@ -42,6 +43,8 @@ public class DunGun extends Game{
 		manager.load("sprites/player1/axeSwingAnimation.atlas", TextureAtlas.class);
 		manager.load("sound effects/running.mp3", Sound.class);
 		manager.load("sprites/player1/hp.png", Texture.class);
+		manager.load("sprites/player1/hpBG.png", Texture.class);
+
 		
 		//Level1
 		manager.load("crosshair 1.png", Texture.class);
@@ -93,6 +96,11 @@ public class DunGun extends Game{
 		manager.load("sprites/grunt/mutantAtkAnimation.atlas", TextureAtlas.class);
 		manager.load("sprites/grunt/gruntDamaged.atlas", TextureAtlas.class);
 		manager.load("sound effects/gruntSwoosh.mp3", Sound.class);
+		
+		//Scientist
+		manager.load("sprites/scientist/scientistAtk.atlas", TextureAtlas.class);
+		manager.load("sound effects/scientistAtk.mp3", Sound.class);
+
 		
 		manager.finishLoading();
 		this.setScreen(new IntroductionScreens(this));

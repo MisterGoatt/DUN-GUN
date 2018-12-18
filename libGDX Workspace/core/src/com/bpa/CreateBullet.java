@@ -100,7 +100,7 @@ public class CreateBullet extends Sprite implements Disposable{
 		}
 		//Sets size of the physics bodies depending on the type of gun
 		fdef.filter.categoryBits = DunGun.BULLET; //identifies the category bit is
-		fdef.filter.maskBits = DunGun.WALL | DunGun.GRUNT; // what masking bit the category bit collides with
+		fdef.filter.maskBits = DunGun.WALL | DunGun.GRUNT | DunGun.SCIENTIST; // what masking bit the category bit collides with
 		b2body.createFixture(fdef).setUserData("bullets");
 		float differenceX = Level1.mousePosition.x - b2body.getPosition().x;
 		float differenceY = Level1.mousePosition.y - b2body.getPosition().y;

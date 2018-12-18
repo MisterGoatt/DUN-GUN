@@ -59,10 +59,10 @@ public class Grunt extends Sprite implements Disposable{
 			FixtureDef fdef = new FixtureDef();
 			CircleShape shape = new CircleShape();
 			shape.setRadius(10 / DunGun.PPM);
-			fdef.density = 500;
+			fdef.density = 400;
 			fdef.shape = shape;
 			fdef.filter.categoryBits = DunGun.GRUNT;
-			fdef.filter.maskBits = DunGun.WALL | DunGun.BULLET | DunGun.GRUNT | DunGun.PLAYER;
+			fdef.filter.maskBits = -1; //collides with everything
 			b2body.createFixture(fdef).setUserData("grunt");
 		}
 		
