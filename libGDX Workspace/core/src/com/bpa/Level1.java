@@ -50,7 +50,7 @@ public class Level1 implements Screen{
 	//private int[] layerBackround = {0, 1, 2, 3};
 	//private int[] layerAfterBackground = {4};
 	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot;
-	private Texture mouseCursor, pauseMenu;
+	private Texture mouseCursor, axeMouseCursor, pauseMenu;
 	private boolean lockCursor = true;
 	private boolean gamePaused = false, viewPortChangeOnce = false, startLaserCount = false, spawnEnemies = false, spawnOnce = true;
 	private float waitToShootL = 0;	
@@ -83,6 +83,7 @@ public class Level1 implements Screen{
 		params.textureMagFilter = TextureFilter.Linear;
 		map = new TmxMapLoader().load("tileMaps/Level1/untitled.tmx", params);
 		mouseCursor = DunGun.manager.get("crosshair 1.png", Texture.class);
+		axeMouseCursor = DunGun.manager.get("axeCursor.png");
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / DunGun.PPM);
        
 		//Box2d variables
@@ -458,8 +459,12 @@ public class Level1 implements Screen{
 	        	playerOne.renderSprite(game.batch);	        	
 
 	        }
-	    	game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / DunGun.PPM, 13 / DunGun.PPM);
-	    	//game.batch.draw(p1HP, PlayerOne.p1PosX, PlayerOne.p1PosY - .5f, PlayerOne.player1HP, 1);
+	    	if (GunSelectionScreen.weaponSelected == "battle axe") {
+		    	game.batch.draw(axeMouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 21 / DunGun.PPM, 21/ DunGun.PPM);
+	    		
+	    	}else { 
+	    		game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / DunGun.PPM, 13 / DunGun.PPM);
+	    	}
 	    	mapRenderer.setView(cam);
 	        game.batch.end(); //starts sprite spriteBatch
 	        

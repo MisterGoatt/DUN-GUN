@@ -216,7 +216,7 @@ public class PlayerOne extends Sprite implements Disposable{
 
 		}
 		oldSpeed = speed; //original speed to go back to after being slowed
-    	batch.draw(p1HPBG, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, .5f, 3f / DunGun.PPM); //gray backing behind HP bar		
+		batch.draw(p1HPBG, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, .5f, 3f / DunGun.PPM); //gray backing behind HP bar		
     	batch.draw(p1HP, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, PlayerOne.player1HP / (DunGun.PPM + 100), 3f / DunGun.PPM); //HP bar
 
 		//PLAYER DIES
@@ -230,10 +230,8 @@ public class PlayerOne extends Sprite implements Disposable{
 
 	public void handleInput(float delta) {
 		setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2 + (5 / DunGun.PPM));
-
 		p1PosX = b2body.getPosition().x;
 		p1PosY = b2body.getPosition().y;
-
 		timeSinceLastShot -= 1f;
 
 		this.b2body.setLinearVelocity(0, 0);
