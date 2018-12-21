@@ -36,12 +36,12 @@ public class Grunt extends Sprite implements Disposable{
 		
 		public Grunt(World world) {
 			this.world = world;
-			gruntAtkAtlas = DunGun.manager.get("sprites/grunt/mutantAtkAnimation.atlas");
+			gruntAtkAtlas = Mutagen.manager.get("sprites/grunt/mutantAtkAnimation.atlas");
 			gruntAtkAnimation = new Animation <TextureRegion>(1f/15f, gruntAtkAtlas.getRegions());			
 			gruntStandingRegion = gruntAtkAtlas.findRegion("tile000");
-			gruntDamagedAtlas = DunGun.manager.get("sprites/grunt/gruntDamaged.atlas");
+			gruntDamagedAtlas = Mutagen.manager.get("sprites/grunt/gruntDamaged.atlas");
 			gruntDamagedAnimation = new Animation <TextureRegion>(1f/15f, gruntDamagedAtlas.getRegions());
-			atkSwoosh = DunGun.manager.get("sound effects/gruntSwoosh.mp3");
+			atkSwoosh = Mutagen.manager.get("sound effects/gruntSwoosh.mp3");
 
 			defineGrunt();
 		}
@@ -58,10 +58,10 @@ public class Grunt extends Sprite implements Disposable{
 			b2body.setUserData(this);
 			FixtureDef fdef = new FixtureDef();
 			CircleShape shape = new CircleShape();
-			shape.setRadius(10 / DunGun.PPM);
+			shape.setRadius(10 / Mutagen.PPM);
 			fdef.density = 400;
 			fdef.shape = shape;
-			fdef.filter.categoryBits = DunGun.GRUNT;
+			fdef.filter.categoryBits = Mutagen.GRUNT;
 			fdef.filter.maskBits = -1; //collides with everything
 			b2body.createFixture(fdef).setUserData("grunt");
 		}
@@ -83,10 +83,10 @@ public class Grunt extends Sprite implements Disposable{
 			float gposY = (float) (Math.sin(angle2)) * runSpeed;
 			
 			if (!tookDamage && !attack && !contAtk) {
-				batch.draw(gruntStandingRegion, posX - .17f, posY - .13f, 20 / DunGun.PPM, 10 / DunGun.PPM, 40 / DunGun.PPM, 32 / DunGun.PPM, 1, 1, angle);
+				batch.draw(gruntStandingRegion, posX - .17f, posY - .13f, 20 / Mutagen.PPM, 10 / Mutagen.PPM, 40 / Mutagen.PPM, 32 / Mutagen.PPM, 1, 1, angle);
 			}
 			else if (contAtk) {
-				batch.draw(gruntAtkAnimation.getKeyFrame(timePassed), posX - .17f, posY - .13f, 20 / DunGun.PPM, 10 / DunGun.PPM, 40 / DunGun.PPM, 32 / DunGun.PPM, 1, 1, angle);
+				batch.draw(gruntAtkAnimation.getKeyFrame(timePassed), posX - .17f, posY - .13f, 20 / Mutagen.PPM, 10 / Mutagen.PPM, 40 / Mutagen.PPM, 32 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
 
 				if(gruntAtkAnimation.isAnimationFinished(timePassed)) {
@@ -101,7 +101,7 @@ public class Grunt extends Sprite implements Disposable{
 			}
 			
 			else {
-				batch.draw(gruntDamagedAnimation.getKeyFrame(timePassed), posX - .20f, posY -.27f, 20 / DunGun.PPM, 25 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1.18f, 1.18f, angle);
+				batch.draw(gruntDamagedAnimation.getKeyFrame(timePassed), posX - .20f, posY -.27f, 20 / Mutagen.PPM, 25 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1.18f, 1.18f, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
 				if(gruntDamagedAnimation.isAnimationFinished(timePassed)) {
 					timePassed = 0;

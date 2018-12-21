@@ -46,12 +46,12 @@ public class CreateBullet extends Sprite implements Disposable{
 		defineBullet();
 		
 		
-		laserTextureAtlas = DunGun.manager.get("sprites/player1/laserBlastAnimation.atlas", TextureAtlas.class);
+		laserTextureAtlas = Mutagen.manager.get("sprites/player1/laserBlastAnimation.atlas", TextureAtlas.class);
 		laserAnimation = new Animation <TextureRegion>(1f/15f, laserTextureAtlas.getRegions());
-		laserTextureAtlas = DunGun.manager.get("sprites/player1/pellet.atlas", TextureAtlas.class);
-		pelletTextureAtlas = DunGun.manager.get("sprites/player1/pellet.atlas", TextureAtlas.class);
+		laserTextureAtlas = Mutagen.manager.get("sprites/player1/pellet.atlas", TextureAtlas.class);
+		pelletTextureAtlas = Mutagen.manager.get("sprites/player1/pellet.atlas", TextureAtlas.class);
 		pelletAnimation = new Animation <TextureRegion>(1f / 15f, pelletTextureAtlas.getRegions());
-		bulletTextureAtlas = DunGun.manager.get("sprites/player1/bulletAnimation.atlas", TextureAtlas.class);
+		bulletTextureAtlas = Mutagen.manager.get("sprites/player1/bulletAnimation.atlas", TextureAtlas.class);
 		bulletAnimation = new Animation <TextureRegion>(1f / 15f, bulletTextureAtlas.getRegions());
 	}
 	
@@ -66,10 +66,10 @@ public class CreateBullet extends Sprite implements Disposable{
 		if (GunSelectionScreen.weaponSelected == "laser") {
 			PolygonShape shape = new PolygonShape();
 			Vector2[] vertice = new Vector2[4];
-			vertice[0] = new Vector2(2, 50).scl(1/DunGun.PPM);
-			vertice[1] = new Vector2(8, 50).scl(1/DunGun.PPM);
-			vertice[2] = new Vector2(2, 10).scl(1/DunGun.PPM);
-			vertice[3] = new Vector2(8, 10).scl(1/DunGun.PPM);
+			vertice[0] = new Vector2(2, 50).scl(1/Mutagen.PPM);
+			vertice[1] = new Vector2(8, 50).scl(1/Mutagen.PPM);
+			vertice[2] = new Vector2(2, 10).scl(1/Mutagen.PPM);
+			vertice[3] = new Vector2(8, 10).scl(1/Mutagen.PPM);
 			shape.set(vertice);
 			fdef.shape = shape;
 			//shape.dispose();
@@ -79,10 +79,10 @@ public class CreateBullet extends Sprite implements Disposable{
 		else if(GunSelectionScreen.weaponSelected == "battle axe") {
 			PolygonShape shape = new PolygonShape();
 			Vector2[] vertice = new Vector2[4];
-			vertice[0] = new Vector2(-15, 30).scl(1/DunGun.PPM);
-			vertice[1] = new Vector2(15, 30).scl(1/DunGun.PPM);
-			vertice[2] = new Vector2(-15, 10).scl(1/DunGun.PPM);
-			vertice[3] = new Vector2(15, 10).scl(1/DunGun.PPM);
+			vertice[0] = new Vector2(-15, 30).scl(1/Mutagen.PPM);
+			vertice[1] = new Vector2(15, 30).scl(1/Mutagen.PPM);
+			vertice[2] = new Vector2(-15, 10).scl(1/Mutagen.PPM);
+			vertice[3] = new Vector2(15, 10).scl(1/Mutagen.PPM);
 			shape.set(vertice);
 			fdef.shape = shape;
 		}
@@ -90,17 +90,17 @@ public class CreateBullet extends Sprite implements Disposable{
 			CircleShape shape = new CircleShape();
 			fdef.shape = shape;
 			if (GunSelectionScreen.weaponSelected == "shotgun") {
-				shape.setPosition(new Vector2(5, 7).scl(1/DunGun.PPM));
-				shape.setRadius(2 / DunGun.PPM);
+				shape.setPosition(new Vector2(5, 7).scl(1/Mutagen.PPM));
+				shape.setRadius(2 / Mutagen.PPM);
 				}
 			else {
-				shape.setPosition(new Vector2(5, 7).scl(1/DunGun.PPM));
-				shape.setRadius(4 / DunGun.PPM);
+				shape.setPosition(new Vector2(5, 7).scl(1/Mutagen.PPM));
+				shape.setRadius(4 / Mutagen.PPM);
 			}
 		}
 		//Sets size of the physics bodies depending on the type of gun
-		fdef.filter.categoryBits = DunGun.BULLET; //identifies the category bit is
-		fdef.filter.maskBits = DunGun.WALL | DunGun.GRUNT | DunGun.SCIENTIST; // what masking bit the category bit collides with
+		fdef.filter.categoryBits = Mutagen.BULLET; //identifies the category bit is
+		fdef.filter.maskBits = Mutagen.WALL | Mutagen.GRUNT | Mutagen.SCIENTIST; // what masking bit the category bit collides with
 		b2body.createFixture(fdef).setUserData("bullets");
 		float differenceX = Level1.mousePosition.x - b2body.getPosition().x;
 		float differenceY = Level1.mousePosition.y - b2body.getPosition().y;
@@ -111,7 +111,7 @@ public class CreateBullet extends Sprite implements Disposable{
 		if (GunSelectionScreen.weaponSelected == "shotgun") {
 			float speedVary = (int)(Math.random() * 10 + 5f);
 			float angleVary = (int)(Math.random() * 40 - 19);
-			angleVary = angleVary / DunGun.PPM;
+			angleVary = angleVary / Mutagen.PPM;
 			angle = angle + angleVary;
 			
 			posX = (float) (Math.cos(angle)) * speedVary;
@@ -139,18 +139,18 @@ public class CreateBullet extends Sprite implements Disposable{
 
 		switch (GunSelectionScreen.weaponSelected) {
 		case "laser":
-			batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / DunGun.PPM, 45 / DunGun.PPM, 1, 1, angle2 - 90);
+			batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / Mutagen.PPM, 45 / Mutagen.PPM, 1, 1, angle2 - 90);
 			timePassed += Gdx.graphics.getDeltaTime();
 			break;
 		case "shotgun":
-			batch.draw(pelletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 9 / DunGun.PPM, 9 / DunGun.PPM, 1, 1, angle2 - 90);
+			batch.draw(pelletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 9 / Mutagen.PPM, 9 / Mutagen.PPM, 1, 1, angle2 - 90);
 			timePassed += Gdx.graphics.getDeltaTime();
 			break;
 		case "battle axe":
 			b2body.setTransform(PlayerOne.p1PosX, PlayerOne.p1PosY, angle - 1.57f); //sets the position of the body to the position of the body and implements rotation
 			break;
 		default: 
-			batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 5 / DunGun.PPM, 20 / DunGun.PPM, 1, 1, angle2 - 90);	
+			batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 5 / Mutagen.PPM, 20 / Mutagen.PPM, 1, 1, angle2 - 90);	
 			timePassed += Gdx.graphics.getDeltaTime();
 			
 			break;

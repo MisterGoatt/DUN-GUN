@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="90" tilewidth="32" tileheight="32" infinite="0" nextlayerid="22" nextobjectid="163">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="90" tilewidth="32" tileheight="32" infinite="0" nextlayerid="22" nextobjectid="165">
  <tileset firstgid="1" source="test.tsx"/>
  <layer id="9" name="ground" width="50" height="90">
   <data encoding="csv">
@@ -395,18 +395,9 @@
   <object id="80" x="943" y="2237">
    <ellipse/>
   </object>
-  <object id="81" x="814" y="2202">
-   <ellipse/>
-  </object>
-  <object id="82" x="841" y="2201">
-   <ellipse/>
-  </object>
  </objectgroup>
  <objectgroup id="14" name="room4g">
-  <object id="83" x="631" y="1961">
-   <ellipse/>
-  </object>
-  <object id="87" x="790" y="1957">
+  <object id="87" x="717.333" y="1955">
    <ellipse/>
   </object>
   <object id="88" x="861" y="1959">
@@ -415,54 +406,39 @@
   <object id="89" x="1040" y="1948">
    <ellipse/>
   </object>
-  <object id="90" x="1094" y="1941">
-   <ellipse/>
-  </object>
-  <object id="91" x="1165" y="1942">
+  <object id="90" x="1068" y="2031">
    <ellipse/>
   </object>
  </objectgroup>
  <objectgroup id="20" name="room4s">
-  <object id="147" x="704" y="1956">
+  <object id="147" x="612" y="2034">
    <ellipse/>
   </object>
   <object id="148" x="948" y="1960">
    <ellipse/>
   </object>
-  <object id="149" x="1150" y="1898">
-   <ellipse/>
-  </object>
  </objectgroup>
  <objectgroup id="15" name="room5g">
-  <object id="150" x="802" y="1468">
+  <object id="150" x="761.333" y="1470.67">
    <ellipse/>
   </object>
-  <object id="151" x="860" y="1444">
-   <ellipse/>
-  </object>
-  <object id="152" x="992" y="1476">
-   <ellipse/>
-  </object>
-  <object id="153" x="1074" y="1454">
+  <object id="151" x="823.333" y="1452.67">
    <ellipse/>
   </object>
  </objectgroup>
  <objectgroup id="21" name="room5s">
-  <object id="154" x="944" y="1436">
+  <object id="154" x="883.333" y="1435.67">
    <ellipse/>
   </object>
-  <object id="155" x="928" y="1488">
+  <object id="157" x="802.333" y="1490.67">
    <ellipse/>
   </object>
-  <object id="156" x="1144" y="1450">
-   <ellipse/>
-  </object>
-  <object id="157" x="844" y="1522">
+  <object id="164" x="781.333" y="1436.67">
    <ellipse/>
   </object>
  </objectgroup>
  <objectgroup id="16" name="room6g">
-  <object id="102" x="324" y="1541">
+  <object id="102" x="332.667" y="1531">
    <ellipse/>
   </object>
   <object id="103" x="321" y="1578">
@@ -471,22 +447,19 @@
   <object id="104" x="316" y="1634">
    <ellipse/>
   </object>
-  <object id="107" x="320" y="1670">
-   <ellipse/>
-  </object>
  </objectgroup>
  <objectgroup id="17" name="room7g"/>
  <objectgroup id="18" name="room8g">
-  <object id="112" x="473" y="818">
+  <object id="112" x="513" y="694">
    <ellipse/>
   </object>
-  <object id="113" x="489" y="853">
+  <object id="113" x="514" y="735">
    <ellipse/>
   </object>
-  <object id="114" x="495" y="893">
+  <object id="114" x="500" y="889">
    <ellipse/>
   </object>
-  <object id="115" x="499" y="933">
+  <object id="115" x="504" y="929">
    <ellipse/>
   </object>
   <object id="116" x="501" y="969">
@@ -496,18 +469,6 @@
    <ellipse/>
   </object>
   <object id="118" x="573" y="971">
-   <ellipse/>
-  </object>
-  <object id="119" x="615" y="970">
-   <ellipse/>
-  </object>
-  <object id="120" x="661" y="969">
-   <ellipse/>
-  </object>
-  <object id="121" x="704" y="970">
-   <ellipse/>
-  </object>
-  <object id="122" x="743" y="969">
    <ellipse/>
   </object>
  </objectgroup>

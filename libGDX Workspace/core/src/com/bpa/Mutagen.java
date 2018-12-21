@@ -14,7 +14,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
 
-public class DunGun extends Game{
+public class Mutagen extends Game{
 	public SpriteBatch batch;
 	//Virtual Screen size and Box2D Scale(Pixels Per Meter)
 	public static final int V_WIDTH = 1500;
@@ -70,13 +70,13 @@ public class DunGun extends Game{
 		manager.load("music/creditsSong.mp3", Music.class);
 		manager.load("music/whistling masterpiece.mp3", Music.class);
 		
-		//IntroductionScreens
+		//Introduction Screens
 		manager.load("screens/ctm_placeholder.jpg", Texture.class);
 		manager.load("screens/credits_placeholder.jpg", Texture.class);
 		manager.load("screens/titleScreen.jpg", Texture.class);
 		manager.load("screens/musicScreen.jpg", Texture.class);
 		
-		//MainMenu
+		//Main Menu
 		manager.load("music/Dun-Gun2.mp3", Music.class);
 		manager.load("screens/main_menu_2.jpg", Texture.class);
 		manager.load("fonts/CourierNew32.fnt", BitmapFont.class);
@@ -102,6 +102,9 @@ public class DunGun extends Game{
 		manager.load("sprites/scientist/scientistAtk.atlas", TextureAtlas.class);
 		manager.load("sound effects/scientistAtk.mp3", Sound.class);
 
+		//LevelCompleted Screen
+		manager.load("screens/levelCompletedScreen.jpg", Texture.class);
+		
 		
 		manager.finishLoading();
 		this.setScreen(new IntroductionScreens(this));

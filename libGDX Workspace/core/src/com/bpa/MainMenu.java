@@ -15,7 +15,7 @@ import com.badlogic.gdx.Input;
 
 public class MainMenu implements Screen{
 	
-	final DunGun game;
+	final Mutagen game;
 	
 //	OrthographicCamera camera;
 
@@ -31,20 +31,20 @@ public class MainMenu implements Screen{
 	private Viewport gamePort;
 	private OrthographicCamera cam;
 	private boolean mStart = false;
-	static Music themeMusic = DunGun.manager.get("music/Dun-Gun2.mp3", Music.class);
+	static Music themeMusic = Mutagen.manager.get("music/Dun-Gun2.mp3", Music.class);
 	private Vector3 mouse_position = new Vector3(0, 0, 0);
 	private int wait = 0;
 	static boolean alreadyPlaying = false;
 
 	
-	public MainMenu(final DunGun game) {
+	public MainMenu(final Mutagen game) {
 		this.game = game;
 		
-		mainMenuScreen = DunGun.manager.get("screens/main_menu_2.jpg", Texture.class);
+		mainMenuScreen = Mutagen.manager.get("screens/main_menu_2.jpg", Texture.class);
 		
-		framerate = DunGun.manager.get("fonts/CourierNew32.fnt", BitmapFont.class) ;
-		menuText = DunGun.manager.get("fonts/HBM Foista Regular36.fnt", BitmapFont.class);
-		menuTextRed = DunGun.manager.get("fonts/HBM Foista Regular36 (Red).fnt", BitmapFont.class);
+		framerate = Mutagen.manager.get("fonts/CourierNew32.fnt", BitmapFont.class) ;
+		menuText = Mutagen.manager.get("fonts/HBM Foista Regular36.fnt", BitmapFont.class);
+		menuTextRed = Mutagen.manager.get("fonts/HBM Foista Regular36 (Red).fnt", BitmapFont.class);
 		
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
@@ -96,6 +96,8 @@ public class MainMenu implements Screen{
 					menuTextRed.draw(game.batch, "start", 710, 560);
 	
 					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+						//game.setScreen(new levelCompleted(game));
+
 						game.setScreen(new GunSelectionScreen(game));
 					
 					}}else {

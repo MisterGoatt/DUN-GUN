@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class IntroductionScreens implements Screen{
-	final DunGun game;
+	final Mutagen game;
 	boolean skipToMainM;
 	private long counter;
 	Texture publisherScreen;
@@ -23,17 +23,17 @@ public class IntroductionScreens implements Screen{
 	private Viewport gamePort;
 	private OrthographicCamera cam;
 	
-	public IntroductionScreens(final DunGun game) {
+	public IntroductionScreens(final Mutagen game) {
 		this.game = game;
 		
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 		
-		publisherScreen = DunGun.manager.get("screens/ctm_placeholder.jpg");
-		creditScreen = DunGun.manager.get("screens/credits_placeholder.jpg");
-		titleScreen = DunGun.manager.get("screens/titleScreen.jpg");
-		musicScreen = DunGun.manager.get("screens/musicScreen.jpg");
+		publisherScreen = Mutagen.manager.get("screens/ctm_placeholder.jpg");
+		creditScreen = Mutagen.manager.get("screens/credits_placeholder.jpg");
+		titleScreen = Mutagen.manager.get("screens/titleScreen.jpg");
+		musicScreen = Mutagen.manager.get("screens/musicScreen.jpg");
 	
 	}
  

@@ -27,7 +27,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 
 public class Level1 implements Screen{
-	final DunGun game;
+	final Mutagen game;
 	//TMapLocations level1Map;
 	public OrthographicCamera cam;
 	public Viewport gamePort;
@@ -70,11 +70,11 @@ public class Level1 implements Screen{
 
 
 	
-	public Level1(final DunGun game) {
+	public Level1(final Mutagen game) {
 		this.game = game;
 		
 		cam = new OrthographicCamera();		
-		gamePort = new FitViewport(DunGun.V_WIDTH / DunGun.PPM, DunGun.V_HEIGHT / DunGun.PPM, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+		gamePort = new FitViewport(Mutagen.V_WIDTH / Mutagen.PPM, Mutagen.V_HEIGHT / Mutagen.PPM, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 		cam.zoom -= .40;
 		
@@ -82,9 +82,9 @@ public class Level1 implements Screen{
 		params.textureMinFilter = TextureFilter.Linear;
 		params.textureMagFilter = TextureFilter.Linear;
 		map = new TmxMapLoader().load("tileMaps/Level1/untitled.tmx", params);
-		mouseCursor = DunGun.manager.get("crosshair 1.png", Texture.class);
-		axeMouseCursor = DunGun.manager.get("axeCursor.png");
-		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / DunGun.PPM);
+		mouseCursor = Mutagen.manager.get("crosshair 1.png", Texture.class);
+		axeMouseCursor = Mutagen.manager.get("axeCursor.png");
+		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / Mutagen.PPM);
        
 		//Box2d variables
 		world = new World(new Vector2(0, 0), true); // no gravity and yes we want to sleep objects (won't calculate simulations for bodies at rest)
@@ -92,8 +92,8 @@ public class Level1 implements Screen{
 		
 		MapLayer playerLayer = map.getLayers().get("player");
 		for (MapObject mo : playerLayer.getObjects()) {
-			player1SpawnPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
-			player1SpawnPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+			player1SpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+			player1SpawnPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
 			playerOne = new PlayerOne(world); //must be created after world creation or will crash
 		}
 		
@@ -110,13 +110,13 @@ public class Level1 implements Screen{
 		
 		//frame rate = DunGun.manager.get("fonts/CourierNew32.fnt", BitmapFont.class) ;
 		
-		gunShot = DunGun.manager.get("sound effects/pistol_shot.mp3", Sound.class);
-		rifleShot = DunGun.manager.get("sound effects/rifleShot.mp3", Sound.class);
-		shotgunShot = DunGun.manager.get("sound effects/shotgun2.mp3", Sound.class);
-		assaultRifleShot = DunGun.manager.get("sound effects/assaultRifle.mp3", Sound.class);
-		laserShot = DunGun.manager.get("sound effects/laserBlast3.mp3", Sound.class);
-		axeSwing = DunGun.manager.get("sound effects/axeSwing.mp3", Sound.class);
-		pauseMenu = DunGun.manager.get("screens/Pause.jpg", Texture.class);
+		gunShot = Mutagen.manager.get("sound effects/pistol_shot.mp3", Sound.class);
+		rifleShot = Mutagen.manager.get("sound effects/rifleShot.mp3", Sound.class);
+		shotgunShot = Mutagen.manager.get("sound effects/shotgun2.mp3", Sound.class);
+		assaultRifleShot = Mutagen.manager.get("sound effects/assaultRifle.mp3", Sound.class);
+		laserShot = Mutagen.manager.get("sound effects/laserBlast3.mp3", Sound.class);
+		axeSwing = Mutagen.manager.get("sound effects/axeSwing.mp3", Sound.class);
+		pauseMenu = Mutagen.manager.get("screens/Pause.jpg", Texture.class);
 		this.world.setContactListener(cd);
 	}
 	
@@ -235,8 +235,8 @@ public class Level1 implements Screen{
 			if (room2) {
 				MapLayer layer = map.getLayers().get("room2g");
 				for (MapObject mo : layer.getObjects()) {
-					gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
-					gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					gruntPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+					gruntPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
 					grunt = new Grunt(world);
 					grunts.add(grunt);
 				}
@@ -250,8 +250,8 @@ public class Level1 implements Screen{
 			if (room1) {
 				MapLayer layer = map.getLayers().get("room1g");
 				for (MapObject mo : layer.getObjects()) {
-					gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
-					gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					gruntPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+					gruntPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
 					grunt = new Grunt(world);
 					grunts.add(grunt);
 				}
@@ -265,8 +265,8 @@ public class Level1 implements Screen{
 			if (room3) {
 				MapLayer layer = map.getLayers().get("room3g");
 				for (MapObject mo : layer.getObjects()) {
-					gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
-					gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					gruntPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+					gruntPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
 					grunt = new Grunt(world);
 					grunts.add(grunt);
 				}
@@ -280,15 +280,15 @@ public class Level1 implements Screen{
 			if (room4) {
 				MapLayer layer = map.getLayers().get("room4g");
 				for (MapObject mo : layer.getObjects()) {
-					gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
-					gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					gruntPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+					gruntPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
 					grunt = new Grunt(world);
 					grunts.add(grunt);
 				}
 				MapLayer layer2 = map.getLayers().get("room4s");
 				for (MapObject mo : layer2.getObjects()) {
-					scientistPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
-					scientistPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					scientistPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+					scientistPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
 					scientist = new Scientist(world);
 					scientists.add(scientist);
 				}
@@ -302,15 +302,15 @@ public class Level1 implements Screen{
 			if (room5) {
 				MapLayer layer = map.getLayers().get("room5g");
 				for (MapObject mo : layer.getObjects()) {
-					gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
-					gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					gruntPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+					gruntPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
 					grunt = new Grunt(world);
 					grunts.add(grunt);
 				}
 				MapLayer layer2 = map.getLayers().get("room5s");
 				for (MapObject mo : layer2.getObjects()) {
-					scientistPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
-					scientistPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					scientistPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+					scientistPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
 					scientist = new Scientist(world);
 					scientists.add(scientist);
 				}
@@ -323,8 +323,8 @@ public class Level1 implements Screen{
 			if (room6) {
 				MapLayer layer = map.getLayers().get("room6g");
 				for (MapObject mo : layer.getObjects()) {
-					gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
-					gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					gruntPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+					gruntPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
 					grunt = new Grunt(world);
 					grunts.add(grunt);
 				}
@@ -336,8 +336,8 @@ public class Level1 implements Screen{
 			if (room8) {
 				MapLayer layer = map.getLayers().get("room8g");
 				for (MapObject mo : layer.getObjects()) {
-					gruntPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
-					gruntPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					gruntPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+					gruntPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
 					grunt = new Grunt(world);
 					grunts.add(grunt);
 				}
@@ -349,19 +349,22 @@ public class Level1 implements Screen{
 			if (room9) {
 				MapLayer layer = map.getLayers().get("room9s");
 				for (MapObject mo : layer.getObjects()) {
-					scientistPos.x = (float) mo.getProperties().get("x") / DunGun.PPM;
-					scientistPos.y = (float) mo.getProperties().get("y") / DunGun.PPM;
+					scientistPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+					scientistPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
 					scientist = new Scientist(world);
 					scientists.add(scientist);
 				}
 				room9 = false;
 			}
 		}
-		
 		if (playerOne.b2body.getPosition().x < .6 && playerOne.b2body.getPosition().x > 0 &&
 				playerOne.b2body.getPosition().y < 20.8 && playerOne.b2body.getPosition().y > 19.8) {
-			System.out.println("game over!");
+			playerOne.runningSound.stop();
+			Gdx.input.setCursorCatched(false);
+			game.setScreen(new levelCompleted(game));
+		
 		}
+		
 	}
 	
 
@@ -393,7 +396,7 @@ public class Level1 implements Screen{
         	game.batch.begin(); //starts sprite spriteBatch
         	cam.position.x = 0;
         	cam.position.y = 0;
-        	game.batch.draw(pauseMenu, 0 - (350/DunGun.PPM), 0 - (200 / DunGun.PPM), 1500 / 200,  800 / 200);
+        	game.batch.draw(pauseMenu, 0 - (350/Mutagen.PPM), 0 - (200 / Mutagen.PPM), 1500 / 200,  800 / 200);
         	lockCursor = false;
         	if (viewPortChangeOnce) {
         		viewPortSwitch();
@@ -419,7 +422,6 @@ public class Level1 implements Screen{
             
         }else if (!gamePaused){ //********GAME IS NOT PAUSED********
         	//laser delay for build up of power effect
-
         	if (startLaserCount) {
 				waitToShootL += 1;
 			}
@@ -460,10 +462,10 @@ public class Level1 implements Screen{
 
 	        }
 	    	if (GunSelectionScreen.weaponSelected == "battle axe") {
-		    	game.batch.draw(axeMouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 21 / DunGun.PPM, 21/ DunGun.PPM);
+		    	game.batch.draw(axeMouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 21 / Mutagen.PPM, 21/ Mutagen.PPM);
 	    		
 	    	}else { 
-	    		game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / DunGun.PPM, 13 / DunGun.PPM);
+	    		game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / Mutagen.PPM, 13 / Mutagen.PPM);
 	    	}
 	    	mapRenderer.setView(cam);
 	        game.batch.end(); //starts sprite spriteBatch

@@ -25,10 +25,10 @@ public class CollisionDetector implements ContactListener{
 	public CollisionDetector() {	
 		tempBodyArray= new Array<Body>();
 		bodiesToRemove = new Array<Body>();
-		bulletHitWall = DunGun.manager.get("sound effects/bulletImpact.mp3");
-		laserHitWall = DunGun.manager.get("sound effects/laserImpact.mp3");
-		pelletHitWall = DunGun.manager.get("sound effects/pelletImpact.mp3");
-		bulletBodyImpact = DunGun.manager.get("sound effects/bulletBodyImpact.mp3");
+		bulletHitWall = Mutagen.manager.get("sound effects/bulletImpact.mp3");
+		laserHitWall = Mutagen.manager.get("sound effects/laserImpact.mp3");
+		pelletHitWall = Mutagen.manager.get("sound effects/pelletImpact.mp3");
+		bulletBodyImpact = Mutagen.manager.get("sound effects/bulletBodyImpact.mp3");
 		gruntBodyTarget.clear();
 		scientistBodyTarget.clear();
 		tempBodyArray.clear();

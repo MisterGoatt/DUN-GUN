@@ -54,35 +54,35 @@ public class PlayerOne extends Sprite implements Disposable{
 		p1Dead = false;
 		slowRestart = false;
 		//Getting the assets for 
-		revolverTextureAtlas = DunGun.manager.get("sprites/player1/playerRevolver.atlas", TextureAtlas.class);
+		revolverTextureAtlas = Mutagen.manager.get("sprites/player1/playerRevolver.atlas", TextureAtlas.class);
 		revolverAnimation = new Animation <TextureRegion>(1f/15f, revolverTextureAtlas.getRegions());
 		revolverStandingRegion = revolverTextureAtlas.findRegion("tile000");
 
-		rifleTextureAtlas = DunGun.manager.get("sprites/player1/rifleAnimation.atlas", TextureAtlas.class);
+		rifleTextureAtlas = Mutagen.manager.get("sprites/player1/rifleAnimation.atlas", TextureAtlas.class);
 		rifleAnimation = new Animation <TextureRegion>(1f/15f, rifleTextureAtlas.getRegions());
 		rifleStandingRegion = rifleTextureAtlas.findRegion("tile000");
 
-		shotgunTextureAtlas = DunGun.manager.get("sprites/player1/shotgun.atlas", TextureAtlas.class);
+		shotgunTextureAtlas = Mutagen.manager.get("sprites/player1/shotgun.atlas", TextureAtlas.class);
 		shotgunAnimation = new Animation <TextureRegion>(1f/15f, shotgunTextureAtlas.getRegions());
 		shotgunStandingRegion = shotgunTextureAtlas.findRegion("tile000");
 
-		assaultRifleTextureAtlas = DunGun.manager.get("sprites/player1/assaultRifle.atlas", TextureAtlas.class);
+		assaultRifleTextureAtlas = Mutagen.manager.get("sprites/player1/assaultRifle.atlas", TextureAtlas.class);
 		assaultRifleAnimation = new Animation<TextureRegion>(1f/15f, assaultRifleTextureAtlas.getRegions());
 		assaultRifleStandingRegion = assaultRifleTextureAtlas.findRegion("tile000");
 
-		laserTextureAtlas = DunGun.manager.get("sprites/player1/laserAnimation.atlas", TextureAtlas.class);
+		laserTextureAtlas = Mutagen.manager.get("sprites/player1/laserAnimation.atlas", TextureAtlas.class);
 		laserAnimation = new Animation <TextureRegion>(1f/15f, laserTextureAtlas.getRegions());
 		laserStandingRegion = laserTextureAtlas.findRegion("tile000");
 
-		axeSwingTextureAtlas = DunGun.manager.get("sprites/player1/axeSwingAnimation.atlas", TextureAtlas.class);
+		axeSwingTextureAtlas = Mutagen.manager.get("sprites/player1/axeSwingAnimation.atlas", TextureAtlas.class);
 		axeSwingAnimation = new Animation <TextureRegion>(1f/15f, axeSwingTextureAtlas.getRegions());
 		axeStandingRegion = axeSwingTextureAtlas.findRegion("tile000");
 
 		runningSound = Gdx.audio.newSound(Gdx.files.internal("sound effects/running.mp3"));
 		
 		
-		p1HP = DunGun.manager.get("sprites/player1/hp.png");
-		p1HPBG = DunGun.manager.get("sprites/player1/hpBG.png");
+		p1HP = Mutagen.manager.get("sprites/player1/hp.png");
+		p1HPBG = Mutagen.manager.get("sprites/player1/hpBG.png");
 	}
 
 	public void definePlayer() {
@@ -95,11 +95,11 @@ public class PlayerOne extends Sprite implements Disposable{
 
 		FixtureDef fdef = new FixtureDef();
 		CircleShape shape = new CircleShape();
-		shape.setRadius(12 / DunGun.PPM);
+		shape.setRadius(12 / Mutagen.PPM);
 
 		fdef.shape = shape;
-		fdef.filter.categoryBits = DunGun.PLAYER;
-		fdef.filter.maskBits = DunGun.WALL | DunGun.GRUNT | DunGun.SCIENTIST;
+		fdef.filter.categoryBits = Mutagen.PLAYER;
+		fdef.filter.maskBits = Mutagen.WALL | Mutagen.GRUNT | Mutagen.SCIENTIST;
 		b2body.createFixture(fdef).setUserData("player");;
 
 
@@ -122,7 +122,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		if (GunSelectionScreen.weaponSelected == "revolver") {
 			speed = 2.1f;
 			if (shootAnimation) {
-				batch.draw(revolverAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
+				batch.draw(revolverAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / Mutagen.PPM, 20 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
 
 				if(revolverAnimation.isAnimationFinished(timePassed)) {
@@ -130,14 +130,14 @@ public class PlayerOne extends Sprite implements Disposable{
 					timePassed = 0;
 				}
 			}else {
-				batch.draw(revolverStandingRegion, posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
+				batch.draw(revolverStandingRegion, posX - .2f, posY - .2f, 20 / Mutagen.PPM, 20 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);
 			}
 		}
 		//BoltAction Rifle
 		else if (GunSelectionScreen.weaponSelected == "rifle") {
 			speed = 2f;
 			if (shootAnimation) {
-				batch.draw(rifleAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
+				batch.draw(rifleAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / Mutagen.PPM, 20 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
 
 				if(rifleAnimation.isAnimationFinished(timePassed)) {
@@ -145,14 +145,14 @@ public class PlayerOne extends Sprite implements Disposable{
 					timePassed = 0;
 				}
 			}else {
-				batch.draw(rifleStandingRegion, posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
+				batch.draw(rifleStandingRegion, posX - .2f, posY - .2f, 20 / Mutagen.PPM, 20 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);
 			}
 		}
 		//Shotgun
 		else if (GunSelectionScreen.weaponSelected == "shotgun") {
 			speed = 1.2f;
 			if (shootAnimation) {
-				batch.draw(shotgunAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
+				batch.draw(shotgunAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / Mutagen.PPM, 20 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
 
 				if(shotgunAnimation.isAnimationFinished(timePassed)) {
@@ -160,7 +160,7 @@ public class PlayerOne extends Sprite implements Disposable{
 					timePassed = 0;
 				}
 			}else {
-				batch.draw(shotgunStandingRegion, posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
+				batch.draw(shotgunStandingRegion, posX - .2f, posY - .2f, 20 / Mutagen.PPM, 20 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);
 			}
 
 		}
@@ -168,7 +168,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		else if (GunSelectionScreen.weaponSelected == "assault rifle") {
 			speed = 1.5f;
 			if (shootAnimation) {
-				batch.draw(assaultRifleAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
+				batch.draw(assaultRifleAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / Mutagen.PPM, 20 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
 
 				if(assaultRifleAnimation.isAnimationFinished(timePassed)) {
@@ -176,7 +176,7 @@ public class PlayerOne extends Sprite implements Disposable{
 					timePassed = 0;
 				}
 			}else {
-				batch.draw(assaultRifleStandingRegion,posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle );
+				batch.draw(assaultRifleStandingRegion,posX - .2f, posY - .2f, 20 / Mutagen.PPM, 20 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle );
 			}
 		}
 
@@ -184,7 +184,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		else if (GunSelectionScreen.weaponSelected == "laser") {
 			speed = 1f;	
 			if (shootAnimation) {
-				batch.draw(laserAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle);
+				batch.draw(laserAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / Mutagen.PPM, 20 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
 
 				if(laserAnimation.isAnimationFinished(timePassed)) {
@@ -192,7 +192,7 @@ public class PlayerOne extends Sprite implements Disposable{
 					timePassed = 0;
 				}
 			}else {
-				batch.draw(laserStandingRegion,posX - .2f, posY - .2f, 20 / DunGun.PPM, 20 / DunGun.PPM, 40 / DunGun.PPM, 50 / DunGun.PPM, 1, 1, angle );
+				batch.draw(laserStandingRegion,posX - .2f, posY - .2f, 20 / Mutagen.PPM, 20 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle );
 			}
 		}
 
@@ -200,7 +200,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		else if (GunSelectionScreen.weaponSelected == "battle axe") {
 			speed = 2.3f;
 			if (shootAnimation) {
-				batch.draw(axeSwingAnimation.getKeyFrame(timePassed), posX - .35f, posY - .3f, 35 / DunGun.PPM, 30 / DunGun.PPM, 70 / DunGun.PPM, 70 / DunGun.PPM, 1, 1, angle);
+				batch.draw(axeSwingAnimation.getKeyFrame(timePassed), posX - .35f, posY - .3f, 35 / Mutagen.PPM, 30 / Mutagen.PPM, 70 / Mutagen.PPM, 70 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
 
 				if(axeSwingAnimation.isAnimationFinished(timePassed)) {
@@ -211,13 +211,13 @@ public class PlayerOne extends Sprite implements Disposable{
 
 				}
 			}else {
-				batch.draw(axeStandingRegion, posX - .35f, posY - .3f, 35 / DunGun.PPM, 30 / DunGun.PPM, 70 / DunGun.PPM, 70 / DunGun.PPM, 1, 1, angle);
+				batch.draw(axeStandingRegion, posX - .35f, posY - .3f, 35 / Mutagen.PPM, 30 / Mutagen.PPM, 70 / Mutagen.PPM, 70 / Mutagen.PPM, 1, 1, angle);
 			}
 
 		}
 		oldSpeed = speed; //original speed to go back to after being slowed
-		batch.draw(p1HPBG, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, .5f, 3f / DunGun.PPM); //gray backing behind HP bar		
-    	batch.draw(p1HP, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, PlayerOne.player1HP / (DunGun.PPM + 100), 3f / DunGun.PPM); //HP bar
+		batch.draw(p1HPBG, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, .5f, 3f / Mutagen.PPM); //gray backing behind HP bar		
+    	batch.draw(p1HP, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, PlayerOne.player1HP / (Mutagen.PPM + 100), 3f / Mutagen.PPM); //HP bar
 
 		//PLAYER DIES
 		if (player1HP <= 0) {
@@ -229,7 +229,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	}
 
 	public void handleInput(float delta) {
-		setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2 + (5 / DunGun.PPM));
+		setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2 + (5 / Mutagen.PPM));
 		p1PosX = b2body.getPosition().x;
 		p1PosY = b2body.getPosition().y;
 		timeSinceLastShot -= 1f;
@@ -279,6 +279,8 @@ public class PlayerOne extends Sprite implements Disposable{
 			this.b2body.setLinearVelocity(speed, 0f);
 		}
 
+		
+		//CONTROLS THE SPEED OF FIRE
 		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 			if (timeSinceLastShot <=0) {
 				Level1.isShooting = true;
@@ -290,7 +292,7 @@ public class PlayerOne extends Sprite implements Disposable{
 				break;
 				case "rifle": timeSinceLastShot = 90;
 				break;
-				case "shotgun": timeSinceLastShot = 80;
+				case "shotgun": timeSinceLastShot = 70;
 				break;
 				case "assault rifle": timeSinceLastShot = 25;
 				break;

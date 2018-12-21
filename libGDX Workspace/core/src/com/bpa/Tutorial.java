@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Tutorial implements Screen{
-	final DunGun game;
+	final Mutagen game;
 	//Texture tutorial;
 	private OrthographicCamera cam;
 	//TMapLocations level1Map;
@@ -24,7 +24,7 @@ public class Tutorial implements Screen{
 	private TiledMap map; //references map itself
 	private OrthogonalTiledMapRenderer renderer; //renders map to the screen
 	
-	public Tutorial(final DunGun game) {
+	public Tutorial(final Mutagen game) {
 		this.game = game;
 		//tutorial = new Texture("screens/Tutorial.jpg");
 		maploader = new TmxMapLoader();
@@ -32,7 +32,7 @@ public class Tutorial implements Screen{
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
 		cam = new OrthographicCamera();		
-		gamePort = new FitViewport(DunGun.V_WIDTH, DunGun.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+		gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); //centers the map to center of screen
 		//cam.position.set(300, 20, 0); //moves camera to bottom left of map
 		//cam.zoom -= .5; // zooms in to the map

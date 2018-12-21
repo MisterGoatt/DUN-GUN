@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class GunSelectionScreen implements Screen{
-	final DunGun game;
+	final Mutagen game;
 	private Texture gunPickScreen;
 	public Viewport gamePort;
 
@@ -21,9 +21,9 @@ public class GunSelectionScreen implements Screen{
 	public static String weaponSelected;
 	private int wait = 0;
 	
-	public GunSelectionScreen(final DunGun game) {
+	public GunSelectionScreen(final Mutagen game) {
 		this.game = game;
-		gunPickScreen = DunGun.manager.get("screens/gun_selection.jpg", Texture.class);
+		gunPickScreen = Mutagen.manager.get("screens/gun_selection.jpg", Texture.class);
 
 		cam = new OrthographicCamera();		
 		gamePort = new StretchViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust

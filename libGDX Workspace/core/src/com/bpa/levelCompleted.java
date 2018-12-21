@@ -3,79 +3,58 @@ package com.bpa;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-
-
-
-
-public class Credits implements Screen{
+public class levelCompleted implements Screen{
 	final Mutagen game;
-	Texture credits;
+	Texture levelComplete;
 	private Viewport gamePort;
 	private OrthographicCamera cam;
-	private float yPos = -5700;
-	Music creditsMusic = Mutagen.manager.get("music/whistling masterpiece.mp3");
+	private float yPos = -1000;
 
 	
-	public Credits(final Mutagen game) {
+	public levelCompleted(final Mutagen game) {
 		this.game = game;
-		credits = Mutagen.manager.get("screens/ScrollingC.jpg");
+		levelComplete = Mutagen.manager.get("screens/levelCompletedScreen.jpg");
 		cam = new OrthographicCamera();
 		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-		creditsMusic.setVolume(1);
-		creditsMusic.play();
 	}
 
-	@Override
-	public void show() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void render(float delta) {
+
 		game.batch.begin(); 
 		game.batch.setProjectionMatrix(cam.combined);
 
-		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		//Controls the speed at which the credits scroll
-		if (yPos < 0) {
-			yPos += 3;
+		if (yPos > -1570) {
+			yPos -= 10;
+		}else {
+			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+				System.out.println("NEXT LEVEL");
+			}
 		}
 		
-		//displays the credits
-		game.batch.draw(credits, 0, yPos);
+		game.batch.draw(levelComplete, 0, yPos);
 		
-
-		//mouse x and y
-		int mX = Gdx.input.getX();
-		int mY = Gdx.graphics.getHeight() - Gdx.input.getY();
 		
-		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-			creditsMusic.stop();
-			MainMenu.alreadyPlaying = false;
-			game.setScreen(new MainMenu(game));		
-		}
-
+		
 		cam.update();
-
 		game.batch.end();
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		gamePort.update(width, height);
-	
+		
 	}
 
 	@Override
@@ -97,9 +76,15 @@ public class Credits implements Screen{
 	}
 
 	@Override
+	public void show() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public void dispose() {
 		game.batch.dispose();
-		credits.dispose();		
+		levelComplete.dispose();
 	}
-
+	
 }

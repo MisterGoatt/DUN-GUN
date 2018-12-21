@@ -28,10 +28,10 @@ public class Scientist{
 	public Scientist(World world) {
 		this.world = world;
 		
-		scientistAtkAtlas = DunGun.manager.get("sprites/scientist/scientistAtk.atlas");
+		scientistAtkAtlas = Mutagen.manager.get("sprites/scientist/scientistAtk.atlas");
 		scientistAtkAnimation = new Animation <TextureRegion>(1f/15f, scientistAtkAtlas.getRegions());
 		scientistStandingRegion = scientistAtkAtlas.findRegion("tile000");
-		atkSound = DunGun.manager.get("sound effects/scientistAtk.mp3");
+		atkSound = Mutagen.manager.get("sound effects/scientistAtk.mp3");
 		defineScientist();
 	}
 	
@@ -46,10 +46,10 @@ public class Scientist{
 		b2body.setUserData(this);
 		FixtureDef fdef = new FixtureDef();
 		CircleShape shape = new CircleShape();
-		shape.setRadius(12 / DunGun.PPM);
+		shape.setRadius(12 / Mutagen.PPM);
 		fdef.density = 400;
 		fdef.shape = shape;
-		fdef.filter.categoryBits = DunGun.SCIENTIST;
+		fdef.filter.categoryBits = Mutagen.SCIENTIST;
 		fdef.filter.maskBits = -1; //collides with everything
 		b2body.createFixture(fdef).setUserData("scientist");
 	}
@@ -72,9 +72,9 @@ public class Scientist{
 		
 		//TOOK OUT !tookDamage
 		if (!attack && !contAtk) {
-			batch.draw(scientistStandingRegion, posX - .17f, posY - .13f, 20 / DunGun.PPM, 16 / DunGun.PPM, 40 / DunGun.PPM, 60 / DunGun.PPM, 1, 1, angle);
+			batch.draw(scientistStandingRegion, posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 60 / Mutagen.PPM, 1, 1, angle);
 		}else if (contAtk) {
-			batch.draw(scientistAtkAnimation.getKeyFrame(timePassed), posX - .17f, posY - .13f, 20 / DunGun.PPM, 16 / DunGun.PPM, 40 / DunGun.PPM, 60 / DunGun.PPM, 1, 1, angle);
+			batch.draw(scientistAtkAnimation.getKeyFrame(timePassed), posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 60 / Mutagen.PPM, 1, 1, angle);
 			timePassed += Gdx.graphics.getDeltaTime();
 			if (!atkSoundStop) {
 				long sSId = atkSound.play(1f);

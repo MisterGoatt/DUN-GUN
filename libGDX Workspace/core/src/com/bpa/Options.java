@@ -7,12 +7,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 
 public class Options implements Screen{
-	final DunGun game;
+	final Mutagen game;
 	Texture options;
 
 	
 	
-	public Options(final DunGun game) {
+	public Options(final Mutagen game) {
 		this.game = game;
 		options = new Texture("screens/Options.jpg");
 
