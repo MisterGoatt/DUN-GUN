@@ -31,7 +31,7 @@ public class Grunt extends Sprite implements Disposable{
 	boolean tookDamage = false;
 	private float runSpeed = 2f;
 	public boolean attack = false, contAtk = false;
-	public int atkdmg = 2;
+	public int atkdmg = 4;
 	private boolean initialDmg = false; //makes sure the player takes damage at first when the enemy touches player
 
 		

@@ -59,7 +59,6 @@ public class MainMenu implements Screen{
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		System.out.println(Mutagen.musicVolume);
 		
         mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
         cam.unproject(mouse_position); //gets mouse coordinates within viewport
