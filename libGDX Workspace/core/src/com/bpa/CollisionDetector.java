@@ -47,13 +47,20 @@ public class CollisionDetector implements ContactListener{
 				if (fa.getUserData().equals("bullets")){
 					if (GunSelectionScreen.weaponSelected == "rifle" || GunSelectionScreen.weaponSelected == "revolver" 
 							|| GunSelectionScreen.weaponSelected == "assault rifle" ) {
-						long bhwId = bulletHitWall.play(.1f);
+						
+						if (Mutagen.sfxVolume != 0) {
+							long bhwId = bulletHitWall.play(Mutagen.sfxVolume - .8f);
+						}
 					}
 					else if (GunSelectionScreen.weaponSelected == "laser") {
-						laserHitWall.play();
+						if (Mutagen.sfxVolume != 0) {
+							laserHitWall.play(Mutagen.sfxVolume);
+						}
 					}
 					else if (GunSelectionScreen.weaponSelected == "shotgun") {
-						long phwId = pelletHitWall.play(.1f);
+						if (Mutagen.sfxVolume != 0) {
+							long phwId = pelletHitWall.play(Mutagen.sfxVolume - .8f);
+						}
 					}
 
 					if (GunSelectionScreen.weaponSelected != "battle axe") {
@@ -65,13 +72,19 @@ public class CollisionDetector implements ContactListener{
 				if(fb.getUserData().equals("bullets")){
 					if (GunSelectionScreen.weaponSelected == "rifle" || GunSelectionScreen.weaponSelected == "revolver" 
 							|| GunSelectionScreen.weaponSelected == "assault rifle" ) {
-						long bhwId = bulletHitWall.play(.1f);
+						if (Mutagen.sfxVolume != 0) {
+							long bhwId = bulletHitWall.play(Mutagen.sfxVolume - .8f);
+						}
 					}
 					else if (GunSelectionScreen.weaponSelected == "laser") {
-						laserHitWall.play();
+						if (Mutagen.sfxVolume != 0) {
+							laserHitWall.play(Mutagen.sfxVolume);
+						}
 					}
 					else if (GunSelectionScreen.weaponSelected == "shotgun") {
-						long phwId = pelletHitWall.play(.1f);
+						if (Mutagen.sfxVolume != 0) {
+							long phwId = pelletHitWall.play(Mutagen.sfxVolume - .8f);
+						}
 					}
 					if (GunSelectionScreen.weaponSelected != "battle axe") {
 						bodiesToRemove.add(fb.getBody());
@@ -97,8 +110,9 @@ public class CollisionDetector implements ContactListener{
 
 				}				
 				if (fa.getUserData().equals("grunt")){
-					long bBI = bulletBodyImpact.play(.8f);
-
+					if (Mutagen.sfxVolume != 0) {
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+					}
 					tempBodyArray.add(fa.getBody());
 					Body b = tempBodyArray.first();
 					gruntBodyTarget.add((Grunt) b.getUserData()); //casts Grunt on the physics body to get the class instance
@@ -130,8 +144,9 @@ public class CollisionDetector implements ContactListener{
 				}
 
 				if(fb.getUserData().equals("grunt")){
-
-					long bBI = bulletBodyImpact.play(.8f);
+					if (Mutagen.sfxVolume != 0) {
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+					}
 					tempBodyArray.add(fb.getBody());
 					Body b = tempBodyArray.first();
 					gruntBodyTarget.add((Grunt) b.getUserData());
@@ -232,8 +247,9 @@ public class CollisionDetector implements ContactListener{
 
 				}				
 				if (fa.getUserData().equals("scientist")){
-					long bBI = bulletBodyImpact.play(.8f);
-
+					if (Mutagen.sfxVolume != 0) {
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+					}
 					tempBodyArray.add(fa.getBody());
 					Body b = tempBodyArray.first();
 					scientistBodyTarget.add((Scientist) b.getUserData()); //casts Grunt on the physics body to get the class instance
@@ -266,8 +282,9 @@ public class CollisionDetector implements ContactListener{
 				}
 
 				if(fb.getUserData().equals("scientist")){
-					long bBI = bulletBodyImpact.play(.8f);
-
+					if (Mutagen.sfxVolume != 0) {
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+					}
 					tempBodyArray.add(fb.getBody());
 					Body b = tempBodyArray.first();
 					scientistBodyTarget.add((Scientist) b.getUserData()); //casts Grunt on the physics body to get the class instance

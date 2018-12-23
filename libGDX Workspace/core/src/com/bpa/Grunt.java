@@ -30,9 +30,10 @@ public class Grunt extends Sprite implements Disposable{
 	private Sound atkSwoosh;
 	boolean tookDamage = false;
 	private float runSpeed = 2f;
-	public boolean attack = false;
+	public boolean attack = false, contAtk = false;
 	public int atkdmg = 2;
-	public boolean contAtk = false;
+	private boolean initialDmg = false; //makes sure the player takes damage at first when the enemy touches player
+
 		
 		public Grunt(World world) {
 			this.world = world;
@@ -86,14 +87,21 @@ public class Grunt extends Sprite implements Disposable{
 				batch.draw(gruntStandingRegion, posX - .17f, posY - .13f, 20 / Mutagen.PPM, 10 / Mutagen.PPM, 40 / Mutagen.PPM, 32 / Mutagen.PPM, 1, 1, angle);
 			}
 			else if (contAtk) {
+				if (!initialDmg) {
+					PlayerOne.player1HP -= atkdmg;
+					initialDmg = true;
+				}
+
 				batch.draw(gruntAtkAnimation.getKeyFrame(timePassed), posX - .17f, posY - .13f, 20 / Mutagen.PPM, 10 / Mutagen.PPM, 40 / Mutagen.PPM, 32 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
 
 				if(gruntAtkAnimation.isAnimationFinished(timePassed)) {
-					long aSId = atkSwoosh.play(1f);
-
+					if (Mutagen.sfxVolume != 0) {
+						long aSId = atkSwoosh.play(Mutagen.sfxVolume);
+					}
 					timePassed = 0;
-					PlayerOne.player1HP -= atkdmg;
+					//PlayerOne.player1HP -= atkdmg;
+					initialDmg = false;
 					System.out.println(PlayerOne.player1HP);
 
 				}
@@ -110,9 +118,7 @@ public class Grunt extends Sprite implements Disposable{
 			}
 			
 			if (!PlayerOne.p1Dead) {
-				b2body.applyLinearImpulse(gposX, gposY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);
-		        //this.b2body.setLinearVelocity(gposX, gposY);
-	
+				b2body.applyLinearImpulse(gposX, gposY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);	
 				b2body.setTransform(this.b2body.getPosition().x, this.b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
 			}
 

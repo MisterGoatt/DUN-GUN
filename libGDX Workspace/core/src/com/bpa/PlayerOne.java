@@ -120,7 +120,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		angle2 = MathUtils.atan2(Level1.mousePosition.y - getY(), Level1.mousePosition.x - getX()); //get distance between mouse and player in radians
 		//revolver
 		if (GunSelectionScreen.weaponSelected == "revolver") {
-			speed = 2.1f;
+			speed = 1.7f;
 			if (shootAnimation) {
 				batch.draw(revolverAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / Mutagen.PPM, 20 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
@@ -135,7 +135,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		}
 		//BoltAction Rifle
 		else if (GunSelectionScreen.weaponSelected == "rifle") {
-			speed = 2f;
+			speed = 1.6f;
 			if (shootAnimation) {
 				batch.draw(rifleAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / Mutagen.PPM, 20 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
@@ -198,7 +198,7 @@ public class PlayerOne extends Sprite implements Disposable{
 
 		//battle axe
 		else if (GunSelectionScreen.weaponSelected == "battle axe") {
-			speed = 2.3f;
+			speed = 2f;
 			if (shootAnimation) {
 				batch.draw(axeSwingAnimation.getKeyFrame(timePassed), posX - .35f, posY - .3f, 35 / Mutagen.PPM, 30 / Mutagen.PPM, 70 / Mutagen.PPM, 70 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
@@ -287,7 +287,6 @@ public class PlayerOne extends Sprite implements Disposable{
 				shootAnimation = true;
 
 				switch (GunSelectionScreen.weaponSelected) {
-
 				case "revolver": timeSinceLastShot = 50;
 				break;
 				case "rifle": timeSinceLastShot = 90;
@@ -304,11 +303,11 @@ public class PlayerOne extends Sprite implements Disposable{
 			}
 
 		}
-
-		
 		if (b2body.getLinearVelocity().x > 0 || b2body.getLinearVelocity().x < 0 || b2body.getLinearVelocity().y > 0 || b2body.getLinearVelocity().y < 0) {
 			if (running) {	
-				runningSound.loop();
+				if (Mutagen.sfxVolume != 0) {
+					long rS = runningSound.loop(Mutagen.sfxVolume);
+				}
 				running = false;
 			}
 

@@ -98,7 +98,6 @@ public class GunSelectionScreen implements Screen{
 				
 	    	//BACK BUTTON
 	    	if (mouse_position.x > 33 && mouse_position.x < 153 && mouse_position.y > 34 && mouse_position.y < 83) {
-				MainMenu.alreadyPlaying = true;
 	    		game.setScreen(new MainMenu(game));
 	    	}
 	    	

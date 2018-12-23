@@ -26,6 +26,9 @@ public class Mutagen extends Game{
 	public static final short GRUNT = 0x0008;
 	public static final short SCIENTIST = 0x0016;
 	public static AssetManager manager;
+	public static float musicVolume = 1;
+	public static float sfxVolume = 1;
+
 	
 	@Override
 	public void create() {
@@ -44,12 +47,18 @@ public class Mutagen extends Game{
 		manager.load("sound effects/running.mp3", Sound.class);
 		manager.load("sprites/player1/hp.png", Texture.class);
 		manager.load("sprites/player1/hpBG.png", Texture.class);
-
+		
+		//Options Screen
+		manager.load("screens/credits/optionsScreenAll.jpg", Texture.class);
+		manager.load("screens/credits/optionsScreenMusic.jpg", Texture.class);
+		manager.load("screens/credits/optionsScreenSFX.jpg", Texture.class);
+		manager.load("screens/credits/optionsScreenNone.jpg", Texture.class);
 		
 		//Level1
 		manager.load("crosshair 1.png", Texture.class);
 		manager.load("axeCursor.png", Texture.class);
-		manager.load("screens/Pause.jpg", Texture.class);	
+		manager.load("screens/Pause.jpg", Texture.class);
+		manager.load("music/levelOne.mp3", Music.class);
 		
 		//Gun sound effects
 		manager.load("sound effects/pistol_shot.mp3", Sound.class);
@@ -78,10 +87,11 @@ public class Mutagen extends Game{
 		
 		//Main Menu
 		manager.load("music/Dun-Gun2.mp3", Music.class);
-		manager.load("screens/main_menu_2.jpg", Texture.class);
+		manager.load("screens/menuScreen.jpg", Texture.class);
 		manager.load("fonts/CourierNew32.fnt", BitmapFont.class);
-		manager.load("fonts/HBM Foista Regular36.fnt", BitmapFont.class);
-		manager.load("fonts/HBM Foista Regular36 (Red).fnt", BitmapFont.class);
+		manager.load("fonts/inactiveMenu(36).fnt", BitmapFont.class);
+		manager.load("fonts/activeMenu(36).fnt", BitmapFont.class);
+		
 		
 		//CreateBullet
 		manager.load("sprites/player1/bulletAnimation.atlas", TextureAtlas.class);
@@ -118,6 +128,6 @@ public class Mutagen extends Game{
 	@Override
 	public void dispose () {
 		batch.dispose();
-		manager.dispose();
+		manager.dispose(); //handles the disposing of all assets loaded by manager
 	}
 }

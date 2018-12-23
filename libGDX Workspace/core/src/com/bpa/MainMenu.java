@@ -22,41 +22,35 @@ public class MainMenu implements Screen{
 	private long startTime = System.currentTimeMillis();
 	private long counter;
 	BitmapFont framerate; //font for frame rate display
-	BitmapFont menuText;
-	BitmapFont menuTextRed;
+	BitmapFont inactiveMenuText;
+	BitmapFont activeMenuText;
 	Texture mainMenuScreen;
 	boolean skipToMainM = false;
 	boolean onMenu = true;
 	boolean justClicked = false;
 	private Viewport gamePort;
 	private OrthographicCamera cam;
-	private boolean mStart = false;
 	static Music themeMusic = Mutagen.manager.get("music/Dun-Gun2.mp3", Music.class);
 	private Vector3 mouse_position = new Vector3(0, 0, 0);
 	private int wait = 0;
-	static boolean alreadyPlaying = false;
-
 	
 	public MainMenu(final Mutagen game) {
 		this.game = game;
 		
-		mainMenuScreen = Mutagen.manager.get("screens/main_menu_2.jpg", Texture.class);
-		
+		mainMenuScreen = Mutagen.manager.get("screens/menuScreen.jpg", Texture.class);
 		framerate = Mutagen.manager.get("fonts/CourierNew32.fnt", BitmapFont.class) ;
-		menuText = Mutagen.manager.get("fonts/HBM Foista Regular36.fnt", BitmapFont.class);
-		menuTextRed = Mutagen.manager.get("fonts/HBM Foista Regular36 (Red).fnt", BitmapFont.class);
-		
+		inactiveMenuText = Mutagen.manager.get("fonts/inactiveMenu(36).fnt", BitmapFont.class);
+		activeMenuText = Mutagen.manager.get("fonts/activeMenu(36).fnt", BitmapFont.class);
 		cam = new OrthographicCamera();		
-		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+		gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+		themeMusic.setLooping(true);
+		themeMusic.play();
+		themeMusic.setVolume(Mutagen.musicVolume);
 
 	}
 	
-	public void music(boolean mStart) {
-		themeMusic.setLooping(true);
-		themeMusic.play();
-		alreadyPlaying = true;
-	}
+
 	
 	@Override
 	public void render(float delta) {
@@ -64,99 +58,66 @@ public class MainMenu implements Screen{
 		//clears screen
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+		
+		System.out.println(Mutagen.musicVolume);
 		
         mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
         cam.unproject(mouse_position); //gets mouse coordinates within viewport
-		
+		//System.out.println(mouse_position);
 		game.batch.begin(); 
 		game.batch.setProjectionMatrix(cam.combined);
 
-		//System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
 		
 		//mouse x and y
 		float mX = mouse_position.x;
 		float mY = mouse_position.y;
 		
-		//MUSIC START
-		if (!alreadyPlaying) {
-			mStart = true;
-			music(mStart);
-		}
-		
 		game.batch.draw(mainMenuScreen, 0, 0); // draw background screen
 		if (wait < 11) {
 			wait += 1;
 			}
-		if (wait > 10){
+		if (wait > 2){
 			if (onMenu == true && justClicked == false) { //prevents hold down mouse click
-				
 				//START
-				if (680 < mX && mX < 836 && 531 < mY && mY < 573)  {
-					menuTextRed.draw(game.batch, "start", 710, 560);
-	
+				if (130 < mX && mX < 380 && 37 < mY && mY < 95)  {
+					activeMenuText.draw(game.batch, "START", 196, 90);
 					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-						//game.setScreen(new levelCompleted(game));
-
 						game.setScreen(new GunSelectionScreen(game));
-					
 					}}else {
-					menuText.draw(game.batch, "start", 710, 560);
-	
+					inactiveMenuText.draw(game.batch, "START", 196, 90);
 				}
 
-				//TUTORIAL
-				if (680 < mX && mX < 836 && 464 < mY && mY < 504){
-					menuTextRed.draw(game.batch, "tutorial", 676, 492);
+				//OPTIONS
+				if (435 < mX && mX < 756 && 37 < mY && mY < 95){
+					activeMenuText.draw(game.batch, "OPTIONS", 494, 90);
 	
 					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 						themeMusic.stop();
-						game.setScreen(new Tutorial(game));
-
-	
+						game.setScreen(new Options(game));
 					}
 				}else {
-					menuText.draw(game.batch, "tutorial", 676, 492);
+					inactiveMenuText.draw(game.batch, "OPTIONS", 494, 90);
 				}
 				
-				
+
 				//CREDITS
-				if (680 < mX && mX < 836 && 407 < mY && mY < 438){
-					menuTextRed.draw(game.batch, "credits", 690, 429);
-	
+				if (790 < mX && mX < 1102 && 37 < mY && mY < 95){
+					activeMenuText.draw(game.batch, "CREDITS", 860, 90);
 					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 						themeMusic.stop();
 						game.setScreen(new Credits(game));
-
 					}}else {
-						menuText.draw(game.batch, "credits", 690, 429);
+						inactiveMenuText.draw(game.batch, "CREDITS", 860, 90);
 					}
-				
-				
-//				//QUITS GAME
-//				if (680 < mX && mX < 836 && 265 < mY && mY < 310){
-//					menuTextRed.draw(game.batch, "quit", 720, 295);
-//	
-//					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-//						
-//					}}else {
-//					menuText.draw(game.batch, "quit", 720, 295);
-//	
-//				}
-				
-				
-				
+
 				//QUIT
-				if (680 < mX && mX < 836 && 338 < mY && mY < 374){
-					menuTextRed.draw(game.batch, "quit", 720, 362);
-	
+				if (1160 < mX && mX < 1380 && 37 < mY && mY < 95){
+					activeMenuText.draw(game.batch, "QUIT", 1220, 90);
 					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 						Gdx.app.exit();
-	
 					}
 				}else {
-					menuText.draw(game.batch, "quit", 720, 362);
-	
+					inactiveMenuText.draw(game.batch, "QUIT", 1220, 90);
 					}
 			}
 		}
@@ -168,7 +129,6 @@ public class MainMenu implements Screen{
 			skipToMainM = true;
 			justClicked = true;
 		}
-		
 		
 		//FRAMES PER SECOND
 		//**********************************
@@ -191,7 +151,6 @@ public class MainMenu implements Screen{
 	@Override
 	public void resize(int width, int height) {
 		gamePort.update(width, height);
-		gamePort.apply();
 	}
 
 	@Override
@@ -216,10 +175,7 @@ public class MainMenu implements Screen{
 	public void dispose() {
 		// TODO Auto-generated method stub
 		game.batch.dispose();
-		framerate.dispose();
-		menuText.dispose();
-		themeMusic.dispose();
-		mainMenuScreen.dispose();
+
 	}
 
 }

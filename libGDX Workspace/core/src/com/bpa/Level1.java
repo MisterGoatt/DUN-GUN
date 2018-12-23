@@ -2,6 +2,7 @@ package com.bpa;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -21,14 +22,10 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
-
 
 public class Level1 implements Screen{
 	final Mutagen game;
-	//TMapLocations level1Map;
 	public OrthographicCamera cam;
 	public Viewport gamePort;
 	private TmxMapLoader maploader; //what loads map into game
@@ -50,9 +47,10 @@ public class Level1 implements Screen{
 	//private int[] layerBackround = {0, 1, 2, 3};
 	//private int[] layerAfterBackground = {4};
 	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot;
+	private Music levelOneMusic;
 	private Texture mouseCursor, axeMouseCursor, pauseMenu;
 	private boolean lockCursor = true;
-	private boolean gamePaused = false, viewPortChangeOnce = false, startLaserCount = false, spawnEnemies = false, spawnOnce = true;
+	private boolean gamePaused = false, startLaserCount = false, spawnEnemies = false, spawnOnce = true;
 	private float waitToShootL = 0;	
 	public static boolean axeSwinging = false, bulletImpact = false, isShooting = false;
 	private boolean room1 = true, room2 = true, room3 = true, room4 = true, room5 = true, room6 = true, room7 = true, room8 = true, room9 = true; //room spawn control
@@ -74,7 +72,7 @@ public class Level1 implements Screen{
 		this.game = game;
 		
 		cam = new OrthographicCamera();		
-		gamePort = new FitViewport(Mutagen.V_WIDTH / Mutagen.PPM, Mutagen.V_HEIGHT / Mutagen.PPM, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+		gamePort = new FitViewport(Mutagen.V_WIDTH / Mutagen.PPM, Mutagen.V_HEIGHT / Mutagen.PPM, cam);
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 		cam.zoom -= .40;
 		
@@ -98,17 +96,14 @@ public class Level1 implements Screen{
 		}
 		
 		cd = new CollisionDetector();
+		new B2DWorldCreator(world, map);
+
 		//emptying the arrays of bullet textures and setting static variables to default
 		grunts.clear();
 		scientists.clear();
 		pellets.clear();
 		lasers.clear();
 		bullets.clear();
-		
-		
-		new B2DWorldCreator(world, map);
-		
-		//frame rate = DunGun.manager.get("fonts/CourierNew32.fnt", BitmapFont.class) ;
 		
 		gunShot = Mutagen.manager.get("sound effects/pistol_shot.mp3", Sound.class);
 		rifleShot = Mutagen.manager.get("sound effects/rifleShot.mp3", Sound.class);
@@ -117,6 +112,12 @@ public class Level1 implements Screen{
 		laserShot = Mutagen.manager.get("sound effects/laserBlast3.mp3", Sound.class);
 		axeSwing = Mutagen.manager.get("sound effects/axeSwing.mp3", Sound.class);
 		pauseMenu = Mutagen.manager.get("screens/Pause.jpg", Texture.class);
+		
+		levelOneMusic = Mutagen.manager.get("music/levelOne.mp3");
+		levelOneMusic.setLooping(true);
+		levelOneMusic.setVolume(Mutagen.musicVolume);
+		levelOneMusic.play();
+
 		this.world.setContactListener(cd);
 	}
 	
@@ -128,28 +129,40 @@ public class Level1 implements Screen{
 			
 			case "laser":
 				startLaserCount = true;
-				long lsId = laserShot.play(.5f);
+				if (Mutagen.sfxVolume != 0) {
+					long lsId = laserShot.play(Mutagen.sfxVolume / 2);
+				}
 				break;
 			case "revolver":
-				long gsId = gunShot.play(.3f);
-
+				if (Mutagen.sfxVolume != 0) {
+					long gsId = gunShot.play(Mutagen.sfxVolume - .7f);
+				}				
 				break;
 			case "rifle":
-				long rsId = rifleShot.play(.3f);
-				break;
+				if (Mutagen.sfxVolume != 0) {
+					long rsId = rifleShot.play(Mutagen.sfxVolume - .7f);
+				}
+					break;
 			case "shotgun":
 				//controls how many shotgun shells are shot
 				for (int i = 0; i < 6; i++) {
 					createBullet = new CreateBullet(world);
 					pellets.add(createBullet);
 				}
-				long sS = shotgunShot.play(.3f);
+				if (Mutagen.sfxVolume != 0) {
+
+					long sS = shotgunShot.play(Mutagen.sfxVolume - .7f);
+				}
 				break;
 			case "assault rifle":
-				long arsId = assaultRifleShot.play(.3f);
+				if (Mutagen.sfxVolume != 0) {
+					long arsId = assaultRifleShot.play(Mutagen.sfxVolume - .7f);
+				}
 				break;
 			case "battle axe":
-				long baId = axeSwing.play(.7f);
+				if (Mutagen.sfxVolume != 0) {
+					long baId = axeSwing.play(Mutagen.sfxVolume - .7f);
+				}
 				axeSwinging = true;
 				break;
 			}
@@ -179,7 +192,6 @@ public class Level1 implements Screen{
 		//removes bullets when they collide with wall
 		for (int i = 0; i < bodiesToRemove.size; i ++) {
 			Body b = bodiesToRemove.get(i);
-				
 			Object u = b.getUserData();
 			if (u instanceof CreateBullet) {	
 				if (GunSelectionScreen.weaponSelected == "rifle" || GunSelectionScreen.weaponSelected == "revolver" 
@@ -214,20 +226,12 @@ public class Level1 implements Screen{
 			bullets.clear();
 			createBullet.b2body = null;
 		}
-		
         shootGun(); //sees if gun is shooting
-
 		cam.position.x = playerOne.b2body.getPosition().x;
 		cam.position.y = playerOne.b2body.getPosition().y;
 		cam.update();
 	}
-	
-	public void viewPortSwitch() {
-		gamePort = new StretchViewport(1500, 800, cam);
-		viewPortChangeOnce = false;
-	}
-	
-	
+
 	public void spawningLocations() {
 
 		if (playerOne.b2body.getPosition().x < 6.6 && playerOne.b2body.getPosition().x > 6.5 && 
@@ -242,7 +246,6 @@ public class Level1 implements Screen{
 				}
 				room2 = false;
 			}
-
 		}
 		
 		if (playerOne.b2body.getPosition().x < 4.8 && playerOne.b2body.getPosition().x > 4.1 && 
@@ -357,12 +360,15 @@ public class Level1 implements Screen{
 				room9 = false;
 			}
 		}
+		
+		
+		//GAME BEATEN
 		if (playerOne.b2body.getPosition().x < .6 && playerOne.b2body.getPosition().x > 0 &&
 				playerOne.b2body.getPosition().y < 20.8 && playerOne.b2body.getPosition().y > 19.8) {
 			playerOne.runningSound.stop();
 			Gdx.input.setCursorCatched(false);
+			levelOneMusic.stop();
 			game.setScreen(new levelCompleted(game));
-		
 		}
 		
 	}
@@ -397,11 +403,7 @@ public class Level1 implements Screen{
         	cam.position.x = 0;
         	cam.position.y = 0;
         	game.batch.draw(pauseMenu, 0 - (350/Mutagen.PPM), 0 - (200 / Mutagen.PPM), 1500 / 200,  800 / 200);
-        	lockCursor = false;
-        	if (viewPortChangeOnce) {
-        		viewPortSwitch();
-        	}
-        	
+        	lockCursor = false;	
         	if (Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
         		//RESUME
         		if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < 0.6 && mousePosition.y > -.02) {
@@ -410,6 +412,7 @@ public class Level1 implements Screen{
         		}
         		//MAIN MENU
         		else if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < -.13 && mousePosition.y > -.78) {
+        			levelOneMusic.stop();
         			game.setScreen(new MainMenu(game));
         		}
         		//QUIT
@@ -452,18 +455,14 @@ public class Level1 implements Screen{
 	        	bullets.get(i).renderSprite(game.batch);
 
 	        }
-	        
+	        //Goes to method that handles spawning the enemies
 	        spawningLocations();
-	        
 	        if (!PlayerOne.p1Dead) {
 				playerOne.handleInput(delta);
-
 	        	playerOne.renderSprite(game.batch);	        	
-
 	        }
 	    	if (GunSelectionScreen.weaponSelected == "battle axe") {
 		    	game.batch.draw(axeMouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 21 / Mutagen.PPM, 21/ Mutagen.PPM);
-	    		
 	    	}else { 
 	    		game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / Mutagen.PPM, 13 / Mutagen.PPM);
 	    	}

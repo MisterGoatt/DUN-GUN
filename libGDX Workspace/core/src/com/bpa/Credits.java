@@ -10,17 +10,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-
-
-
-
 public class Credits implements Screen{
 	final Mutagen game;
 	Texture credits;
 	private Viewport gamePort;
 	private OrthographicCamera cam;
 	private float yPos = -5700;
-	Music creditsMusic = Mutagen.manager.get("music/whistling masterpiece.mp3");
+	Music creditsMusic = Mutagen.manager.get("music/creditsSong.mp3");
 
 	
 	public Credits(final Mutagen game) {
@@ -29,7 +25,7 @@ public class Credits implements Screen{
 		cam = new OrthographicCamera();
 		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-		creditsMusic.setVolume(1);
+		creditsMusic.setVolume(Mutagen.musicVolume);
 		creditsMusic.play();
 	}
 
@@ -63,7 +59,6 @@ public class Credits implements Screen{
 		
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
 			creditsMusic.stop();
-			MainMenu.alreadyPlaying = false;
 			game.setScreen(new MainMenu(game));		
 		}
 

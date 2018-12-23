@@ -24,7 +24,8 @@ public class Scientist{
 	public int atkdmg = 5, health = 200;
 	public boolean attack = false, tookDamage = false, contAtk = false, atkSoundStop = true;
 	private Sound atkSound;
-	
+	private boolean initialDmg = false; //makes sure the player takes damage at first when the enemy touches player
+
 	public Scientist(World world) {
 		this.world = world;
 		
@@ -34,8 +35,6 @@ public class Scientist{
 		atkSound = Mutagen.manager.get("sound effects/scientistAtk.mp3");
 		defineScientist();
 	}
-	
-	
 	
 	public void defineScientist() {
 		bdef.position.set(Level1.scientistPos);
@@ -74,16 +73,23 @@ public class Scientist{
 		if (!attack && !contAtk) {
 			batch.draw(scientistStandingRegion, posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 60 / Mutagen.PPM, 1, 1, angle);
 		}else if (contAtk) {
+			
+			if (!initialDmg) {
+				PlayerOne.player1HP -= atkdmg;
+				initialDmg = true;
+			}
 			batch.draw(scientistAtkAnimation.getKeyFrame(timePassed), posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 60 / Mutagen.PPM, 1, 1, angle);
 			timePassed += Gdx.graphics.getDeltaTime();
 			if (!atkSoundStop) {
-				long sSId = atkSound.play(1f);
+				if (Mutagen.sfxVolume != 0) {
+					long sSId = atkSound.play(Mutagen.sfxVolume);
+				}
 				atkSoundStop = true;
 			}
 			if(scientistAtkAnimation.isAnimationFinished(timePassed)) {
 				//long sSId = atkSound.play(1f);
 				timePassed = 0;
-				PlayerOne.player1HP -= atkdmg;
+				initialDmg = false;
 				PlayerOne.slowed = true;
 				PlayerOne.slowRestart = true;
 				atkSoundStop = false;
