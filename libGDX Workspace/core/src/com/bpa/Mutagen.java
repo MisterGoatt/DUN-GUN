@@ -32,6 +32,7 @@ public class Mutagen extends Game{
 	
 	@Override
 	public void create() {
+		try {
 		batch = new SpriteBatch();
 		manager = new AssetManager();
 
@@ -118,11 +119,20 @@ public class Mutagen extends Game{
 		
 		manager.finishLoading();
 		this.setScreen(new IntroductionScreens(this));
+		}catch (Exception e) {
+			//this catch block will catch any exception (in loading i think)
+			this.setScreen(new CrashScreen(this));
+		}
 	}
 
 	@Override
 	public void render () {
-		super.render(); //REMEMBER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!			
+		try {
+			super.render(); //REMEMBER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
+		}catch (Exception e) {
+			//this catch block will catch any exception (in loading i think)
+			this.setScreen(new CrashScreen(this));
+		}
 	}
 	
 	@Override
