@@ -16,19 +16,18 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
-public class CreateBullet extends Sprite implements Disposable{
+public class CreateBullet{
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
 	public String id = "BULLET";
-	Sprite sprite;
+	//Sprite sprite;
 	public static float angle;
 	private float speed = 10;
 	private float posX;
 	private float posY;
 	private float timePassed = 0;
 	private float angle2;
-	
 	private TextureAtlas laserTextureAtlas;
 	private Animation <TextureRegion> laserAnimation;
 	private TextureAtlas pelletTextureAtlas;
@@ -42,10 +41,7 @@ public class CreateBullet extends Sprite implements Disposable{
 	
 	public CreateBullet(World world) {
 		this.world = world;
-
 		defineBullet();
-		
-		
 		laserTextureAtlas = Mutagen.manager.get("sprites/player1/laserBlastAnimation.atlas", TextureAtlas.class);
 		laserAnimation = new Animation <TextureRegion>(1f/15f, laserTextureAtlas.getRegions());
 		laserTextureAtlas = Mutagen.manager.get("sprites/player1/pellet.atlas", TextureAtlas.class);
@@ -155,12 +151,5 @@ public class CreateBullet extends Sprite implements Disposable{
 			
 			break;
 		}
-	}
-	
-
-	
-	@Override
-	public void dispose() {
-
 	}
 }

@@ -45,7 +45,8 @@ public class Level1 implements Screen{
 	private Scientist scientist;
 	public CreateBullet createBullet;
 	private CollisionDetector cd;
-	;
+	private Turret turret;
+	
 	//private int[] layerBackround = {0, 1, 2, 3};
 	//private int[] layerAfterBackground = {4};
 	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot;
@@ -55,18 +56,20 @@ public class Level1 implements Screen{
 	private boolean gamePaused = false, startLaserCount = false, spawnEnemies = false, spawnOnce = true;
 	private float waitToShootL = 0, elapsed = 0, duration, intensity, radius, randomAngle;	
 	public static boolean axeSwinging = false, bulletImpact = false, isShooting = false;
-	private boolean room1 = true, room2 = true, room3 = true, room4 = true, room5 = true, room6 = true, room7 = true, room8 = true, room9 = true; //room spawn control
+	private boolean room1 = true, room2 = true, room3 = true, room4 = true, room5 = true, room6 = true, room6t = true, room7 = true, room8 = true, room9 = true; //room spawn control
 
 	//arrays of different game objects
 	static Array<CreateBullet> lasers = new Array<CreateBullet>();
 	static Array<Grunt> grunts = new Array<Grunt>();
 	static Array<Scientist> scientists = new Array<Scientist>();
+	static Array<Turret> turrets = new Array<Turret>();
 	static Array<CreateBullet> pellets = new Array<CreateBullet>();
 	static Array<CreateBullet> bullets = new Array<CreateBullet>();
 	public static Vector2 gruntPos = new Vector2(0,0);
 	public static Vector2 scientistPos = new Vector2(0,0);
 	public static Vector2 player1SpawnPos = new Vector2(0,0);
 	public static Vector3 mousePosition = new Vector3(0, 0, 0);
+	
 	Random random;
 
 
@@ -78,7 +81,7 @@ public class Level1 implements Screen{
 		gamePort = new FitViewport(Mutagen.V_WIDTH / Mutagen.PPM, Mutagen.V_HEIGHT / Mutagen.PPM, cam);
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 		cam.zoom -= .40;
-
+		
 		TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
 		params.textureMinFilter = TextureFilter.Linear;
 		params.textureMagFilter = TextureFilter.Linear;
@@ -97,7 +100,6 @@ public class Level1 implements Screen{
 			player1SpawnPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
 			playerOne = new PlayerOne(world); //must be created after world creation or will crash
 		}
-
 		cd = new CollisionDetector();
 		new B2DWorldCreator(world, map);
 		random = new Random();
@@ -105,9 +107,11 @@ public class Level1 implements Screen{
 		//emptying the arrays of bullet textures and setting static variables to default
 		grunts.clear();
 		scientists.clear();
+		turrets.clear();
 		pellets.clear();
 		lasers.clear();
 		bullets.clear();
+		TurretBullets.turretBullets.clear();
 
 		gunShot = Mutagen.manager.get("sound effects/pistol_shot.mp3", Sound.class);
 		rifleShot = Mutagen.manager.get("sound effects/rifleShot.mp3", Sound.class);
@@ -121,7 +125,6 @@ public class Level1 implements Screen{
 		levelOneMusic.setLooping(true);
 		levelOneMusic.setVolume(Mutagen.musicVolume);
 		levelOneMusic.play();
-
 		this.world.setContactListener(cd);
 	}
 
@@ -199,8 +202,6 @@ public class Level1 implements Screen{
 	}
 
 	public void cameraUpdate(float delta) {
-
-
 		//timeStep = 60 times a second, velocity iterations = 6, position iterations = 2
 		world.step(1/60f, 6, 2); //tells game how many times per second for Box2d to make its calculations
 		removeBodies(); //goes to method that removes physics bodies
@@ -210,8 +211,6 @@ public class Level1 implements Screen{
 		 * a+(b-a)*lerp
 		 * the higher the lerp value the more instantaneous
 		 */
-		
-		
 		cam.position.x = cam.position.x + (playerOne.b2body.getPosition().x - cam.position.x) * .05f;
 		cam.position.y = cam.position.y + (playerOne.b2body.getPosition().y - cam.position.y) * .05f;
 		// Only screen shake when required.
@@ -255,6 +254,16 @@ public class Level1 implements Screen{
 			}
 			if (u instanceof Scientist) {
 				scientists.removeValue((Scientist) b.getUserData(), true);
+				world.destroyBody(b);
+				b = null;
+			}
+			if (u instanceof Turret) {
+				turrets.removeValue((Turret) b.getUserData(), true);
+				world.destroyBody(b);
+				b = null;
+			}
+			if (u instanceof TurretBullets) {
+				TurretBullets.turretBullets.removeValue((TurretBullets) b.getUserData(), true);
 				world.destroyBody(b);
 				b = null;
 			}
@@ -370,6 +379,20 @@ public class Level1 implements Screen{
 				room6 = false;
 			}
 		}
+		if (playerOne.b2body.getPosition().x < 9.9 && playerOne.b2body.getPosition().x > 9.8 && 
+				playerOne.b2body.getPosition().y < 16 && playerOne.b2body.getPosition().y > 15){
+			System.out.println("hello?");
+			if (room6t) {
+				MapLayer layer = map.getLayers().get("room6t");
+				for (MapObject mo : layer.getObjects()) {
+					Turret.turretSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+					Turret.turretSpawnPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+					turret = new Turret(world);
+					turrets.add(turret);
+				}
+				room6t = false;
+			}
+		}
 		if (playerOne.b2body.getPosition().x < 10.1 && playerOne.b2body.getPosition().x > 10 && 
 				playerOne.b2body.getPosition().y < 21.4 && playerOne.b2body.getPosition().y > 20.7){
 			if (room8) {
@@ -464,24 +487,20 @@ public class Level1 implements Screen{
 			if (startLaserCount) {
 				waitToShootL += 1;
 			}
-
-			//        	cam.position.x = returnToX;
-			//        	cam.position.y = returnToY;
-
+			if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+				cam.zoom += .1f;
+			}
 			cameraUpdate(delta);
 			mapRenderer.render();
 			//b2dr.render(world, cam.combined);
 			game.batch.begin(); //starts sprite spriteBatch
 
-			//RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER GAME OBJECTS
-
+			//RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER BODY OBJECTS
 			for (int i = 0; i < grunts.size; i++) {
 				grunts.get(i).renderSprite(game.batch);
-				grunt = grunts.get(i);
 			}
 			for (int i = 0; i < scientists.size; i++) {
 				scientists.get(i).renderSprite(game.batch);
-				scientist = scientists.get(i);
 			}
 
 			for (int i = 0; i < lasers.size; i++) {
@@ -493,6 +512,12 @@ public class Level1 implements Screen{
 			for (int i = 0; i < bullets.size; i++) {
 				bullets.get(i).renderSprite(game.batch);
 
+			}
+			for (int i = 0; i < turrets.size; i++) {
+				turrets.get(i).renderSprite(game.batch);
+			}
+			for (int i = 0; i < TurretBullets.turretBullets.size; i++) {
+				TurretBullets.turretBullets.get(i).renderSprite(game.batch);
 			}
 			//Goes to method that handles spawning the enemies
 			spawningLocations();

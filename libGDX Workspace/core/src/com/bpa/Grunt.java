@@ -29,7 +29,7 @@ public class Grunt extends Sprite implements Disposable{
 	private TextureRegion gruntStandingRegion;
 	private Sound atkSwoosh;
 	boolean tookDamage = false;
-	private float runSpeed = 2f;
+	private float runSpeed = 1.5f;
 	public boolean attack = false, contAtk = false;
 	public int atkdmg = 4;
 	private boolean initialDmg = false; //makes sure the player takes damage at first when the enemy touches player
@@ -51,7 +51,6 @@ public class Grunt extends Sprite implements Disposable{
 			//define player body
 			
 			bdef.position.set(Level1.gruntPos);
-			
 			bdef.type = BodyDef.BodyType.DynamicBody;
 			//create body in the world
 			b2body = world.createBody(bdef);
@@ -82,7 +81,7 @@ public class Grunt extends Sprite implements Disposable{
 			float posY = this.b2body.getPosition().y;
 			float gposX = (float) (Math.cos(angle2)) * runSpeed;
 			float gposY = (float) (Math.sin(angle2)) * runSpeed;
-			
+		
 			if (!tookDamage && !attack && !contAtk) {
 				batch.draw(gruntStandingRegion, posX - .17f, posY - .13f, 20 / Mutagen.PPM, 10 / Mutagen.PPM, 40 / Mutagen.PPM, 32 / Mutagen.PPM, 1, 1, angle);
 			}
@@ -100,12 +99,9 @@ public class Grunt extends Sprite implements Disposable{
 						long aSId = atkSwoosh.play(Mutagen.sfxVolume);
 					}
 					timePassed = 0;
-					//PlayerOne.player1HP -= atkdmg;
 					initialDmg = false;
 					System.out.println(PlayerOne.player1HP);
-
 				}
-				
 			}
 			
 			else {

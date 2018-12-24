@@ -17,8 +17,6 @@ public class MainMenu implements Screen{
 	
 	final Mutagen game;
 	
-//	OrthographicCamera camera;
-
 	private long startTime = System.currentTimeMillis();
 	private long counter;
 	BitmapFont framerate; //font for frame rate display

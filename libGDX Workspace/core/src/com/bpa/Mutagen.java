@@ -19,16 +19,19 @@ public class Mutagen extends Game{
 	//Virtual Screen size and Box2D Scale(Pixels Per Meter)
 	public static final int V_WIDTH = 1500;
 	public static final int V_HEIGHT = 800;
-	public static final float PPM = 100; //Pixels Per Meter
+	public static final float PPM = 100.0f; //Pixels Per Meter
 	public static final short PLAYER = 0x0001;
 	public static final short BULLET = 0x0002;
 	public static final short WALL = 0x0004;
 	public static final short GRUNT = 0x0008;
 	public static final short SCIENTIST = 0x0016;
+	public static final short FLAYER = 0x0032;
+	public static final short SOLDIER = 0x0064;
+	public static final short TURRET = 0x0128;
+	public static final short TURRET_BULLET = 0x0256;
 	public static AssetManager manager;
 	public static float musicVolume = 1;
 	public static float sfxVolume = 1;
-
 	
 	@Override
 	public void create() {
@@ -36,7 +39,7 @@ public class Mutagen extends Game{
 		manager = new AssetManager();
 
 		//load all of the graphics into memory before game starts
-		
+	
 		//PlayerOne
 		manager.load("sprites/player1/playerRevolver.atlas", TextureAtlas.class);
 		manager.load("sprites/player1/rifleAnimation.atlas", TextureAtlas.class);
@@ -69,7 +72,7 @@ public class Mutagen extends Game{
 		manager.load("sound effects/laserBlast3.mp3", Sound.class);
 		manager.load("sound effects/bulletImpact.mp3", Sound.class);
 		manager.load("sound effects/laserImpact.mp3", Sound.class);
-		manager.load("sound effects/pelletImpact.mp3", Sound.class);
+		//manager.load("sound effects/pelletImpact.mp3", Sound.class);
 		manager.load("sound effects/pelletImpact.mp3", Sound.class);
 		manager.load("sound effects/bulletBodyImpact.mp3", Sound.class);
 		manager.load("sound effects/axeSwing.mp3", Sound.class);
@@ -92,7 +95,6 @@ public class Mutagen extends Game{
 		manager.load("fonts/inactiveMenu(36).fnt", BitmapFont.class);
 		manager.load("fonts/activeMenu(36).fnt", BitmapFont.class);
 		
-		
 		//CreateBullet
 		manager.load("sprites/player1/bulletAnimation.atlas", TextureAtlas.class);
 		manager.load("sprites/player1/bullet.png", Texture.class);
@@ -112,6 +114,13 @@ public class Mutagen extends Game{
 		manager.load("sprites/scientist/scientistAtk.atlas", TextureAtlas.class);
 		manager.load("sound effects/scientistAtk.mp3", Sound.class);
 
+		//Turret
+		manager.load("sprites/turret/turretAtkAnimation.atlas", TextureAtlas.class);
+		manager.load("sound effects/turretAtk.mp3", Sound.class);
+		manager.load("sprites/turret/turretBulletAnimation.atlas", TextureAtlas.class);
+		manager.load("sound effects/turretHit.mp3", Sound.class);
+
+		
 		//LevelCompleted Screen
 		manager.load("screens/levelCompletedScreen.jpg", Texture.class);
 		

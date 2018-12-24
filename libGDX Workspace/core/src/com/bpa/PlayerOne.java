@@ -1,7 +1,5 @@
 package com.bpa;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
@@ -25,7 +23,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	private BodyDef bdef = new BodyDef();
 	private TextureAtlas revolverTextureAtlas, axeSwingTextureAtlas, rifleTextureAtlas, shotgunTextureAtlas, 
 		assaultRifleTextureAtlas, laserTextureAtlas;
-
+	
 	private Texture p1HP, p1HPBG;
 	private Animation <TextureRegion> revolverAnimation, rifleAnimation, shotgunAnimation, assaultRifleAnimation, 
 		laserAnimation, axeSwingAnimation;
@@ -33,12 +31,11 @@ public class PlayerOne extends Sprite implements Disposable{
 	private TextureRegion revolverStandingRegion, axeStandingRegion, rifleStandingRegion, 
 		shotgunStandingRegion, assaultRifleStandingRegion, laserStandingRegion;
 
-
 	public Sound runningSound; //sound effect of the player's movement
 	private float speed = 3, oldSpeed, speedAB = .707f, timeSinceLastShot = 60f, timePassed = 0, slowedCounter; //speed of the player, Sqrt 2 divided by 2
 	public static float  angle, angle2, p1PosX,p1PosY; //get distance between mouse and player in radians
 	//amount of damage each weapon deals
-	public static float laserLanceDamage = 150, battleAxeDamage = 175, assaultRifleDamage = 35, shotgunDamage = 16.6f, 
+	public static float laserLanceDamage = 150, battleAxeDamage = 200, assaultRifleDamage = 35, shotgunDamage = 16.6f, 
 			rifleDamage = 100, revolverDamage = 50;
 	public static int player1HP;
 	public static boolean p1Dead = false;
@@ -110,9 +107,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	public void renderSprite(SpriteBatch batch) {
 		float posX = b2body.getPosition().x;
 		float posY = b2body.getPosition().y;
-
 		angle = MathUtils.atan2(Level1.mousePosition.y - getY(), Level1.mousePosition.x - getX()) * MathUtils.radDeg; //find the distance between mouse and player
-
 		angle = angle - 90; //makes it a full 360 degrees
 		if (angle < 0) {
 			angle += 360 ;
@@ -120,11 +115,10 @@ public class PlayerOne extends Sprite implements Disposable{
 		angle2 = MathUtils.atan2(Level1.mousePosition.y - getY(), Level1.mousePosition.x - getX()); //get distance between mouse and player in radians
 		//revolver
 		if (GunSelectionScreen.weaponSelected == "revolver") {
-			speed = 1.7f;
+			speed = 1.5f;
 			if (shootAnimation) {
 				batch.draw(revolverAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / Mutagen.PPM, 20 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
-
 				if(revolverAnimation.isAnimationFinished(timePassed)) {
 					shootAnimation = false;
 					timePassed = 0;
@@ -135,7 +129,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		}
 		//BoltAction Rifle
 		else if (GunSelectionScreen.weaponSelected == "rifle") {
-			speed = 1.6f;
+			speed = 1.4f;
 			if (shootAnimation) {
 				batch.draw(rifleAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / Mutagen.PPM, 20 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
@@ -166,7 +160,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		}
 		//Assault Rifle
 		else if (GunSelectionScreen.weaponSelected == "assault rifle") {
-			speed = 1.5f;
+			speed = 1.2f;
 			if (shootAnimation) {
 				batch.draw(assaultRifleAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / Mutagen.PPM, 20 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();

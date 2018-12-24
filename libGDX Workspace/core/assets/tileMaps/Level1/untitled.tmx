@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="90" tilewidth="32" tileheight="32" infinite="0" nextlayerid="22" nextobjectid="165">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="90" tilewidth="32" tileheight="32" infinite="0" nextlayerid="23" nextobjectid="166">
  <tileset firstgid="1" source="test.tsx"/>
  <layer id="9" name="ground" width="50" height="90">
   <data encoding="csv">
@@ -445,6 +445,11 @@
    <ellipse/>
   </object>
   <object id="104" x="316" y="1634">
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <objectgroup id="22" name="room6t">
+  <object id="165" x="1092" y="720">
    <ellipse/>
   </object>
  </objectgroup>

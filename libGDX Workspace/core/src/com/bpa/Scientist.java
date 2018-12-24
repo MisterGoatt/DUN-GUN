@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
+
 public class Scientist{
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
