@@ -34,6 +34,8 @@ public class CreateBullet{
 	private Animation <TextureRegion> pelletAnimation;
 	private TextureAtlas bulletTextureAtlas;
 	private Animation <TextureRegion> bulletAnimation;
+	public static boolean explosion;
+	FixtureDef fdef;
 
 	//static ArrayList<Integer> laserDestroyManager;
 	
@@ -57,7 +59,7 @@ public class CreateBullet{
 		b2body = world.createBody(bdef);
 		b2body.setUserData(this);
 		
-		FixtureDef fdef = new FixtureDef();
+		fdef = new FixtureDef();
 		//polygon shape for the laser
 		if (GunSelectionScreen.weaponSelected == "laser") {
 			PolygonShape shape = new PolygonShape();
@@ -148,8 +150,10 @@ public class CreateBullet{
 		default: 
 			batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 5 / Mutagen.PPM, 20 / Mutagen.PPM, 1, 1, angle2 - 90);	
 			timePassed += Gdx.graphics.getDeltaTime();
-			
 			break;
+		}
+		if (explosion) {
+			explosion = false;
 		}
 	}
 }

@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 
 public class Turret {
 	public World world; // world player will live in
@@ -29,6 +30,7 @@ public class Turret {
 	private boolean shootAnimation = false;
 	private Sound turretShoot;
 	TurretBullets tB;
+	static Array<Turret> turrets = new Array<Turret>();
 
 	public Turret(World world) {
 		this.world = world;
@@ -75,7 +77,6 @@ public class Turret {
 				shootAnimation = false;
 				timePassed = 0;
 			}
-
 		}else {
 			batch.draw(turretStandingRegion, posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 60 / Mutagen.PPM, 1, 1, angle);
 		}
@@ -90,7 +91,9 @@ public class Turret {
 					Long tS = turretShoot.play(Mutagen.sfxVolume - .8f);					
 				}
 				shootAnimation = true;
-				tB = new TurretBullets(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle2);
+				for (int i = 0; i < 2; i++) {
+					tB = new TurretBullets(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle2);	
+				}
 				shootTimer = 0;
 			}
 		}

@@ -8,11 +8,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 public class Grunt extends Sprite implements Disposable{
@@ -21,18 +23,17 @@ public class Grunt extends Sprite implements Disposable{
 	private BodyDef bdef = new BodyDef();
 	public int health = 100;
 	float angle2;
-	private TextureAtlas gruntAtkAtlas;
+	private TextureAtlas gruntAtkAtlas, gruntDamagedAtlas;
 	private Animation <TextureRegion> gruntAtkAnimation;
-	private TextureAtlas gruntDamagedAtlas;
 	private Animation <TextureRegion> gruntDamagedAnimation;
-	private float timePassed = 0;
+	private float timePassed = 0, runSpeed = 1.5f;
 	private TextureRegion gruntStandingRegion;
 	private Sound atkSwoosh;
-	boolean tookDamage = false;
-	private float runSpeed = 1.5f;
-	public boolean attack = false, contAtk = false;
-	public int atkdmg = 4;
+	public boolean attack = false, contAtk = false, tookDamage = false;
+	public int atkdmg = 10;
 	private boolean initialDmg = false; //makes sure the player takes damage at first when the enemy touches player
+	static Array<Grunt> grunts = new Array<Grunt>();
+	public static Vector2 gruntPos = new Vector2(0,0);
 
 		
 		public Grunt(World world) {
@@ -50,7 +51,7 @@ public class Grunt extends Sprite implements Disposable{
 		public void defineGrunt() {
 			//define player body
 			
-			bdef.position.set(Level1.gruntPos);
+			bdef.position.set(gruntPos);
 			bdef.type = BodyDef.BodyType.DynamicBody;
 			//create body in the world
 			b2body = world.createBody(bdef);

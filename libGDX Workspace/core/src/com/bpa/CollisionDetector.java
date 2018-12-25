@@ -15,9 +15,12 @@ public class CollisionDetector implements ContactListener{
 	private Array<Grunt> gruntBodyTarget = new Array<Grunt>();
 	private Array<Scientist> scientistBodyTarget = new Array<Scientist>();
 	private Array<Turret> turretBodyTarget = new Array<Turret>();
+	private Array<CreateBullet> bulletBodyTarget = new Array<CreateBullet>();
+
 	Grunt grunt;
 	Scientist scientist;
 	Turret turret;
+	CreateBullet createBullet;
 	private Sound bulletHitWall, bulletBodyImpact, pelletHitWall, laserHitWall, turretHit;
 
 	public CollisionDetector() {	
@@ -31,6 +34,7 @@ public class CollisionDetector implements ContactListener{
 		gruntBodyTarget.clear();
 		scientistBodyTarget.clear();
 		tempBodyArray.clear();
+		bulletBodyTarget.clear();
 	}
 
 	@Override
@@ -39,6 +43,24 @@ public class CollisionDetector implements ContactListener{
 		Fixture fb = contact.getFixtureB();
 		if (fa == null || fb == null) return;
 		if (fa.getUserData() == null || fb.getUserData() == null) return;
+		
+//		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")){
+//			if (fa.getUserData().equals("bullets") && GunSelectionScreen.weaponSelected == "laser") {
+//				tempBodyArray.add(fa.getBody());
+//				Body b = tempBodyArray.first();
+//				bulletBodyTarget.add((CreateBullet) b.getUserData()); //casts Grunt on the physics body to get the class instance
+//				createBullet = bulletBodyTarget.get(0);
+//				createBullet.explosion= true;
+//			}
+//			if (fb.getUserData().equals("bullets") && GunSelectionScreen.weaponSelected == "laser") {
+//				tempBodyArray.add(fb.getBody());
+//				Body b = tempBodyArray.first();
+//				bulletBodyTarget.add((CreateBullet) b.getUserData()); //casts Grunt on the physics body to get the class instance
+//				createBullet = bulletBodyTarget.get(0);
+//				createBullet.explosion= true;
+//			}
+//		}
+		
 		//BULLET AND WALL COLLISIONS
 		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
 			if (fa.getUserData().equals("walls") || fb.getUserData().equals("walls")) {
@@ -51,6 +73,7 @@ public class CollisionDetector implements ContactListener{
 						}
 					}
 					else if (GunSelectionScreen.weaponSelected == "laser") {
+						
 						if (Mutagen.sfxVolume != 0) {
 							laserHitWall.play(Mutagen.sfxVolume);
 						}
@@ -97,12 +120,15 @@ public class CollisionDetector implements ContactListener{
 				if (fa.getUserData().equals("bullets")){
 
 					if (GunSelectionScreen.weaponSelected != "battle axe") {
+						CreateBullet.explosion= true;	
 						bodiesToRemove.add(fa.getBody()); //bullet
 
 					}
 				}
 				if(fb.getUserData().equals("bullets")){
-					if (GunSelectionScreen.weaponSelected != "battle axe") {
+					if (GunSelectionScreen.weaponSelected != "battle axe") {	
+						CreateBullet.explosion= true;	
+
 						bodiesToRemove.add(fb.getBody()); //bullet
 					}
 

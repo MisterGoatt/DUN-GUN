@@ -18,7 +18,7 @@ public class TurretBullets {
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
-	private float speed = 2, startX, startY, posX, posY, angle2, angle, shootingAngle, timePassed;
+	private float speed = 2, startX, startY, posX, posY, shootingAngle, timePassed;
 	private TextureAtlas bulletTextureAtlas;
 	private Animation <TextureRegion> bulletAnimation;
 	static Array<TurretBullets> turretBullets = new Array<TurretBullets>();
@@ -48,7 +48,14 @@ public class TurretBullets {
 		fdef.filter.categoryBits = Mutagen.TURRET_BULLET; //identifies the category bit is
 		fdef.filter.maskBits = Mutagen.WALL | Mutagen.PLAYER; // what masking bit the category bit collides with
 		b2body.createFixture(fdef).setUserData("turret bullets");
-	    float shootingAngleRadians = (float) Math.toRadians(shootingAngle);
+		float speedVary = (int)(Math.random() * 10 + 5f);
+		float angleVary = (int)(Math.random() * 20 - 10);
+		//angleVary = angleVary / Mutagen.PPM;
+		shootingAngle = shootingAngle + angleVary;
+		System.out.println(shootingAngle);
+
+		float shootingAngleRadians = (float) Math.toRadians(shootingAngle);
+
 	    shootingAngleRadians = shootingAngleRadians + 1.57f;
 		posX = (float) (Math.cos(shootingAngleRadians)) * speed;
 		posY = (float) (Math.sin(shootingAngleRadians)) * speed;
