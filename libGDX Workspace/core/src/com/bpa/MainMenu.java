@@ -19,7 +19,6 @@ public class MainMenu implements Screen, InputProcessor{
 	final Mutagen game;
 
 	private long startTime = System.currentTimeMillis();
-	private long counter;
 	BitmapFont framerate; //font for frame rate display
 	BitmapFont inactiveMenuText;
 	BitmapFont activeMenuText;
@@ -35,7 +34,6 @@ public class MainMenu implements Screen, InputProcessor{
 
 	public MainMenu(final Mutagen game) {
 		this.game = game;
-
 		mainMenuScreen = Mutagen.manager.get("screens/menuScreen.jpg", Texture.class);
 		framerate = Mutagen.manager.get("fonts/CourierNew32.fnt", BitmapFont.class) ;
 		inactiveMenuText = Mutagen.manager.get("fonts/inactiveMenu(36).fnt", BitmapFont.class);
@@ -102,7 +100,6 @@ public class MainMenu implements Screen, InputProcessor{
 		//***********************************		
 		//FRAMES PER SECOND
 		//**********************************
-		counter = (System.currentTimeMillis() - startTime) / 1000;
 		int f = Gdx.graphics.getFramesPerSecond(); // grabs frames per second
 		String frames = Integer.toString(f); //converts frames per second to a string
 		framerate.draw(game.batch, frames, 5, 785); //displays frames per second as text in top left

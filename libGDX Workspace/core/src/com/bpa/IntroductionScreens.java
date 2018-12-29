@@ -29,19 +29,12 @@ public class IntroductionScreens implements Screen{
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-		
 		publisherScreen = Mutagen.manager.get("screens/ctm_placeholder.jpg");
 		creditScreen = Mutagen.manager.get("screens/credits_placeholder.jpg");
 		titleScreen = Mutagen.manager.get("screens/titleScreen.jpg");
 		musicScreen = Mutagen.manager.get("screens/musicScreen.jpg");
-	
 	}
  
-	@Override
-	public void show() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void render(float delta) {
@@ -63,18 +56,15 @@ public class IntroductionScreens implements Screen{
 			else if (counter >= 7.12 && counter <= 10.77){
 					game.batch.draw(titleScreen, 0, 0);
 				}else game.setScreen(new MainMenu(game));
-			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+			//skips the introduction screens
+			if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
 				game.setScreen(new MainMenu(game));
 			}
+			else if (Gdx.input.isButtonPressed(Input.Buttons.LEFT))
 			
 			//FRAMES PER SECOND
 			//**********************************
-			//System.out.println((System.currentTimeMillis() - startTime) / 1000);
 			counter = (System.currentTimeMillis() - startTime) / 1000;
-			//int f = Gdx.graphics.getFramesPerSecond(); // grabs frames per second
-			//String frames = Integer.toString(f); //converts frames per second to a string
-			//framerate.draw(game.batch, frames, 5, 785); //displays frames per second as text in top left
-			//**********************************
 			game.batch.end();
 			cam.update();
 
@@ -105,6 +95,12 @@ public class IntroductionScreens implements Screen{
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public void show() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	@Override
 	public void dispose() {

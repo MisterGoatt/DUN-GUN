@@ -31,7 +31,6 @@ public class Options implements Screen, InputProcessor{
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-
 		allSelected = Mutagen.manager.get("screens/options/optionsScreenAll.jpg");
 		noneSelected = Mutagen.manager.get("screens/options/optionsScreenNone.jpg");
 		musicSelected = Mutagen.manager.get("screens/options/optionsScreenMusic.jpg");
@@ -58,8 +57,8 @@ public class Options implements Screen, InputProcessor{
 		game.batch.setProjectionMatrix(cam.combined);
 
 		//mouse x and y
-		float mX = mouse_position.x;
-		float mY = mouse_position.y;
+		mX = mouse_position.x;
+		mY = mouse_position.y;
 
 		//Which screens to display depending on the on/off of the options
 		if (music && sfx) {
@@ -126,7 +125,7 @@ public class Options implements Screen, InputProcessor{
 
 		if (!buttonPressed) {
 			//MUSIC ON/OFF
-			if (550 > mY && mY > 480 && 700 < mX && mX < 780) {
+			if (550 > mY && mY > 480 && 700 < mX && mX < 770) {
 				if (music) {
 					music = false;
 					Mutagen.musicVolume = 0f;
@@ -136,7 +135,7 @@ public class Options implements Screen, InputProcessor{
 				}
 			}
 			//SFX ON/OFF
-			else if (409 > mY && mY > 346 && 700 < mX && mX < 790) {
+			if (409 > mY && mY > 346 && 700 < mX && mX < 790) {
 				if (sfx) {
 					sfx = false;
 					Mutagen.sfxVolume = 0f;
@@ -145,7 +144,7 @@ public class Options implements Screen, InputProcessor{
 					Mutagen.sfxVolume = 1f;
 				}
 			}
-			if (mY < 82 && mX < 153) {
+			if (mY < 82 && mX < 153 && mY < 79 && mY > 22) {
 				game.setScreen(new MainMenu(game));
 			}
 		}
