@@ -7,104 +7,130 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class GunSelectionScreen implements Screen, InputProcessor{
-	final Mutagen game;
-	private Texture gunPickScreen;
-	public Viewport gamePort;
+public class PlayerMode implements Screen, InputProcessor{
 
+	final Mutagen game;
+	public Viewport gamePort;
+	private Texture playerModeScreen;
 	private OrthographicCamera cam;
 	private Vector3 mouse_position = new Vector3(0, 0, 0);
-	public static String weaponSelected;
+	public static boolean OneP = false;
+	private float mX, mY;
 	private boolean buttonPressed = false;
-	public GunSelectionScreen(final Mutagen game) {
-		this.game = game;
-		gunPickScreen = Mutagen.manager.get("screens/gun_selection.jpg");
+	BitmapFont activeText, inactiveText, backText, backActiveText;
 
+	public PlayerMode(final Mutagen game) {
+		this.game = game;
+		playerModeScreen = Mutagen.manager.get("screens/playerModeScreen.jpg");
 		cam = new OrthographicCamera();		
 		gamePort = new StretchViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 		Gdx.input.setInputProcessor(this);
+		backText = Mutagen.manager.get("fonts/backText(68).fnt", BitmapFont.class);
+		inactiveText =  Mutagen.manager.get("fonts/inactiveText(100).fnt", BitmapFont.class);
+		activeText = Mutagen.manager.get("fonts/activeText(100).fnt", BitmapFont.class);
+		backActiveText = Mutagen.manager.get("fonts/backActiveText(68).fnt", BitmapFont.class);
 	}
 
 
-	@Override
-	public void show() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	
-	
 	@Override
 	public void render(float delta) {
+
 		//clears screen
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+
 		mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-	    
-		
-		cam.unproject(mouse_position); //gets mouse coordinates within viewport
+        cam.unproject(mouse_position); //gets mouse coordinates within viewport
 		game.batch.setProjectionMatrix(cam.combined);
+		
+		System.out.println(mouse_position);
+		//mouse x and y
+		mX = mouse_position.x;
+		mY = mouse_position.y;
+		game.batch.begin();
+		game.batch.draw(playerModeScreen, 0, 0);
+		//single player
+		if ( mX < 1145 && mX > 407 && mY < 660 && mY > 509) {
+			activeText.draw(game.batch, "SINGLE PLAYER", 525, 620);
+		}else {
+			inactiveText.draw(game.batch, "SINGLE PLAYER", 525, 620);
+		}
+		//co-op
+		if ( mX < 1145 && mX > 407 && mY < 431 && mY > 282) {
+			activeText.draw(game.batch, "CO-OP", 675, 390);
 
-	    game.batch.begin();
+		}else {
+			inactiveText.draw(game.batch, "CO-OP", 675, 390);
 
-		game.batch.draw(gunPickScreen, 0, 0);
+		}
+		//back
+		if (mX < 271 && mX > 104 && mY < 110 && mY > 40) {
+			backActiveText.draw(game.batch, " BACK", 115, 98);
+
+		}else {
+			backText.draw(game.batch, " BACK", 115, 98);
+			
+		}
+
 		game.batch.end();
 		cam.update();
-
 	}
-
 
 	@Override
 	public void resize(int width, int height) {
 		gamePort.update(width, height);
-		
+
 	}
 
+	
+	@Override
+	public void show() {
+		// TODO Auto-generated method stub
 
+	}
+	
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	@Override
 	public void dispose() {
-	game.batch.dispose();
+		game.batch.dispose();
+
 	}
 
 
 	@Override
 	public boolean keyDown(int keycode) {
-		// TODO Auto-generated method stub
+		
+		
 		return false;
 	}
 
 
 	@Override
 	public boolean keyUp(int keycode) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
@@ -118,53 +144,23 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		if (!buttonPressed) {
-			//REVOLVER 
-	    	if (mouse_position.x > 785 && mouse_position.x < 1090 && mouse_position.y > 512 && mouse_position.y < 615) {
-	    		weaponSelected = "revolver";
-				MainMenu.themeMusic.stop();	
-	    		game.setScreen(new Level1(game));
-
-	    	}
-	    	//bolt-action rifle
-	    	else if (mouse_position.x > 418 && mouse_position.x < 720 && mouse_position.y > 380 && mouse_position.y < 480) {
-	    		weaponSelected = "rifle";
-				MainMenu.themeMusic.stop();	
-
-	    		game.setScreen(new Level1(game));
-	    	}
-	    	//Assault rifle
-	    	else if (mouse_position.x > 418 && mouse_position.x < 720 && mouse_position.y > 520 && mouse_position.y < 619) {
-	    		weaponSelected = "assault rifle";
-				MainMenu.themeMusic.stop();	
-
-	    		game.setScreen(new Level1(game));
-	    	}
-	    	//shotgun
-	    	else if ((mouse_position.x > 418 && mouse_position.x < 720 && mouse_position.y > 247 && mouse_position.y < 350)) {
-	    		weaponSelected = "shotgun";
-				MainMenu.themeMusic.stop();	
-
-	    		game.setScreen(new Level1(game));
-	    	}
-	    	//Laser
-	    	if (mouse_position.x > 785 && mouse_position.x < 1090 && mouse_position.y > 380 && mouse_position.y < 487) {
-	    		weaponSelected = "laser";
-				MainMenu.themeMusic.stop();	
-
-	    		game.setScreen(new Level1(game));
-	    	}
-	    	//Battle axe
-	    	if (mouse_position.x > 785 && mouse_position.x < 1090 && mouse_position.y > 248 && mouse_position.y < 365) {
-	    		weaponSelected = "battle axe";
-				MainMenu.themeMusic.stop();	
-
-	    		game.setScreen(new Level1(game));
-	    	}
-	    	//BACK BUTTON
-	    	if (mouse_position.x > 33 && mouse_position.x < 153 && mouse_position.y > 34 && mouse_position.y < 83) {
-	    		game.setScreen(new PlayerMode(game));
-	    	}
+		if (button == Input.Buttons.LEFT) {
+			if (!buttonPressed){
+				//single player
+				if ( mX < 1145 && mX > 407 && mY < 660 && mY > 509) {
+		    		game.setScreen(new GunSelectionScreen(game));
+		    		OneP = true;
+				}
+				//two player
+				if ( mX < 1145 && mX > 407 && mY < 431 && mY > 282) {
+		    		game.setScreen(new GunSelectionScreen(game));
+		    		OneP = false;
+				}			
+				//back button
+				if ( mX < 271 && mX > 104 && mY < 110 && mY > 40) {
+					game.setScreen(new MainMenu(game));
+				}
+			}			
 		}
 		buttonPressed = true;
 		return false;
@@ -173,7 +169,10 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		buttonPressed = false;
+		
+		if (button!= Input.Buttons.LEFT) {
+			buttonPressed = false;	
+		}
 		return false;
 	}
 
@@ -197,4 +196,5 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 }

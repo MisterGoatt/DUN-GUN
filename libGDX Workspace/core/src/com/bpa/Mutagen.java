@@ -52,10 +52,10 @@ public class Mutagen extends Game{
 		manager.load("sprites/player1/hpBG.png", Texture.class);
 		
 		//Options Screen
-		manager.load("screens/credits/optionsScreenAll.jpg", Texture.class);
-		manager.load("screens/credits/optionsScreenMusic.jpg", Texture.class);
-		manager.load("screens/credits/optionsScreenSFX.jpg", Texture.class);
-		manager.load("screens/credits/optionsScreenNone.jpg", Texture.class);
+		manager.load("screens/options/optionsScreenAll.jpg", Texture.class);
+		manager.load("screens/options/optionsScreenMusic.jpg", Texture.class);
+		manager.load("screens/options/optionsScreenSFX.jpg", Texture.class);
+		manager.load("screens/options/optionsScreenNone.jpg", Texture.class);
 		
 		//Level1
 		manager.load("crosshair 1.png", Texture.class);
@@ -119,6 +119,14 @@ public class Mutagen extends Game{
 		manager.load("sound effects/turretAtk.mp3", Sound.class);
 		manager.load("sprites/turret/turretBulletAnimation.atlas", TextureAtlas.class);
 		manager.load("sound effects/turretHit.mp3", Sound.class);
+
+		//PlayerModeScreen
+		manager.load("screens/playerModeScreen.jpg", Texture.class);
+		manager.load("fonts/backText(68).fnt", BitmapFont.class);
+		manager.load("fonts/backActiveText(68).fnt", BitmapFont.class);
+
+		manager.load("fonts/inactiveText(100).fnt", BitmapFont.class);
+		manager.load("fonts/activeText(100).fnt", BitmapFont.class);
 
 		
 		//LevelCompleted Screen

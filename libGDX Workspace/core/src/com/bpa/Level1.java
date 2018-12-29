@@ -120,12 +120,12 @@ public class Level1 implements Screen{
 		laserShot = Mutagen.manager.get("sound effects/laserBlast3.mp3", Sound.class);
 		axeSwing = Mutagen.manager.get("sound effects/axeSwing.mp3", Sound.class);
 		pauseMenu = Mutagen.manager.get("screens/Pause.jpg", Texture.class);
-
 		levelOneMusic = Mutagen.manager.get("music/levelOne.mp3");
 		levelOneMusic.setLooping(true);
 		levelOneMusic.setVolume(Mutagen.musicVolume);
 		levelOneMusic.play();
 		this.world.setContactListener(cd);
+		Gdx.input.setInputProcessor(null);
 	}
 
 	//Creation of bullet objects and playing shooting and swinging sound effects
