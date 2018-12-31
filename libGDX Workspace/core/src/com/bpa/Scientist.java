@@ -7,11 +7,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 
 
 public class Scientist{
@@ -22,10 +24,12 @@ public class Scientist{
 	private TextureAtlas scientistDamagedAtlas, scientistAtkAtlas;
 	private Animation <TextureRegion> scientistDamagedAnimation, scientistAtkAnimation;
 	private TextureRegion scientistStandingRegion;
-	public int atkdmg = 8, health = 200;
+	public int atkdmg = 15, health = 200;
 	public boolean attack = false, tookDamage = false, contAtk = false, atkSoundStop = true;
 	private Sound atkSound;
 	private boolean initialDmg = false; //makes sure the player takes damage at first when the enemy touches player
+	static Array<Scientist> scientists = new Array<Scientist>();
+	public static Vector2 scientistPos = new Vector2(0,0);
 
 	public Scientist(World world) {
 		this.world = world;
@@ -38,7 +42,7 @@ public class Scientist{
 	}
 	
 	public void defineScientist() {
-		bdef.position.set(Level1.scientistPos);
+		bdef.position.set(scientistPos);
 		bdef.type = BodyDef.BodyType.DynamicBody;
 		//create body in the world
 		b2body = world.createBody(bdef);

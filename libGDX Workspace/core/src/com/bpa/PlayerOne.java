@@ -10,11 +10,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 public class PlayerOne extends Sprite implements Disposable{
@@ -22,30 +24,37 @@ public class PlayerOne extends Sprite implements Disposable{
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
 	private TextureAtlas revolverTextureAtlas, axeSwingTextureAtlas, rifleTextureAtlas, shotgunTextureAtlas, 
-		assaultRifleTextureAtlas, laserTextureAtlas;
-	
+	assaultRifleTextureAtlas, laserTextureAtlas;
+
 	private Texture p1HP, p1HPBG;
 	private Animation <TextureRegion> revolverAnimation, rifleAnimation, shotgunAnimation, assaultRifleAnimation, 
-		laserAnimation, axeSwingAnimation;
+	laserAnimation, axeSwingAnimation;
 
 	private TextureRegion revolverStandingRegion, axeStandingRegion, rifleStandingRegion, 
-		shotgunStandingRegion, assaultRifleStandingRegion, laserStandingRegion;
+	shotgunStandingRegion, assaultRifleStandingRegion, laserStandingRegion;
 
-	public Sound runningSound; //sound effect of the player's movement
-	private float speed = 3, oldSpeed, speedAB = .707f, timeSinceLastShot = 60f, timePassed = 0, slowedCounter; //speed of the player, Sqrt 2 divided by 2
+	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot;
+	//sound effect of the player's movement
+	static Sound runningSound;
+	private float speed = 3, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, slowedCounter; //speed of the player, Sqrt 2 divided by 2
 	public static float  angle, angle2, p1PosX,p1PosY; //get distance between mouse and player in radians
 	//amount of damage each weapon deals
-	public static float laserLanceDamage = 150, battleAxeDamage = 200, assaultRifleDamage = 35, shotgunDamage = 16.6f, 
-			rifleDamage = 100, revolverDamage = 50;
+	public static float laserLanceDamage = 150, battleAxeDamage = 200, assaultRifleDamage = 50, shotgunDamage = 25f, 
+			rifleDamage = 150, revolverDamage = 75;
 	public static int player1HP;
 	public static boolean p1Dead = false;
-	private boolean shootAnimation = false, running = false;
-	public static boolean axeBodyRemoval = false, slowed = false, slowRestart = false, soundStop = false;
+	private boolean shootAnimation = false, running = false, startLaserCount = false;
+	public static boolean axeBodyRemoval = false, slowed = false, slowRestart = false, soundStop = false,  axeSwinging = false,  
+			isShooting = false, timeToShake = false;
 	public static float axeSwingTimer = 0;
+	static Array<CreateBullet> pellets = new Array<CreateBullet>();
+	static Array<CreateBullet> bullets = new Array<CreateBullet>();
+	static Array<CreateBullet> lasers = new Array<CreateBullet>();
+	public static Vector2 player1SpawnPos = new Vector2(0,0);
+	public CreateBullet createBullet;
 
 	public PlayerOne(World world) {
 		this.world = world;
-		definePlayer();
 		player1HP = 100;
 		slowedCounter = 0;
 		p1Dead = false;
@@ -76,15 +85,23 @@ public class PlayerOne extends Sprite implements Disposable{
 		axeStandingRegion = axeSwingTextureAtlas.findRegion("tile000");
 
 		runningSound = Gdx.audio.newSound(Gdx.files.internal("sound effects/running.mp3"));
-		
-		
+
+
 		p1HP = Mutagen.manager.get("sprites/player1/hp.png");
 		p1HPBG = Mutagen.manager.get("sprites/player1/hpBG.png");
+		gunShot = Mutagen.manager.get("sound effects/pistol_shot.mp3", Sound.class);
+		rifleShot = Mutagen.manager.get("sound effects/rifleShot.mp3", Sound.class);
+		shotgunShot = Mutagen.manager.get("sound effects/shotgun2.mp3", Sound.class);
+		assaultRifleShot = Mutagen.manager.get("sound effects/assaultRifle.mp3", Sound.class);
+		laserShot = Mutagen.manager.get("sound effects/laserBlast3.mp3", Sound.class);
+		axeSwing = Mutagen.manager.get("sound effects/axeSwing.mp3", Sound.class);
+		definePlayer();
+
 	}
 
 	public void definePlayer() {
 		//define player body
-		bdef.position.set(Level1.player1SpawnPos);
+		bdef.position.set(player1SpawnPos);
 
 		bdef.type = BodyDef.BodyType.DynamicBody;
 		//create body in the world
@@ -201,7 +218,7 @@ public class PlayerOne extends Sprite implements Disposable{
 					shootAnimation = false;
 					timePassed = 0;
 					axeBodyRemoval = true;
-					Level1.axeSwinging = false;
+					axeSwinging = false;
 
 				}
 			}else {
@@ -209,9 +226,10 @@ public class PlayerOne extends Sprite implements Disposable{
 			}
 
 		}
+
 		oldSpeed = speed; //original speed to go back to after being slowed
 		batch.draw(p1HPBG, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, .5f, 3f / Mutagen.PPM); //gray backing behind HP bar		
-    	batch.draw(p1HP, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, PlayerOne.player1HP / (Mutagen.PPM + 100), 3f / Mutagen.PPM); //HP bar
+		batch.draw(p1HP, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, PlayerOne.player1HP / (Mutagen.PPM + 100), 3f / Mutagen.PPM); //HP bar
 
 		//PLAYER DIES
 		if (player1HP <= 0) {
@@ -219,9 +237,82 @@ public class PlayerOne extends Sprite implements Disposable{
 			p1Dead = true;
 			runningSound.stop();
 		}
+		shootGun();
 
 	}
+	public void shootGun() {
 
+		//laser delay for build up of power effect
+		if (startLaserCount) {
+			waitToShootL += 1;
+		}
+		//deletes the battle axe
+		if (GunSelectionScreen.weaponSelected == "battle axe" && PlayerOne.axeBodyRemoval) {
+			world.destroyBody(createBullet.b2body);
+			axeBodyRemoval = false;
+			bullets.clear();
+			createBullet.b2body = null;
+		}
+		if (isShooting) {
+			//waitToShootL += 1;
+			switch (GunSelectionScreen.weaponSelected) {
+			case "laser":
+				startLaserCount = true;
+				if (Mutagen.sfxVolume != 0) {
+					long lsId = laserShot.play(Mutagen.sfxVolume / 2);
+				}
+				break;
+			case "revolver":
+				if (Mutagen.sfxVolume != 0) {
+					long gsId = gunShot.play(Mutagen.sfxVolume - .7f);
+				}
+				break;
+			case "rifle":
+				if (Mutagen.sfxVolume != 0) {
+					long rsId = rifleShot.play(Mutagen.sfxVolume - .7f);
+				}
+				break;
+			case "shotgun":
+				//controls how many shotgun shells are shot
+				for (int i = 0; i < 6; i++) {
+					createBullet = new CreateBullet(world);
+					pellets.add(createBullet);
+				}
+				//level1.shake(.1f, 200);
+
+				if (Mutagen.sfxVolume != 0) {
+
+					long sS = shotgunShot.play(Mutagen.sfxVolume - .7f);
+				}
+				break;
+			case "assault rifle":
+				if (Mutagen.sfxVolume != 0) {
+					long arsId = assaultRifleShot.play(Mutagen.sfxVolume - .7f);
+				}
+				break;
+			case "battle axe":
+				if (Mutagen.sfxVolume != 0) {
+					long baId = axeSwing.play(Mutagen.sfxVolume - .7f);
+				}
+				axeSwinging = true;
+				break;
+			}
+
+			if (GunSelectionScreen.weaponSelected != "shotgun" && GunSelectionScreen.weaponSelected != "laser") {				
+				createBullet = new CreateBullet(world);
+				bullets.add(createBullet);	
+			}
+			isShooting = false;
+			timeToShake = true;
+		}
+		//laser blast delay
+		if (waitToShootL >= 20){
+			createBullet = new CreateBullet(world);
+			lasers.add(createBullet);
+			waitToShootL = 0;
+			startLaserCount = false;
+		}
+	}
 	public void handleInput(float delta) {
 		setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2 + (5 / Mutagen.PPM));
 		p1PosX = b2body.getPosition().x;
@@ -230,7 +321,7 @@ public class PlayerOne extends Sprite implements Disposable{
 
 		this.b2body.setLinearVelocity(0, 0);
 
-		
+
 		if (slowed) {
 			if (slowRestart) {
 				System.out.println("sr");
@@ -240,7 +331,7 @@ public class PlayerOne extends Sprite implements Disposable{
 			speed = speed / 2;
 			slowedCounter +=1;
 			System.out.println("sc "+ slowedCounter);
-			
+
 		}else {
 			speed = oldSpeed;
 		}
@@ -248,9 +339,6 @@ public class PlayerOne extends Sprite implements Disposable{
 			slowedCounter = 0;
 			slowed = false;
 		}
-
-		
-		
 		if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)){
 
 			this.b2body.setLinearVelocity(-speed * speedAB, speed * speedAB);
@@ -273,11 +361,11 @@ public class PlayerOne extends Sprite implements Disposable{
 			this.b2body.setLinearVelocity(speed, 0f);
 		}
 
-		
+
 		//CONTROLS THE SPEED OF FIRE
 		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 			if (timeSinceLastShot <=0) {
-				Level1.isShooting = true;
+				isShooting = true;
 				shootAnimation = true;
 
 				switch (GunSelectionScreen.weaponSelected) {
@@ -318,4 +406,3 @@ public class PlayerOne extends Sprite implements Disposable{
 
 	}
 }
-
