@@ -296,7 +296,7 @@ public class Level1 implements Screen{
 		if (playerOne.b2body.getPosition().x < 4.8 && playerOne.b2body.getPosition().x > 4.1 && 
 				playerOne.b2body.getPosition().y < 1.4 && playerOne.b2body.getPosition().y > 1.3){
 			if (room1) {
-				MapLayer layer = map.getLayers().get("room1g");
+					MapLayer layer = map.getLayers().get("room1g");
 				for (MapObject mo : layer.getObjects()) {
 					gruntPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
 					gruntPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
@@ -320,7 +320,6 @@ public class Level1 implements Screen{
 				}
 				room3 = false;
 			}
-
 
 		}
 		if (playerOne.b2body.getPosition().x < 8.6 && playerOne.b2body.getPosition().x > 8 && 
@@ -429,7 +428,6 @@ public class Level1 implements Screen{
 			levelOneMusic.stop();
 			game.setScreen(new levelCompleted(game));
 		}
-
 	}
 
 
@@ -465,20 +463,30 @@ public class Level1 implements Screen{
 			lockCursor = false;	
 			if (Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
 				//RESUME
-				if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < 0.6 && mousePosition.y > -.02) {
+				if (mousePosition.x > -1.074 && mousePosition.x < .971 && mousePosition.y < 0.882 && mousePosition.y > .306) {
 					gamePaused = false;
 					lockCursor = true;
 				}
-				//MAIN MENU
-				else if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < -.13 && mousePosition.y > -.78) {
+				//TUTORIAL
+				else if (mousePosition.x > -1.074 && mousePosition.x < .971 && mousePosition.y < .221 && mousePosition.y > -.39) {
+					levelOneMusic.stop();
+					System.out.println("tutorial");
+					
+				}
+				//QUIT TO MENU
+				else if (mousePosition.x > -1.074 && mousePosition.x < .971 && mousePosition.y < -.13 && mousePosition.y > -.78) {
 					levelOneMusic.stop();
 					game.setScreen(new MainMenu(game));
+
 				}
+				
 				//QUIT
-				else if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < -.86 && mousePosition.y > -1.49) {
+				else if (mousePosition.x > -1.074 && mousePosition.x < .971 && mousePosition.y < -1.14 && mousePosition.y > -1.722) {
 					Gdx.app.exit();
 				}
 			}
+			System.out.println(mousePosition);
+
 			cam.update();
 			game.batch.end(); //starts sprite spriteBatch
 

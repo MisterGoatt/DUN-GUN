@@ -47,13 +47,10 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-	    
-		
 		cam.unproject(mouse_position); //gets mouse coordinates within viewport
+		//System.out.println(mouse_position);
 		game.batch.setProjectionMatrix(cam.combined);
-
-	    game.batch.begin();
-
+	    game.batch.begin();    
 		game.batch.draw(gunPickScreen, 0, 0);
 		game.batch.end();
 		cam.update();
@@ -130,7 +127,6 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 	    	else if (mouse_position.x > 418 && mouse_position.x < 720 && mouse_position.y > 380 && mouse_position.y < 480) {
 	    		weaponSelected = "rifle";
 				MainMenu.themeMusic.stop();	
-
 	    		game.setScreen(new Level1(game));
 	    	}
 	    	//Assault rifle
@@ -151,18 +147,16 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 	    	if (mouse_position.x > 785 && mouse_position.x < 1090 && mouse_position.y > 380 && mouse_position.y < 487) {
 	    		weaponSelected = "laser";
 				MainMenu.themeMusic.stop();	
-
 	    		game.setScreen(new Level1(game));
 	    	}
 	    	//Battle axe
 	    	if (mouse_position.x > 785 && mouse_position.x < 1090 && mouse_position.y > 248 && mouse_position.y < 365) {
 	    		weaponSelected = "battle axe";
 				MainMenu.themeMusic.stop();	
-
 	    		game.setScreen(new Level1(game));
 	    	}
-	    	//BACK BUTTON
-	    	if (mouse_position.x > 33 && mouse_position.x < 153 && mouse_position.y > 34 && mouse_position.y < 83) {
+	    	//Back button
+	    	if (mouse_position.x > 41 && mouse_position.x < 194 && mouse_position.y > 30 && mouse_position.y < 108) {
 	    		game.setScreen(new PlayerMode(game));
 	    	}
 		}

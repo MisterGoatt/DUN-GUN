@@ -30,8 +30,8 @@ public class Mutagen extends Game{
 	public static final short TURRET = 0x0128;
 	public static final short TURRET_BULLET = 0x0256;
 	public static AssetManager manager;
-	public static float musicVolume = 1;
-	public static float sfxVolume = 1;
+	public static float musicVolume = 0;
+	public static float sfxVolume = 0;
 	
 	@Override
 	public void create() {

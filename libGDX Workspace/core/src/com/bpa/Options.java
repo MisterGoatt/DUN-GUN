@@ -36,6 +36,12 @@ public class Options implements Screen, InputProcessor{
 		musicSelected = Mutagen.manager.get("screens/options/optionsScreenMusic.jpg");
 		sfxSelected = Mutagen.manager.get("screens/options/optionsScreenSFX.jpg");
 		Gdx.input.setInputProcessor(this);
+		if (Mutagen.musicVolume == 0) {
+			music = false;
+		}
+		if (Mutagen.sfxVolume == 0) {
+			sfx = false;
+		}
 
 	}
 

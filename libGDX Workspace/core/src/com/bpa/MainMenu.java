@@ -44,7 +44,7 @@ public class MainMenu implements Screen, InputProcessor{
 		Gdx.input.setInputProcessor(this);
 		themeMusic.setLooping(true);
 		themeMusic.play();
-		themeMusic.setVolume(0);
+		themeMusic.setVolume(Mutagen.musicVolume);
 
 	}
 
