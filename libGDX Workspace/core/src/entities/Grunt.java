@@ -17,6 +17,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
+import screens.Mutagen;
+
 public class Grunt extends Sprite implements Disposable{
 	public World world; // world player will live in
 	public Body b2body; //creates body for player

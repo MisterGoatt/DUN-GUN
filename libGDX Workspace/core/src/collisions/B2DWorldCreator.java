@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-import entities.Mutagen;
+import screens.Mutagen;
 
 public class B2DWorldCreator {
 	public String id = "WALL";

@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.Disposable;
 
 import levels.Level1;
 import screens.GunSelectionScreen;
+import screens.Mutagen;
 import screens.PlayerMode;
 
 public class CreateBullet{
@@ -25,16 +26,11 @@ public class CreateBullet{
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
 	public String id = "BULLET";
-	//Sprite sprite;
-	//public static float angle;
 	private float speed = 10, posX, posY, timePassed = 0, angleD, angleR;
 	private int playerID;
-	//private TextureAtlas laserTextureAtlas;
 	private Animation <TextureRegion> laserAnimation, pelletAnimation, bulletAnimation;
 	private TextureAtlas pelletTextureAtlas, bulletTextureAtlas, laserTextureAtlas;
-	//private Animation <TextureRegion> pelletAnimation;
-	//private TextureAtlas bulletTextureAtlas;
-	//private Animation <TextureRegion> bulletAnimation;
+
 
 
 	public CreateBullet(World world, int ID) {
@@ -213,7 +209,7 @@ public class CreateBullet{
 		}
 		else if (!PlayerMode.OneP) {
 			if (playerID == 1 && GunSelectionScreen.p1WeaponSelected == "battle axe") {
-				angleR = PlayerOne.angle * MathUtils.degreesToRadians;
+				angleR = PlayerOne.angle * MathUtils.degreesToRadians + 1.507f;
 				angleD = PlayerOne.angle;
 			}
 			//else if player ID == 2 *****
@@ -229,7 +225,7 @@ public class CreateBullet{
 				timePassed += Gdx.graphics.getDeltaTime();
 				break;
 			case "battle axe":
-				b2body.setTransform(PlayerOne.p1PosX, PlayerOne.p1PosY, angleR); //sets the position of the body to the position of the body and implements rotation
+				b2body.setTransform(PlayerOne.p1PosX, PlayerOne.p1PosY, angleR - 1.507f); //sets the position of the body to the position of the body and implements rotation
 				break;
 			default: 
 				batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 5 / Mutagen.PPM, 20 / Mutagen.PPM, 1, 1, angleD - 90);	

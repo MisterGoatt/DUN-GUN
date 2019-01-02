@@ -9,8 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import entities.Mutagen;
-
 public class levelCompleted implements Screen{
 	final Mutagen game;
 	Texture levelComplete;

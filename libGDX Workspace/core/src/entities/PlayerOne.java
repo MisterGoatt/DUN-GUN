@@ -20,7 +20,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 import levels.Level1;
+import screens.DifficultyScreen;
 import screens.GunSelectionScreen;
+import screens.Mutagen;
 import screens.PlayerMode;
 
 public class PlayerOne extends Sprite implements Disposable{
@@ -60,7 +62,12 @@ public class PlayerOne extends Sprite implements Disposable{
 
 	public PlayerOne(World world) {
 		this.world = world;
-		player1HP = 100;
+		if (DifficultyScreen.difficulty == 1) {
+			player1HP = 150;			
+		}
+		if (DifficultyScreen.difficulty == 2) {
+			player1HP = 100;			
+		}
 		slowedCounter = 0;
 		p1Dead = false;
 		slowRestart = false;
@@ -227,7 +234,6 @@ public class PlayerOne extends Sprite implements Disposable{
 					timePassed = 0;
 					axeBodyRemoval = true;
 					axeSwinging = false;
-
 				}
 			}else {
 				batch.draw(axeStandingRegion, posX - .35f, posY - .3f, 35 / Mutagen.PPM, 30 / Mutagen.PPM, 70 / Mutagen.PPM, 70 / Mutagen.PPM, 1, 1, angle);
@@ -236,8 +242,16 @@ public class PlayerOne extends Sprite implements Disposable{
 		}
 
 		oldSpeed = speed; //original speed to go back to after being slowed
-		batch.draw(p1HPBG, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, .5f, 3f / Mutagen.PPM); //gray backing behind HP bar		
-		batch.draw(p1HP, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, PlayerOne.player1HP / (Mutagen.PPM + 100), 3f / Mutagen.PPM); //HP bar
+		//PLAYER ONE HEALTH
+		if (DifficultyScreen.difficulty == 1) {
+			batch.draw(p1HPBG, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, .5f, 3f / Mutagen.PPM); //gray backing behind HP bar	
+			batch.draw(p1HP, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, PlayerOne.player1HP / (Mutagen.PPM + 200), 3f / Mutagen.PPM); //HP bar
+
+		}else{
+			batch.draw(p1HPBG, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, .5f, 3f / Mutagen.PPM); //gray backing behind HP bar	
+			batch.draw(p1HP, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, PlayerOne.player1HP / (Mutagen.PPM + 100), 3f / Mutagen.PPM); //HP bar			
+		}
+
 
 		//PLAYER DIES
 		if (player1HP <= 0) {

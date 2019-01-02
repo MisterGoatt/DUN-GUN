@@ -14,8 +14,6 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import entities.Mutagen;
-
 public class Tutorial implements Screen{
 	final Mutagen game;
 	//Texture tutorial;

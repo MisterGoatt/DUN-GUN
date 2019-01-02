@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import screens.MainMenu;
+import screens.Mutagen;
 
 public class Credits implements Screen{
 	final Mutagen game;

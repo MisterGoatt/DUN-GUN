@@ -11,11 +11,11 @@ import com.badlogic.gdx.utils.Array;
 
 import entities.CreateBullet;
 import entities.Grunt;
-import entities.Mutagen;
 import entities.PlayerOne;
 import entities.Scientist;
 import entities.Turret;
 import screens.GunSelectionScreen;
+import screens.Mutagen;
 
 public class CollisionDetector implements ContactListener{
 

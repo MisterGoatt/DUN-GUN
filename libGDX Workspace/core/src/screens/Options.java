@@ -11,8 +11,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import entities.Mutagen;
-
 public class Options implements Screen, InputProcessor{
 	final Mutagen game;
 

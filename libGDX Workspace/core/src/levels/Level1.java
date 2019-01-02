@@ -32,13 +32,14 @@ import collisions.B2DWorldCreator;
 import collisions.CollisionDetector;
 import entities.CreateBullet;
 import entities.Grunt;
-import entities.Mutagen;
 import entities.PlayerOne;
 import entities.Scientist;
 import entities.Turret;
 import entities.TurretBullets;
 import screens.GunSelectionScreen;
 import screens.MainMenu;
+import screens.Mutagen;
+import screens.PlayerMode;
 import screens.levelCompleted;
 
 public class Level1 implements Screen{
@@ -397,12 +398,14 @@ public class Level1 implements Screen{
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && gamePaused) {
 			gamePaused = false;
 		}
+
 		//hides the mouse and displays cross hair		
 		if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && !lockCursor) {
 			lockCursor = true;
 		}else if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && lockCursor) {
 			lockCursor = false;
 		}
+		
 		if (lockCursor) {
 			Gdx.input.setCursorCatched(true);
 		}else Gdx.input.setCursorCatched(false);
@@ -417,12 +420,13 @@ public class Level1 implements Screen{
 			lockCursor = false;	
 			if (Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
 				//RESUME
-				if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < 0.6 && mousePosition.y > -.02) {
+				if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < 0.88 && mousePosition.y > .288) {
+					System.out.println("yardy");
 					gamePaused = false;
 					lockCursor = true;
 				}
 				//MAIN MENU
-				else if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < -.13 && mousePosition.y > -.78) {
+				else if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < -.46 && mousePosition.y > -1.06) {
 					levelOneMusic.stop();
 					game.setScreen(new MainMenu(game));
 				}
@@ -474,11 +478,15 @@ public class Level1 implements Screen{
 				playerOne.handleInput(delta);
 				playerOne.renderSprite(game.batch);	        	
 			}
-			if (GunSelectionScreen.p1WeaponSelected == "battle axe") {
-				game.batch.draw(axeMouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 21 / Mutagen.PPM, 21/ Mutagen.PPM);
-			}else { 
-				game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / Mutagen.PPM, 13 / Mutagen.PPM);
+			
+			if (PlayerMode.OneP) {
+				if (GunSelectionScreen.p1WeaponSelected == "battle axe") {
+					game.batch.draw(axeMouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 21 / Mutagen.PPM, 21/ Mutagen.PPM);
+				}else { 
+					game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / Mutagen.PPM, 13 / Mutagen.PPM);
+				}				
 			}
+
 			mapRenderer.setView(cam);
 			game.batch.end(); //starts sprite spriteBatch
 
@@ -487,7 +495,7 @@ public class Level1 implements Screen{
 		mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		cam.unproject(mousePosition); //gets mouse coordinates within viewport
 		game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
-		//System.out.println(mousePosition);
+		System.out.println(mousePosition);
 	}
 	
 	@Override

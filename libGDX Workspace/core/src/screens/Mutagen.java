@@ -1,12 +1,10 @@
-package entities;
+package screens;
 
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-
-import screens.IntroductionScreens;
 
 import java.awt.Font;
 
@@ -90,6 +88,12 @@ public class Mutagen extends Game{
 		manager.load("screens/intro screens/introTitle.jpg", Texture.class);
 		manager.load("screens/intro screens/musicScreen.jpg", Texture.class);
 		
+		//Difficulty Screen
+		manager.load("screens/difficultyScreen/difficultyb.jpg", Texture.class);
+		manager.load("screens/difficultyScreen/difficultyba.jpg", Texture.class);
+		manager.load("screens/difficultyScreen/difficultyn.jpg", Texture.class);
+		manager.load("screens/difficultyScreen/difficultyc.jpg", Texture.class);
+		
 		//Main Menu
 		manager.load("music/Dun-Gun2.mp3", Music.class);
 		manager.load("screens/menuScreen.jpg", Texture.class);
@@ -108,7 +112,6 @@ public class Mutagen extends Game{
 		manager.load("screens/gun_selection.jpg", Texture.class);
 		manager.load("screens/p1GS.jpg", Texture.class);
 		manager.load("screens/p2GS.jpg", Texture.class);
-
 		
 		//Grunt
 		manager.load("sprites/grunt/mutantAtkAnimation.atlas", TextureAtlas.class);

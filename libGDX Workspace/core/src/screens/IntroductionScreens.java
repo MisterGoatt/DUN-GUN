@@ -11,8 +11,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import entities.Mutagen;
-
 public class IntroductionScreens implements Screen{
 	final Mutagen game;
 	boolean skipToMainM;

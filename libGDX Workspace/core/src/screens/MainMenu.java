@@ -12,7 +12,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import entities.Credits;
-import entities.Mutagen;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -179,7 +178,7 @@ public class MainMenu implements Screen, InputProcessor{
 		if (!buttonPressed) {
 			//START goes to player mode screen
 			if (130 < mX && mX < 380 && 37 < mY && mY < 95)  {
-				game.setScreen(new PlayerMode(game));
+				game.setScreen(new DifficultyScreen(game));
 			}
 
 			//OPTIONS

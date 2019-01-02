@@ -1,95 +1,78 @@
 package screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class PlayerMode implements Screen, InputProcessor{
-
+public class DifficultyScreen implements Screen, InputProcessor{
 	final Mutagen game;
 	public Viewport gamePort;
-	private Texture playerModeScreen;
+	private Texture normal, challenge, back, blank;
 	private OrthographicCamera cam;
 	private Vector3 mousePosition = new Vector3(0, 0, 0);
-	public static boolean OneP = false;
+	private boolean buttonPressed = false, ba= false, bl = true, norm = false, chal = false;
 	private float mX, mY;
-	private boolean buttonPressed = false;
-	BitmapFont activeText, inactiveText, backText, backActiveText;
-
-	public PlayerMode(final Mutagen game) {
+	public static int difficulty;
+	
+	
+	public DifficultyScreen(final Mutagen game) {
 		this.game = game;
-		playerModeScreen = Mutagen.manager.get("screens/playerModeScreen.jpg");
 		cam = new OrthographicCamera();		
 		gamePort = new StretchViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-		backText = Mutagen.manager.get("fonts/backText(68).fnt", BitmapFont.class);
-		inactiveText =  Mutagen.manager.get("fonts/inactiveText(100).fnt", BitmapFont.class);
-		activeText = Mutagen.manager.get("fonts/activeText(100).fnt", BitmapFont.class);
-		backActiveText = Mutagen.manager.get("fonts/backActiveText(68).fnt", BitmapFont.class);
 		Gdx.input.setInputProcessor(this);
-
+		
+		blank = Mutagen.manager.get("screens/difficultyScreen/difficultyb.jpg");
+		back = Mutagen.manager.get("screens/difficultyScreen/difficultyba.jpg");
+		normal = Mutagen.manager.get("screens/difficultyScreen/difficultyn.jpg");
+		challenge = Mutagen.manager.get("screens/difficultyScreen/difficultyc.jpg");
 	}
 
 	@Override
 	public void render(float delta) {
+
 		//clears screen
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 		mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		cam.unproject(mousePosition); //gets mouse coordinates within viewport
-		game.batch.setProjectionMatrix(cam.combined);
 
-		//mouse x and y
 		mX = mousePosition.x;
 		mY = mousePosition.y;
+		game.batch.setProjectionMatrix(cam.combined);
 		game.batch.begin();
-		game.batch.draw(playerModeScreen, 0, 0);
-		//single player
-		if ( mX < 1145 && mX > 407 && mY < 660 && mY > 509) {
-			activeText.draw(game.batch, "SINGLE PLAYER", 525, 620);
-		}else {
-			inactiveText.draw(game.batch, "SINGLE PLAYER", 525, 620);
+		
+		//BACK
+		if (mX < 244 && mX > 15 && mY < 106 && mY > 17) {
+			game.batch.draw(back, 0, 0);	
 		}
-		//co-op
-		if ( mX < 1145 && mX > 407 && mY < 431 && mY > 282) {
-			activeText.draw(game.batch, "CO-OP", 675, 390);
-
-		}else {
-			inactiveText.draw(game.batch, "CO-OP", 675, 390);
-
+		//NORMAL
+		else if (mX < 962 && mX > 535 && mY > 422 && mY < 567) {
+			game.batch.draw(normal, 0, 0);	
 		}
-		//back
-		if (mX < 271 && mX > 104 && mY < 110 && mY > 40) {
-			backActiveText.draw(game.batch, " BACK", 115, 98);
+		//CHALLENGING
+		else if (mX < 962 && mX > 535 && mY > 283 && mY < 406) {
+			game.batch.draw(challenge, 0, 0);	
 
 		}else {
-			backText.draw(game.batch, " BACK", 115, 98);
+			game.batch.draw(blank, 0, 0);	
 
 		}
-
+		
 		game.batch.end();
 		cam.update();
+
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		gamePort.update(width, height);
-
-	}
-
-
-	@Override
-	public void show() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -115,23 +98,17 @@ public class PlayerMode implements Screen, InputProcessor{
 	public void dispose() {
 		game.batch.dispose();
 
-	}
-
-
-	@Override
+	}	@Override
 	public boolean keyDown(int keycode) {
-
-
+		// TODO Auto-generated method stub
 		return false;
 	}
-
 
 	@Override
 	public boolean keyUp(int keycode) {
-
+		// TODO Auto-generated method stub
 		return false;
 	}
-
 
 	@Override
 	public boolean keyTyped(char character) {
@@ -139,41 +116,41 @@ public class PlayerMode implements Screen, InputProcessor{
 		return false;
 	}
 
-
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		if (!buttonPressed){
-			System.out.println("yooodle  yoodle");
-	
-			//single player
-			if ( mX < 1145 && mX > 407 && mY < 660 && mY > 509) {
-				game.setScreen(new GunSelectionScreen(game));
-				OneP = true;
-			}
-			//two player
-			if ( mX < 1145 && mX > 407 && mY < 431 && mY > 282) {
-				game.setScreen(new GunSelectionScreen(game));
-				OneP = false;
-			}			
+
+		if (!buttonPressed) {
 			//back button
-			if ( mX < 271 && mX > 104 && mY < 110 && mY > 40) {
-				game.setScreen(new DifficultyScreen(game));
+			if (mX < 244 && mX > 15 && mY > 17 && mY < 106) {
+				game.setScreen(new MainMenu(game));
+				
 			}
-		}			
+			//NORMAL
+			else if (mX < 962 && mX > 535 && mY > 422 && mY < 567) {
+				game.setScreen(new PlayerMode(game));
+				difficulty = 1;
+
+			}
+			//CHALLENGING
+			else if (mX < 962 && mX > 535 && mY > 283 && mY < 406) {
+				game.setScreen(new PlayerMode(game));
+				difficulty = 2;
+			}
+			
+			//normal
+			//challenging
+		}
+		
 		buttonPressed = true;
 		return false;
 	}
 
-
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
-		if (button!= Input.Buttons.LEFT) {
-			buttonPressed = false;	
-		}
+		buttonPressed = false;
 		return false;
 	}
-
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
@@ -181,18 +158,22 @@ public class PlayerMode implements Screen, InputProcessor{
 		return false;
 	}
 
-
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-
 	@Override
 	public boolean scrolled(int amount) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void show() {
+		// TODO Auto-generated method stub
+
 	}
 
 }
