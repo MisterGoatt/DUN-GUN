@@ -39,7 +39,7 @@ public class Scientist{
 		scientistAtkAtlas = Mutagen.manager.get("sprites/scientist/scientistAtk.atlas");
 		scientistAtkAnimation = new Animation <TextureRegion>(1f/15f, scientistAtkAtlas.getRegions());
 		scientistStandingRegion = scientistAtkAtlas.findRegion("tile000");
-		atkSound = Mutagen.manager.get("sound effects/scientistAtk.mp3");
+		atkSound = Mutagen.manager.get("sound effects/enemies/scientistAtk.mp3");
 		defineScientist();
 	}
 	

@@ -61,9 +61,11 @@ public class IntroductionScreens implements Screen{
 			}else game.setScreen(new MainMenu(game));
 			//skips the introduction screens
 			if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+				Mutagen.clicking();
 				game.setScreen(new MainMenu(game));
 			}
 			else if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+				Mutagen.clicking();
 				game.setScreen(new MainMenu(game));
 
 			}

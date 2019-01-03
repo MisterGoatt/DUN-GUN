@@ -34,16 +34,18 @@ public class CollisionDetector implements ContactListener{
 	Turret turret;
 	CreateBullet createBullet;
 	PlayerOne p1;
-	private Sound bulletHitWall, bulletBodyImpact, pelletHitWall, laserHitWall, turretHit;
+	private Sound bulletHitWall, bulletBodyImpact, pelletHitWall, laserHitWall, turretHit, hpPickUp;
 
 	public CollisionDetector() {	
 		tempBodyArray= new Array<Body>();
 		bodiesToRemove = new Array<Body>();
-		bulletHitWall = Mutagen.manager.get("sound effects/bulletImpact.mp3");
-		laserHitWall = Mutagen.manager.get("sound effects/laserImpact.mp3");
-		pelletHitWall = Mutagen.manager.get("sound effects/pelletImpact.mp3");
-		bulletBodyImpact = Mutagen.manager.get("sound effects/bulletBodyImpact.mp3");
-		turretHit = Mutagen.manager.get("sound effects/turretHit.mp3");
+		bulletHitWall = Mutagen.manager.get("sound effects/impacts/bulletImpact.mp3");
+		laserHitWall = Mutagen.manager.get("sound effects/impacts/laserImpact.mp3");
+		pelletHitWall = Mutagen.manager.get("sound effects/impacts/pelletImpact.mp3");
+		bulletBodyImpact = Mutagen.manager.get("sound effects/impacts/bulletBodyImpact.mp3");
+		turretHit = Mutagen.manager.get("sound effects/enemies/turretHit.mp3");
+		hpPickUp = Mutagen.manager.get("sound effects/hpPickUp.mp3");
+
 		gruntBodyTarget.clear();
 		scientistBodyTarget.clear();
 		tempBodyArray.clear();
@@ -117,14 +119,12 @@ public class CollisionDetector implements ContactListener{
 
 					if (GunSelectionScreen.p1WeaponSelected != "battle axe") {
 						bodiesToRemove.add(fa.getBody()); //bullet
-
 					}
 				}
 				if(fb.getUserData().equals("bullets")){
 					if (GunSelectionScreen.p1WeaponSelected != "battle axe") {	
 						bodiesToRemove.add(fb.getBody()); //bullet
 					}
-
 				}				
 				if (fa.getUserData().equals("grunt")){
 					if (Mutagen.sfxVolume != 0) {
@@ -488,6 +488,7 @@ public class CollisionDetector implements ContactListener{
 //					p1 = p1BodyTarget.get(0);
 //					p1BodyTarget.clear();
 //					tempBodyArray.clear();
+					long hpPU = hpPickUp.play(Mutagen.sfxVolume);
 					if (DifficultyScreen.difficulty == 1) {
 						PlayerOne.player1HP = 150;
 
@@ -505,7 +506,7 @@ public class CollisionDetector implements ContactListener{
 					//					p1.
 					//					p1BodyTarget.clear();
 					//					tempBodyArray.clear();
-
+					long hpPU = hpPickUp.play(Mutagen.sfxVolume);
 					if (DifficultyScreen.difficulty == 1) {
 						PlayerOne.player1HP = 150;
 
@@ -517,6 +518,8 @@ public class CollisionDetector implements ContactListener{
 				}
 			}
 		}
+		
+		
 	}
 
 

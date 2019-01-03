@@ -147,16 +147,19 @@ public class PlayerMode implements Screen, InputProcessor{
 	
 			//single player
 			if ( mX < 1145 && mX > 407 && mY < 660 && mY > 509) {
-				game.setScreen(new GunSelectionScreen(game));
+				Mutagen.clicking();
 				OneP = true;
+				game.setScreen(new GunSelectionScreen(game));
 			}
 			//two player
 			if ( mX < 1145 && mX > 407 && mY < 431 && mY > 282) {
-				game.setScreen(new GunSelectionScreen(game));
+				Mutagen.clicking();
 				OneP = false;
+				game.setScreen(new GunSelectionScreen(game));
 			}			
 			//back button
 			if ( mX < 271 && mX > 104 && mY < 110 && mY > 40) {
+				Mutagen.clicking();
 				game.setScreen(new DifficultyScreen(game));
 			}
 		}			

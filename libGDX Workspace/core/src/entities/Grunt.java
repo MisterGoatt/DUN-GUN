@@ -45,7 +45,7 @@ public class Grunt extends Sprite implements Disposable{
 			gruntStandingRegion = gruntAtkAtlas.findRegion("tile000");
 			gruntDamagedAtlas = Mutagen.manager.get("sprites/grunt/gruntDamaged.atlas");
 			gruntDamagedAnimation = new Animation <TextureRegion>(1f/15f, gruntDamagedAtlas.getRegions());
-			atkSwoosh = Mutagen.manager.get("sound effects/gruntSwoosh.mp3");
+			atkSwoosh = Mutagen.manager.get("sound effects/enemies/gruntSwoosh.mp3");
 
 			defineGrunt();
 		}

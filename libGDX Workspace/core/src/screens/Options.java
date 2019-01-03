@@ -133,11 +133,14 @@ public class Options implements Screen, InputProcessor{
 			//MUSIC ON/OFF
 			if (550 > mY && mY > 480 && 700 < mX && mX < 770) {
 				if (music) {
+					Mutagen.clicking();
 					music = false;
 					Mutagen.musicVolume = 0f;
 				}else {
 					music = true;
 					Mutagen.musicVolume = 1f;
+					Mutagen.clicking();
+
 				}
 			}
 			//SFX ON/OFF
@@ -148,9 +151,11 @@ public class Options implements Screen, InputProcessor{
 				}else {
 					sfx = true;
 					Mutagen.sfxVolume = 1f;
+					Mutagen.clicking();
 				}
 			}
 			if (mY < 82 && mX < 153 && mY < 79 && mY > 22) {
+				Mutagen.clicking();
 				game.setScreen(new MainMenu(game));
 			}
 		}

@@ -150,12 +150,16 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 					p1Screen = false;
 					if (PlayerMode.OneP) {
 						MainMenu.themeMusic.stop();
+						Mutagen.clicking();
+
 						game.setScreen(new Level1(game));
 					}
 
 				}else {
 					p2WeaponSelected = "rifle";
 					MainMenu.themeMusic.stop();	
+					Mutagen.clicking();
+
 					game.setScreen(new Level1(game));
 				}
 			}
@@ -166,12 +170,16 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 					p1Screen = false;
 					if (PlayerMode.OneP) {
 						MainMenu.themeMusic.stop();
+						Mutagen.clicking();
+
 						game.setScreen(new Level1(game));
 					}
 
 				}else {
 					p2WeaponSelected = "assault rifle";
 					MainMenu.themeMusic.stop();	
+					Mutagen.clicking();
+
 					game.setScreen(new Level1(game));
 				}
 			}
@@ -182,12 +190,14 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 					p1Screen = false;
 					if (PlayerMode.OneP) {
 						MainMenu.themeMusic.stop();
+						Mutagen.clicking();
 						game.setScreen(new Level1(game));
 					}
 
 				}else {
 					p2WeaponSelected = "shotgun";
 					MainMenu.themeMusic.stop();	
+					Mutagen.clicking();
 					game.setScreen(new Level1(game));
 				}
 			}
@@ -198,12 +208,14 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 					p1Screen = false;
 					if (PlayerMode.OneP) {
 						MainMenu.themeMusic.stop();
+						Mutagen.clicking();
 						game.setScreen(new Level1(game));
 					}
 
 				}else {
 					p2WeaponSelected = "laser";
 					MainMenu.themeMusic.stop();	
+					Mutagen.clicking();
 					game.setScreen(new Level1(game));
 				}
 			}
@@ -214,17 +226,20 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 					p1Screen = false;
 					if (PlayerMode.OneP) {
 						MainMenu.themeMusic.stop();
+						Mutagen.clicking();
 						game.setScreen(new Level1(game));
 					}
 
 				}else {
 					p2WeaponSelected = "battle axe";
 					MainMenu.themeMusic.stop();	
+					Mutagen.clicking();
 					game.setScreen(new Level1(game));
 				}
 			}
 			//Back button
 			if (mouse_position.x > 41 && mouse_position.x < 194 && mouse_position.y > 30 && mouse_position.y < 108) {
+				Mutagen.clicking();
 				game.setScreen(new PlayerMode(game));
 			}
 		}

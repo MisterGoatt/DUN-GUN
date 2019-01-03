@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import java.awt.Font;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -21,7 +22,8 @@ public class Mutagen extends Game{
 	public static final short PLAYER = 0x0001, BULLET = 0x0002, WALL = 0x0004, GRUNT = 0x0008, SCIENTIST = 0x0016, FLAYER = 0x0032,
 			SOLDIER = 0x0064, TURRET = 0x0128, TURRET_BULLET = 0x0256, HP_PICKUP = 0x0512;
 	public static AssetManager manager;
-	public static float musicVolume = 0, sfxVolume = 0, PPM = 100;
+	public static float musicVolume = 0, sfxVolume = 1, PPM = 100;
+	public static Sound click;
 	
 	@Override
 	public void create() {
@@ -29,7 +31,11 @@ public class Mutagen extends Game{
 		manager = new AssetManager();
 
 		//load all of the graphics into memory before game starts
-	
+		
+		//Mouse Click
+		//manager.load("sound effects/click.mp3", Sound.class);
+		click = Gdx.audio.newSound(Gdx.files.internal("sound effects/click.mp3"));
+		
 		//PlayerOne
 		manager.load("sprites/player1/playerRevolver.atlas", TextureAtlas.class);
 		manager.load("sprites/player1/rifleAnimation.atlas", TextureAtlas.class);
@@ -54,18 +60,16 @@ public class Mutagen extends Game{
 		manager.load("music/levelOne.mp3", Music.class);
 		
 		//Gun sound effects
-		manager.load("sound effects/pistol_shot.mp3", Sound.class);
-		manager.load("sound effects/rifleShot.mp3", Sound.class);
-		manager.load("sound effects/shotgun2.mp3", Sound.class);
-		manager.load("sound effects/laser_lance.mp3", Sound.class);
-		manager.load("sound effects/assaultRifle.mp3", Sound.class);
-		manager.load("sound effects/laserBlast3.mp3", Sound.class);
-		manager.load("sound effects/bulletImpact.mp3", Sound.class);
-		manager.load("sound effects/laserImpact.mp3", Sound.class);
-		//manager.load("sound effects/pelletImpact.mp3", Sound.class);
-		manager.load("sound effects/pelletImpact.mp3", Sound.class);
-		manager.load("sound effects/bulletBodyImpact.mp3", Sound.class);
-		manager.load("sound effects/axeSwing.mp3", Sound.class);
+		manager.load("sound effects/shooting/pistol_shot.mp3", Sound.class);
+		manager.load("sound effects/shooting/rifleShot.mp3", Sound.class);
+		manager.load("sound effects/shooting/shotgun2.mp3", Sound.class);
+		manager.load("sound effects/shooting/assaultRifle.mp3", Sound.class);
+		manager.load("sound effects/shooting/laserBlast3.mp3", Sound.class);
+		manager.load("sound effects/shooting/axeSwing.mp3", Sound.class);
+		manager.load("sound effects/impacts/bulletImpact.mp3", Sound.class);
+		manager.load("sound effects/impacts/laserImpact.mp3", Sound.class);
+		manager.load("sound effects/impacts/pelletImpact.mp3", Sound.class);
+		manager.load("sound effects/impacts/bulletBodyImpact.mp3", Sound.class);
 
 		//Credit Screen
 		manager.load("screens/ScrollingC.jpg", Texture.class);
@@ -106,17 +110,17 @@ public class Mutagen extends Game{
 		//Grunt
 		manager.load("sprites/grunt/mutantAtkAnimation.atlas", TextureAtlas.class);
 		manager.load("sprites/grunt/gruntDamaged.atlas", TextureAtlas.class);
-		manager.load("sound effects/gruntSwoosh.mp3", Sound.class);
+		manager.load("sound effects/enemies/gruntSwoosh.mp3", Sound.class);
 		
 		//Scientist
 		manager.load("sprites/scientist/scientistAtk.atlas", TextureAtlas.class);
-		manager.load("sound effects/scientistAtk.mp3", Sound.class);
+		manager.load("sound effects/enemies/scientistAtk.mp3", Sound.class);
 
 		//Turret
 		manager.load("sprites/turret/turretAtkAnimation.atlas", TextureAtlas.class);
-		manager.load("sound effects/turretAtk.mp3", Sound.class);
+		manager.load("sound effects/enemies/turretAtk.mp3", Sound.class);
 		manager.load("sprites/turret/turretBulletAnimation.atlas", TextureAtlas.class);
-		manager.load("sound effects/turretHit.mp3", Sound.class);
+		manager.load("sound effects/enemies/turretHit.mp3", Sound.class);
 
 		//PlayerModeScreen
 		manager.load("screens/playerModeScreen.jpg", Texture.class);
@@ -128,6 +132,7 @@ public class Mutagen extends Game{
 
 		//Health Pick-UP
 		manager.load("heart.png", Texture.class);
+		manager.load("sound effects/hpPickUp.mp3", Sound.class);
 		
 		//LevelCompleted Screen
 		manager.load("screens/levelCompletedScreen.jpg", Texture.class);
@@ -140,6 +145,10 @@ public class Mutagen extends Game{
 	@Override
 	public void render () {
 		super.render(); //REMEMBER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!			
+	}
+	
+	public static void clicking() {
+		long ck = click.play(sfxVolume);
 	}
 	
 	@Override

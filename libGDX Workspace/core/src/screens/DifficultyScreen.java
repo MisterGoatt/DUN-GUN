@@ -122,19 +122,22 @@ public class DifficultyScreen implements Screen, InputProcessor{
 		if (!buttonPressed) {
 			//back button
 			if (mX < 244 && mX > 15 && mY > 17 && mY < 106) {
+				Mutagen.clicking();
 				game.setScreen(new MainMenu(game));
 				
 			}
 			//NORMAL
 			else if (mX < 962 && mX > 535 && mY > 422 && mY < 567) {
-				game.setScreen(new PlayerMode(game));
+				Mutagen.clicking();
 				difficulty = 1;
+				game.setScreen(new PlayerMode(game));
 
 			}
 			//CHALLENGING
 			else if (mX < 962 && mX > 535 && mY > 283 && mY < 406) {
-				game.setScreen(new PlayerMode(game));
 				difficulty = 2;
+				Mutagen.clicking();
+				game.setScreen(new PlayerMode(game));
 			}
 			
 			//normal

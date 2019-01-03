@@ -99,12 +99,12 @@ public class PlayerOne extends Sprite implements Disposable{
 		runningSound = Gdx.audio.newSound(Gdx.files.internal("sound effects/running.mp3"));
 		p1HP = Mutagen.manager.get("sprites/player1/hp.png");
 		p1HPBG = Mutagen.manager.get("sprites/player1/hpBG.png");
-		gunShot = Mutagen.manager.get("sound effects/pistol_shot.mp3", Sound.class);
-		rifleShot = Mutagen.manager.get("sound effects/rifleShot.mp3", Sound.class);
-		shotgunShot = Mutagen.manager.get("sound effects/shotgun2.mp3", Sound.class);
-		assaultRifleShot = Mutagen.manager.get("sound effects/assaultRifle.mp3", Sound.class);
-		laserShot = Mutagen.manager.get("sound effects/laserBlast3.mp3", Sound.class);
-		axeSwing = Mutagen.manager.get("sound effects/axeSwing.mp3", Sound.class);
+		gunShot = Mutagen.manager.get("sound effects/shooting/pistol_shot.mp3", Sound.class);
+		rifleShot = Mutagen.manager.get("sound effects/shooting/rifleShot.mp3", Sound.class);
+		shotgunShot = Mutagen.manager.get("sound effects/shooting/shotgun2.mp3", Sound.class);
+		assaultRifleShot = Mutagen.manager.get("sound effects/shooting/assaultRifle.mp3", Sound.class);
+		laserShot = Mutagen.manager.get("sound effects/shooting/laserBlast3.mp3", Sound.class);
+		axeSwing = Mutagen.manager.get("sound effects/shooting/axeSwing.mp3", Sound.class);
 		ID = 1;
 		definePlayer();
 

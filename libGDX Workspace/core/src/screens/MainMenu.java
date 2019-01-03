@@ -48,7 +48,6 @@ public class MainMenu implements Screen, InputProcessor{
 		themeMusic.setLooping(true);
 		themeMusic.play();
 		themeMusic.setVolume(Mutagen.musicVolume);
-
 	}
 
 
@@ -60,13 +59,11 @@ public class MainMenu implements Screen, InputProcessor{
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
 		mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		cam.unproject(mouse_position); //gets mouse coordinates within viewport
 		//System.out.println(mouse_position);
 		game.batch.begin(); 
 		game.batch.setProjectionMatrix(cam.combined);
-
 
 		//mouse x and y
 		mX = mouse_position.x;
@@ -178,18 +175,20 @@ public class MainMenu implements Screen, InputProcessor{
 		if (!buttonPressed) {
 			//START goes to player mode screen
 			if (130 < mX && mX < 380 && 37 < mY && mY < 95)  {
+				Mutagen.clicking();
 				game.setScreen(new DifficultyScreen(game));
 			}
 
 			//OPTIONS
 			if (435 < mX && mX < 756 && 37 < mY && mY < 95){
 				themeMusic.stop();
+				Mutagen.clicking();
 				game.setScreen(new Options(game));
 			}
 			//CREDITS
 			if (790 < mX && mX < 1102 && 37 < mY && mY < 95){
-
 				themeMusic.stop();
+				Mutagen.clicking();
 				game.setScreen(new Credits(game));
 			}
 

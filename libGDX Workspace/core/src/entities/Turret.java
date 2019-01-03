@@ -39,7 +39,7 @@ public class Turret {
 		turretAtkAtlas = Mutagen.manager.get("sprites/turret/turretAtkAnimation.atlas");
 		turretAtkAnimation = new Animation <TextureRegion>(1f/15f, turretAtkAtlas.getRegions());
 		turretStandingRegion = turretAtkAtlas.findRegion("tile000");
-		turretShoot = Mutagen.manager.get("sound effects/turretAtk.mp3");
+		turretShoot = Mutagen.manager.get("sound effects/enemies/turretAtk.mp3");
 		defineTurret();
 	}
 
