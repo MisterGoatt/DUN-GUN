@@ -11,11 +11,14 @@ import com.badlogic.gdx.utils.Array;
 
 import entities.CreateBullet;
 import entities.Grunt;
+import entities.HealthPickUp;
 import entities.PlayerOne;
 import entities.Scientist;
 import entities.Turret;
+import screens.DifficultyScreen;
 import screens.GunSelectionScreen;
 import screens.Mutagen;
+import screens.PlayerMode;
 
 public class CollisionDetector implements ContactListener{
 
@@ -24,11 +27,13 @@ public class CollisionDetector implements ContactListener{
 	private Array<Scientist> scientistBodyTarget = new Array<Scientist>();
 	private Array<Turret> turretBodyTarget = new Array<Turret>();
 	private Array<CreateBullet> bulletBodyTarget = new Array<CreateBullet>();
+	private Array<PlayerOne> p1BodyTarget = new Array<PlayerOne>();
 
 	Grunt grunt;
 	Scientist scientist;
 	Turret turret;
 	CreateBullet createBullet;
+	PlayerOne p1;
 	private Sound bulletHitWall, bulletBodyImpact, pelletHitWall, laserHitWall, turretHit;
 
 	public CollisionDetector() {	
@@ -51,7 +56,7 @@ public class CollisionDetector implements ContactListener{
 		Fixture fb = contact.getFixtureB();
 		if (fa == null || fb == null) return;
 		if (fa.getUserData() == null || fb.getUserData() == null) return;
-				
+
 		//BULLET AND WALL COLLISIONS
 		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
 			if (fa.getUserData().equals("walls") || fb.getUserData().equals("walls")) {
@@ -64,7 +69,7 @@ public class CollisionDetector implements ContactListener{
 						}
 					}
 					else if (GunSelectionScreen.p1WeaponSelected == "laser") {
-						
+
 						if (Mutagen.sfxVolume != 0) {
 							laserHitWall.play(Mutagen.sfxVolume);
 						}
@@ -452,6 +457,66 @@ public class CollisionDetector implements ContactListener{
 				}
 			}
 		}
+
+		//GRUNT AND PLAYER COLLISIONS
+		if (fa.getUserData().equals("player") || fb.getUserData().equals("player")) {
+			if (fa.getUserData().equals("hpPickUp") || fb.getUserData().equals("hpPickUp")) {
+
+				if(fa.getUserData().equals("hpPickUp")){
+					//					tempBodyArray.add(fa.getBody());
+					//					Body b = tempBodyArray.first();
+					//					hpBodyTarget.add((HealthPickUp) b.getUserData());
+					//					hpPickUp = hpBodyTarget.get(0);
+					//					hpBodyTarget.clear();
+					//					tempBodyArray.clear();
+					bodiesToRemove.add(fa.getBody());
+
+				}
+				if(fb.getUserData().equals("hpPickUp")){
+					//					tempBodyArray.add(fb.getBody());
+					//					Body b = tempBodyArray.first();
+					//					hpBodyTarget.add((HealthPickUp) b.getUserData());
+					//					hpPickUp = hpBodyTarget.get(0);
+					//					hpBodyTarget.clear();
+					//					tempBodyArray.clear();
+					bodiesToRemove.add(fb.getBody());	
+				}
+				if(fa.getUserData().equals("player")){
+//					tempBodyArray.add(fa.getBody());
+//					Body b = tempBodyArray.first();
+//					p1BodyTarget.add((PlayerOne) b.getUserData());
+//					p1 = p1BodyTarget.get(0);
+//					p1BodyTarget.clear();
+//					tempBodyArray.clear();
+					if (DifficultyScreen.difficulty == 1) {
+						PlayerOne.player1HP = 150;
+
+					}else {
+						PlayerOne.player1HP = 100;
+
+					}
+
+				}
+				if(fb.getUserData().equals("player")){
+					//					tempBodyArray.add(fb.getBody());
+					//					Body b = tempBodyArray.first();
+					//					p1BodyTarget.add((PlayerOne) b.getUserData());
+					//					p1 = p1BodyTarget.get(0);
+					//					p1.
+					//					p1BodyTarget.clear();
+					//					tempBodyArray.clear();
+
+					if (DifficultyScreen.difficulty == 1) {
+						PlayerOne.player1HP = 150;
+
+					}else {
+						PlayerOne.player1HP = 100;
+
+					}
+
+				}
+			}
+		}
 	}
 
 
@@ -460,7 +525,7 @@ public class CollisionDetector implements ContactListener{
 	}		
 
 
-// *******************************************************END CONTACT********************************************************
+	// *******************************************************END CONTACT********************************************************
 
 	@Override
 	public void endContact(Contact contact) {

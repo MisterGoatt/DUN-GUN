@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="90" tilewidth="32" tileheight="32" infinite="0" nextlayerid="23" nextobjectid="166">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="90" tilewidth="32" tileheight="32" infinite="0" nextlayerid="27" nextobjectid="170">
  <tileset firstgid="1" source="test.tsx"/>
  <layer id="9" name="ground" width="50" height="90">
   <data encoding="csv">
@@ -340,7 +340,7 @@
   <object id="70" x="32" y="768" width="32" height="32"/>
   <object id="71" x="160" y="2432" width="512" height="32"/>
  </objectgroup>
- <objectgroup id="6" name="player">
+ <objectgroup color="#ff6567" id="6" name="player">
   <object id="2" x="408" y="2818">
    <ellipse/>
   </object>
@@ -491,6 +491,14 @@
    <ellipse/>
   </object>
   <object id="162" x="168" y="842">
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <objectgroup id="26" name="hp">
+  <object id="168" x="1144" y="2141">
+   <ellipse/>
+  </object>
+  <object id="169" x="516" y="782">
    <ellipse/>
   </object>
  </objectgroup>

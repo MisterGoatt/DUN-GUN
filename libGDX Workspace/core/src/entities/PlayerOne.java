@@ -124,7 +124,7 @@ public class PlayerOne extends Sprite implements Disposable{
 
 		fdef.shape = shape;
 		fdef.filter.categoryBits = Mutagen.PLAYER;
-		fdef.filter.maskBits = Mutagen.WALL | Mutagen.GRUNT | Mutagen.SCIENTIST;
+		fdef.filter.maskBits = Mutagen.WALL | Mutagen.GRUNT | Mutagen.SCIENTIST | Mutagen.HP_PICKUP;
 		b2body.createFixture(fdef).setUserData("player");;
 		if (!PlayerMode.OneP) {
 			angle = 0;
@@ -412,7 +412,7 @@ public class PlayerOne extends Sprite implements Disposable{
 
 			}
 			
-			if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+			if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 				if (timeSinceLastShot <=0) {
 					isShooting = true;
 					shootAnimation = true;

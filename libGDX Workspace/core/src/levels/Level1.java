@@ -32,6 +32,7 @@ import collisions.B2DWorldCreator;
 import collisions.CollisionDetector;
 import entities.CreateBullet;
 import entities.Grunt;
+import entities.HealthPickUp;
 import entities.PlayerOne;
 import entities.Scientist;
 import entities.Turret;
@@ -49,11 +50,9 @@ public class Level1 implements Screen{
 	private TmxMapLoader maploader; //what loads map into game
 	private TiledMap map; 
 	private OrthogonalTiledMapRenderer mapRenderer; //renders map to the screen
-	//Sprite p1;
 	TextureRegion textureRegion;
 	MapLayer objectLayer;
 
-	//Box2d variables
 	private World world;
 	private Box2DDebugRenderer b2dr; //graphical representation of body fixtures
 	private PlayerOne playerOne;
@@ -62,7 +61,8 @@ public class Level1 implements Screen{
 	public CreateBullet createBullet;
 	private CollisionDetector cd;
 	private Turret turret;
-	
+	private HealthPickUp hpPickUp;
+
 	//private int[] layerBackround = {0, 1, 2, 3};
 	//private int[] layerAfterBackground = {4};
 	private Music levelOneMusic;
@@ -71,10 +71,9 @@ public class Level1 implements Screen{
 	private boolean gamePaused = false, spawnEnemies = false, spawnOnce = true;
 	private float elapsed = 0, duration, intensity, radius, randomAngle;	
 	public static boolean bulletImpact = false;
-	private boolean room1 = true, room2 = true, room3 = true, room4 = true, room5 = true, room6 = true, room6t = true, room7 = true, room8 = true, room9 = true; //room spawn control
-
+	private boolean room1 = true, room2 = true, room3 = true, room4 = true, room5 = true, 
+			room6 = true, room6t = true, room7 = true, room8 = true, room9 = true, hpSpawn = true; //room spawn control
 	public static Vector3 mousePosition = new Vector3(0, 0, 0);
-	
 	Random random;
 
 
@@ -86,7 +85,7 @@ public class Level1 implements Screen{
 		gamePort = new FitViewport(Mutagen.V_WIDTH / Mutagen.PPM, Mutagen.V_HEIGHT / Mutagen.PPM, cam);
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 		cam.zoom -= .40;
-		
+
 		TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
 		params.textureMinFilter = TextureFilter.Linear;
 		params.textureMagFilter = TextureFilter.Linear;
@@ -117,8 +116,10 @@ public class Level1 implements Screen{
 		PlayerOne.lasers.clear();
 		PlayerOne.bullets.clear();
 		TurretBullets.turretBullets.clear();
-		
+		HealthPickUp.hpPickUp.clear();
+
 		pauseMenu = Mutagen.manager.get("screens/Pause.jpg", Texture.class);
+		
 		levelOneMusic = Mutagen.manager.get("music/levelOne.mp3");
 		levelOneMusic.setLooping(true);
 		levelOneMusic.setVolume(Mutagen.musicVolume);
@@ -151,7 +152,7 @@ public class Level1 implements Screen{
 			PlayerOne.timeToShake = false;
 		}
 	}
-	
+
 	public void shake(float intensity, float duration) {
 		this.elapsed = 0;
 		this.duration = duration / 1000f;
@@ -224,18 +225,32 @@ public class Level1 implements Screen{
 				world.destroyBody(b);
 				b = null;
 			}
+			if (u instanceof HealthPickUp) {
+				HealthPickUp.hpPickUp.removeValue((HealthPickUp) b.getUserData(), true);
+				world.destroyBody(b);
+				b = null;
+			}
 		}
 		bodiesToRemove.clear();
-//		if (GunSelectionScreen.weaponSelected == "battle axe" && PlayerOne.axeBodyRemoval) {
-//			world.destroyBody(createBullet.b2body);
-//			PlayerOne.axeBodyRemoval = false;
-//			PlayerOne.bullets.clear();
-//			createBullet.b2body = null;
-//		}
+
 	}
 
 	public void spawningLocations() {
 
+		//SPAWN HEALTH PICK_UPS
+		if (hpSpawn) {
+			MapLayer hpLayer = map.getLayers().get("hp");
+			for (MapObject mo : hpLayer.getObjects()) {
+				HealthPickUp.hpSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+				HealthPickUp.hpSpawnPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+				hpPickUp = new HealthPickUp(world);
+				HealthPickUp.hpPickUp.add(hpPickUp);
+			}
+			hpSpawn = false;
+		}
+
+
+		//SPAWN ENEMIES GIVEN PLAYER LOCATION
 		if (playerOne.b2body.getPosition().x < 6.6 && playerOne.b2body.getPosition().x > 6.5 && 
 				playerOne.b2body.getPosition().y < 3.9 && playerOne.b2body.getPosition().y > 3.2){
 			if (room2) {
@@ -382,7 +397,6 @@ public class Level1 implements Screen{
 			levelOneMusic.stop();
 			game.setScreen(new levelCompleted(game));
 		}
-
 	}
 
 
@@ -405,7 +419,7 @@ public class Level1 implements Screen{
 		}else if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && lockCursor) {
 			lockCursor = false;
 		}
-		
+
 		if (lockCursor) {
 			Gdx.input.setCursorCatched(true);
 		}else Gdx.input.setCursorCatched(false);
@@ -421,7 +435,6 @@ public class Level1 implements Screen{
 			if (Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
 				//RESUME
 				if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < 0.88 && mousePosition.y > .288) {
-					System.out.println("yardy");
 					gamePaused = false;
 					lockCursor = true;
 				}
@@ -472,13 +485,16 @@ public class Level1 implements Screen{
 			for (int i = 0; i < TurretBullets.turretBullets.size; i++) {
 				TurretBullets.turretBullets.get(i).renderSprite(game.batch);
 			}
+			for (int i = 0; i < HealthPickUp.hpPickUp.size; i++) {
+				HealthPickUp.hpPickUp.get(i).renderSprite(game.batch);
+			}
 			//Goes to method that handles spawning the enemies
 			spawningLocations();
 			if (!PlayerOne.p1Dead) {
 				playerOne.handleInput(delta);
 				playerOne.renderSprite(game.batch);	        	
 			}
-			
+
 			if (PlayerMode.OneP) {
 				if (GunSelectionScreen.p1WeaponSelected == "battle axe") {
 					game.batch.draw(axeMouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 21 / Mutagen.PPM, 21/ Mutagen.PPM);
@@ -495,9 +511,9 @@ public class Level1 implements Screen{
 		mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		cam.unproject(mousePosition); //gets mouse coordinates within viewport
 		game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
-		System.out.println(mousePosition);
+		//System.out.println(mousePosition);
 	}
-	
+
 	@Override
 	public void resize(int width, int height) {
 		gamePort.update(width, height); //updates the viewport camera

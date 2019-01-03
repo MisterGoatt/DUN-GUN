@@ -22,7 +22,7 @@ public class Turret {
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
 	public int health = 300;
-	public static int atkDmg = 25;
+	public static int atkDmg = 20;
 	private TextureAtlas turretAtkAtlas;
 	private Animation <TextureRegion> turretAtkAnimation;
 	private TextureRegion turretStandingRegion;

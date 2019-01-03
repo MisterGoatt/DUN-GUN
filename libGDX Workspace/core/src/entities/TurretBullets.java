@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -24,7 +26,7 @@ public class TurretBullets {
 	private TextureAtlas bulletTextureAtlas;
 	private Animation <TextureRegion> bulletAnimation;
 	public static Array<TurretBullets> turretBullets = new Array<TurretBullets>();
-
+	
 	public TurretBullets(World world, float positionX, float positionY, float angle) {
 		this.world = world;
 		startX = positionX;
@@ -51,7 +53,9 @@ public class TurretBullets {
 		fdef.filter.maskBits = Mutagen.WALL | Mutagen.PLAYER; // what masking bit the category bit collides with
 		b2body.createFixture(fdef).setUserData("turret bullets");
 	    float shootingAngleRadians = (float) Math.toRadians(shootingAngle);
-	    shootingAngleRadians = shootingAngleRadians + 1.57f;
+		float angleVary = (int)(Math.random() * 40 - 20);
+		shootingAngleRadians = angleVary / Mutagen.PPM;
+	    shootingAngleRadians = shootingAngleRadians - 1.57f;
 		posX = (float) (Math.cos(shootingAngleRadians)) * speed;
 		posY = (float) (Math.sin(shootingAngleRadians)) * speed;
 	    //angle = angle - 1.57f ;

@@ -177,7 +177,7 @@ public class CreateBullet{
 
 				if (GunSelectionScreen.p2WeaponSelected == "shotgun") {
 					float speedVary = (int)(Math.random() * 10 + 5f);
-					float angleVary = (int)(Math.random() * 40 - 19);
+					float angleVary = (int)(Math.random() * 40 - 20);
 					angleVary = angleVary / Mutagen.PPM;
 					angleR = angleR + angleVary;
 					posX = (float) (Math.cos(angleR)) * speedVary;
@@ -198,7 +198,6 @@ public class CreateBullet{
 				}
 			}
 		}
-
 	}
 	//Render all of the textures for bullets and lasers
 	public void renderSprite(SpriteBatch batch) {
@@ -234,25 +233,25 @@ public class CreateBullet{
 				break;
 			}
 		}
-//		else if (playerID == 2){
-//			switch (GunSelectionScreen.p2WeaponSelected) {
-//			case "laser":
-//				batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / Mutagen.PPM, 45 / Mutagen.PPM, 1, 1, angleD - 90);
-//				timePassed += Gdx.graphics.getDeltaTime();
-//				break;
-//			case "shotgun":
-//				batch.draw(pelletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 9 / Mutagen.PPM, 9 / Mutagen.PPM, 1, 1, angleD - 90);
-//				timePassed += Gdx.graphics.getDeltaTime();
-//				break;
-//			case "battle axe":
-//				b2body.setTransform(PlayerOne.p1PosX, PlayerOne.p1PosY, angleR); //sets the position of the body to the position of the body and implements rotation
-//				break;
-//			default: 
-//				batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 5 / Mutagen.PPM, 20 / Mutagen.PPM, 1, 1, angleD - 90);	
-//				timePassed += Gdx.graphics.getDeltaTime();
-//
-//				break;
-//			}
-//		}
+		//		else if (playerID == 2){
+		//			switch (GunSelectionScreen.p2WeaponSelected) {
+		//			case "laser":
+		//				batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / Mutagen.PPM, 45 / Mutagen.PPM, 1, 1, angleD - 90);
+		//				timePassed += Gdx.graphics.getDeltaTime();
+		//				break;
+		//			case "shotgun":
+		//				batch.draw(pelletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 9 / Mutagen.PPM, 9 / Mutagen.PPM, 1, 1, angleD - 90);
+		//				timePassed += Gdx.graphics.getDeltaTime();
+		//				break;
+		//			case "battle axe":
+		//				b2body.setTransform(PlayerOne.p1PosX, PlayerOne.p1PosY, angleR); //sets the position of the body to the position of the body and implements rotation
+		//				break;
+		//			default: 
+		//				batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 5 / Mutagen.PPM, 20 / Mutagen.PPM, 1, 1, angleD - 90);	
+		//				timePassed += Gdx.graphics.getDeltaTime();
+		//
+		//				break;
+		//			}
+		//		}
 	}
 }
