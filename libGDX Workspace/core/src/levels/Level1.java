@@ -435,12 +435,14 @@ public class Level1 implements Screen{
 			if (Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
 				//RESUME
 				if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < 0.88 && mousePosition.y > .288) {
+					Mutagen.clicking();
 					gamePaused = false;
 					lockCursor = true;
 				}
 				//MAIN MENU
 				else if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < -.46 && mousePosition.y > -1.06) {
 					levelOneMusic.stop();
+					Mutagen.clicking();
 					game.setScreen(new MainMenu(game));
 				}
 				//QUIT
