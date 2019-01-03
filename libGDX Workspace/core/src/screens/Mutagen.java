@@ -22,7 +22,7 @@ public class Mutagen extends Game{
 	public static final short PLAYER = 0x0001, BULLET = 0x0002, WALL = 0x0004, GRUNT = 0x0008, SCIENTIST = 0x0016, FLAYER = 0x0032,
 			SOLDIER = 0x0064, TURRET = 0x0128, TURRET_BULLET = 0x0256, HP_PICKUP = 0x0512;
 	public static AssetManager manager;
-	public static float musicVolume = 0, sfxVolume = 1, PPM = 100;
+	public static float musicVolume = 1, sfxVolume = 1, PPM = 100;
 	public static Sound click;
 	
 	@Override
