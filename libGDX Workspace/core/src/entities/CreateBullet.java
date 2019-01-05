@@ -93,7 +93,7 @@ public class CreateBullet{
 			}
 			//Sets size of the physics bodies depending on the type of gun
 			fdef.filter.categoryBits = Mutagen.BULLET; //identifies the category bit is
-			fdef.filter.maskBits = Mutagen.WALL | Mutagen.GRUNT | Mutagen.SCIENTIST; // what masking bit the category bit collides with
+			fdef.filter.maskBits = Mutagen.WALL | Mutagen.GRUNT | Mutagen.SCIENTIST | Mutagen.FLAYER | Mutagen.SOLDIER | Mutagen.TURRET; // what masking bit the category bit collides with
 			b2body.createFixture(fdef).setUserData("bullets");
 			if (PlayerMode.OneP) {
 				float differenceX = Level1.mousePosition.x - b2body.getPosition().x;
@@ -216,18 +216,18 @@ public class CreateBullet{
 		if (playerID == 1) {
 			switch (GunSelectionScreen.p1WeaponSelected) {
 			case "laser":
-				batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / Mutagen.PPM, 45 / Mutagen.PPM, 1, 1, angleD - 90);
+				batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / Mutagen.PPM, 45 / Mutagen.PPM, 1, 1, angleD);
 				timePassed += Gdx.graphics.getDeltaTime();
 				break;
 			case "shotgun":
-				batch.draw(pelletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 9 / Mutagen.PPM, 9 / Mutagen.PPM, 1, 1, angleD - 90);
+				batch.draw(pelletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 9 / Mutagen.PPM, 9 / Mutagen.PPM, 1, 1, angleD);
 				timePassed += Gdx.graphics.getDeltaTime();
 				break;
 			case "battle axe":
 				b2body.setTransform(PlayerOne.p1PosX, PlayerOne.p1PosY, angleR - 1.507f); //sets the position of the body to the position of the body and implements rotation
 				break;
 			default: 
-				batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 5 / Mutagen.PPM, 20 / Mutagen.PPM, 1, 1, angleD - 90);	
+				batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 5 / Mutagen.PPM, 20 / Mutagen.PPM, 1, 1, angleD);	
 				timePassed += Gdx.graphics.getDeltaTime();
 
 				break;

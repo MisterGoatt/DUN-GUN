@@ -39,7 +39,7 @@ public class Soldier {
 		soldierAtkAtlas = Mutagen.manager.get("sprites/soldier/soldierAtkAnimation.atlas");
 		soldierAtkAnimation = new Animation <TextureRegion>(1f/15f, soldierAtkAtlas.getRegions());
 		soldierStandingRegion = soldierAtkAtlas.findRegion("tile000");
-		//soldierShoot = Mutagen.manager.get("sound effects/enemies/turretAtk.mp3");
+		soldierShoot = Mutagen.manager.get("sound effects/enemies/soldierShooting.mp3");
 		defineSoldier();
 	}
 	
@@ -58,7 +58,7 @@ public class Soldier {
 		fdef.shape = shape;
 		fdef.filter.categoryBits = Mutagen.SOLDIER;
 		fdef.filter.maskBits = Mutagen.PLAYER | Mutagen.PLAYER_TWO | Mutagen.WALL | Mutagen.BULLET | Mutagen.FLAYER | Mutagen.GRUNT | 
-				Mutagen.SCIENTIST | Mutagen.SOLDIER | Mutagen.TURRET;
+				Mutagen.SCIENTIST | Mutagen.SOLDIER | Mutagen.TURRET | Mutagen.SHOOT_OVER;
 		b2body.createFixture(fdef).setUserData("soldier"); 
 	}
 	public void renderSprite(SpriteBatch batch) {
@@ -87,10 +87,10 @@ public class Soldier {
 	public void shooting() {
 		if (!PlayerOne.p1Dead) {
 			shootTimer += .50;
-			if (shootTimer >= 10) {
-//				if (Mutagen.sfxVolume != 0) {
-//					Long tS = soldierShoot.play(Mutagen.sfxVolume - .8f);					
-//				}
+			if (shootTimer >= 18) {
+				if (Mutagen.sfxVolume != 0) {
+					Long tS = soldierShoot.play(Mutagen.sfxVolume - .8f);					
+				}
 				shootAnimation = true;
 				sB = new SoldierBullets(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);	
 				

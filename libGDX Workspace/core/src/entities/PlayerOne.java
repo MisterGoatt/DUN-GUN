@@ -124,7 +124,7 @@ public class PlayerOne extends Sprite implements Disposable{
 
 		fdef.shape = shape;
 		fdef.filter.categoryBits = Mutagen.PLAYER;
-		fdef.filter.maskBits = Mutagen.WALL | Mutagen.GRUNT | Mutagen.SCIENTIST | Mutagen.HP_PICKUP;
+		fdef.filter.maskBits = Mutagen.WALL | Mutagen.GRUNT | Mutagen.SCIENTIST | Mutagen.HP_PICKUP |Mutagen.SOLDIER |Mutagen.SHOOT_OVER | Mutagen.PLAYER_TWO | Mutagen.FLAYER | Mutagen.FLAYER_SPIKES;
 		b2body.createFixture(fdef).setUserData("player");;
 		if (!PlayerMode.OneP) {
 			angle = 0;

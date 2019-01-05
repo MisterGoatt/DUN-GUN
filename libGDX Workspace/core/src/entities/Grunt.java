@@ -65,7 +65,8 @@ public class Grunt extends Sprite implements Disposable{
 			fdef.density = 400;
 			fdef.shape = shape;
 			fdef.filter.categoryBits = Mutagen.GRUNT;
-			fdef.filter.maskBits = -1; //collides with everything
+			fdef.filter.maskBits = Mutagen.PLAYER | Mutagen.PLAYER_TWO | Mutagen.WALL | Mutagen.BULLET | Mutagen.FLAYER | Mutagen.GRUNT | 
+					Mutagen.SCIENTIST | Mutagen.SOLDIER | Mutagen.TURRET | Mutagen.SHOOT_OVER; //collides with everything
 			b2body.createFixture(fdef).setUserData("grunt");
 		}
 		

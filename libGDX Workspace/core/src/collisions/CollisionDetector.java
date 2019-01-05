@@ -588,6 +588,24 @@ public class CollisionDetector implements ContactListener{
 				}
 			}
 		}
+		//SOLDIER & BULLETS AND WALL
+		if (fa.getUserData().equals("walls") || fb.getUserData().equals("walls")) {
+			if (fa.getUserData().equals("soldier bullets") || fb.getUserData().equals("soldier bullets")) {
+
+				if(fa.getUserData().equals("soldier bullets")){
+					if (Mutagen.sfxVolume != 0) {
+						long phwId = pelletHitWall.play(Mutagen.sfxVolume - .8f);
+					}
+					bodiesToRemove.add(fa.getBody()); 
+				}
+				if(fb.getUserData().equals("soldier bullets")){
+					if (Mutagen.sfxVolume != 0) {
+						long phwId = pelletHitWall.play(Mutagen.sfxVolume - .8f);
+					}
+					bodiesToRemove.add(fb.getBody());
+				}
+			}
+		}
 
 
 	}

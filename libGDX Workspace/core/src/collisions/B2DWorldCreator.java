@@ -36,6 +36,18 @@ public class B2DWorldCreator {
 			body.createFixture(fdef).setUserData("walls");; //adds fixture to body
 
 		}
+		for(MapObject object: map.getLayers().get("Shoot Over").getObjects().getByType(RectangleMapObject.class)) {
+			Rectangle rect = ((RectangleMapObject) object).getRectangle();
+			bdef.type = BodyDef.BodyType.StaticBody;
+			bdef.position.set((rect.getX() + rect.getWidth() / 2) / Mutagen.PPM, (rect.getY() + rect.getHeight() / 2)/ Mutagen.PPM ) ; //center of the rectangle
+			body = world.createBody(bdef);//adds body to the 2d  world
+			shape.setAsBox(rect.getWidth() / 2 / Mutagen.PPM, rect.getHeight() / 2 / Mutagen.PPM);//defines polygon shape
+			fdef.shape = shape; //sets the polygon shape as a shape (?)
+			fdef.filter.categoryBits = Mutagen.SHOOT_OVER;
+			fdef.filter.maskBits = Mutagen.PLAYER | Mutagen.PLAYER_TWO;
+			body.createFixture(fdef).setUserData("shoot over");; //adds fixture to body
+
+		}
 
 	}
 }

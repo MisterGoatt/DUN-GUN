@@ -58,7 +58,7 @@ public class Turret {
 		fdef.shape = shape;
 		fdef.filter.categoryBits = Mutagen.TURRET;
 		fdef.filter.maskBits =  Mutagen.PLAYER | Mutagen.PLAYER_TWO | Mutagen.WALL | Mutagen.BULLET | Mutagen.FLAYER | Mutagen.GRUNT | 
-				Mutagen.SCIENTIST | Mutagen.SOLDIER | Mutagen.TURRET; //collides with everything
+				Mutagen.SCIENTIST | Mutagen.SOLDIER | Mutagen.TURRET | Mutagen.SHOOT_OVER;
 		b2body.createFixture(fdef).setUserData("turret"); 
 	}
 
