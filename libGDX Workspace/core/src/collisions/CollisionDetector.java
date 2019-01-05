@@ -14,6 +14,8 @@ import entities.Grunt;
 import entities.HealthPickUp;
 import entities.PlayerOne;
 import entities.Scientist;
+import entities.Soldier;
+import entities.SoldierBullets;
 import entities.Turret;
 import screens.DifficultyScreen;
 import screens.GunSelectionScreen;
@@ -27,12 +29,13 @@ public class CollisionDetector implements ContactListener{
 	private Array<Scientist> scientistBodyTarget = new Array<Scientist>();
 	private Array<Turret> turretBodyTarget = new Array<Turret>();
 	private Array<CreateBullet> bulletBodyTarget = new Array<CreateBullet>();
-	private Array<PlayerOne> p1BodyTarget = new Array<PlayerOne>();
+	private Array<Soldier> soldierBodyTarget = new Array<Soldier>();
 
 	Grunt grunt;
 	Scientist scientist;
 	Turret turret;
 	CreateBullet createBullet;
+	Soldier soldier;
 	PlayerOne p1;
 	private Sound bulletHitWall, bulletBodyImpact, pelletHitWall, laserHitWall, turretHit, hpPickUp;
 
@@ -50,6 +53,7 @@ public class CollisionDetector implements ContactListener{
 		scientistBodyTarget.clear();
 		tempBodyArray.clear();
 		bulletBodyTarget.clear();
+		soldierBodyTarget.clear();
 	}
 
 	@Override
@@ -416,9 +420,7 @@ public class CollisionDetector implements ContactListener{
 						//turret.tookDamage = false;
 					}
 				}
-
 			}
-
 		}
 
 		//TURRET BULLETS AND WALL COLLISIONS
@@ -438,7 +440,6 @@ public class CollisionDetector implements ContactListener{
 					}
 					bodiesToRemove.add(fb.getBody());
 				}
-
 			}
 		}
 		//TURRET BULLETS AND PLAYER COLLISIONS
@@ -463,71 +464,138 @@ public class CollisionDetector implements ContactListener{
 			if (fa.getUserData().equals("hpPickUp") || fb.getUserData().equals("hpPickUp")) {
 
 				if(fa.getUserData().equals("hpPickUp")){
-					//					tempBodyArray.add(fa.getBody());
-					//					Body b = tempBodyArray.first();
-					//					hpBodyTarget.add((HealthPickUp) b.getUserData());
-					//					hpPickUp = hpBodyTarget.get(0);
-					//					hpBodyTarget.clear();
-					//					tempBodyArray.clear();
 					bodiesToRemove.add(fa.getBody());
-
 				}
 				if(fb.getUserData().equals("hpPickUp")){
-					//					tempBodyArray.add(fb.getBody());
-					//					Body b = tempBodyArray.first();
-					//					hpBodyTarget.add((HealthPickUp) b.getUserData());
-					//					hpPickUp = hpBodyTarget.get(0);
-					//					hpBodyTarget.clear();
-					//					tempBodyArray.clear();
 					bodiesToRemove.add(fb.getBody());	
 				}
 				if(fa.getUserData().equals("player")){
-//					tempBodyArray.add(fa.getBody());
-//					Body b = tempBodyArray.first();
-//					p1BodyTarget.add((PlayerOne) b.getUserData());
-//					p1 = p1BodyTarget.get(0);
-//					p1BodyTarget.clear();
-//					tempBodyArray.clear();
+
 					long hpPU = hpPickUp.play(Mutagen.sfxVolume);
 					if (DifficultyScreen.difficulty == 1) {
 						PlayerOne.player1HP = 150;
-
 					}else {
 						PlayerOne.player1HP = 100;
-
 					}
-
 				}
 				if(fb.getUserData().equals("player")){
-					//					tempBodyArray.add(fb.getBody());
-					//					Body b = tempBodyArray.first();
-					//					p1BodyTarget.add((PlayerOne) b.getUserData());
-					//					p1 = p1BodyTarget.get(0);
-					//					p1.
-					//					p1BodyTarget.clear();
-					//					tempBodyArray.clear();
+
 					long hpPU = hpPickUp.play(Mutagen.sfxVolume);
 					if (DifficultyScreen.difficulty == 1) {
 						PlayerOne.player1HP = 150;
-
 					}else {
 						PlayerOne.player1HP = 100;
-
 					}
-
 				}
 			}
 		}
-		
-		
+		//BULLET AND SOLDIER COLLISIONS
+		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
+			if (fa.getUserData().equals("soldier") || fb.getUserData().equals("soldier")) {
+				if (fa.getUserData().equals("bullets")){
+
+					if (GunSelectionScreen.p1WeaponSelected != "battle axe") {
+						bodiesToRemove.add(fa.getBody()); //bullet
+					}
+				}
+				if(fb.getUserData().equals("bullets")){
+					if (GunSelectionScreen.p1WeaponSelected != "battle axe") {
+						bodiesToRemove.add(fb.getBody()); //bullet
+					}
+				}				
+				if (fa.getUserData().equals("soldier")){
+					//					if (Mutagen.sfxVolume != 0) {
+					//						long tH = turretHit.play(Mutagen.sfxVolume - .2f);
+					//					}
+					tempBodyArray.add(fa.getBody());
+					Body b = tempBodyArray.first();
+					soldierBodyTarget.add((Soldier) b.getUserData()); //casts Grunt on the physics body to get the class instance
+					soldier = soldierBodyTarget.get(0);
+					//not needed yet
+					//scientist.tookDamage = true;
+
+					switch (GunSelectionScreen.p1WeaponSelected){
+					case "battle axe": soldier.health -= PlayerOne.battleAxeDamage;
+					break;
+					case "revolver": soldier.health -= PlayerOne.revolverDamage;
+					break;
+					case "rifle": soldier.health -= PlayerOne.rifleDamage;
+					break;	
+					case "assault rifle": soldier.health -= PlayerOne.assaultRifleDamage;
+					break;
+					case "laser": soldier.health -= PlayerOne.laserLanceDamage;
+					break;
+					case "shotgun": soldier.health -= PlayerOne.shotgunDamage;
+					break;
+					default: break;
+					}
+					turretBodyTarget.clear();
+					tempBodyArray.clear();
+
+					if (soldier.health <= 0) {
+						bodiesToRemove.add(fa.getBody()); //grunt
+						//turret.tookDamage = false;
+					}
+				}
+				if (fb.getUserData().equals("soldier")){
+					//					if (Mutagen.sfxVolume != 0) {
+					//						long tH = turretHit.play(Mutagen.sfxVolume - .2f);
+					//					}
+					tempBodyArray.add(fb.getBody());
+					Body b = tempBodyArray.first();
+					soldierBodyTarget.add((Soldier) b.getUserData()); //casts Grunt on the physics body to get the class instance
+					soldier = soldierBodyTarget.get(0);
+					//not needed yet
+					//scientist.tookDamage = true;
+
+					switch (GunSelectionScreen.p1WeaponSelected){
+					case "battle axe": soldier.health -= PlayerOne.battleAxeDamage;
+					break;
+					case "revolver": soldier.health -= PlayerOne.revolverDamage;
+					break;
+					case "rifle": soldier.health -= PlayerOne.rifleDamage;
+					break;	
+					case "assault rifle": soldier.health -= PlayerOne.assaultRifleDamage;
+					break;
+					case "laser": soldier.health -= PlayerOne.laserLanceDamage;
+					break;
+					case "shotgun": soldier.health -= PlayerOne.shotgunDamage;
+					break;
+					default: break;
+					}
+					soldierBodyTarget.clear();
+					tempBodyArray.clear();
+
+					if (soldier.health <= 0) {
+						bodiesToRemove.add(fb.getBody()); //grunt
+						//turret.tookDamage = false;
+					}
+				}
+
+			}
+		}
+		//SOLDIER BULLETS AND PLAYER COLLISIONS
+		if (fa.getUserData().equals("player") || fb.getUserData().equals("player")) {
+			if (fa.getUserData().equals("soldier bullets") || fb.getUserData().equals("soldier bullets")) {
+
+				if(fa.getUserData().equals("soldier bullets")){
+					PlayerOne.player1HP -= Soldier.atkDmg;
+					bodiesToRemove.add(fa.getBody()); 
+				}
+				if(fb.getUserData().equals("soldier bullets")){
+					PlayerOne.player1HP -= Soldier.atkDmg;
+					bodiesToRemove.add(fb.getBody());
+				}
+			}
+		}
+
+
 	}
 
 
 	public Array <Body> getbodiesToRemove(){
 		return bodiesToRemove;
 	}		
-
-
 	// *******************************************************END CONTACT********************************************************
 
 	@Override

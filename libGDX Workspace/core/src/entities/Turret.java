@@ -57,7 +57,8 @@ public class Turret {
 		fdef.density = 100000; //made extremely dense to prevent anything from moving it
 		fdef.shape = shape;
 		fdef.filter.categoryBits = Mutagen.TURRET;
-		fdef.filter.maskBits = Mutagen.PLAYER | Mutagen.WALL | Mutagen.BULLET; //collides with everything
+		fdef.filter.maskBits =  Mutagen.PLAYER | Mutagen.PLAYER_TWO | Mutagen.WALL | Mutagen.BULLET | Mutagen.FLAYER | Mutagen.GRUNT | 
+				Mutagen.SCIENTIST | Mutagen.SOLDIER | Mutagen.TURRET; //collides with everything
 		b2body.createFixture(fdef).setUserData("turret"); 
 	}
 

@@ -1,6 +1,4 @@
-/com/
-/entities/
-/levels/
 /screens/
+/levels/
+/entities/
 /collisions/
-/Mutagen.class

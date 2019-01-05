@@ -56,7 +56,7 @@ public class Scientist{
 		fdef.density = 400;
 		fdef.shape = shape;
 		fdef.filter.categoryBits = Mutagen.SCIENTIST;
-		fdef.filter.maskBits = -1; //collides with everything
+		fdef.filter.maskBits =  Mutagen.PLAYER | Mutagen.WALL | Mutagen.BULLET | Mutagen.FLAYER | Mutagen.GRUNT | Mutagen.SCIENTIST | Mutagen.SOLDIER | Mutagen.TURRET; //collides with everything
 		b2body.createFixture(fdef).setUserData("scientist");
 	}
 	

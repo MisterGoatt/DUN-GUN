@@ -23,7 +23,7 @@ public class B2DWorldCreator {
 
 		//below is creating a wall body and fixture
 		//going to layer 2 of Tiled and getting rectangle objects
-		for(MapObject object: map.getLayers().get("walls").getObjects().getByType(RectangleMapObject.class)) {
+		for(MapObject object: map.getLayers().get("Wall").getObjects().getByType(RectangleMapObject.class)) {
 			Rectangle rect = ((RectangleMapObject) object).getRectangle();
 			bdef.type = BodyDef.BodyType.StaticBody;
 			bdef.position.set((rect.getX() + rect.getWidth() / 2) / Mutagen.PPM, (rect.getY() + rect.getHeight() / 2)/ Mutagen.PPM ) ; //center of the rectangle

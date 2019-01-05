@@ -20,7 +20,6 @@ public class DifficultyScreen implements Screen, InputProcessor{
 	private float mX, mY;
 	public static int difficulty;
 	
-	
 	public DifficultyScreen(final Mutagen game) {
 		this.game = game;
 		cam = new OrthographicCamera();		

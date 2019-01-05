@@ -54,8 +54,8 @@ public class TurretBullets {
 		b2body.createFixture(fdef).setUserData("turret bullets");
 	    float shootingAngleRadians = (float) Math.toRadians(shootingAngle);
 		float angleVary = (int)(Math.random() * 40 - 20);
-		shootingAngleRadians = angleVary / Mutagen.PPM;
-	    shootingAngleRadians = shootingAngleRadians - 1.57f;
+		shootingAngleRadians = shootingAngleRadians + angleVary / Mutagen.PPM;
+	    shootingAngleRadians = shootingAngleRadians + 1.57f;
 		posX = (float) (Math.cos(shootingAngleRadians)) * speed;
 		posY = (float) (Math.sin(shootingAngleRadians)) * speed;
 	    //angle = angle - 1.57f ;
