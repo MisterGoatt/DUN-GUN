@@ -122,12 +122,12 @@ public class MainMenu implements Screen{
 				
 				//tutorial
 				if (0 < mX && mX < 200 && 750 < mY && mY < 800){
-					activeMenuText.draw(game.batch, "TUTORIAL", 90, 750);
+					activeMenuText.draw(game.batch, "TUTORIAL", 0, 800);
 					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 						game.setScreen(new Tutorial(game));
 					}
 				}else {
-					inactiveMenuText.draw(game.batch, "TUTORIAL", 100, 750);
+					inactiveMenuText.draw(game.batch, "TUTORIAL", 0, 800);
 					}
 			}
 		}

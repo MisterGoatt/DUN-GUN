@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 
 public class ControlScreen implements Screen {
@@ -24,6 +25,8 @@ public class ControlScreen implements Screen {
 	boolean justClicked = false;
 	boolean onCrash = true;
 	private Vector3 mouse_position = new Vector3(0, 0, 0);
+	BitmapFont inactiveMenuText;
+	BitmapFont activeMenuText;
 
 	
 	public ControlScreen(final Mutagen game) {
@@ -32,7 +35,10 @@ public class ControlScreen implements Screen {
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); //centers the map to center of screen
-		
+
+		inactiveMenuText = Mutagen.manager.get("fonts/inactiveMenu(36).fnt", BitmapFont.class);
+		activeMenuText = Mutagen.manager.get("fonts/activeMenu(36).fnt", BitmapFont.class);
+	
 	}
 	
 	@Override
@@ -58,7 +64,16 @@ public class ControlScreen implements Screen {
 		float mX = mouse_position.x;
 		float mY = mouse_position.y;
 		
-		//RETURNS TO MAIN MENU
+		if (0 < mX && mX < 130 && 0 < mY && mY < 80)
+		{
+			activeMenuText.draw(game.batch, "BACK", 10, 55);
+			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+				game.setScreen(new Tutorial(game));
+			}
+		}else {
+			inactiveMenuText.draw(game.batch, "BACK", 10, 55);
+		}
+		
 	
 		
 		cam.update();
