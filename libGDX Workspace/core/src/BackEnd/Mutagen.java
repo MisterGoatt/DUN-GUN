@@ -99,6 +99,12 @@ public class Mutagen extends Game{
 		manager.load("screens/difficultyScreen/difficultyn.jpg", Texture.class);
 		manager.load("screens/difficultyScreen/difficultyc.jpg", Texture.class);
 		
+		//Tutorial Screens
+		manager.load("screens/tutorials/controlScreen.jpg", Texture.class);
+		manager.load("screens/tutorials/crashScreen.jpg", Texture.class);
+		manager.load("screens/tutorials/tutorialOptions.jpg", Texture.class);
+		manager.load("screens/tutorials/howToPlay.jpg", Texture.class);
+		
 		//Main Menu
 		manager.load("music/Dun-Gun2.mp3", Music.class);
 		manager.load("screens/menuScreen.jpg", Texture.class);

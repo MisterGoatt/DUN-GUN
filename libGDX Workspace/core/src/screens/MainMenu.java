@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import screens.Tutorial;
 
 import BackEnd.Mutagen;
 
@@ -96,6 +97,17 @@ public class MainMenu implements Screen, InputProcessor{
 		}else{
 			inactiveMenuText.draw(game.batch, "QUIT", 1220, 90);
 		}
+		
+		//tutorial
+		if (0 < mX && mX < 200 && 750 < mY && mY < 800){
+			activeMenuText.draw(game.batch, "TUTORIAL", 0, 800);
+			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+				game.setScreen(new Tutorial(game));
+			}
+		}else {
+			inactiveMenuText.draw(game.batch, "TUTORIAL", 0, 800);
+			}
+	
 
 		//***********************************		
 		//FRAMES PER SECOND

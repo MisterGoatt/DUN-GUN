@@ -19,9 +19,10 @@ import BackEnd.Mutagen;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
-public class Tutorial implements Screen{
+
+public class ControlScreen implements Screen {
 	final Mutagen game;
-	Texture tutorialOptions;
+	Texture controlScreen;
 	private OrthographicCamera cam;
 	private Viewport gamePort;
 	boolean justClicked = false;
@@ -29,19 +30,18 @@ public class Tutorial implements Screen{
 	private Vector3 mouse_position = new Vector3(0, 0, 0);
 	BitmapFont inactiveMenuText;
 	BitmapFont activeMenuText;
-	private int wait = 0;
 
 	
-	public Tutorial(final Mutagen game) {
+	public ControlScreen(final Mutagen game) {
 		this.game = game;
-		tutorialOptions = new Texture("screens/tutorials/tutorialOptions.jpg");
+		controlScreen = new Texture("screens/tutorials/controlScreen.jpg");
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); //centers the map to center of screen
-		
+
 		inactiveMenuText = Mutagen.manager.get("fonts/inactiveMenu(36).fnt", BitmapFont.class);
 		activeMenuText = Mutagen.manager.get("fonts/activeMenu(36).fnt", BitmapFont.class);
-		
+	
 	}
 	
 	@Override
@@ -61,43 +61,24 @@ public class Tutorial implements Screen{
 		game.batch.begin();
 		game.batch.setProjectionMatrix(cam.combined);
 		
-		game.batch.draw(tutorialOptions, 0, 0);
+		game.batch.draw(controlScreen, 0, 0);
 		
 		
 		float mX = mouse_position.x;
 		float mY = mouse_position.y;
 		
-		//System.out.println(mouse_position.x);
-		//System.out.println(mouse_position.y);
-	
-		if (wait < 11) {
-			wait += 1;
+		if (0 < mX && mX < 130 && 0 < mY && mY < 80)
+		{
+			activeMenuText.draw(game.batch, "BACK", 10, 55);
+			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+				game.setScreen(new Tutorial(game));
 			}
-		if (wait > 4){
-			if (20 < mX && mX < 710 && 390 < mY && mY < 590)
-			{
-				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-					game.setScreen(new ControlScreen(game));
-				}
-			}
-			
-			if (784 < mX && mX < 1481 && 390 < mY && mY < 590)
-			{
-				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-					game.setScreen(new HowToPlay(game));
-				}
-			}
-			
-			if (0 < mX && mX < 130 && 0 < mY && mY < 80)
-			{
-				inactiveMenuText.draw(game.batch, "BACK", 10, 55);
-				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-					game.setScreen(new MainMenu(game));
-				}
-			}else {
-				inactiveMenuText.draw(game.batch, "BACK", 10, 55);
-			}
+		}else {
+			inactiveMenuText.draw(game.batch, "BACK", 10, 55);
 		}
+		
+	
+		
 		cam.update();
 		game.batch.end();
 	}
@@ -127,7 +108,7 @@ public class Tutorial implements Screen{
 	@Override
 	public void dispose() {
 		game.batch.dispose();
-		tutorialOptions.dispose();
+		controlScreen.dispose();
 		}
 
 }
