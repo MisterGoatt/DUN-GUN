@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
-import screens.Mutagen;
+import BackEnd.Mutagen;
 
 public class HealthPickUp {
 
@@ -47,7 +47,7 @@ public class HealthPickUp {
 		shape.setPosition(new Vector2(15, 10).scl(1/Mutagen.PPM));
 		fdef.shape = shape;
 		fdef.filter.categoryBits = Mutagen.HP_PICKUP;
-		fdef.filter.maskBits = Mutagen.PLAYER;
+		fdef.filter.maskBits = Mutagen.PLAYER | Mutagen.PLAYER_TWO;
 		b2body.createFixture(fdef).setUserData("hpPickUp"); 
 	}
 	public void renderSprite(SpriteBatch batch) {

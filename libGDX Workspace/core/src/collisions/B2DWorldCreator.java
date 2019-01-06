@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-import screens.Mutagen;
+import BackEnd.Mutagen;
 
 public class B2DWorldCreator {
 	public String id = "WALL";
@@ -44,7 +44,7 @@ public class B2DWorldCreator {
 			shape.setAsBox(rect.getWidth() / 2 / Mutagen.PPM, rect.getHeight() / 2 / Mutagen.PPM);//defines polygon shape
 			fdef.shape = shape; //sets the polygon shape as a shape (?)
 			fdef.filter.categoryBits = Mutagen.SHOOT_OVER;
-			fdef.filter.maskBits = Mutagen.PLAYER | Mutagen.PLAYER_TWO;
+			fdef.filter.maskBits = Mutagen.PLAYER | Mutagen.PLAYER_TWO | Mutagen.FLAYER | Mutagen.GRUNT | Mutagen.SCIENTIST | Mutagen.SOLDIER;
 			body.createFixture(fdef).setUserData("shoot over");; //adds fixture to body
 
 		}

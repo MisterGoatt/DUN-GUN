@@ -15,7 +15,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
-import screens.Mutagen;
+import BackEnd.Mutagen;
+import screens.PlayerMode;
 
 public class Turret {
 	public World world; // world player will live in
@@ -27,7 +28,7 @@ public class Turret {
 	private Animation <TextureRegion> turretAtkAnimation;
 	private TextureRegion turretStandingRegion;
 	public static Vector2 turretPos = new Vector2(0, 0);
-	private float shootTimer = 20, timePassed = 0;
+	private float shootTimer = 20, timePassed = 0, differenceX, differenceY;
 	public static Vector2 turretSpawnPos = new Vector2(0,0);
 	private boolean shootAnimation = false;
 	private Sound turretShoot;
@@ -44,6 +45,7 @@ public class Turret {
 	}
 
 	public void defineTurret() {
+		System.out.println("Turret turret");
 		bdef.position.set(turretSpawnPos);
 		turretPos = bdef.position;
 		bdef.type = BodyDef.BodyType.DynamicBody;
@@ -63,8 +65,30 @@ public class Turret {
 	}
 
 	public void renderSprite(SpriteBatch batch) {
-		float differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
-		float differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
+		 //Selects which player to attack depending on which player is closer by using the pythagorean theorem
+		if (!PlayerMode.OneP) {
+			//PlayerOne
+			float differencePlayerX =  PlayerOne.p1PosX - b2body.getPosition().x;
+			float differencePlayerY =  PlayerOne.p1PosY - b2body.getPosition().y;
+			
+			//PlayerTwo
+			float differencePlayer2X =  PlayerTwo.p2PosX - b2body.getPosition().x;
+			float differencePlayer2Y =  PlayerTwo.p2PosY - b2body.getPosition().y;
+			
+			float player1Dif = (float) Math.sqrt((differencePlayerX*differencePlayerX)+(differencePlayerY*differencePlayerY));
+			float player2Dif = (float) Math.sqrt((differencePlayer2X*differencePlayer2X)+(differencePlayer2Y*differencePlayer2Y));
+			
+			if (player1Dif < player2Dif) {
+				differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
+				differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
+			}else {
+				differenceX = PlayerTwo.p2PosX - b2body.getPosition().x;
+				differenceY = PlayerTwo.p2PosY - b2body.getPosition().y;
+			}
+		}else {
+			differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
+			differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
+		}
 		float angle2 = MathUtils.atan2(differenceY, differenceX);
 		float angle = angle2 * MathUtils.radDeg;
 		angle = angle - 90; //makes it a full 360 degrees

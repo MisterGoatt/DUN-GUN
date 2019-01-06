@@ -1,0 +1,174 @@
+
+battleAxeP2.png
+size: 2048,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+tile000
+  rotate: false
+  xy: 146, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile001
+  rotate: false
+  xy: 218, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile002
+  rotate: false
+  xy: 290, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile003
+  rotate: false
+  xy: 362, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile004
+  rotate: false
+  xy: 434, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile005
+  rotate: false
+  xy: 506, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile006
+  rotate: false
+  xy: 578, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile007
+  rotate: false
+  xy: 650, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile008
+  rotate: false
+  xy: 722, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile009
+  rotate: false
+  xy: 794, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile010
+  rotate: false
+  xy: 938, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile011
+  rotate: false
+  xy: 1010, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile012
+  rotate: false
+  xy: 1082, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile013
+  rotate: false
+  xy: 1154, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile014
+  rotate: false
+  xy: 1226, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile015
+  rotate: false
+  xy: 1298, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile016
+  rotate: false
+  xy: 1370, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile017
+  rotate: false
+  xy: 1442, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile018
+  rotate: false
+  xy: 1514, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile019
+  rotate: false
+  xy: 1586, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile020
+  rotate: false
+  xy: 2, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile021
+  rotate: false
+  xy: 74, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile022
+  rotate: false
+  xy: 866, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+tile023
+  rotate: false
+  xy: 1658, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1

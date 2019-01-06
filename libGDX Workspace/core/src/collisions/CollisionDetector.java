@@ -9,17 +9,18 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.utils.Array;
 
+import BackEnd.Mutagen;
 import entities.CreateBullet;
 import entities.Grunt;
 import entities.HealthPickUp;
 import entities.PlayerOne;
+import entities.PlayerTwo;
 import entities.Scientist;
 import entities.Soldier;
 import entities.SoldierBullets;
 import entities.Turret;
 import screens.DifficultyScreen;
 import screens.GunSelectionScreen;
-import screens.Mutagen;
 import screens.PlayerMode;
 
 public class CollisionDetector implements ContactListener{
@@ -110,6 +111,59 @@ public class CollisionDetector implements ContactListener{
 						}
 					}
 					if (GunSelectionScreen.p1WeaponSelected != "battle axe") {
+						bodiesToRemove.add(fb.getBody());
+					}
+
+				}
+			}
+		}
+		//BULLET AND WALL COLLISIONS
+		if (fa.getUserData().equals("bullets2") || fb.getUserData().equals("bullets2")) {
+			if (fa.getUserData().equals("walls") || fb.getUserData().equals("walls")) {
+				//FA
+				if (fa.getUserData().equals("bullets2")){
+					if (GunSelectionScreen.p2WeaponSelected == "rifle" || GunSelectionScreen.p2WeaponSelected == "revolver" 
+							|| GunSelectionScreen.p2WeaponSelected == "assault rifle" ) {
+						if (Mutagen.sfxVolume != 0) {
+							long bhwId = bulletHitWall.play(Mutagen.sfxVolume - .8f);
+						}
+					}
+					else if (GunSelectionScreen.p2WeaponSelected == "laser") {
+
+						if (Mutagen.sfxVolume != 0) {
+							laserHitWall.play(Mutagen.sfxVolume);
+						}
+					}
+					else if (GunSelectionScreen.p2WeaponSelected == "shotgun") {
+						if (Mutagen.sfxVolume != 0) {
+							long phwId = pelletHitWall.play(Mutagen.sfxVolume - .8f);
+						}
+					}
+
+					if (GunSelectionScreen.p2WeaponSelected != "battle axe") {
+						bodiesToRemove.add(fa.getBody());
+					}
+
+				}
+				//FB
+				if(fb.getUserData().equals("bullets2")){
+					if (GunSelectionScreen.p2WeaponSelected == "rifle" || GunSelectionScreen.p2WeaponSelected == "revolver" 
+							|| GunSelectionScreen.p2WeaponSelected == "assault rifle" ) {
+						if (Mutagen.sfxVolume != 0) {
+							long bhwId = bulletHitWall.play(Mutagen.sfxVolume - .8f);
+						}
+					}
+					else if (GunSelectionScreen.p2WeaponSelected == "laser") {
+						if (Mutagen.sfxVolume != 0) {
+							laserHitWall.play(Mutagen.sfxVolume);
+						}
+					}
+					else if (GunSelectionScreen.p2WeaponSelected == "shotgun") {
+						if (Mutagen.sfxVolume != 0) {
+							long phwId = pelletHitWall.play(Mutagen.sfxVolume - .8f);
+						}
+					}
+					if (GunSelectionScreen.p2WeaponSelected != "battle axe") {
 						bodiesToRemove.add(fb.getBody());
 					}
 
@@ -209,6 +263,7 @@ public class CollisionDetector implements ContactListener{
 					gruntBodyTarget.add((Grunt) b.getUserData());
 					grunt = gruntBodyTarget.get(0);
 					grunt.contAtk = true;
+					scientist.target = 1;
 					gruntBodyTarget.clear();
 					tempBodyArray.clear();
 				}
@@ -218,6 +273,7 @@ public class CollisionDetector implements ContactListener{
 					gruntBodyTarget.add((Grunt) b.getUserData());
 					grunt = gruntBodyTarget.get(0);
 					grunt.contAtk = true;
+					scientist.target = 1;
 					gruntBodyTarget.clear();
 					tempBodyArray.clear();
 				}
@@ -233,6 +289,7 @@ public class CollisionDetector implements ContactListener{
 					scientistBodyTarget.add((Scientist) b.getUserData());
 					scientist = scientistBodyTarget.get(0);
 					scientist.contAtk = true;
+					scientist.target = 1;
 					scientistBodyTarget.clear();
 					tempBodyArray.clear();
 				}
@@ -242,14 +299,12 @@ public class CollisionDetector implements ContactListener{
 					scientistBodyTarget.add((Scientist) b.getUserData());
 					scientist = scientistBodyTarget.get(0);
 					scientist.contAtk = true;
+					scientist.target = 1;
 					scientistBodyTarget.clear();
 					tempBodyArray.clear();
 				}
 			}
 		}
-
-
-
 
 		//BULLET AND GRUNT COLLISIONS
 		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
@@ -459,7 +514,7 @@ public class CollisionDetector implements ContactListener{
 			}
 		}
 
-		//GRUNT AND PLAYER COLLISIONS
+		//HP Pickup AND PLAYER COLLISIONS
 		if (fa.getUserData().equals("player") || fb.getUserData().equals("player")) {
 			if (fa.getUserData().equals("hpPickUp") || fb.getUserData().equals("hpPickUp")) {
 
@@ -504,9 +559,7 @@ public class CollisionDetector implements ContactListener{
 					}
 				}				
 				if (fa.getUserData().equals("soldier")){
-					//					if (Mutagen.sfxVolume != 0) {
-					//						long tH = turretHit.play(Mutagen.sfxVolume - .2f);
-					//					}
+
 					tempBodyArray.add(fa.getBody());
 					Body b = tempBodyArray.first();
 					soldierBodyTarget.add((Soldier) b.getUserData()); //casts Grunt on the physics body to get the class instance
@@ -538,9 +591,6 @@ public class CollisionDetector implements ContactListener{
 					}
 				}
 				if (fb.getUserData().equals("soldier")){
-					//					if (Mutagen.sfxVolume != 0) {
-					//						long tH = turretHit.play(Mutagen.sfxVolume - .2f);
-					//					}
 					tempBodyArray.add(fb.getBody());
 					Body b = tempBodyArray.first();
 					soldierBodyTarget.add((Soldier) b.getUserData()); //casts Grunt on the physics body to get the class instance
@@ -606,8 +656,455 @@ public class CollisionDetector implements ContactListener{
 				}
 			}
 		}
+		//GRUNT AND PLAYER 2 COLLISIONS
+		if (fa.getUserData().equals("player2") || fb.getUserData().equals("player2")) {
+			if (fa.getUserData().equals("grunt") || fb.getUserData().equals("grunt")) {
 
+				if(fa.getUserData().equals("grunt")){
+					tempBodyArray.add(fa.getBody());
+					Body b = tempBodyArray.first();
+					gruntBodyTarget.add((Grunt) b.getUserData());
+					grunt = gruntBodyTarget.get(0);
+					grunt.contAtk = true;
+					grunt.target = 2;
+					gruntBodyTarget.clear();
+					tempBodyArray.clear();
+				}
+				if(fb.getUserData().equals("grunt")){
+					tempBodyArray.add(fb.getBody());
+					Body b = tempBodyArray.first();
+					gruntBodyTarget.add((Grunt) b.getUserData());
+					grunt = gruntBodyTarget.get(0);
+					grunt.contAtk = true;
+					grunt.target = 2;
+					gruntBodyTarget.clear();
+					tempBodyArray.clear();
+				}
+			}
+		}
+		//SCIENTIST AND PLAYER2 COLLISIONS
+		if (fa.getUserData().equals("player2") || fb.getUserData().equals("player2")) {
+			if (fa.getUserData().equals("scientist") || fb.getUserData().equals("scientist")) {
 
+				if(fa.getUserData().equals("scientist")){
+					tempBodyArray.add(fa.getBody());
+					Body b = tempBodyArray.first();
+					scientistBodyTarget.add((Scientist) b.getUserData());
+					scientist = scientistBodyTarget.get(0);
+					scientist.contAtk = true;
+					scientist.target = 2;
+					scientistBodyTarget.clear();
+					tempBodyArray.clear();
+				}
+				if(fb.getUserData().equals("scientist")){
+					tempBodyArray.add(fb.getBody());
+					Body b = tempBodyArray.first();
+					scientistBodyTarget.add((Scientist) b.getUserData());
+					scientist = scientistBodyTarget.get(0);
+					scientist.contAtk = true;
+					scientist.target = 2;
+					scientistBodyTarget.clear();
+					tempBodyArray.clear();
+				}
+			}
+		}
+		//HP Pickup AND PLAYER COLLISIONS
+		if (fa.getUserData().equals("player2") || fb.getUserData().equals("player2")) {
+			if (fa.getUserData().equals("hpPickUp") || fb.getUserData().equals("hpPickUp")) {
+
+				if(fa.getUserData().equals("hpPickUp")){
+					bodiesToRemove.add(fa.getBody());
+				}
+				if(fb.getUserData().equals("hpPickUp")){
+					bodiesToRemove.add(fb.getBody());	
+				}
+				if(fa.getUserData().equals("player")){
+
+					long hpPU = hpPickUp.play(Mutagen.sfxVolume);
+					if (DifficultyScreen.difficulty == 1) {
+						PlayerTwo.player2HP = 150;
+					}else {
+						PlayerTwo.player2HP = 100;
+					}
+				}
+				if(fb.getUserData().equals("player")){
+
+					long hpPU = hpPickUp.play(Mutagen.sfxVolume);
+					if (DifficultyScreen.difficulty == 1) {
+						PlayerTwo.player2HP = 150;
+					}else {
+						PlayerTwo.player2HP = 100;
+					}
+				}
+			}
+		}
+		//SOLDIER BULLETS AND PLAYER COLLISIONS
+		if (fa.getUserData().equals("player2") || fb.getUserData().equals("player2")) {
+			if (fa.getUserData().equals("soldier bullets") || fb.getUserData().equals("soldier bullets")) {
+
+				if(fa.getUserData().equals("soldier bullets")){
+					PlayerTwo.player2HP -= Soldier.atkDmg;
+					bodiesToRemove.add(fa.getBody()); 
+				}
+				if(fb.getUserData().equals("soldier bullets")){
+					PlayerTwo.player2HP -= Soldier.atkDmg;
+					bodiesToRemove.add(fb.getBody());
+				}
+			}
+		}
+		//TURRET BULLETS AND PLAYER COLLISIONS
+		if (fa.getUserData().equals("player2") || fb.getUserData().equals("player2")) {
+			if (fa.getUserData().equals("turret bullets") || fb.getUserData().equals("turret bullets")) {
+
+				if(fa.getUserData().equals("turret bullets")){
+
+					PlayerTwo.player2HP -= Turret.atkDmg;
+					bodiesToRemove.add(fa.getBody()); 
+
+				}
+				if(fb.getUserData().equals("turret bullets")){
+					PlayerTwo.player2HP -= Turret.atkDmg;
+					bodiesToRemove.add(fb.getBody());
+				}
+			}
+		}
+
+		//P2's BULLETS AND SOLDIER COLLISIONS
+		//BULLET AND GRUNT COLLISIONS
+		if (fa.getUserData().equals("bullets2") || fb.getUserData().equals("bullets2")) {
+			if (fa.getUserData().equals("scientist") || fb.getUserData().equals("scientist")) {
+				if (fa.getUserData().equals("bullets2")){
+
+					if (GunSelectionScreen.p2WeaponSelected != "battle axe") {
+						bodiesToRemove.add(fa.getBody()); //bullet
+
+					}
+				}
+				if(fb.getUserData().equals("bullets2")){
+					if (GunSelectionScreen.p2WeaponSelected != "battle axe") {
+						bodiesToRemove.add(fb.getBody()); //bullet
+					}
+
+				}				
+				if (fa.getUserData().equals("scientist")){
+					if (Mutagen.sfxVolume != 0) {
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+					}
+					tempBodyArray.add(fa.getBody());
+					Body b = tempBodyArray.first();
+					scientistBodyTarget.add((Scientist) b.getUserData()); //casts Grunt on the physics body to get the class instance
+					scientist = scientistBodyTarget.get(0);
+					//not needed yet
+					//scientist.tookDamage = true;
+
+					switch (GunSelectionScreen.p2WeaponSelected){
+					case "battle axe": scientist.health -= PlayerTwo.battleAxeDamage;
+					break;
+					case "revolver": scientist.health -= PlayerTwo.revolverDamage;
+					break;
+					case "rifle": scientist.health -= PlayerTwo.rifleDamage;
+					break;	
+					case "assault rifle": scientist.health -= PlayerTwo.assaultRifleDamage;
+					break;
+					case "laser": scientist.health -= PlayerTwo.laserLanceDamage;
+					break;
+					case "shotgun": scientist.health -= PlayerTwo.shotgunDamage;
+					break;
+					default: break;
+					}
+					scientistBodyTarget.clear();
+					tempBodyArray.clear();
+
+					if (scientist.health <= 0) {
+						bodiesToRemove.add(fa.getBody()); //grunt
+						scientist.tookDamage = false;
+					}
+				}
+
+				if(fb.getUserData().equals("scientist")){
+					if (Mutagen.sfxVolume != 0) {
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+					}
+					tempBodyArray.add(fb.getBody());
+					Body b = tempBodyArray.first();
+					scientistBodyTarget.add((Scientist) b.getUserData()); //casts Grunt on the physics body to get the class instance
+					scientist = scientistBodyTarget.get(0);
+					//not needed yet
+					//scientist.tookDamage = true;
+
+					switch (GunSelectionScreen.p2WeaponSelected){
+					case "battle axe": scientist.health -= PlayerTwo.battleAxeDamage;
+					break;
+					case "revolver": scientist.health -= PlayerTwo.revolverDamage;
+					break;
+					case "rifle": scientist.health -= PlayerTwo.rifleDamage;
+					break;	
+					case "assault rifle": scientist.health -= PlayerTwo.assaultRifleDamage;
+					break;
+					case "laser": scientist.health -= PlayerTwo.laserLanceDamage;
+					break;
+					case "shotgun": scientist.health -= PlayerTwo.shotgunDamage;
+					break;
+					default: break;
+					}
+					scientistBodyTarget.clear();
+					tempBodyArray.clear();
+
+					if (scientist.health <= 0) {
+						bodiesToRemove.add(fb.getBody()); //grunt
+						scientist.tookDamage = false;
+					}
+				}
+			}
+		}
+
+		//P2's BULLET AND SOLDIER COLLISIONS
+		if (fa.getUserData().equals("bullets2") || fb.getUserData().equals("bullets2")) {
+			if (fa.getUserData().equals("soldier") || fb.getUserData().equals("soldier")) {
+				if (fa.getUserData().equals("bullets2")){
+
+					if (GunSelectionScreen.p2WeaponSelected != "battle axe") {
+						bodiesToRemove.add(fa.getBody()); //bullet
+					}
+				}
+				if(fb.getUserData().equals("bullets2")){
+					if (GunSelectionScreen.p2WeaponSelected != "battle axe") {
+						bodiesToRemove.add(fb.getBody()); //bullet
+					}
+				}				
+				if (fa.getUserData().equals("soldier")){
+
+					tempBodyArray.add(fa.getBody());
+					Body b = tempBodyArray.first();
+					soldierBodyTarget.add((Soldier) b.getUserData()); 
+					soldier = soldierBodyTarget.get(0);
+					//not needed yet
+					//scientist.tookDamage = true;
+
+					switch (GunSelectionScreen.p2WeaponSelected){
+					case "battle axe": soldier.health -= PlayerTwo.battleAxeDamage;
+					break;
+					case "revolver": soldier.health -= PlayerTwo.revolverDamage;
+					break;
+					case "rifle": soldier.health -= PlayerTwo.rifleDamage;
+					break;	
+					case "assault rifle": soldier.health -= PlayerTwo.assaultRifleDamage;
+					break;
+					case "laser": soldier.health -= PlayerTwo.laserLanceDamage;
+					break;
+					case "shotgun": soldier.health -= PlayerTwo.shotgunDamage;
+					break;
+					default: break;
+					}
+					turretBodyTarget.clear();
+					tempBodyArray.clear();
+					if (soldier.health <= 0) {
+						bodiesToRemove.add(fa.getBody());
+						//turret.tookDamage = false;
+					}
+				}
+				if (fb.getUserData().equals("soldier")){
+
+					tempBodyArray.add(fb.getBody());
+					Body b = tempBodyArray.first();
+					soldierBodyTarget.add((Soldier) b.getUserData()); 
+					soldier = soldierBodyTarget.get(0);
+					//not needed yet
+					//scientist.tookDamage = true;
+
+					switch (GunSelectionScreen.p2WeaponSelected){
+					case "battle axe": soldier.health -= PlayerTwo.battleAxeDamage;
+					break;
+					case "revolver": soldier.health -= PlayerTwo.revolverDamage;
+					break;
+					case "rifle": soldier.health -= PlayerTwo.rifleDamage;
+					break;	
+					case "assault rifle": soldier.health -= PlayerTwo.assaultRifleDamage;
+					break;
+					case "laser": soldier.health -= PlayerTwo.laserLanceDamage;
+					break;
+					case "shotgun": soldier.health -= PlayerTwo.shotgunDamage;
+					break;
+					default: break;
+					}
+					soldierBodyTarget.clear();
+					tempBodyArray.clear();
+					System.out.println("here");
+
+					if (soldier.health <= 0) {
+						bodiesToRemove.add(fb.getBody());
+					}
+				}
+
+			}
+		}
+		//P2 BULLETS AND GRUNTS
+		if (fa.getUserData().equals("bullets2") || fb.getUserData().equals("bullets2")) {
+			if (fa.getUserData().equals("grunt") || fb.getUserData().equals("grunt")) {
+				if (fa.getUserData().equals("bullets2")){
+
+					if (GunSelectionScreen.p2WeaponSelected != "battle axe") {
+						bodiesToRemove.add(fa.getBody()); //bullet
+					}
+				}
+				if(fb.getUserData().equals("bullets2")){
+					if (GunSelectionScreen.p2WeaponSelected != "battle axe") {	
+						bodiesToRemove.add(fb.getBody()); //bullet
+					}
+				}				
+				if (fa.getUserData().equals("grunt")){
+					if (Mutagen.sfxVolume != 0) {
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+					}
+					tempBodyArray.add(fa.getBody());
+					Body b = tempBodyArray.first();
+					gruntBodyTarget.add((Grunt) b.getUserData()); //casts Grunt on the physics body to get the class instance
+					grunt = gruntBodyTarget.get(0);
+					grunt.tookDamage = true;
+
+					switch (GunSelectionScreen.p2WeaponSelected){
+					case "battle axe": grunt.health -= PlayerTwo.battleAxeDamage;
+					break;
+					case "revolver": grunt.health -= PlayerTwo.revolverDamage;
+					break;
+					case "rifle": grunt.health -= PlayerTwo.rifleDamage;
+					break;	
+					case "assault rifle": grunt.health -= PlayerTwo.assaultRifleDamage;
+					break;
+					case "laser": grunt.health -= PlayerTwo.laserLanceDamage;
+					break;
+					case "shotgun": grunt.health -= PlayerTwo.shotgunDamage;
+					break;
+					default: break;
+					}
+					gruntBodyTarget.clear();
+					tempBodyArray.clear();
+
+					if (grunt.health <= 0) {
+						bodiesToRemove.add(fa.getBody()); //grunt
+						grunt.tookDamage = false;
+					}
+				}
+
+				if(fb.getUserData().equals("grunt")){
+					if (Mutagen.sfxVolume != 0) {
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+					}
+					tempBodyArray.add(fb.getBody());
+					Body b = tempBodyArray.first();
+					gruntBodyTarget.add((Grunt) b.getUserData());
+					grunt = gruntBodyTarget.get(0);
+					grunt.tookDamage = true;
+
+					switch (GunSelectionScreen.p2WeaponSelected){					
+					case "battle axe": grunt.health -= PlayerTwo.battleAxeDamage;
+					break;
+					case "revolver": grunt.health -= PlayerTwo.revolverDamage;
+					break;
+					case "rifle": grunt.health -= PlayerTwo.rifleDamage;
+					break;	
+					case "assault rifle": grunt.health -= PlayerTwo.assaultRifleDamage;
+					break;
+					case "laser": grunt.health -= PlayerTwo.laserLanceDamage;
+					break;
+					case "shotgun": grunt.health -= PlayerTwo.shotgunDamage;
+					break;
+					default: break;
+					}
+					gruntBodyTarget.clear();
+					tempBodyArray.clear();
+
+					if (grunt.health <= 0) {
+						bodiesToRemove.add(fb.getBody()); //grunt
+						grunt.tookDamage = false;
+					}
+				}
+			}
+		}
+		//BULLET P2 AND TURRET COLLISIONS
+		if (fa.getUserData().equals("bullets2") || fb.getUserData().equals("bullets2")) {
+			if (fa.getUserData().equals("turret") || fb.getUserData().equals("turret")) {
+				if (fa.getUserData().equals("bullets2")){
+
+					if (GunSelectionScreen.p2WeaponSelected != "battle axe") {
+						bodiesToRemove.add(fa.getBody()); //bullet
+					}
+				}
+				if(fb.getUserData().equals("bullets2")){
+					if (GunSelectionScreen.p2WeaponSelected != "battle axe") {
+						bodiesToRemove.add(fb.getBody()); //bullet
+					}
+				}				
+				if (fa.getUserData().equals("turret")){
+					if (Mutagen.sfxVolume != 0) {
+						long tH = turretHit.play(Mutagen.sfxVolume - .2f);
+					}
+					tempBodyArray.add(fa.getBody());
+					Body b = tempBodyArray.first();
+					turretBodyTarget.add((Turret) b.getUserData()); //casts Grunt on the physics body to get the class instance
+					turret = turretBodyTarget.get(0);
+					//not needed yet
+					//scientist.tookDamage = true;
+
+					switch (GunSelectionScreen.p2WeaponSelected){
+					case "battle axe": turret.health -= PlayerTwo.battleAxeDamage;
+					break;
+					case "revolver": turret.health -= PlayerTwo.revolverDamage;
+					break;
+					case "rifle": turret.health -= PlayerTwo.rifleDamage;
+					break;	
+					case "assault rifle": turret.health -= PlayerTwo.assaultRifleDamage;
+					break;
+					case "laser": turret.health -= PlayerTwo.laserLanceDamage;
+					break;
+					case "shotgun": turret.health -= PlayerTwo.shotgunDamage;
+					break;
+					default: break;
+					}
+					turretBodyTarget.clear();
+					tempBodyArray.clear();
+
+					if (turret.health <= 0) {
+						bodiesToRemove.add(fa.getBody()); //grunt
+						//turret.tookDamage = false;
+					}
+				}
+				if (fb.getUserData().equals("turret")){
+					if (Mutagen.sfxVolume != 0) {
+						long tH = turretHit.play(Mutagen.sfxVolume - .2f);
+					}
+					tempBodyArray.add(fb.getBody());
+					Body b = tempBodyArray.first();
+					turretBodyTarget.add((Turret) b.getUserData()); //casts Grunt on the physics body to get the class instance
+					turret = turretBodyTarget.get(0);
+					//not needed yet
+					//scientist.tookDamage = true;
+
+					switch (GunSelectionScreen.p1WeaponSelected){
+					case "battle axe": turret.health -= PlayerTwo.battleAxeDamage;
+					break;
+					case "revolver": turret.health -= PlayerTwo.revolverDamage;
+					break;
+					case "rifle": turret.health -= PlayerTwo.rifleDamage;
+					break;	
+					case "assault rifle": turret.health -= PlayerTwo.assaultRifleDamage;
+					break;
+					case "laser": turret.health -= PlayerTwo.laserLanceDamage;
+					break;
+					case "shotgun": turret.health -= PlayerTwo.shotgunDamage;
+					break;
+					default: break;
+					}
+					turretBodyTarget.clear();
+					tempBodyArray.clear();
+
+					if (turret.health <= 0) {
+						bodiesToRemove.add(fb.getBody()); //grunt
+						//turret.tookDamage = false;
+					}
+				}
+			}
+		}
 	}
 
 
@@ -650,6 +1147,55 @@ public class CollisionDetector implements ContactListener{
 		}
 		//SCIENTIST AND PLAYER COLLISIONS
 		if (fa.getUserData().equals("player") || fb.getUserData().equals("player")) {
+			if (fa.getUserData().equals("scientist") || fb.getUserData().equals("scientist")) {
+				if(fa.getUserData().equals("scientist")){
+					tempBodyArray.add(fa.getBody());
+					Body b = tempBodyArray.first();
+					scientistBodyTarget.add((Scientist) b.getUserData());
+					scientist = scientistBodyTarget.get(0);
+					scientist.contAtk = false;
+					scientistBodyTarget.clear();
+					tempBodyArray.clear();
+				}
+
+				if(fb.getUserData().equals("scientist")){
+					tempBodyArray.add(fb.getBody());
+					Body b = tempBodyArray.first();
+					scientistBodyTarget.add((Scientist) b.getUserData());
+					scientist = scientistBodyTarget.get(0);
+					scientist.contAtk = false;
+					scientistBodyTarget.clear();
+					tempBodyArray.clear();
+				}
+			}
+		}
+		//GRUNT AND PLAYER2 COLLISIONS
+		if (fa.getUserData().equals("player2") || fb.getUserData().equals("player2")) {
+			if (fa.getUserData().equals("grunt") || fb.getUserData().equals("grunt")) {
+
+				if(fa.getUserData().equals("grunt")){
+					tempBodyArray.add(fa.getBody());
+					Body b = tempBodyArray.first();
+					gruntBodyTarget.add((Grunt) b.getUserData());
+					grunt = gruntBodyTarget.get(0);
+					grunt.contAtk = false;
+					gruntBodyTarget.clear();
+					tempBodyArray.clear();
+				}
+
+				if(fb.getUserData().equals("grunt")){
+					tempBodyArray.add(fb.getBody());
+					Body b = tempBodyArray.first();
+					gruntBodyTarget.add((Grunt) b.getUserData());
+					grunt = gruntBodyTarget.get(0);
+					grunt.contAtk = false;
+					gruntBodyTarget.clear();
+					tempBodyArray.clear();
+				}
+			}
+		}
+		//SCIENTIST AND PLAYER2 COLLISIONS
+		if (fa.getUserData().equals("player2") || fb.getUserData().equals("player2")) {
 			if (fa.getUserData().equals("scientist") || fb.getUserData().equals("scientist")) {
 				if(fa.getUserData().equals("scientist")){
 					tempBodyArray.add(fa.getBody());

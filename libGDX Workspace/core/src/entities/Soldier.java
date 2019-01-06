@@ -15,19 +15,20 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
-import screens.Mutagen;
+import BackEnd.Mutagen;
+import screens.PlayerMode;
 
 public class Soldier {
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
 	public int health = 150;
-	public static int atkDmg = 15;
+	public static int atkDmg = 8;
 	private TextureAtlas soldierAtkAtlas;
 	private Animation <TextureRegion> soldierAtkAnimation;
 	private TextureRegion soldierStandingRegion;
 	public static Vector2 soldierPos = new Vector2(0, 0);
-	private float shootTimer = 20, timePassed = 0, angle, angle2;
+	private float shootTimer = 20, timePassed = 0, angle, angle2, differenceX, differenceY;
 	public static Vector2 soldierSpawnPos = new Vector2(0,0);
 	private boolean shootAnimation = false;
 	private Sound soldierShoot;
@@ -44,7 +45,7 @@ public class Soldier {
 	}
 	
 	public void defineSoldier() {
-		bdef.position.set(PlayerOne.player1SpawnPos.x + .5f, PlayerOne.player1SpawnPos.y);
+		bdef.position.set(soldierSpawnPos);
 		soldierPos = bdef.position;
 		bdef.type = BodyDef.BodyType.DynamicBody;
 		//create body in the world
@@ -62,8 +63,32 @@ public class Soldier {
 		b2body.createFixture(fdef).setUserData("soldier"); 
 	}
 	public void renderSprite(SpriteBatch batch) {
-		float differenceX = PlayerOne.p1PosX - this.b2body.getPosition().x;
-		float differenceY = PlayerOne.p1PosY - this.b2body.getPosition().y;
+		
+        //Selects which player to attack depending on which player is closer by using the pythagorean theorem
+		if (!PlayerMode.OneP) {
+			//PlayerOne
+			float differencePlayerX =  PlayerOne.p1PosX - b2body.getPosition().x;
+			float differencePlayerY =  PlayerOne.p1PosY - b2body.getPosition().y;
+			
+			//PlayerTwo
+			float differencePlayer2X =  PlayerTwo.p2PosX - b2body.getPosition().x;
+			float differencePlayer2Y =  PlayerTwo.p2PosY - b2body.getPosition().y;
+			
+			float player1Dif = (float) Math.sqrt((differencePlayerX*differencePlayerX)+(differencePlayerY*differencePlayerY));
+			float player2Dif = (float) Math.sqrt((differencePlayer2X*differencePlayer2X)+(differencePlayer2Y*differencePlayer2Y));
+			
+			if (player1Dif < player2Dif) {
+				differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
+				differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
+			}else {
+				differenceX = PlayerTwo.p2PosX - b2body.getPosition().x;
+				differenceY = PlayerTwo.p2PosY - b2body.getPosition().y;
+			}
+		}else {
+			differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
+			differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
+		}
+
 		float angle2 = MathUtils.atan2(differenceY, differenceX);
 		angle = angle2 * MathUtils.radDeg;
 		angle = angle - 90; //makes it a full 360 degrees
@@ -87,7 +112,7 @@ public class Soldier {
 	public void shooting() {
 		if (!PlayerOne.p1Dead) {
 			shootTimer += .50;
-			if (shootTimer >= 18) {
+			if (shootTimer >= 26) {
 				if (Mutagen.sfxVolume != 0) {
 					Long tS = soldierShoot.play(Mutagen.sfxVolume - .8f);					
 				}

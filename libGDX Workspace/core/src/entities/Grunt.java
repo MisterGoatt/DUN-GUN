@@ -17,7 +17,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
-import screens.Mutagen;
+import BackEnd.Mutagen;
+import screens.PlayerMode;
 
 public class Grunt extends Sprite implements Disposable{
 	public World world; // world player will live in
@@ -28,11 +29,11 @@ public class Grunt extends Sprite implements Disposable{
 	private TextureAtlas gruntAtkAtlas, gruntDamagedAtlas;
 	private Animation <TextureRegion> gruntAtkAnimation;
 	private Animation <TextureRegion> gruntDamagedAnimation;
-	private float timePassed = 0, runSpeed = 1.5f;
+	private float timePassed = 0, runSpeed = 1.5f, differenceX, differenceY;
 	private TextureRegion gruntStandingRegion;
 	private Sound atkSwoosh;
 	public boolean attack = false, contAtk = false, tookDamage = false;
-	public int atkdmg = 10;
+	public int atkdmg = 5, target, aimTarget;
 	private boolean initialDmg = false; //makes sure the player takes damage at first when the enemy touches player
 	public static Array<Grunt> grunts = new Array<Grunt>();
 	public static Vector2 gruntPos = new Vector2(0,0);
@@ -71,12 +72,34 @@ public class Grunt extends Sprite implements Disposable{
 		}
 		
 		public void renderSprite(SpriteBatch batch) {
-			float differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
-			float differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
+
+	        //Selects which player to attack depending on which player is closer by using the pythagorean theorem
+			if (!PlayerMode.OneP) {
+				//PlayerOne
+				float differencePlayerX =  PlayerOne.p1PosX - b2body.getPosition().x;
+				float differencePlayerY =  PlayerOne.p1PosY - b2body.getPosition().y;
+				
+				//PlayerTwo
+				float differencePlayer2X =  PlayerTwo.p2PosX - b2body.getPosition().x;
+				float differencePlayer2Y =  PlayerTwo.p2PosY - b2body.getPosition().y;
+				
+				float player1Dif = (float) Math.sqrt((differencePlayerX*differencePlayerX)+(differencePlayerY*differencePlayerY));
+				float player2Dif = (float) Math.sqrt((differencePlayer2X*differencePlayer2X)+(differencePlayer2Y*differencePlayer2Y));
+				
+				if (player1Dif < player2Dif) {
+					differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
+					differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
+				}else {
+					differenceX = PlayerTwo.p2PosX - b2body.getPosition().x;
+					differenceY = PlayerTwo.p2PosY - b2body.getPosition().y;
+				}
+			}else {
+				differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
+				differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
+			}
+
 			angle2 = MathUtils.atan2(differenceY, differenceX);
-			float angle = angle2 * MathUtils.radDeg;
-	        
-			
+			float angle = angle2 * MathUtils.radDeg;	
 			angle = angle - 90; //makes it a full 360 degrees
 		    if (angle < 0) {
 		    	angle += 360 ;
@@ -91,10 +114,15 @@ public class Grunt extends Sprite implements Disposable{
 			}
 			else if (contAtk) {
 				if (!initialDmg) {
-					PlayerOne.player1HP -= atkdmg;
+					if (target == 1) {
+						System.out.println("hit");
+						PlayerOne.player1HP -= atkdmg;						
+					}
+					else {
+						PlayerTwo.player2HP -= atkdmg;
+					}
 					initialDmg = true;
 				}
-
 				batch.draw(gruntAtkAnimation.getKeyFrame(timePassed), posX - .17f, posY - .13f, 20 / Mutagen.PPM, 10 / Mutagen.PPM, 40 / Mutagen.PPM, 32 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
 
@@ -104,7 +132,6 @@ public class Grunt extends Sprite implements Disposable{
 					}
 					timePassed = 0;
 					initialDmg = false;
-					System.out.println(PlayerOne.player1HP);
 				}
 			}
 			

@@ -15,18 +15,19 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
-import screens.Mutagen;
+import BackEnd.Mutagen;
+import screens.PlayerMode;
 
 
 public class Scientist{
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
-	private float runSpeed = 1.5f, timePassed = 0;
+	private float runSpeed = 1.5f, timePassed = 0, differenceX, differenceY;
 	private TextureAtlas scientistDamagedAtlas, scientistAtkAtlas;
 	private Animation <TextureRegion> scientistDamagedAnimation, scientistAtkAnimation;
 	private TextureRegion scientistStandingRegion;
-	public int atkdmg = 15, health = 200;
+	public int atkdmg = 8, health = 120, target;
 	public boolean attack = false, tookDamage = false, contAtk = false, atkSoundStop = true;
 	private Sound atkSound;
 	private boolean initialDmg = false; //makes sure the player takes damage at first when the enemy touches player
@@ -62,8 +63,30 @@ public class Scientist{
 	}
 	
 	public void renderSprite(SpriteBatch batch) {
-		float differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
-		float differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
+		 //Selects which player to attack depending on which player is closer by using the pythagorean theorem
+		if (!PlayerMode.OneP) {
+			//PlayerOne
+			float differencePlayerX =  PlayerOne.p1PosX - b2body.getPosition().x;
+			float differencePlayerY =  PlayerOne.p1PosY - b2body.getPosition().y;
+			
+			//PlayerTwo
+			float differencePlayer2X =  PlayerTwo.p2PosX - b2body.getPosition().x;
+			float differencePlayer2Y =  PlayerTwo.p2PosY - b2body.getPosition().y;
+			
+			float player1Dif = (float) Math.sqrt((differencePlayerX*differencePlayerX)+(differencePlayerY*differencePlayerY));
+			float player2Dif = (float) Math.sqrt((differencePlayer2X*differencePlayer2X)+(differencePlayer2Y*differencePlayer2Y));
+			
+			if (player1Dif < player2Dif) {
+				differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
+				differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
+			}else {
+				differenceX = PlayerTwo.p2PosX - b2body.getPosition().x;
+				differenceY = PlayerTwo.p2PosY - b2body.getPosition().y;
+			}
+		}else {
+			differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
+			differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
+		}
 		float angle2 = MathUtils.atan2(differenceY, differenceX);
 		float angle = angle2 * MathUtils.radDeg;
         
@@ -83,7 +106,11 @@ public class Scientist{
 		}else if (contAtk) {
 			
 			if (!initialDmg) {
-				PlayerOne.player1HP -= atkdmg;
+				if (target ==1) {
+					PlayerOne.player1HP -= atkdmg;					
+				}else {
+					PlayerTwo.player2HP -= atkdmg;
+				}
 				initialDmg = true;
 			}
 			batch.draw(scientistAtkAnimation.getKeyFrame(timePassed), posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 60 / Mutagen.PPM, 1, 1, angle);
@@ -98,10 +125,14 @@ public class Scientist{
 				//long sSId = atkSound.play(1f);
 				timePassed = 0;
 				initialDmg = false;
-				PlayerOne.slowed = true;
-				PlayerOne.slowRestart = true;
+				if (target ==1) {
+					PlayerOne.slowed = true;
+					PlayerOne.slowRestart = true;
+				}else {
+					PlayerTwo.slowed = true;
+					PlayerTwo.slowRestart = true;
+				}
 				atkSoundStop = false;
-				System.out.println(PlayerOne.player1HP);
 			}
 		}
 		

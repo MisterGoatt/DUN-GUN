@@ -16,9 +16,9 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
+import BackEnd.Mutagen;
 import levels.Level1;
 import screens.GunSelectionScreen;
-import screens.Mutagen;
 import screens.PlayerMode;
 
 public class CreateBullet{
@@ -44,11 +44,17 @@ public class CreateBullet{
 		bulletAnimation = new Animation <TextureRegion>(1f / 15f, bulletTextureAtlas.getRegions());
 		playerID = ID;
 		defineBullet();
-
 	}
 
 	public void defineBullet() {
-		bdef.position.set(PlayerOne.p1PosX, PlayerOne.p1PosY);
+		
+		if (playerID == 1) {
+			bdef.position.set(PlayerOne.p1PosX, PlayerOne.p1PosY);
+
+		}
+		else if (playerID == 2) {
+			bdef.position.set(PlayerTwo.p2PosX, PlayerTwo.p2PosY);
+		}
 		bdef.type = BodyDef.BodyType.DynamicBody;
 		b2body = world.createBody(bdef);
 		b2body.setUserData(this);
@@ -104,7 +110,7 @@ public class CreateBullet{
 			//CO-OP
 			else {
 				angleR = PlayerOne.angle * MathUtils.degreesToRadians + 1.5078f;
-				angleD = PlayerOne.angle;
+				angleD = PlayerOne.angle + 90;
 			}
 
 			if (GunSelectionScreen.p1WeaponSelected == "shotgun") {
@@ -132,6 +138,10 @@ public class CreateBullet{
 		if (!PlayerMode.OneP) {
 			//SECOND PLAYER **********************************************************************
 			if (playerID == 2) {
+
+				angleR = PlayerTwo.angle * MathUtils.degreesToRadians + 1.5078f;
+				angleD = PlayerTwo.angle;
+				
 				if (GunSelectionScreen.p2WeaponSelected == "laser") {
 					PolygonShape shape = new PolygonShape();
 					Vector2[] vertice = new Vector2[4];
@@ -170,7 +180,8 @@ public class CreateBullet{
 				//Sets size of the physics bodies depending on the type of gun
 				fdef.filter.categoryBits = Mutagen.BULLET; //identifies the category bit is
 				fdef.filter.maskBits = Mutagen.WALL | Mutagen.GRUNT | Mutagen.SCIENTIST; // what masking bit the category bit collides with
-				b2body.createFixture(fdef).setUserData("bullets");
+				b2body.createFixture(fdef).setUserData("bullets2");
+
 				//CO-OP
 				//						angleR = PlayerOne.angle * MathUtils.degreesToRadians + 1.5078f;
 				//						angleD = PlayerOne.angle;
@@ -214,44 +225,46 @@ public class CreateBullet{
 			//else if player ID == 2 *****
 		}
 		if (playerID == 1) {
+
 			switch (GunSelectionScreen.p1WeaponSelected) {
+	
 			case "laser":
-				batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / Mutagen.PPM, 45 / Mutagen.PPM, 1, 1, angleD);
+				batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / Mutagen.PPM, 45 / Mutagen.PPM, 1, 1, angleD - 90);
 				timePassed += Gdx.graphics.getDeltaTime();
 				break;
 			case "shotgun":
-				batch.draw(pelletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 9 / Mutagen.PPM, 9 / Mutagen.PPM, 1, 1, angleD);
+				batch.draw(pelletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 9 / Mutagen.PPM, 9 / Mutagen.PPM, 1, 1, angleD - 90);
 				timePassed += Gdx.graphics.getDeltaTime();
 				break;
 			case "battle axe":
 				b2body.setTransform(PlayerOne.p1PosX, PlayerOne.p1PosY, angleR - 1.507f); //sets the position of the body to the position of the body and implements rotation
 				break;
 			default: 
-				batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 5 / Mutagen.PPM, 20 / Mutagen.PPM, 1, 1, angleD);	
+				batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 5 / Mutagen.PPM, 20 / Mutagen.PPM, 1, 1, angleD - 90);	
 				timePassed += Gdx.graphics.getDeltaTime();
 
 				break;
 			}
 		}
-		//		else if (playerID == 2){
-		//			switch (GunSelectionScreen.p2WeaponSelected) {
-		//			case "laser":
-		//				batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / Mutagen.PPM, 45 / Mutagen.PPM, 1, 1, angleD - 90);
-		//				timePassed += Gdx.graphics.getDeltaTime();
-		//				break;
-		//			case "shotgun":
-		//				batch.draw(pelletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 9 / Mutagen.PPM, 9 / Mutagen.PPM, 1, 1, angleD - 90);
-		//				timePassed += Gdx.graphics.getDeltaTime();
-		//				break;
-		//			case "battle axe":
-		//				b2body.setTransform(PlayerOne.p1PosX, PlayerOne.p1PosY, angleR); //sets the position of the body to the position of the body and implements rotation
-		//				break;
-		//			default: 
-		//				batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 5 / Mutagen.PPM, 20 / Mutagen.PPM, 1, 1, angleD - 90);	
-		//				timePassed += Gdx.graphics.getDeltaTime();
-		//
-		//				break;
-		//			}
-		//		}
+			else if (playerID == 2){
+				switch (GunSelectionScreen.p2WeaponSelected) {
+				case "laser":
+					batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / Mutagen.PPM, 45 / Mutagen.PPM, 1, 1, angleD );
+					timePassed += Gdx.graphics.getDeltaTime();
+					break;
+				case "shotgun":
+					batch.draw(pelletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 9 / Mutagen.PPM, 9 / Mutagen.PPM, 1, 1, angleD);
+					timePassed += Gdx.graphics.getDeltaTime();
+					break;
+				case "battle axe":
+					b2body.setTransform(PlayerOne.p1PosX, PlayerOne.p1PosY, angleR); //sets the position of the body to the position of the body and implements rotation
+					break;
+				default: 
+					batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 5 / Mutagen.PPM, 20 / Mutagen.PPM, 1, 1, angleD);	
+					timePassed += Gdx.graphics.getDeltaTime();
+	
+					break;
+				}
+			}
 	}
 }

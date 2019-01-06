@@ -28,12 +28,15 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import BackEnd.Lvl1EntityPositions;
+import BackEnd.Mutagen;
 import collisions.B2DWorldCreator;
 import collisions.CollisionDetector;
 import entities.CreateBullet;
 import entities.Grunt;
 import entities.HealthPickUp;
 import entities.PlayerOne;
+import entities.PlayerTwo;
 import entities.Scientist;
 import entities.Soldier;
 import entities.SoldierBullets;
@@ -41,7 +44,6 @@ import entities.Turret;
 import entities.TurretBullets;
 import screens.GunSelectionScreen;
 import screens.MainMenu;
-import screens.Mutagen;
 import screens.PlayerMode;
 import screens.levelCompleted;
 
@@ -58,13 +60,10 @@ public class Level1 implements Screen{
 	private World world;
 	private Box2DDebugRenderer b2dr; //graphical representation of body fixtures
 	private PlayerOne playerOne;
-	private Grunt grunt;
-	private Scientist scientist;
+	private PlayerTwo playerTwo;
 	public CreateBullet createBullet;
 	private CollisionDetector cd;
-	private Turret turret;
-	private Soldier soldier;
-	private HealthPickUp hpPickUp;
+	private Lvl1EntityPositions lvl1EP;
 
 	//private int[] layerBackround = {0, 1, 2, 3};
 	//private int[] layerAfterBackground = {4};
@@ -77,6 +76,9 @@ public class Level1 implements Screen{
 	private boolean room1 = true, room2 = true, room3 = true, room4 = true, room5 = true, 
 			room6 = true, room6t = true, room7 = true, room8 = true, room9 = true, hpSpawn = true; //room spawn control
 	public static Vector3 mousePosition = new Vector3(0, 0, 0);
+	private Vector2 cam2 = new Vector2(0, 0);
+	private Vector2 cam2Hold = new Vector2(0, 0);
+
 	Random random;
 
 
@@ -91,7 +93,7 @@ public class Level1 implements Screen{
 		TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
 		params.textureMinFilter = TextureFilter.Linear;
 		params.textureMagFilter = TextureFilter.Linear;
-		map = new TmxMapLoader().load("tileMaps/Level1/Level1Partial.tmx", params);
+		map = new TmxMapLoader().load("tileMaps/Level1/Level1Complete.tmx", params);
 		mouseCursor = Mutagen.manager.get("crosshair 1.png", Texture.class);
 		axeMouseCursor = Mutagen.manager.get("axeCursor.png");
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / Mutagen.PPM);
@@ -106,13 +108,15 @@ public class Level1 implements Screen{
 			playerOne = new PlayerOne(world); //must be created after world creation or will crash
 		}
 		if (!PlayerMode.OneP) {
-//			for (MapObject mo : playerLayer.getObjects()) {
-//				PlayerTwo.player2SpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-//				PlayerTwo.player2SpawnPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-//				playerTwo = new PlayerTwo(world);
-//			}
+			MapLayer player2Layer = map.getLayers().get("Player 2");
+			for (MapObject mo : player2Layer.getObjects()) {
+				PlayerTwo.player2SpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+				PlayerTwo.player2SpawnPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+				playerTwo = new PlayerTwo(world);
+			}
 		}
 
+		lvl1EP = new Lvl1EntityPositions();
 		cd = new CollisionDetector();
 		new B2DWorldCreator(world, map);
 		random = new Random();
@@ -129,9 +133,9 @@ public class Level1 implements Screen{
 		Soldier.soldiers.clear();
 		SoldierBullets.soldierBullets.clear();
 		if (!PlayerMode.OneP) {
-//			PlayerTwo.pellets.clear();
-//			PlayerTwo.lasers.clear();
-//			PlayerTwo.bullets.clear();
+			PlayerTwo.pellets2.clear();
+			PlayerTwo.lasers2.clear();
+			PlayerTwo.bullets2.clear();
 		}
 
 		pauseMenu = Mutagen.manager.get("screens/Pause.jpg", Texture.class);
@@ -141,9 +145,6 @@ public class Level1 implements Screen{
 		levelOneMusic.play();
 		this.world.setContactListener(cd);
 		Gdx.input.setInputProcessor(null);
-		soldier = new Soldier(world);
-		Soldier.soldiers.add(soldier);
-
 	}
 
 	//Creation of bullet objects and playing shooting and swinging sound effects
@@ -169,26 +170,26 @@ public class Level1 implements Screen{
 			}
 			PlayerOne.timeToShake = false;
 		}
-//		if (PlayerTwo.timeToShake) {
-//			switch (GunSelectionScreen.p2WeaponSelected) {
-//			case "laser":
-//				shake(.2f, 400);
-//				break;
-//			case "revolver":
-//				shake(.08f, 100);
-//				break;
-//			case "rifle":
-//				shake(.1f, 200);
-//				break;
-//			case "shotgun":
-//				shake(.1f, 200);
-//				break;
-//			case "assault rifle":
-//				shake(.08f, 100);
-//				break;
-//			}
-//			PlayerTwo.timeToShake = false;
-//		}
+		if (PlayerTwo.timeToShake) {
+			switch (GunSelectionScreen.p2WeaponSelected) {
+			case "laser":
+				shake(.2f, 400);
+				break;
+			case "revolver":
+				shake(.08f, 100);
+				break;
+			case "rifle":
+				shake(.1f, 200);
+				break;
+			case "shotgun":
+				shake(.1f, 200);
+				break;
+			case "assault rifle":
+				shake(.08f, 100);
+				break;
+			}
+			PlayerTwo.timeToShake = false;
+		}
 	}
 
 	public void shake(float intensity, float duration) {
@@ -201,14 +202,38 @@ public class Level1 implements Screen{
 		//timeStep = 60 times a second, velocity iterations = 6, position iterations = 2
 		world.step(1/60f, 6, 2); //tells game how many times per second for Box2d to make its calculations
 		removeBodies(); //goes to method that removes physics bodies
-		System.out.println(PlayerOne.p1PosY);
 		shootGun(); //sees if gun is shooting
 		/* a = current camera position b = target
 		 * a+(b-a)*lerp
 		 * the higher the lerp value the more instantaneous
 		 */
-		cam.position.x = cam.position.x + (playerOne.b2body.getPosition().x - cam.position.x) * .05f;
-		cam.position.y = cam.position.y + (playerOne.b2body.getPosition().y - cam.position.y) * .05f;
+		if (PlayerMode.OneP) {
+			cam.position.x = cam.position.x + (playerOne.b2body.getPosition().x - cam.position.x) * .05f;
+			cam.position.y = cam.position.y + (playerOne.b2body.getPosition().y - cam.position.y) * .05f;	
+		} else {
+			if (!PlayerOne.p1Dead && !PlayerTwo.p2Dead) {
+				cam.position.x = (playerTwo.b2body.getPosition().x - playerOne.b2body.getPosition().x) / 2;
+				if (playerOne.b2body.getPosition().x > playerTwo.b2body.getPosition().x) {
+					cam.position.x = playerTwo.b2body.getPosition().x + Math.abs(cam.position.x);
+				}else {
+					cam.position.x = playerOne.b2body.getPosition().x + Math.abs(cam.position.x);
+				}
+				cam.position.y = (playerTwo.b2body.getPosition().y - playerOne.b2body.getPosition().y) / 2;
+				if (playerOne.b2body.getPosition().y > playerTwo.b2body.getPosition().y) {
+					cam.position.y = playerTwo.b2body.getPosition().y + Math.abs(cam.position.y);
+				}else {
+					cam.position.y = playerOne.b2body.getPosition().y + Math.abs(cam.position.y);
+				}
+			}else if (PlayerOne.p1Dead) {
+				//Player Two
+				cam.position.x = cam.position.x + (playerTwo.b2body.getPosition().x - cam.position.x) * .05f;
+				cam.position.y = cam.position.y + (playerTwo.b2body.getPosition().y - cam.position.y) * .05f;	
+			}else {
+				//Player One
+				cam.position.x = cam.position.x + (playerOne.b2body.getPosition().x - cam.position.x) * .05f;
+				cam.position.y = cam.position.y + (playerOne.b2body.getPosition().y - cam.position.y) * .05f;	
+			}
+		}
 		// Only screen shake when required.
 		if (elapsed < duration) {
 			// Calculate the amount of shake based on how long it has been shaking already
@@ -241,16 +266,16 @@ public class Level1 implements Screen{
 					PlayerOne.pellets.removeValue((CreateBullet)b.getUserData(), true);
 				}
 				//Player Two
-//				if (GunSelectionScreen.p2WeaponSelected == "rifle" || GunSelectionScreen.p2WeaponSelected == "revolver" 
-//						|| GunSelectionScreen.p2WeaponSelected == "assault rifle") {
-//					PlayerTwo.bullets.removeValue((CreateBullet)b.getUserData(), true);
-//				}
-//				else if (GunSelectionScreen.p2WeaponSelected == "laser") {
-//					PlayerTwo.lasers.removeValue((CreateBullet)b.getUserData(), true);
-//				}
-//				else if (GunSelectionScreen.p2WeaponSelected == "shotgun") {
-//					PlayerTwo.pellets.removeValue((CreateBullet)b.getUserData(), true);
-//				}
+				if (GunSelectionScreen.p2WeaponSelected == "rifle" || GunSelectionScreen.p2WeaponSelected == "revolver" 
+						|| GunSelectionScreen.p2WeaponSelected == "assault rifle") {
+					PlayerTwo.bullets2.removeValue((CreateBullet)b.getUserData(), true);
+				}
+				else if (GunSelectionScreen.p2WeaponSelected == "laser") {
+					PlayerTwo.lasers2.removeValue((CreateBullet)b.getUserData(), true);
+				}
+				else if (GunSelectionScreen.p2WeaponSelected == "shotgun") {
+					PlayerTwo.pellets2.removeValue((CreateBullet)b.getUserData(), true);
+				}
 				world.destroyBody(b);
 				b = null;
 			}
@@ -293,171 +318,6 @@ public class Level1 implements Screen{
 		bodiesToRemove.clear();
 	}
 
-	public void spawningLocations() {
-
-//		//SPAWN HEALTH PICK_UPS
-//		if (hpSpawn) {
-//			MapLayer hpLayer = map.getLayers().get("hp");
-//			for (MapObject mo : hpLayer.getObjects()) {
-//				HealthPickUp.hpSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-//				HealthPickUp.hpSpawnPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-//				hpPickUp = new HealthPickUp(world);
-//				HealthPickUp.hpPickUp.add(hpPickUp);
-//			}
-//			hpSpawn = false;
-//		}
-
-
-//		//SPAWN ENEMIES GIVEN PLAYER LOCATION
-//		if (playerOne.b2body.getPosition().x < 6.6 && playerOne.b2body.getPosition().x > 6.5 && 
-//				playerOne.b2body.getPosition().y < 3.9 && playerOne.b2body.getPosition().y > 3.2){
-//			if (room2) {
-//				MapLayer layer = map.getLayers().get("room2g");
-//				for (MapObject mo : layer.getObjects()) {
-//					Grunt.gruntPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-//					Grunt.gruntPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-//					grunt = new Grunt(world);
-//					Grunt.grunts.add(grunt);
-//				}
-//				room2 = false;
-//			}
-//		}
-//
-//		if (playerOne.b2body.getPosition().x < 4.8 && playerOne.b2body.getPosition().x > 4.1 && 
-//				playerOne.b2body.getPosition().y < 1.4 && playerOne.b2body.getPosition().y > 1.3){
-//			if (room1) {
-//				MapLayer layer = map.getLayers().get("room1g");
-//				for (MapObject mo : layer.getObjects()) {
-//					Grunt.gruntPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-//					Grunt.gruntPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-//					grunt = new Grunt(world);
-//					Grunt.grunts.add(grunt);
-//				}
-//				room1 = false;
-//			}
-//
-//
-//		}
-//		if (playerOne.b2body.getPosition().x < 8.6 && playerOne.b2body.getPosition().x > 8 && 
-//				playerOne.b2body.getPosition().y < 4.2 && playerOne.b2body.getPosition().y > 4.1){
-//			if (room3) {
-//				MapLayer layer = map.getLayers().get("room3g");
-//				for (MapObject mo : layer.getObjects()) {
-//					Grunt.gruntPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-//					Grunt.gruntPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-//					grunt = new Grunt(world);
-//					Grunt.grunts.add(grunt);
-//				}
-//				room3 = false;
-//			}
-//
-//
-//		}
-//		if (playerOne.b2body.getPosition().x < 8.6 && playerOne.b2body.getPosition().x > 8 && 
-//				playerOne.b2body.getPosition().y < 6.5 && playerOne.b2body.getPosition().y > 6.4){
-//			if (room4) {
-//				MapLayer layer = map.getLayers().get("room4g");
-//				for (MapObject mo : layer.getObjects()) {
-//					Grunt.gruntPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-//					Grunt.gruntPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-//					grunt = new Grunt(world);
-//					Grunt.grunts.add(grunt);
-//				}
-//				MapLayer layer2 = map.getLayers().get("room4s");
-//				for (MapObject mo : layer2.getObjects()) {
-//					Scientist.scientistPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-//					Scientist.scientistPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-//					scientist = new Scientist(world);
-//					Scientist.scientists.add(scientist);
-//				}
-//				room4 = false;
-//			}
-//
-//
-//		}
-//		if (playerOne.b2body.getPosition().x < 11.8 && playerOne.b2body.getPosition().x > 11.1 && 
-//				playerOne.b2body.getPosition().y < 10.3 && playerOne.b2body.getPosition().y > 10.2){
-//			if (room5) {
-//				MapLayer layer = map.getLayers().get("room5g");
-//				for (MapObject mo : layer.getObjects()) {
-//					Grunt.gruntPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-//					Grunt.gruntPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-//					grunt = new Grunt(world);
-//					Grunt.grunts.add(grunt);
-//				}
-//				MapLayer layer2 = map.getLayers().get("room5s");
-//				for (MapObject mo : layer2.getObjects()) {
-//					Scientist.scientistPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-//					Scientist.scientistPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-//					scientist = new Scientist(world);
-//					Scientist.scientists.add(scientist);
-//				}
-//				room5 = false;
-//			}
-//		}
-//		if (playerOne.b2body.getPosition().x < 7.4 && playerOne.b2body.getPosition().x > 7.3 && 
-//				playerOne.b2body.getPosition().y < 12.8 && playerOne.b2body.getPosition().y > 12.1){
-//			if (room6) {
-//				MapLayer layer = map.getLayers().get("room6g");
-//				for (MapObject mo : layer.getObjects()) {
-//					Grunt.gruntPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-//					Grunt.gruntPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-//					grunt = new Grunt(world);
-//					Grunt.grunts.add(grunt);
-//				}
-//				room6 = false;
-//			}
-//		}
-//		if (playerOne.b2body.getPosition().x < 9.9 && playerOne.b2body.getPosition().x > 9.8 && 
-//				playerOne.b2body.getPosition().y < 16 && playerOne.b2body.getPosition().y > 15){
-//			if (room6t) {
-//				MapLayer layer = map.getLayers().get("room6t");
-//				for (MapObject mo : layer.getObjects()) {
-//					Turret.turretSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-//					Turret.turretSpawnPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-//					turret = new Turret(world);
-//					Turret.turrets.add(turret);
-//				}
-//				room6t = false;
-//			}
-//		}
-//		if (playerOne.b2body.getPosition().x < 10.1 && playerOne.b2body.getPosition().x > 10 && 
-//				playerOne.b2body.getPosition().y < 21.4 && playerOne.b2body.getPosition().y > 20.7){
-//			if (room8) {
-//				MapLayer layer = map.getLayers().get("room8g");
-//				for (MapObject mo : layer.getObjects()) {
-//					Grunt.gruntPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-//					Grunt.gruntPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-//					grunt = new Grunt(world);
-//					Grunt.grunts.add(grunt);
-//				}
-//				room8 = false;
-//			}
-//		}
-//		if (playerOne.b2body.getPosition().x < 4.8 && playerOne.b2body.getPosition().x > 4.7 && 
-//				playerOne.b2body.getPosition().y < 20.8 && playerOne.b2body.getPosition().y > 20.1){
-//			if (room9) {
-//				MapLayer layer = map.getLayers().get("room9s");
-//				for (MapObject mo : layer.getObjects()) {
-//					Scientist.scientistPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-//					Scientist.scientistPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-//					scientist = new Scientist(world);
-//					Scientist.scientists.add(scientist);
-//				}
-//				room9 = false;
-//			}
-//		}
-//		//GAME BEATEN
-//		if (playerOne.b2body.getPosition().x < .6 && playerOne.b2body.getPosition().x > 0 &&
-//				playerOne.b2body.getPosition().y < 20.8 && playerOne.b2body.getPosition().y > 19.8) {
-//			PlayerOne.runningSound.stop();
-//			Gdx.input.setCursorCatched(false);
-//			levelOneMusic.stop();
-//			game.setScreen(new levelCompleted(game));
-//		}
-	}
-
-
 	@Override
 	public void render(float delta) {
 
@@ -490,7 +350,7 @@ public class Level1 implements Screen{
 			cam.position.x = 0;
 			cam.position.y = 0;
 			game.batch.draw(pauseMenu, 0 - (350/Mutagen.PPM), 0 - (200 / Mutagen.PPM), 1500 / 200,  800 / 200);
-			
+
 			lockCursor = false;	
 			if (Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
 				//RESUME
@@ -520,7 +380,7 @@ public class Level1 implements Screen{
 			}
 			cameraUpdate(delta);
 			mapRenderer.render();
-			b2dr.render(world, cam.combined);
+			//b2dr.render(world, cam.combined);
 			game.batch.begin(); //starts sprite spriteBatch
 
 			//RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER BODY OBJECTS
@@ -539,18 +399,17 @@ public class Level1 implements Screen{
 			for (int i = 0; i < PlayerOne.bullets.size; i++) {
 				PlayerOne.bullets.get(i).renderSprite(game.batch);
 			}
-//			if (!PlayerMode.OneP) {
-//				for (int i = 0; i < PlayerOne.lasers.size; i++) {
-//					PlayerTwo.lasers.get(i).renderSprite(game.batch);
-//				}
-//				for (int i = 0; i < PlayerOne.pellets.size; i++) {
-//					PlayerTwo.pellets.get(i).renderSprite(game.batch);
-//				}
-//				for (int i = 0; i < PlayerOne.bullets.size; i++) {
-//					PlayerTwo.bullets.get(i).renderSprite(game.batch);
-//
-//				}
-//			}
+			if (!PlayerMode.OneP) {
+				for (int i = 0; i < PlayerTwo.lasers2.size; i++) {
+					PlayerTwo.lasers2.get(i).renderSprite(game.batch);
+				}
+				for (int i = 0; i < PlayerTwo.pellets2.size; i++) {
+					PlayerTwo.pellets2.get(i).renderSprite(game.batch);
+				}
+				for (int i = 0; i < PlayerTwo.bullets2.size; i++) {
+					PlayerTwo.bullets2.get(i).renderSprite(game.batch);
+				}
+			}
 			for (int i = 0; i < Soldier.soldiers.size; i++) {
 				Soldier.soldiers.get(i).renderSprite(game.batch);
 			}
@@ -564,21 +423,43 @@ public class Level1 implements Screen{
 				TurretBullets.turretBullets.get(i).renderSprite(game.batch);
 			}
 
-				for (int i = 0; i < HealthPickUp.hpPickUp.size; i++) {
+			for (int i = 0; i < HealthPickUp.hpPickUp.size; i++) {
 				HealthPickUp.hpPickUp.get(i).renderSprite(game.batch);
 			}
 			//Goes to method that handles spawning the enemies
-			spawningLocations();
+			lvl1EP.SpawnEntities(world, map);
+			
+			//LEVEL END
+			if (PlayerOne.p1PosX > 85.1 && PlayerOne.p1PosX < 86.6 && PlayerOne.p1PosY > 12.4 && PlayerOne.p1PosY < 10.9) {
+				PlayerOne.runningSound.stop();					
+
+				if (!PlayerMode.OneP) {
+					PlayerTwo.runningSound.stop();
+				}
+				Gdx.input.setCursorCatched(false);
+				levelOneMusic.stop();
+				game.setScreen(new levelCompleted(game));
+			}
+			else if (PlayerTwo.p2PosX > 85.1 && PlayerTwo.p2PosX < 86.6 && PlayerTwo.p2PosY > 12.4 && PlayerTwo.p2PosY < 10.9) {
+				PlayerOne.runningSound.stop();
+				PlayerTwo.runningSound.stop();
+				Gdx.input.setCursorCatched(false);
+				levelOneMusic.stop();
+				game.setScreen(new levelCompleted(game));
+			}
 			//Player One
 			if (!PlayerOne.p1Dead) {
 				playerOne.handleInput(delta);
 				playerOne.renderSprite(game.batch);	        	
 			}
-			//Player Two
-//			if (!PlayerTwo.p2Dead) {
-//				playerTwo.handleInput(delta);
-//				playerTwo.renderSprite(game.batch);
-//			}
+
+			if (!PlayerMode.OneP) {
+				//Player Two
+				if (!PlayerTwo.p2Dead) {
+					playerTwo.handleInput(delta);
+					playerTwo.renderSprite(game.batch);
+				}	
+			}
 
 			if (PlayerMode.OneP) {
 				if (GunSelectionScreen.p1WeaponSelected == "battle axe") {
@@ -596,6 +477,7 @@ public class Level1 implements Screen{
 		mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		cam.unproject(mousePosition); //gets mouse coordinates within viewport
 		game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
+		//System.out.println(mousePosition.x + " " + mousePosition.y );
 	}
 
 	@Override

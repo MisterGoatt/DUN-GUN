@@ -11,6 +11,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import BackEnd.Mutagen;
+
 public class Options implements Screen, InputProcessor{
 	final Mutagen game;
 
@@ -138,7 +140,7 @@ public class Options implements Screen, InputProcessor{
 					Mutagen.musicVolume = 0f;
 				}else {
 					music = true;
-					Mutagen.musicVolume = 1f;
+					Mutagen.musicVolume = .7f;
 					Mutagen.clicking();
 
 				}
@@ -150,7 +152,7 @@ public class Options implements Screen, InputProcessor{
 					Mutagen.sfxVolume = 0f;
 				}else {
 					sfx = true;
-					Mutagen.sfxVolume = 1f;
+					Mutagen.sfxVolume = .7f;
 					Mutagen.clicking();
 				}
 			}

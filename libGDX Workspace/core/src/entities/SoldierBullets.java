@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
-import screens.Mutagen; 
+import BackEnd.Mutagen; 
 
 public class SoldierBullets {
 	public World world; // world player will live in

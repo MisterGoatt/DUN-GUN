@@ -19,10 +19,10 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
+import BackEnd.Mutagen;
 import levels.Level1;
 import screens.DifficultyScreen;
 import screens.GunSelectionScreen;
-import screens.Mutagen;
 import screens.PlayerMode;
 
 public class PlayerOne extends Sprite implements Disposable{
@@ -63,7 +63,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	public PlayerOne(World world) {
 		this.world = world;
 		if (DifficultyScreen.difficulty == 1) {
-			player1HP = 150;			
+			player1HP = 1000000;			
 		}
 		if (DifficultyScreen.difficulty == 2) {
 			player1HP = 100;			
@@ -129,8 +129,6 @@ public class PlayerOne extends Sprite implements Disposable{
 		if (!PlayerMode.OneP) {
 			angle = 0;
 		}
-
-
 		shape.dispose();
 	}
 
@@ -192,7 +190,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		}
 		//Assault Rifle
 		else if (GunSelectionScreen.p1WeaponSelected == "assault rifle") {
-			speed = 1.2f;
+			speed = 6f;
 			if (shootAnimation) {
 				batch.draw(assaultRifleAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / Mutagen.PPM, 20 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
@@ -252,10 +250,11 @@ public class PlayerOne extends Sprite implements Disposable{
 			batch.draw(p1HP, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, PlayerOne.player1HP / (Mutagen.PPM + 100), 3f / Mutagen.PPM); //HP bar			
 		}
 
-
 		//PLAYER DIES
 		if (player1HP <= 0) {
 			world.destroyBody(this.b2body);
+			p1PosX = 0;
+			p1PosY = 0;
 			p1Dead = true;
 			runningSound.stop();
 		}

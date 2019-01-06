@@ -12,6 +12,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import BackEnd.Mutagen;
+
 public class PlayerMode implements Screen, InputProcessor{
 
 	final Mutagen game;
@@ -143,7 +145,6 @@ public class PlayerMode implements Screen, InputProcessor{
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		if (!buttonPressed){
-			System.out.println("yooodle  yoodle");
 	
 			//single player
 			if ( mX < 1145 && mX > 407 && mY < 660 && mY > 509) {
