@@ -239,7 +239,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		
 		if (slowed) {
 			if (slowRestart) {
-				System.out.println("sr");
+				//System.out.println("sr");
 				slowedCounter = 0;
 				slowRestart = false;
 			}

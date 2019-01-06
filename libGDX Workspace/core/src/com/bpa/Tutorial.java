@@ -11,32 +11,26 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Tutorial implements Screen{
 	final Mutagen game;
-	//Texture tutorial;
+	Texture tutorialOptions;
 	private OrthographicCamera cam;
-	//TMapLocations level1Map;
 	private Viewport gamePort;
-	private TmxMapLoader maploader; //what loads map into game
-	private TiledMap map; //references map itself
-	private OrthogonalTiledMapRenderer renderer; //renders map to the screen
+	boolean justClicked = false;
+	boolean onCrash = true;
+	private Vector3 mouse_position = new Vector3(0, 0, 0);
+
 	
 	public Tutorial(final Mutagen game) {
 		this.game = game;
-		//tutorial = new Texture("screens/Tutorial.jpg");
-		maploader = new TmxMapLoader();
-		map = maploader.load("tileMaps/Tutorial/TileMap4.tmx");
-		renderer = new OrthogonalTiledMapRenderer(map);
-		
+		tutorialOptions = new Texture("screens/tutorialOptions.jpg");
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); //centers the map to center of screen
-		//cam.position.set(300, 20, 0); //moves camera to bottom left of map
-		//cam.zoom -= .5; // zooms in to the map
-
 		
 	}
 	
@@ -48,52 +42,40 @@ public class Tutorial implements Screen{
 
 	@Override
 	public void render(float delta) {
-		//game.batch.begin(); 
-		//game.batch.setProjectionMatrix(cam.combined);
-
-		
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClearColor(0, 0, 0 , 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		//game.batch.draw(tutorial, 0, 0);
 		
-		//mouse x and y
-		int mX = Gdx.input.getX();
-		int mY = Gdx.graphics.getHeight() - Gdx.input.getY();
+		mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+		cam.unproject(mouse_position);
 		
-		//RETURNS TO MAIN MENU
-		if (mY < 100 && mX < 100 && Gdx.input.isButtonPressed(Buttons.LEFT)) {
-			game.setScreen(new MainMenu(game));
+		game.batch.begin();
+		game.batch.setProjectionMatrix(cam.combined);
+		
+		game.batch.draw(tutorialOptions, 0, 0);
+		
+		
+		float mX = mouse_position.x;
+		float mY = mouse_position.y;
+		
+		System.out.println(mouse_position.x);
+		//System.out.println(mouse_position.y);
+	
+		if (20 < mX && mX < 710 && 390 < mY && mY < 590)
+		{
+			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+				game.setScreen(new ControlScreen(game));
+			}
 		}
 		
-		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-	        System.out.println("left"); 
-			cam.zoom -= .01;
-
-			//cam.translate(Gdx.input.getDeltaX() * (-1), Gdx.input.getDeltaY());
-		}
-		if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-	        System.out.println("right"); 
-			cam.zoom += .01;
-		} 
-		
-		
-		
-		if(Gdx.input.isKeyPressed(Keys.LEFT)){
-	      cam.position.x -= 5;
-		} 
-		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			cam.position.x += 5;
-	      }
-		if (Gdx.input.isKeyPressed(Keys.UP)) {
-	    	  cam.position.y += 5;
-	      }
-		if (Gdx.input.isKeyPressed(Keys.DOWN)) {
-	    	  cam.position.y -= 5;
-	      }
+		/*if (784 < mX && mX < 1480 && 390 < mY && mY < 590)
+		{
+			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+				game.setScreen(new ControlScreen(game));
+			}
+		}*/
 		
 		cam.update();
-		renderer.setView((OrthographicCamera) gamePort.getCamera()); //uses gamePort camera 
-		renderer.render();
+		game.batch.end();
 	}
 
 	@Override
@@ -120,9 +102,8 @@ public class Tutorial implements Screen{
 
 	@Override
 	public void dispose() {
-		map.dispose();
-		renderer.dispose();		
-		//tutorial.dispose();	
-	}
+		game.batch.dispose();
+		tutorialOptions.dispose();
+		}
 
 }

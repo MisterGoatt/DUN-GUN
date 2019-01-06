@@ -102,7 +102,6 @@ public class Grunt extends Sprite implements Disposable{
 					timePassed = 0;
 					//PlayerOne.player1HP -= atkdmg;
 					initialDmg = false;
-					System.out.println(PlayerOne.player1HP);
 
 				}
 				

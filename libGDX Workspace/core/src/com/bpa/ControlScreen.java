@@ -3,31 +3,36 @@ package com.bpa;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class CrashScreen implements Screen {
+
+public class ControlScreen implements Screen {
 	final Mutagen game;
-	Texture crashScreen;
+	Texture controlScreen;
 	private OrthographicCamera cam;
 	private Viewport gamePort;
 	boolean justClicked = false;
 	boolean onCrash = true;
 	private Vector3 mouse_position = new Vector3(0, 0, 0);
-	BitmapFont activeCrashText;
+
 	
-	
-	public CrashScreen(final Mutagen game) {
+	public ControlScreen(final Mutagen game) {
 		this.game = game;
-		crashScreen = new Texture("screens/crashScreen.jpg");
-		cam = new OrthographicCamera();
-		gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam);
-		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+		controlScreen = new Texture("screens/controlScreen.jpg");
+		cam = new OrthographicCamera();		
+		gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); //centers the map to center of screen
+		
 	}
 	
 	@Override
@@ -38,7 +43,6 @@ public class CrashScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		// clears screen
 		Gdx.gl.glClearColor(0, 0, 0 , 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
@@ -48,36 +52,27 @@ public class CrashScreen implements Screen {
 		game.batch.begin();
 		game.batch.setProjectionMatrix(cam.combined);
 		
-		game.batch.draw(crashScreen, 0, 0);
+		game.batch.draw(controlScreen, 0, 0);
 		
 		
 		float mX = mouse_position.x;
 		float mY = mouse_position.y;
 		
-		//System.out.println(mouse_position.x);
-		//System.out.println(mouse_position.y);
+		//RETURNS TO MAIN MENU
+	
 		
-		
-		if (640 < mX && mX < 860 && 110 < mY && mY < 330)
-		{
-			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-				Gdx.app.exit();
-			}
-		}
-			
 		cam.update();
 		game.batch.end();
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		gamePort.update(width, height);
+		gamePort.update(width, height);		
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
-		
+	
 	}
 
 	@Override
@@ -95,6 +90,7 @@ public class CrashScreen implements Screen {
 	@Override
 	public void dispose() {
 		game.batch.dispose();
-		crashScreen.dispose();
-	}
+		controlScreen.dispose();
+		}
+
 }

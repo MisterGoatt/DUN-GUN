@@ -39,7 +39,7 @@ public class levelCompleted implements Screen{
 			yPos -= 10;
 		}else {
 			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-				System.out.println("NEXT LEVEL");
+				//System.out.println("NEXT LEVEL");
 			}
 		}
 		

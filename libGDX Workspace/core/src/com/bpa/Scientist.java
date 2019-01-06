@@ -93,7 +93,6 @@ public class Scientist{
 				PlayerOne.slowed = true;
 				PlayerOne.slowRestart = true;
 				atkSoundStop = false;
-				System.out.println(PlayerOne.player1HP);
 			}
 		}
 		

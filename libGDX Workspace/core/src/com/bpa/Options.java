@@ -50,7 +50,6 @@ public class Options implements Screen{
 		game.batch.begin(); 
         mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
         cam.unproject(mouse_position); //gets mouse coordinates within viewport
-		System.out.println(mouse_position);
 		game.batch.setProjectionMatrix(cam.combined);
 
 		//mouse x and y

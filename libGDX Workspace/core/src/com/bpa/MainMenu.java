@@ -62,7 +62,6 @@ public class MainMenu implements Screen{
 		
         mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
         cam.unproject(mouse_position); //gets mouse coordinates within viewport
-		//System.out.println(mouse_position);
 		game.batch.begin(); 
 		game.batch.setProjectionMatrix(cam.combined);
 
@@ -70,6 +69,8 @@ public class MainMenu implements Screen{
 		//mouse x and y
 		float mX = mouse_position.x;
 		float mY = mouse_position.y;
+		
+
 		
 		game.batch.draw(mainMenuScreen, 0, 0); // draw background screen
 		if (wait < 11) {
@@ -117,6 +118,16 @@ public class MainMenu implements Screen{
 					}
 				}else {
 					inactiveMenuText.draw(game.batch, "QUIT", 1220, 90);
+					}
+				
+				//tutorial
+				if (0 < mX && mX < 200 && 750 < mY && mY < 800){
+					activeMenuText.draw(game.batch, "TUTORIAL", 90, 750);
+					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+						game.setScreen(new Tutorial(game));
+					}
+				}else {
+					inactiveMenuText.draw(game.batch, "TUTORIAL", 100, 750);
 					}
 			}
 		}

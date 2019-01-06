@@ -513,7 +513,6 @@ public class Level1 implements Screen{
 		mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		cam.unproject(mousePosition); //gets mouse coordinates within viewport
 		game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
-		//System.out.println(mousePosition);
 	}
 
 	@Override
