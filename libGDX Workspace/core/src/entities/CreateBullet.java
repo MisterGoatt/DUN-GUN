@@ -99,7 +99,7 @@ public class CreateBullet{
 			}
 			//Sets size of the physics bodies depending on the type of gun
 			fdef.filter.categoryBits = Mutagen.BULLET; //identifies the category bit is
-			fdef.filter.maskBits = Mutagen.WALL | Mutagen.GRUNT | Mutagen.SCIENTIST | Mutagen.FLAYER | Mutagen.SOLDIER | Mutagen.TURRET; // what masking bit the category bit collides with
+			fdef.filter.maskBits = Mutagen.WALL | Mutagen.ENEMY; // what masking bit the category bit collides with
 			b2body.createFixture(fdef).setUserData("bullets");
 			if (PlayerMode.OneP) {
 				float differenceX = Level1.mousePosition.x - b2body.getPosition().x;
@@ -179,7 +179,7 @@ public class CreateBullet{
 				}
 				//Sets size of the physics bodies depending on the type of gun
 				fdef.filter.categoryBits = Mutagen.BULLET; //identifies the category bit is
-				fdef.filter.maskBits = Mutagen.WALL | Mutagen.GRUNT | Mutagen.SCIENTIST; // what masking bit the category bit collides with
+				fdef.filter.maskBits = Mutagen.WALL | Mutagen.ENEMY; // what masking bit the category bit collides with
 				b2body.createFixture(fdef).setUserData("bullets2");
 
 				//CO-OP

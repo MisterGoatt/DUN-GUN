@@ -49,8 +49,8 @@ public class TurretBullets {
 		shape.setRadius(5 / Mutagen.PPM);
 		
 		//Sets size of the physics bodies depending on the type of gun
-		fdef.filter.categoryBits = Mutagen.TURRET_BULLET; //identifies the category bit is
-		fdef.filter.maskBits = Mutagen.WALL | Mutagen.PLAYER | Mutagen.PLAYER_TWO; // what masking bit the category bit collides with
+		fdef.filter.categoryBits = Mutagen.ENEMY_BULLET; //identifies the category bit is
+		fdef.filter.maskBits = Mutagen.WALL | Mutagen.PLAYER; // what masking bit the category bit collides with
 		b2body.createFixture(fdef).setUserData("turret bullets");
 	    float shootingAngleRadians = (float) Math.toRadians(shootingAngle);
 		float angleVary = (int)(Math.random() * 40 - 20);

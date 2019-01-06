@@ -56,9 +56,8 @@ public class Scientist{
 		shape.setRadius(12 / Mutagen.PPM);
 		fdef.density = 400;
 		fdef.shape = shape;
-		fdef.filter.categoryBits = Mutagen.SCIENTIST;
-		fdef.filter.maskBits = Mutagen.PLAYER | Mutagen.PLAYER_TWO | Mutagen.WALL | Mutagen.BULLET | Mutagen.FLAYER | Mutagen.GRUNT | 
-				Mutagen.SCIENTIST | Mutagen.SOLDIER | Mutagen.TURRET | Mutagen.SHOOT_OVER;
+		fdef.filter.categoryBits = Mutagen.ENEMY;
+		fdef.filter.maskBits = Mutagen.PLAYER | Mutagen.WALL | Mutagen.BULLET |  Mutagen.SHOOT_OVER;
 		b2body.createFixture(fdef).setUserData("scientist");
 	}
 	

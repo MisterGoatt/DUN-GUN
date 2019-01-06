@@ -47,7 +47,7 @@ public class HealthPickUp {
 		shape.setPosition(new Vector2(15, 10).scl(1/Mutagen.PPM));
 		fdef.shape = shape;
 		fdef.filter.categoryBits = Mutagen.HP_PICKUP;
-		fdef.filter.maskBits = Mutagen.PLAYER | Mutagen.PLAYER_TWO;
+		fdef.filter.maskBits = Mutagen.PLAYER;
 		b2body.createFixture(fdef).setUserData("hpPickUp"); 
 	}
 	public void renderSprite(SpriteBatch batch) {

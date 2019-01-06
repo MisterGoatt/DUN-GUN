@@ -63,7 +63,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	public PlayerOne(World world) {
 		this.world = world;
 		if (DifficultyScreen.difficulty == 1) {
-			player1HP = 1000000;			
+			player1HP = 150;			
 		}
 		if (DifficultyScreen.difficulty == 2) {
 			player1HP = 100;			
@@ -124,7 +124,8 @@ public class PlayerOne extends Sprite implements Disposable{
 
 		fdef.shape = shape;
 		fdef.filter.categoryBits = Mutagen.PLAYER;
-		fdef.filter.maskBits = Mutagen.WALL | Mutagen.GRUNT | Mutagen.SCIENTIST | Mutagen.HP_PICKUP |Mutagen.SOLDIER |Mutagen.SHOOT_OVER | Mutagen.PLAYER_TWO | Mutagen.FLAYER | Mutagen.FLAYER_SPIKES;
+		fdef.filter.maskBits = Mutagen.ENEMY | Mutagen.ENEMY_BULLET | Mutagen.WALL | Mutagen.SHOOT_OVER | Mutagen.HP_PICKUP;
+		
 		b2body.createFixture(fdef).setUserData("player");;
 		if (!PlayerMode.OneP) {
 			angle = 0;

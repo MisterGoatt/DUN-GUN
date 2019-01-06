@@ -118,8 +118,8 @@ public class PlayerTwo {
 		shape.setRadius(12 / Mutagen.PPM);
 
 		fdef.shape = shape;
-		fdef.filter.categoryBits = Mutagen.PLAYER_TWO;
-		fdef.filter.maskBits = Mutagen.WALL | Mutagen.GRUNT | Mutagen.SCIENTIST | Mutagen.HP_PICKUP |Mutagen.SOLDIER |Mutagen.SHOOT_OVER | Mutagen.PLAYER_TWO | Mutagen.FLAYER | Mutagen.FLAYER_SPIKES;
+//		fdef.filter.categoryBits = Mutagen.PLAYER_TWO;
+//		fdef.filter.maskBits = Mutagen.WALL | Mutagen.GRUNT | Mutagen.SCIENTIST | Mutagen.HP_PICKUP |Mutagen.SOLDIER |Mutagen.SHOOT_OVER | Mutagen.PLAYER_TWO | Mutagen.FLAYER | Mutagen.FLAYER_SPIKES;
 		b2body.createFixture(fdef).setUserData("player2");
 		angle = 0;
 

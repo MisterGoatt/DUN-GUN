@@ -21,9 +21,7 @@ public class Mutagen extends Game{
 	public SpriteBatch batch;
 	//Virtual Screen size and Box2D Scale(Pixels Per Meter)
 	public static final int V_WIDTH = 1500,  V_HEIGHT = 800;
-	public static final short PLAYER = 0x0001, BULLET = 0x0002, WALL = 0x0004, GRUNT = 0x0008, SCIENTIST = 0x0016, FLAYER = 0x0032,
-			SOLDIER = 0x0064, TURRET = 0x0128, TURRET_BULLET = 0x0256, HP_PICKUP = 0x0512, PLAYER_TWO = 0x1024, SOLDIER_BULLET = 0x2048, 
-			FLAYER_SPIKES = 0x4096, SHOOT_OVER = 0x4097;
+	public static final short PLAYER = 0x0001, BULLET = 0x0002, ENEMY = 0x0004, ENEMY_BULLET = 0x0008, SHOOT_OVER = 0x0016, HP_PICKUP = 0x0032, WALL = 0x0064;
 	public static AssetManager manager;
 	public static float musicVolume = .7f, sfxVolume = 1, PPM = 100;
 	public static Sound click;

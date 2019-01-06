@@ -47,8 +47,6 @@ public class Lvl1EntityPositions {
 		//
 		//		}
 
-
-
 		//Sol1
 		if (room1) {
 			if (PlayerOne.p1PosX > 10.8 && PlayerOne.p1PosX < 12.8 && PlayerOne.p1PosY > 55.6 && PlayerOne.p1PosY < 56.1) {

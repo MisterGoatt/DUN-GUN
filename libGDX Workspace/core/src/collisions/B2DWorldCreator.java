@@ -1,5 +1,6 @@
 package collisions;
 
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 import BackEnd.Mutagen;
+import entities.Soldier;
 
 public class B2DWorldCreator {
 	public String id = "WALL";
@@ -36,6 +38,7 @@ public class B2DWorldCreator {
 			body.createFixture(fdef).setUserData("walls");; //adds fixture to body
 
 		}
+		
 		for(MapObject object: map.getLayers().get("Shoot Over").getObjects().getByType(RectangleMapObject.class)) {
 			Rectangle rect = ((RectangleMapObject) object).getRectangle();
 			bdef.type = BodyDef.BodyType.StaticBody;
@@ -44,7 +47,7 @@ public class B2DWorldCreator {
 			shape.setAsBox(rect.getWidth() / 2 / Mutagen.PPM, rect.getHeight() / 2 / Mutagen.PPM);//defines polygon shape
 			fdef.shape = shape; //sets the polygon shape as a shape (?)
 			fdef.filter.categoryBits = Mutagen.SHOOT_OVER;
-			fdef.filter.maskBits = Mutagen.PLAYER | Mutagen.PLAYER_TWO | Mutagen.FLAYER | Mutagen.GRUNT | Mutagen.SCIENTIST | Mutagen.SOLDIER;
+			fdef.filter.maskBits = Mutagen.PLAYER | Mutagen.ENEMY;
 			body.createFixture(fdef).setUserData("shoot over");; //adds fixture to body
 
 		}

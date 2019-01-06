@@ -57,9 +57,8 @@ public class Soldier {
 		b2body.setLinearDamping(5f);
 		fdef.density = 400; //made extremely dense to prevent anything from moving it
 		fdef.shape = shape;
-		fdef.filter.categoryBits = Mutagen.SOLDIER;
-		fdef.filter.maskBits = Mutagen.PLAYER | Mutagen.PLAYER_TWO | Mutagen.WALL | Mutagen.BULLET | Mutagen.FLAYER | Mutagen.GRUNT | 
-				Mutagen.SCIENTIST | Mutagen.SOLDIER | Mutagen.TURRET | Mutagen.SHOOT_OVER;
+		fdef.filter.categoryBits = Mutagen.ENEMY;
+		fdef.filter.maskBits = Mutagen.PLAYER | Mutagen.WALL | Mutagen.BULLET | Mutagen.SHOOT_OVER;
 		b2body.createFixture(fdef).setUserData("soldier"); 
 	}
 	public void renderSprite(SpriteBatch batch) {
