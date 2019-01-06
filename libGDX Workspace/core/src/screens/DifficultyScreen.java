@@ -18,7 +18,7 @@ public class DifficultyScreen implements Screen, InputProcessor{
 	private Texture normal, challenge, back, blank;
 	private OrthographicCamera cam;
 	private Vector3 mousePosition = new Vector3(0, 0, 0);
-	private boolean buttonPressed = false, ba= false, bl = true, norm = false, chal = false;
+	private boolean buttonPressed = false;
 	private float mX, mY;
 	public static int difficulty;
 	

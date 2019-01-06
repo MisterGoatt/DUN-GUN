@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -19,13 +20,15 @@ import BackEnd.Mutagen;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
-public class HowToPlay implements Screen{
+public class HowToPlay implements Screen, InputProcessor{
 	final Mutagen game;
 	Texture howToPlay;
 	private OrthographicCamera cam;
 	private Viewport gamePort;
 	boolean justClicked = false;
 	boolean onCrash = true;
+	private boolean buttonPressed = false;
+	private float mX, mY;
 	private Vector3 mouse_position = new Vector3(0, 0, 0);
 	BitmapFont inactiveMenuText;
 	BitmapFont activeMenuText;
@@ -37,9 +40,11 @@ public class HowToPlay implements Screen{
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); //centers the map to center of screen
+		Gdx.input.setInputProcessor(this);
 		
 		inactiveMenuText = Mutagen.manager.get("fonts/inactiveMenu(36).fnt", BitmapFont.class);
 		activeMenuText = Mutagen.manager.get("fonts/activeMenu(36).fnt", BitmapFont.class);
+		
 	}
 	
 	@Override
@@ -64,14 +69,13 @@ public class HowToPlay implements Screen{
 		
 		float mX = mouse_position.x;
 		float mY = mouse_position.y;
+	
 		
 		
 		if (0 < mX && mX < 130 && 0 < mY && mY < 80)
 		{
 			activeMenuText.draw(game.batch, "BACK", 10, 55);
-			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-				game.setScreen(new Tutorial(game));
-			}
+		
 		}else {
 			inactiveMenuText.draw(game.batch, "BACK", 10, 55);
 		}
@@ -109,5 +113,63 @@ public class HowToPlay implements Screen{
 		game.batch.dispose();
 		howToPlay.dispose();
 		}
+
+	@Override
+	public boolean keyDown(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		
+		if (!buttonPressed) {
+			//back button
+			
+			if (mX < 244 && mY < 106)  {
+				
+				Mutagen.clicking();
+				game.setScreen(new Tutorial(game));
+			}
+		}
+		buttonPressed = true;
+		return false;
+
+	}
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		buttonPressed = false;
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }
