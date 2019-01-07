@@ -127,6 +127,7 @@ public class Mutagen extends Game{
 			manager.load("screens/gun_selection.jpg", Texture.class);
 			manager.load("screens/p1GS.jpg", Texture.class);
 			manager.load("screens/p2GS.jpg", Texture.class);
+			manager.load("screens/aimStyle.jpg", Texture.class);
 
 			//Grunt
 			manager.load("sprites/grunt/mutantAtkAnimation.atlas", TextureAtlas.class);

@@ -528,18 +528,18 @@ public class CollisionDetector implements ContactListener{
 
 					long hpPU = hpPickUp.play(Mutagen.sfxVolume);
 					if (DifficultyScreen.difficulty == 1) {
-						PlayerOne.player1HP = 150;
+						PlayerOne.player1HP = PlayerOne.player1MaxHP1;
 					}else {
-						PlayerOne.player1HP = 100;
+						PlayerOne.player1HP = PlayerOne.player1MaxHP2;
 					}
 				}
 				if(fb.getUserData().equals("player")){
 
 					long hpPU = hpPickUp.play(Mutagen.sfxVolume);
 					if (DifficultyScreen.difficulty == 1) {
-						PlayerOne.player1HP = 150;
+						PlayerOne.player1HP = PlayerOne.player1MaxHP1;
 					}else {
-						PlayerOne.player1HP = 100;
+						PlayerOne.player1HP = PlayerOne.player1MaxHP2;
 					}
 				}
 			}
@@ -722,18 +722,18 @@ public class CollisionDetector implements ContactListener{
 
 					long hpPU = hpPickUp.play(Mutagen.sfxVolume);
 					if (DifficultyScreen.difficulty == 1) {
-						PlayerTwo.player2HP = 150;
+						PlayerTwo.player2HP = PlayerTwo.player2MaxHP1;
 					}else {
-						PlayerTwo.player2HP = 100;
+						PlayerTwo.player2HP = PlayerTwo.player2MaxHP2;
 					}
 				}
 				if(fb.getUserData().equals("player2")){
 
 					long hpPU = hpPickUp.play(Mutagen.sfxVolume);
 					if (DifficultyScreen.difficulty == 1) {
-						PlayerTwo.player2HP = 150;
+						PlayerTwo.player2HP = PlayerTwo.player2MaxHP1;
 					}else {
-						PlayerTwo.player2HP = 100;
+						PlayerTwo.player2HP = PlayerTwo.player2MaxHP2;
 					}
 				}
 			}

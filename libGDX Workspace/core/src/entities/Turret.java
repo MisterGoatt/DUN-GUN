@@ -22,8 +22,8 @@ public class Turret {
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
-	public int health = 300;
-	public static int atkDmg = 20;
+	public int health = 200;
+	public static int atkDmg = 12;
 	private TextureAtlas turretAtkAtlas;
 	private Animation <TextureRegion> turretAtkAnimation;
 	private TextureRegion turretStandingRegion;
@@ -112,12 +112,12 @@ public class Turret {
 	public void shooting(float angle2) {
 		if (!PlayerOne.p1Dead) {
 			shootTimer += .50;
-			if (shootTimer >= 20) {
+			if (shootTimer >= 35) {
 				if (Mutagen.sfxVolume != 0) {
 					Long tS = turretShoot.play(Mutagen.sfxVolume - .8f);					
 				}
 				shootAnimation = true;
-				for (int i = 0; i < 2; i++) {
+				for (int i = 0; i < 1; i++) {
 					tB = new TurretBullets(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle2);	
 				}
 				shootTimer = 0;

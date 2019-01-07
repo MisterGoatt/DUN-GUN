@@ -44,7 +44,7 @@ public class PlayerTwo {
 	//amount of damage each weapon deals
 	public static float laserLanceDamage = 150, battleAxeDamage = 200, assaultRifleDamage = 50, shotgunDamage = 25f, 
 			rifleDamage = 150, revolverDamage = 75;
-	public static int player2HP;
+	public static int player2HP, player2MaxHP1 = 200, player2MaxHP2 = 150;
 	public static boolean p2Dead = false;
 	private boolean shootAnimation = false, running = false, startLaserCount = false;
 	public static boolean axeBodyRemoval = false, slowed = false, slowRestart = false, soundStop = false,  axeSwinging = false,  
@@ -60,10 +60,10 @@ public class PlayerTwo {
 	public PlayerTwo(World world) {
 		this.world = world;
 		if (DifficultyScreen.difficulty == 1) {
-			player2HP = 150;			
+			player2HP = player2MaxHP1;			
 		}
 		if (DifficultyScreen.difficulty == 2) {
-			player2HP = 100;			
+			player2HP = player2MaxHP2;			
 		}
 		slowedCounter = 0;
 		p2Dead = false;
@@ -336,36 +336,69 @@ public class PlayerTwo {
 			slowedCounter = 0;
 			slowed = false;
 		}
+		if (GunSelectionScreen.p2AimStyle == 1) {
+			if (!movHalt) {
+				if(Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+					this.b2body.setLinearVelocity(-speed * speedAB, speed * speedAB);
+				}else if(Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+					this.b2body.setLinearVelocity(speed * speedAB, speed * speedAB);
+				}else if(Gdx.input.isKeyPressed(Input.Keys.DOWN) && Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+					this.b2body.setLinearVelocity(-speed * speedAB, -speed * speedAB );   
+				}else if(Gdx.input.isKeyPressed(Input.Keys.DOWN) && Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+					this.b2body.setLinearVelocity(speed * speedAB, -speed * speedAB );
+				}
+				else if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+					this.b2body.setLinearVelocity(0f, speed);
 
-		if (!movHalt) {
-			if(Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-				this.b2body.setLinearVelocity(-speed * speedAB, speed * speedAB);
-			}else if(Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-				this.b2body.setLinearVelocity(speed * speedAB, speed * speedAB);
-			}else if(Gdx.input.isKeyPressed(Input.Keys.DOWN) && Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-				this.b2body.setLinearVelocity(-speed * speedAB, -speed * speedAB );   
-			}else if(Gdx.input.isKeyPressed(Input.Keys.DOWN) && Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-				this.b2body.setLinearVelocity(speed * speedAB, -speed * speedAB );
-			}
-			else if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-				this.b2body.setLinearVelocity(0f, speed);
+				}else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+					this.b2body.setLinearVelocity(0f, -speed);
+				}else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+					this.b2body.setLinearVelocity(-speed, 0f);
 
-			}else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-				this.b2body.setLinearVelocity(0f, -speed);
-			}else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-				this.b2body.setLinearVelocity(-speed, 0f);
-
-			}else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-				this.b2body.setLinearVelocity(speed, 0f);
-			}
+				}else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+					this.b2body.setLinearVelocity(speed, 0f);
+				}
+			}			
 		}
+
 		shootGun();
+		//If player has chosen the rotational or directional aim style
+		if (GunSelectionScreen.p2AimStyle == 1) {
+			if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_5)){
+				angle += rotationSpeed;
+			}
+			else if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_6)){
+				angle -= rotationSpeed;
+			}			
+		}else {
+			if (!movHalt) {
+				if(Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+					this.b2body.setLinearVelocity(-speed * speedAB, speed * speedAB);
+				}else if(Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+					this.b2body.setLinearVelocity(speed * speedAB, speed * speedAB);
+				}else if(Gdx.input.isKeyPressed(Input.Keys.DOWN) && Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+					this.b2body.setLinearVelocity(-speed * speedAB, -speed * speedAB );   
+				}else if(Gdx.input.isKeyPressed(Input.Keys.DOWN) && Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+					this.b2body.setLinearVelocity(speed * speedAB, -speed * speedAB );
+				}
+				else if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+					this.b2body.setLinearVelocity(0f, speed);
+					angle = 0;
 
-		if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_5)){
-			angle += rotationSpeed;
-		}
-		else if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_6)){
-			angle -= rotationSpeed;
+				}else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+					this.b2body.setLinearVelocity(0f, -speed);
+					angle = 180;
+
+				}else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+					this.b2body.setLinearVelocity(-speed, 0f);
+					angle = 90;
+					
+				}else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+					this.b2body.setLinearVelocity(speed, 0f);
+					angle = 270;
+
+				}
+			}
 		}
 
 		if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_0)) {
