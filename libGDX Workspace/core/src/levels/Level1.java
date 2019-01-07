@@ -78,6 +78,9 @@ public class Level1 implements Screen{
 	public static Vector3 mousePosition = new Vector3(0, 0, 0);
 	private Vector2 cam2 = new Vector2(0, 0);
 	private Vector2 cam2Hold = new Vector2(0, 0);
+	private Vector2 boundaryAbs = new Vector2(0, 0);
+	private Vector2 boundary = new Vector2(0, 0);
+	private Vector2 boundaryMax = new Vector2(8.9f, 4.7f);
 
 	Random random;
 
@@ -212,6 +215,65 @@ public class Level1 implements Screen{
 			cam.position.y = cam.position.y + (playerOne.b2body.getPosition().y - cam.position.y) * .05f;	
 		} else {
 			if (!PlayerOne.p1Dead && !PlayerTwo.p2Dead) {
+				
+				boundaryAbs.x = Math.abs(playerOne.b2body.getPosition().x - playerTwo.b2body.getPosition().x);
+				boundaryAbs.y = Math.abs(playerOne.b2body.getPosition().y - playerTwo.b2body.getPosition().y);
+				boundary.x = playerOne.b2body.getPosition().x - playerTwo.b2body.getPosition().x;
+				boundary.y = playerOne.b2body.getPosition().y - playerTwo.b2body.getPosition().y;
+				if (boundaryAbs.x > 8.9) {
+					System.out.println("8.9");
+					PlayerOne.movHalt = true;
+					PlayerTwo.movHalt = true;
+
+				}else {
+					System.out.println("8.9 else");
+
+					PlayerOne.movHalt = false;
+					PlayerTwo.movHalt = false;
+				}
+				if (boundaryAbs.y > 4.7) {
+					System.out.println("4.7");
+
+					PlayerOne.movHalt = true;
+					PlayerTwo.movHalt = true;
+				}else {
+					System.out.println("4.7 else");
+
+					PlayerOne.movHalt = false;
+					PlayerTwo.movHalt = false;
+				}
+				
+				if (PlayerOne.movHalt && PlayerTwo.movHalt) {
+					//p2 is right of p1
+					if (boundary.x >= 0 ) {
+						System.out.println("x > 0");
+						playerOne.b2body.applyForceToCenter(2, 0, true);
+						playerTwo.b2body.applyForceToCenter(-2, 0, true);
+					}
+					//p2 if left of p1
+					else {
+						System.out.println("x not");
+						playerOne.b2body.applyForceToCenter(-2, 0, true);
+						playerTwo.b2body.applyForceToCenter(2, 0, true);
+
+					}
+					//p2 is below p1
+					if (boundary.y >= 0 ) {
+						System.out.println("y > 0");
+						playerOne.b2body.applyForceToCenter(0, -2f, true);
+						playerTwo.b2body.applyForceToCenter(0, 2f, true);
+
+					}
+					//p2 is below of p1
+					else {
+						System.out.println("y not");
+
+						playerOne.b2body.applyForceToCenter(0, 2f, true);
+						playerTwo.b2body.applyForceToCenter(0, -2f, true);
+					}
+					
+				}
+				
 				cam.position.x = (playerTwo.b2body.getPosition().x - playerOne.b2body.getPosition().x) / 2;
 				if (playerOne.b2body.getPosition().x > playerTwo.b2body.getPosition().x) {
 					cam.position.x = playerTwo.b2body.getPosition().x + Math.abs(cam.position.x);

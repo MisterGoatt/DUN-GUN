@@ -109,16 +109,33 @@ public class Soldier {
 		shooting();
 	}
 	public void shooting() {
-		if (!PlayerOne.p1Dead) {
-			shootTimer += .50;
-			if (shootTimer >= 26) {
-				if (Mutagen.sfxVolume != 0) {
-					Long tS = soldierShoot.play(Mutagen.sfxVolume - .8f);					
+
+		if (PlayerMode.OneP) {
+			if (!PlayerOne.p1Dead) {
+				shootTimer += .50;
+				if (shootTimer >= 26) {
+					if (Mutagen.sfxVolume != 0) {
+						Long tS = soldierShoot.play(Mutagen.sfxVolume - .8f);					
+					}
+					shootAnimation = true;
+					sB = new SoldierBullets(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);	
+					
+					shootTimer = 0;
 				}
-				shootAnimation = true;
-				sB = new SoldierBullets(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);	
-				
-				shootTimer = 0;
+			}
+		}
+		else {
+			if (!PlayerOne.p1Dead && !PlayerTwo.p2Dead) {
+				shootTimer += .50;
+				if (shootTimer >= 26) {
+					if (Mutagen.sfxVolume != 0) {
+						Long tS = soldierShoot.play(Mutagen.sfxVolume - .8f);					
+					}
+					shootAnimation = true;
+					sB = new SoldierBullets(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);	
+					
+					shootTimer = 0;
+				}
 			}
 		}
 	}

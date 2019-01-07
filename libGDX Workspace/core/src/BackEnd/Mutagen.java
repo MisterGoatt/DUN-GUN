@@ -31,7 +31,7 @@ public class Mutagen extends Game{
 
 	@Override
 	public void create() { 
-		try {
+		//try {
 
 			batch = new SpriteBatch();
 			manager = new AssetManager();
@@ -161,13 +161,13 @@ public class Mutagen extends Game{
 			//Soldier
 			manager.load("sprites/soldier/soldierAtkAnimation.atlas", TextureAtlas.class);
 			manager.load("sprites/soldier/pelletR.atlas", TextureAtlas.class);
-			manager.load("so effects/enemies/soldierShooting.mp3", Sound.class);
+			manager.load("sound effects/enemies/soldierShooting.mp3", Sound.class);
 
 			manager.finishLoading();
 			this.setScreen(new IntroductionScreens(this));
-		}catch (Exception e) {
-			this.setScreen(new CrashScreen(this));
-		}
+//		}catch (Exception e) {
+//			this.setScreen(new CrashScreen(this));
+//		}
 	}
 
 	@Override

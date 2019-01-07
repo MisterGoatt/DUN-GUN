@@ -67,10 +67,10 @@ public class HowToPlay implements Screen, InputProcessor{
 		game.batch.draw(howToPlay, 0, 0);
 		
 		
-		float mX = mouse_position.x;
-		float mY = mouse_position.y;
+		mX = mouse_position.x;
+		mY = mouse_position.y;
 	
-		
+		System.out.println(mX + " " + mY);
 		
 		if (0 < mX && mX < 130 && 0 < mY && mY < 80)
 		{

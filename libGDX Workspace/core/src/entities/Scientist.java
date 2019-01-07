@@ -135,9 +135,19 @@ public class Scientist{
 			}
 		}
 		
-		if (!PlayerOne.p1Dead) {
-			b2body.applyLinearImpulse(gposX, gposY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);
-			b2body.setTransform(this.b2body.getPosition().x, this.b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
+		if (!PlayerMode.OneP) {
+			if (!PlayerTwo.p2Dead) {
+				b2body.applyLinearImpulse(gposX, gposY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);
+				b2body.setTransform(this.b2body.getPosition().x, this.b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
+
+			}
+		}
+		
+		else {
+			if (!PlayerOne.p1Dead) {
+				b2body.applyLinearImpulse(gposX, gposY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);
+				b2body.setTransform(this.b2body.getPosition().x, this.b2body.getPosition().y, angle2); //sets the position of the body to the position of the body and implements rotation
+			}
 		}
 		
 		

@@ -39,7 +39,7 @@ public class PlayerTwo {
 	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot;
 	//sound effect of the player's movement
 	public static Sound runningSound;
-	private float speed = 3, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, slowedCounter, rotationSpeed = 7; //speed of the player, Sqrt 2 divided by 2
+	private float speed = 3, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, slowedCounter, rotationSpeed = 4; //speed of the player, Sqrt 2 divided by 2
 	public static float  angle, p2PosX, p2PosY; //get distance between mouse and player in radians
 	//amount of damage each weapon deals
 	public static float laserLanceDamage = 150, battleAxeDamage = 200, assaultRifleDamage = 50, shotgunDamage = 25f, 
@@ -48,7 +48,7 @@ public class PlayerTwo {
 	public static boolean p2Dead = false;
 	private boolean shootAnimation = false, running = false, startLaserCount = false;
 	public static boolean axeBodyRemoval = false, slowed = false, slowRestart = false, soundStop = false,  axeSwinging = false,  
-			isShooting = false, timeToShake = false;
+			isShooting = false, timeToShake = false, movHalt = false;
 	public static float axeSwingTimer = 0;
 	private int ID;
 	public static Array<CreateBullet> pellets2 = new Array<CreateBullet>();
@@ -79,7 +79,7 @@ public class PlayerTwo {
 		shotgunTextureAtlas = Mutagen.manager.get("sprites/player2/shotgunP2.atlas", TextureAtlas.class);
 		shotgunAnimation = new Animation <TextureRegion>(1f/15f, shotgunTextureAtlas.getRegions());
 		shotgunStandingRegion = shotgunTextureAtlas.findRegion("tile000");
- 
+
 		assaultRifleTextureAtlas = Mutagen.manager.get("sprites/player2/assaultRifleP2.atlas", TextureAtlas.class);
 		assaultRifleAnimation = new Animation<TextureRegion>(1f/15f, assaultRifleTextureAtlas.getRegions());
 		assaultRifleStandingRegion = assaultRifleTextureAtlas.findRegion("tile000");
@@ -118,8 +118,8 @@ public class PlayerTwo {
 		shape.setRadius(12 / Mutagen.PPM);
 
 		fdef.shape = shape;
-//		fdef.filter.categoryBits = Mutagen.PLAYER_TWO;
-//		fdef.filter.maskBits = Mutagen.WALL | Mutagen.GRUNT | Mutagen.SCIENTIST | Mutagen.HP_PICKUP |Mutagen.SOLDIER |Mutagen.SHOOT_OVER | Mutagen.PLAYER_TWO | Mutagen.FLAYER | Mutagen.FLAYER_SPIKES;
+		//		fdef.filter.categoryBits = Mutagen.PLAYER_TWO;
+		//		fdef.filter.maskBits = Mutagen.WALL | Mutagen.GRUNT | Mutagen.SCIENTIST | Mutagen.HP_PICKUP |Mutagen.SOLDIER |Mutagen.SHOOT_OVER | Mutagen.PLAYER_TWO | Mutagen.FLAYER | Mutagen.FLAYER_SPIKES;
 		b2body.createFixture(fdef).setUserData("player2");
 		angle = 0;
 
@@ -336,27 +336,29 @@ public class PlayerTwo {
 			slowedCounter = 0;
 			slowed = false;
 		}
-		if(Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-			this.b2body.setLinearVelocity(-speed * speedAB, speed * speedAB);
-		}else if(Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-			this.b2body.setLinearVelocity(speed * speedAB, speed * speedAB);
-		}else if(Gdx.input.isKeyPressed(Input.Keys.DOWN) && Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-			this.b2body.setLinearVelocity(-speed * speedAB, -speed * speedAB );   
-		}else if(Gdx.input.isKeyPressed(Input.Keys.DOWN) && Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-			this.b2body.setLinearVelocity(speed * speedAB, -speed * speedAB );
+
+		if (!movHalt) {
+			if(Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+				this.b2body.setLinearVelocity(-speed * speedAB, speed * speedAB);
+			}else if(Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+				this.b2body.setLinearVelocity(speed * speedAB, speed * speedAB);
+			}else if(Gdx.input.isKeyPressed(Input.Keys.DOWN) && Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+				this.b2body.setLinearVelocity(-speed * speedAB, -speed * speedAB );   
+			}else if(Gdx.input.isKeyPressed(Input.Keys.DOWN) && Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+				this.b2body.setLinearVelocity(speed * speedAB, -speed * speedAB );
+			}
+			else if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+				this.b2body.setLinearVelocity(0f, speed);
+
+			}else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+				this.b2body.setLinearVelocity(0f, -speed);
+			}else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+				this.b2body.setLinearVelocity(-speed, 0f);
+
+			}else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+				this.b2body.setLinearVelocity(speed, 0f);
+			}
 		}
-		else if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-			this.b2body.setLinearVelocity(0f, speed);
-
-		}else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-			this.b2body.setLinearVelocity(0f, -speed);
-		}else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-			this.b2body.setLinearVelocity(-speed, 0f);
-
-		}else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-			this.b2body.setLinearVelocity(speed, 0f);
-		}
-
 		shootGun();
 
 		if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_5)){

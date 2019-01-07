@@ -718,7 +718,7 @@ public class CollisionDetector implements ContactListener{
 				if(fb.getUserData().equals("hpPickUp")){
 					bodiesToRemove.add(fb.getBody());	
 				}
-				if(fa.getUserData().equals("player")){
+				if(fa.getUserData().equals("player2")){
 
 					long hpPU = hpPickUp.play(Mutagen.sfxVolume);
 					if (DifficultyScreen.difficulty == 1) {
@@ -727,7 +727,7 @@ public class CollisionDetector implements ContactListener{
 						PlayerTwo.player2HP = 100;
 					}
 				}
-				if(fb.getUserData().equals("player")){
+				if(fb.getUserData().equals("player2")){
 
 					long hpPU = hpPickUp.play(Mutagen.sfxVolume);
 					if (DifficultyScreen.difficulty == 1) {

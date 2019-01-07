@@ -24,6 +24,7 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 	private Vector3 mouse_position = new Vector3(0, 0, 0);
 	public static String p1WeaponSelected, p2WeaponSelected;
 	private boolean buttonPressed = false, p1Screen = true;
+	public static boolean defaultAimStyle;
 	public GunSelectionScreen(final Mutagen game) {
 		this.game = game;
 		gunPickScreen = Mutagen.manager.get("screens/gun_selection.jpg");
@@ -35,7 +36,6 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 		Gdx.input.setInputProcessor(this);
 	}
-
 
 	@Override
 	public void show() {
@@ -53,7 +53,7 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 		mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		cam.unproject(mouse_position); //gets mouse coordinates within viewport
 		game.batch.setProjectionMatrix(cam.combined);
-		game.batch.begin();    
+		game.batch.begin();
 		if (PlayerMode.OneP) {
 			game.batch.draw(gunPickScreen, 0, 0);	
 		}else {
@@ -136,7 +136,6 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 						MainMenu.themeMusic.stop();
 						game.setScreen(new Level1(game));
 					}
-
 				}else {
 					p2WeaponSelected = "revolver";
 					MainMenu.themeMusic.stop();	
