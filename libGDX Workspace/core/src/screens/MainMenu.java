@@ -32,7 +32,7 @@ public class MainMenu implements Screen, InputProcessor{
 	boolean buttonPressed = false;
 	private Viewport gamePort;
 	private OrthographicCamera cam;
-	static Music themeMusic = Mutagen.manager.get("music/Dun-Gun2.mp3", Music.class);
+	static Music themeMusic = Mutagen.manager.get("music/Dun-Gun2.ogg", Music.class);
 	private Vector3 mouse_position = new Vector3(0, 0, 0);
 	private float mX, mY;
 

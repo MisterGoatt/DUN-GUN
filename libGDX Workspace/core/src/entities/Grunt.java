@@ -114,7 +114,6 @@ public class Grunt extends Sprite implements Disposable{
 			else if (contAtk) {
 				if (!initialDmg) {
 					if (target == 1) {
-						System.out.println("hit");
 						PlayerOne.player1HP -= atkdmg;						
 					}
 					else {

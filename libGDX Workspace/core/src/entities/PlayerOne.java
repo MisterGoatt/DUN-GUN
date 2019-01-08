@@ -190,7 +190,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		}
 		//Assault Rifle
 		else if (GunSelectionScreen.p1WeaponSelected == "assault rifle") {
-			speed = 6f;
+			speed = 1.3f;
 			if (shootAnimation) {
 				batch.draw(assaultRifleAnimation.getKeyFrame(timePassed), posX - .2f, posY - .2f, 20 / Mutagen.PPM, 20 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
@@ -222,7 +222,7 @@ public class PlayerOne extends Sprite implements Disposable{
 
 		//battle axe
 		else if (GunSelectionScreen.p1WeaponSelected == "battle axe") {
-			speed = 2f;
+			speed = 6f;
 			if (shootAnimation) {
 				batch.draw(axeSwingAnimation.getKeyFrame(timePassed), posX - .35f, posY - .3f, 35 / Mutagen.PPM, 30 / Mutagen.PPM, 70 / Mutagen.PPM, 70 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
@@ -242,12 +242,12 @@ public class PlayerOne extends Sprite implements Disposable{
 		oldSpeed = speed; //original speed to go back to after being slowed
 		//PLAYER ONE HEALTH
 		if (DifficultyScreen.difficulty == 1) {
-			batch.draw(p1HPBG, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, .5f, 3f / Mutagen.PPM); //gray backing behind HP bar	
-			batch.draw(p1HP, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, PlayerOne.player1HP / (Mutagen.PPM + 200), 3f / Mutagen.PPM); //HP bar
+			batch.draw(p1HPBG, PlayerOne.p1PosX - .30f, PlayerOne.p1PosY - .28f, .5f, 3f / Mutagen.PPM); //gray backing behind HP bar	
+			batch.draw(p1HP, PlayerOne.p1PosX - .30f, PlayerOne.p1PosY - .28f, PlayerOne.player1HP / (Mutagen.PPM + 250), 3f / Mutagen.PPM); //HP bar
 
 		}else{
 			batch.draw(p1HPBG, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, .5f, 3f / Mutagen.PPM); //gray backing behind HP bar	
-			batch.draw(p1HP, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, PlayerOne.player1HP / (Mutagen.PPM + 100), 3f / Mutagen.PPM); //HP bar			
+			batch.draw(p1HP, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, PlayerOne.player1HP / (Mutagen.PPM + 150), 3f / Mutagen.PPM); //HP bar			
 		}
 
 		//PLAYER DIES

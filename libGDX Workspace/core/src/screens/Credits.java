@@ -18,7 +18,7 @@ public class Credits implements Screen{
 	private Viewport gamePort;
 	private OrthographicCamera cam;
 	private float yPos = -5700;
-	Music creditsMusic = Mutagen.manager.get("music/whistling masterpiece.mp3");
+	Music creditsMusic = Mutagen.manager.get("music/creditsSong.mp3");
 
 	
 	public Credits(final Mutagen game) {

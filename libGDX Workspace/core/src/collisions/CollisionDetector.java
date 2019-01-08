@@ -263,7 +263,7 @@ public class CollisionDetector implements ContactListener{
 					gruntBodyTarget.add((Grunt) b.getUserData());
 					grunt = gruntBodyTarget.get(0);
 					grunt.contAtk = true;
-					scientist.target = 1;
+					grunt.target = 1;
 					gruntBodyTarget.clear();
 					tempBodyArray.clear();
 				}
@@ -273,7 +273,7 @@ public class CollisionDetector implements ContactListener{
 					gruntBodyTarget.add((Grunt) b.getUserData());
 					grunt = gruntBodyTarget.get(0);
 					grunt.contAtk = true;
-					scientist.target = 1;
+					grunt.target = 1;
 					gruntBodyTarget.clear();
 					tempBodyArray.clear();
 				}
@@ -399,7 +399,7 @@ public class CollisionDetector implements ContactListener{
 				if (fa.getUserData().equals("bullets")){
 
 					if (GunSelectionScreen.p1WeaponSelected != "battle axe") {
-						bodiesToRemove.add(fa.getBody()); //bullet
+						bodiesToRemove.add(fa.getBody()); //7
 					}
 				}
 				if(fb.getUserData().equals("bullets")){
@@ -566,7 +566,9 @@ public class CollisionDetector implements ContactListener{
 					soldier = soldierBodyTarget.get(0);
 					//not needed yet
 					//scientist.tookDamage = true;
-
+					if (Mutagen.sfxVolume != 0) {
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+					}
 					switch (GunSelectionScreen.p1WeaponSelected){
 					case "battle axe": soldier.health -= PlayerOne.battleAxeDamage;
 					break;
@@ -597,7 +599,10 @@ public class CollisionDetector implements ContactListener{
 					soldier = soldierBodyTarget.get(0);
 					//not needed yet
 					//scientist.tookDamage = true;
-
+					if (Mutagen.sfxVolume != 0) {
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+					}
+					
 					switch (GunSelectionScreen.p1WeaponSelected){
 					case "battle axe": soldier.health -= PlayerOne.battleAxeDamage;
 					break;

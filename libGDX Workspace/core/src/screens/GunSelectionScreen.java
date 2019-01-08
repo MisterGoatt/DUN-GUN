@@ -78,7 +78,6 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 			game.batch.draw(aimStyleScr, 0, 0);
 			
 		}
-		System.out.println(mousePosition);
 		game.batch.end();
 		shapeR.begin(ShapeType.Filled);
 		shapeR.setColor(255, 0 ,0, 0);

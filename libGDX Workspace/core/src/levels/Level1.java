@@ -123,7 +123,6 @@ public class Level1 implements Screen{
 		cd = new CollisionDetector();
 		new B2DWorldCreator(world, map);
 		random = new Random();
-
 		//emptying the arrays of bullet textures and setting static variables to default
 		Grunt.grunts.clear();
 		Scientist.scientists.clear();
@@ -142,10 +141,13 @@ public class Level1 implements Screen{
 		}
 
 		pauseMenu = Mutagen.manager.get("screens/Pause.jpg", Texture.class);
-		levelOneMusic = Mutagen.manager.get("music/levelOne.mp3");
+		levelOneMusic = Mutagen.manager.get("music/song3.ogg");
 		levelOneMusic.setLooping(true);
-		levelOneMusic.setVolume(Mutagen.musicVolume);
-		levelOneMusic.play();
+		if (Mutagen.musicVolume > 0) {
+			levelOneMusic.setVolume(Mutagen.musicVolume - .5f);
+			levelOneMusic.play();
+
+		}
 		this.world.setContactListener(cd);
 		Gdx.input.setInputProcessor(null);
 	}
@@ -156,19 +158,19 @@ public class Level1 implements Screen{
 			//waitToShootL += 1;
 			switch (GunSelectionScreen.p1WeaponSelected) {
 			case "laser":
-				shake(.2f, 400);
+				shake(.25f, 400);
 				break;
 			case "revolver":
-				shake(.08f, 100);
+				shake(.1f, 100);
 				break;
 			case "rifle":
 				shake(.1f, 200);
 				break;
 			case "shotgun":
-				shake(.1f, 200);
+				shake(.15f, 200);
 				break;
 			case "assault rifle":
-				shake(.08f, 100);
+				shake(.1f, 100);
 				break;
 			}
 			PlayerOne.timeToShake = false;
@@ -176,19 +178,19 @@ public class Level1 implements Screen{
 		if (PlayerTwo.timeToShake) {
 			switch (GunSelectionScreen.p2WeaponSelected) {
 			case "laser":
-				shake(.2f, 400);
+				shake(.25f, 400);
 				break;
 			case "revolver":
-				shake(.08f, 100);
+				shake(.1f, 100);
 				break;
 			case "rifle":
 				shake(.1f, 200);
 				break;
 			case "shotgun":
-				shake(.1f, 200);
+				shake(.15f, 200);
 				break;
 			case "assault rifle":
-				shake(.08f, 100);
+				shake(.1f, 100);
 				break;
 			}
 			PlayerTwo.timeToShake = false;
@@ -221,24 +223,17 @@ public class Level1 implements Screen{
 				boundary.x = playerOne.b2body.getPosition().x - playerTwo.b2body.getPosition().x;
 				boundary.y = playerOne.b2body.getPosition().y - playerTwo.b2body.getPosition().y;
 				if (boundaryAbs.x > 8.9) {
-					System.out.println("8.9");
 					PlayerOne.movHalt = true;
 					PlayerTwo.movHalt = true;
 
 				}else {
-					System.out.println("8.9 else");
-
 					PlayerOne.movHalt = false;
 					PlayerTwo.movHalt = false;
 				}
 				if (boundaryAbs.y > 4.7) {
-					System.out.println("4.7");
-
 					PlayerOne.movHalt = true;
 					PlayerTwo.movHalt = true;
 				}else {
-					System.out.println("4.7 else");
-
 					PlayerOne.movHalt = false;
 					PlayerTwo.movHalt = false;
 				}
@@ -246,28 +241,23 @@ public class Level1 implements Screen{
 				if (PlayerOne.movHalt && PlayerTwo.movHalt) {
 					//p2 is right of p1
 					if (boundary.x >= 0 ) {
-						System.out.println("x > 0");
 						playerOne.b2body.applyForceToCenter(2, 0, true);
 						playerTwo.b2body.applyForceToCenter(-2, 0, true);
 					}
 					//p2 if left of p1
 					else {
-						System.out.println("x not");
 						playerOne.b2body.applyForceToCenter(-2, 0, true);
 						playerTwo.b2body.applyForceToCenter(2, 0, true);
 
 					}
 					//p2 is below p1
 					if (boundary.y >= 0 ) {
-						System.out.println("y > 0");
 						playerOne.b2body.applyForceToCenter(0, -2f, true);
 						playerTwo.b2body.applyForceToCenter(0, 2f, true);
 
 					}
 					//p2 is below of p1
 					else {
-						System.out.println("y not");
-
 						playerOne.b2body.applyForceToCenter(0, 2f, true);
 						playerTwo.b2body.applyForceToCenter(0, -2f, true);
 					}
@@ -492,7 +482,7 @@ public class Level1 implements Screen{
 			lvl1EP.SpawnEntities(world, map);
 			
 			//LEVEL END
-			if (PlayerOne.p1PosX > 85.1 && PlayerOne.p1PosX < 86.6 && PlayerOne.p1PosY > 12.4 && PlayerOne.p1PosY < 10.9) {
+			if (PlayerOne.p1PosX > 85. && PlayerOne.p1PosX < 86.6 && PlayerOne.p1PosY > 10.7 && PlayerOne.p1PosY < 12.4) {
 				PlayerOne.runningSound.stop();					
 
 				if (!PlayerMode.OneP) {
@@ -502,7 +492,7 @@ public class Level1 implements Screen{
 				levelOneMusic.stop();
 				game.setScreen(new levelCompleted(game));
 			}
-			else if (PlayerTwo.p2PosX > 85.1 && PlayerTwo.p2PosX < 86.6 && PlayerTwo.p2PosY > 12.4 && PlayerTwo.p2PosY < 10.9) {
+			else if (PlayerTwo.p2PosX > 85.1 && PlayerTwo.p2PosX < 86.6 && PlayerTwo.p2PosY > 10.7 && PlayerTwo.p2PosY < 12.4) {
 				PlayerOne.runningSound.stop();
 				PlayerTwo.runningSound.stop();
 				Gdx.input.setCursorCatched(false);
@@ -539,7 +529,6 @@ public class Level1 implements Screen{
 		mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		cam.unproject(mousePosition); //gets mouse coordinates within viewport
 		game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
-		//System.out.println(mousePosition.x + " " + mousePosition.y );
 	}
 
 	@Override
