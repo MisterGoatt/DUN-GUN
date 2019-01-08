@@ -169,7 +169,7 @@ public class Soldier {
 			}
 		}
 		else {
-			if (!PlayerOne.p1Dead && !PlayerTwo.p2Dead) {
+			if (!PlayerOne.p1Dead || !PlayerTwo.p2Dead) {
 				shootTimer += .50;
 				if (shootTimer >= 26) {
 					if (Mutagen.sfxVolume != 0) {
