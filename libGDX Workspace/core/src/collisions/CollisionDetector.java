@@ -331,7 +331,7 @@ public class CollisionDetector implements ContactListener{
 					scientistBodyTarget.add((Scientist) b.getUserData()); //casts Grunt on the physics body to get the class instance
 					scientist = scientistBodyTarget.get(0);
 					//not needed yet
-					//scientist.tookDamage = true;
+					scientist.tookDamage = true;
 
 					switch (GunSelectionScreen.p1WeaponSelected){
 					case "battle axe": scientist.health -= PlayerOne.battleAxeDamage;
@@ -366,7 +366,7 @@ public class CollisionDetector implements ContactListener{
 					scientistBodyTarget.add((Scientist) b.getUserData()); //casts Grunt on the physics body to get the class instance
 					scientist = scientistBodyTarget.get(0);
 					//not needed yet
-					//scientist.tookDamage = true;
+					scientist.tookDamage = true;
 
 					switch (GunSelectionScreen.p1WeaponSelected){
 					case "battle axe": scientist.health -= PlayerOne.battleAxeDamage;
@@ -800,7 +800,7 @@ public class CollisionDetector implements ContactListener{
 					scientistBodyTarget.add((Scientist) b.getUserData()); //casts Grunt on the physics body to get the class instance
 					scientist = scientistBodyTarget.get(0);
 					//not needed yet
-					//scientist.tookDamage = true;
+					scientist.tookDamage = true;
 
 					switch (GunSelectionScreen.p2WeaponSelected){
 					case "battle axe": scientist.health -= PlayerTwo.battleAxeDamage;
@@ -835,7 +835,7 @@ public class CollisionDetector implements ContactListener{
 					scientistBodyTarget.add((Scientist) b.getUserData()); //casts Grunt on the physics body to get the class instance
 					scientist = scientistBodyTarget.get(0);
 					//not needed yet
-					//scientist.tookDamage = true;
+					scientist.tookDamage = true;
 
 					switch (GunSelectionScreen.p2WeaponSelected){
 					case "battle axe": scientist.health -= PlayerTwo.battleAxeDamage;

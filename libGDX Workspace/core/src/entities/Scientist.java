@@ -40,6 +40,8 @@ public class Scientist{
 		scientistAtkAtlas = Mutagen.manager.get("sprites/scientist/scientistAtk.atlas");
 		scientistAtkAnimation = new Animation <TextureRegion>(1f/15f, scientistAtkAtlas.getRegions());
 		scientistStandingRegion = scientistAtkAtlas.findRegion("tile000");
+		scientistDamagedAtlas = Mutagen.manager.get("sprites/scientist/scientistDamaged.atlas");
+		scientistDamagedAnimation = new Animation <TextureRegion>(1f/15f, scientistDamagedAtlas.getRegions());
 		atkSound = Mutagen.manager.get("sound effects/enemies/scientistAtk.mp3");
 		defineScientist();
 	}
@@ -53,7 +55,7 @@ public class Scientist{
 		b2body.setUserData(this);
 		FixtureDef fdef = new FixtureDef();
 		CircleShape shape = new CircleShape();
-		shape.setRadius(12 / Mutagen.PPM);
+		shape.setRadius(16 / Mutagen.PPM);
 		fdef.density = 400;
 		fdef.shape = shape;
 		fdef.filter.categoryBits = Mutagen.ENEMY;
@@ -100,9 +102,10 @@ public class Scientist{
 		float gposY = (float) (Math.sin(angle2)) * runSpeed;
 		
 		//TOOK OUT !tookDamage
-		if (!attack && !contAtk) {
+		if (!attack && !contAtk && !tookDamage) {
 			batch.draw(scientistStandingRegion, posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 60 / Mutagen.PPM, 1, 1, angle);
-		}else if (contAtk) {
+		}
+		else if (contAtk && !tookDamage) {
 			
 			if (!initialDmg) {
 				if (target ==1) {
@@ -132,6 +135,14 @@ public class Scientist{
 					PlayerTwo.slowRestart = true;
 				}
 				atkSoundStop = false;
+			}
+		}
+		else {
+			batch.draw(scientistDamagedAnimation.getKeyFrame(timePassed), posX - .17f, posY -.13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 60 / Mutagen.PPM, 1, 1, angle);
+			timePassed += Gdx.graphics.getDeltaTime();
+			if(scientistDamagedAnimation.isAnimationFinished(timePassed)) {
+				timePassed = 0;
+				tookDamage = false;
 			}
 		}
 		

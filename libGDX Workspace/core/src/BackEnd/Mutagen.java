@@ -136,6 +136,8 @@ public class Mutagen extends Game{
 
 			//Scientist
 			manager.load("sprites/scientist/scientistAtk.atlas", TextureAtlas.class);
+			manager.load("sprites/scientist/scientistDamaged.atlas", TextureAtlas.class);
+
 			manager.load("sound effects/enemies/scientistAtk.mp3", Sound.class);
 
 			//Turret

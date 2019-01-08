@@ -110,7 +110,7 @@ public class Turret {
 	}
 
 	public void shooting(float angle2) {
-		if (!PlayerOne.p1Dead) {
+		if (!PlayerOne.p1Dead || !PlayerTwo.p2Dead) {
 			shootTimer += .50;
 			if (shootTimer >= 35) {
 				if (Mutagen.sfxVolume != 0) {

@@ -227,11 +227,11 @@ public class PlayerTwo {
 		oldSpeed = speed; //original speed to go back to after being slowed
 		//PLAYER ONE HEALTH
 		if (DifficultyScreen.difficulty == 1) {
-			batch.draw(p2HPBG, p2PosX - .25f, p2PosY - .20f, .5f, 3f / Mutagen.PPM); //gray backing behind HP bar	
-			batch.draw(p2HP, p2PosX - .25f, p2PosY - .20f, PlayerTwo.player2HP / (Mutagen.PPM + 200), 3f / Mutagen.PPM); //HP bar
+			batch.draw(p2HPBG, p2PosX - .30f, p2PosY - .28f, .5f, 3f / Mutagen.PPM); //gray backing behind HP bar	
+			batch.draw(p2HP, p2PosX - .30f, p2PosY - .28f, PlayerTwo.player2HP / (Mutagen.PPM + 250), 3f / Mutagen.PPM); //HP bar
 		}else{
-			batch.draw(p2HPBG, p2PosX - .25f, p2PosY - .20f, .5f, 3f / Mutagen.PPM); //gray backing behind HP bar	
-			batch.draw(p2HP, p2PosX - .25f, p2PosY - .20f, PlayerTwo.player2HP / (Mutagen.PPM + 100), 3f / Mutagen.PPM); //HP bar
+			batch.draw(p2HPBG, p2PosX - .30f, p2PosY - .20f, .5f, 3f / Mutagen.PPM); //gray backing behind HP bar	
+			batch.draw(p2HP, p2PosX - .30f, p2PosY - .20f, PlayerTwo.player2HP / (Mutagen.PPM + 150), 3f / Mutagen.PPM); //HP bar
 		}
 
 		//PLAYER DIES
