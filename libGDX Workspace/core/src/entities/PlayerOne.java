@@ -222,7 +222,7 @@ public class PlayerOne extends Sprite implements Disposable{
 
 		//battle axe
 		else if (GunSelectionScreen.p1WeaponSelected == "battle axe") {
-			speed = 6f;
+			speed = 2f;
 			if (shootAnimation) {
 				batch.draw(axeSwingAnimation.getKeyFrame(timePassed), posX - .35f, posY - .3f, 35 / Mutagen.PPM, 30 / Mutagen.PPM, 70 / Mutagen.PPM, 70 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
