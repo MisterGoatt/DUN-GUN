@@ -51,7 +51,7 @@ public class Mutagen extends Game{
 			manager.load("sprites/player1/axeSwingAnimation.atlas", TextureAtlas.class);
 			manager.load("sound effects/running.mp3", Sound.class);
 			manager.load("sprites/player1/hp.png", Texture.class);
-			manager.load("sprites/player1/hpBG.png", Texture.class);
+			manager.load("sprites/player1/hpBg.png", Texture.class); //change for build path
 
 			//PlayerTwo
 			manager.load("sprites/player2/revolverP2.atlas", TextureAtlas.class);
@@ -61,7 +61,7 @@ public class Mutagen extends Game{
 			manager.load("sprites/player2/laserP2.atlas", TextureAtlas.class);
 			manager.load("sprites/player2/battleAxeP2.atlas", TextureAtlas.class);
 			manager.load("sprites/player2/hp2.png", Texture.class);
-			manager.load("sprites/player2/hpBG2.png", Texture.class);
+			manager.load("sprites/player2/hpBg2.png", Texture.class); //change for build path
 
 			//Options Screen
 			manager.load("screens/options/optionsScreenAll.jpg", Texture.class);

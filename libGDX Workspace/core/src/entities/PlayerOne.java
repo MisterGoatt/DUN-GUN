@@ -96,8 +96,8 @@ public class PlayerOne extends Sprite implements Disposable{
 		axeStandingRegion = axeSwingTextureAtlas.findRegion("tile000");
 
 		runningSound = Gdx.audio.newSound(Gdx.files.internal("sound effects/running.mp3"));
-		p1HP = Mutagen.manager.get("sprites/player1/hp.png");
-		p1HPBG = Mutagen.manager.get("sprites/player1/hpBG.png");
+		p1HP = Mutagen.manager.get("sprites/player1/hp.png", Texture.class);
+		p1HPBG = Mutagen.manager.get("sprites/player1/hpBg.png", Texture.class);
 		gunShot = Mutagen.manager.get("sound effects/shooting/pistol_shot.mp3", Sound.class);
 		rifleShot = Mutagen.manager.get("sound effects/shooting/rifleShot.mp3", Sound.class);
 		shotgunShot = Mutagen.manager.get("sound effects/shooting/shotgun2.mp3", Sound.class);

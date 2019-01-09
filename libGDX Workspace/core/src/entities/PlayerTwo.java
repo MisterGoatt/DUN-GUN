@@ -94,7 +94,7 @@ public class PlayerTwo {
 
 		runningSound = Gdx.audio.newSound(Gdx.files.internal("sound effects/running.mp3"));
 		p2HP = Mutagen.manager.get("sprites/player2/hp2.png");
-		p2HPBG = Mutagen.manager.get("sprites/player2/hpBG2.png");
+		p2HPBG = Mutagen.manager.get("sprites/player2/hpBg2.png");
 		gunShot = Mutagen.manager.get("sound effects/shooting/pistol_shot.mp3", Sound.class);
 		rifleShot = Mutagen.manager.get("sound effects/shooting/rifleShot.mp3", Sound.class);
 		shotgunShot = Mutagen.manager.get("sound effects/shooting/shotgun2.mp3", Sound.class);
