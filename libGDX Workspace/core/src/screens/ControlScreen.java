@@ -39,7 +39,7 @@ public class ControlScreen implements Screen, InputProcessor{
 		this.game = game;
 		controlScreen = new Texture("screens/tutorials/controlScreen.jpg");
 		cam = new OrthographicCamera();		
-		gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+		gamePort = new FitViewport(Mutagen.V_WIDTH / Mutagen.PPM, Mutagen.V_HEIGHT / Mutagen.PPM, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); //centers the map to center of screen
 		Gdx.input.setInputProcessor(this);
 
@@ -65,7 +65,7 @@ public class ControlScreen implements Screen, InputProcessor{
 		game.batch.begin();
 		game.batch.setProjectionMatrix(cam.combined);
 		
-		game.batch.draw(controlScreen, 0, 0);
+		game.batch.draw(controlScreen, 0 / Mutagen.PPM, 0 / Mutagen.PPM);
 		
 		
 		mX = mouse_position.x;
@@ -73,7 +73,7 @@ public class ControlScreen implements Screen, InputProcessor{
 		System.out.println(mX + " " + mY);
 		if (0 < mX && mX < 120 && 0 < mY && mY < 61)
 		{
-			activeMenuText.draw(game.batch, "BACK", 10, 55);
+			activeMenuText.draw(game.batch, "BACK", 10 / Mutagen.PPM, 55);
 		}else {
 			inactiveMenuText.draw(game.batch, "BACK", 10, 55);
 		}

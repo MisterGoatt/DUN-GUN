@@ -156,7 +156,7 @@ public class Mutagen extends Game{
 
 			//Health Pick-UP
 			manager.load("heart.png", Texture.class);
-			manager.load("sound effects/hpPickUp.mp3", Sound.class);
+			manager.load("sound effects/hpPickUp.ogg", Sound.class);
 
 			//LevelCompleted Screen
 			manager.load("screens/levelCompletedScreen.jpg", Texture.class);
@@ -164,7 +164,7 @@ public class Mutagen extends Game{
 			//Soldier
 			manager.load("sprites/soldier/soldierAtkAnimation.atlas", TextureAtlas.class);
 			manager.load("sprites/soldier/pelletR.atlas", TextureAtlas.class);
-			manager.load("sound effects/enemies/soldierShooting.mp3", Sound.class);
+			manager.load("sound effects/enemies/soldierShooting.ogg", Sound.class);
 
 			manager.finishLoading();
 			this.setScreen(new IntroductionScreens(this));

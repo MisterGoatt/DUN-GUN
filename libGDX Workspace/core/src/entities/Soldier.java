@@ -45,7 +45,7 @@ public class Soldier {
 		soldierAtkAtlas = Mutagen.manager.get("sprites/soldier/soldierAtkAnimation.atlas");
 		soldierAtkAnimation = new Animation <TextureRegion>(1f/15f, soldierAtkAtlas.getRegions());
 		soldierStandingRegion = soldierAtkAtlas.findRegion("tile000");
-		soldierShoot = Mutagen.manager.get("sound effects/enemies/soldierShooting.mp3");
+		soldierShoot = Mutagen.manager.get("sound effects/enemies/soldierShooting.ogg");
 		defineSoldier();
 	}
 	
@@ -171,7 +171,7 @@ public class Soldier {
 		else {
 			if (!PlayerOne.p1Dead || !PlayerTwo.p2Dead) {
 				shootTimer += .50;
-				if (shootTimer >= 26) {
+				if (shootTimer >= 33) {
 					if (Mutagen.sfxVolume != 0) {
 						Long tS = soldierShoot.play(Mutagen.sfxVolume - .8f);					
 					}

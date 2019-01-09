@@ -44,7 +44,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	private float speed = 3, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, slowedCounter, rotationSpeed = 4; //speed of the player, Sqrt 2 divided by 2
 	public static float  angle, p1PosX, p1PosY, axeSwingTimer = 0; //get distance between mouse and player in radians
 	//amount of damage each weapon deals
-	public static float laserLanceDamage = 150, battleAxeDamage = 200, assaultRifleDamage = 50, shotgunDamage = 25f, 
+	public static float laserLanceDamage = 150, battleAxeDamage = 200, assaultRifleDamage = 10, shotgunDamage = 25f, 
 			rifleDamage = 150, revolverDamage = 75;
 	public static int player1HP, player1MaxHP1 = 200, player1MaxHP2 = 150;
 	public static boolean p1Dead = false;
@@ -242,12 +242,12 @@ public class PlayerOne extends Sprite implements Disposable{
 		oldSpeed = speed; //original speed to go back to after being slowed
 		//PLAYER ONE HEALTH
 		if (DifficultyScreen.difficulty == 1) {
-			batch.draw(p1HPBG, PlayerOne.p1PosX - .30f, PlayerOne.p1PosY - .28f, .5f, 3f / Mutagen.PPM); //gray backing behind HP bar	
-			batch.draw(p1HP, PlayerOne.p1PosX - .30f, PlayerOne.p1PosY - .28f, PlayerOne.player1HP / (Mutagen.PPM + 250), 3f / Mutagen.PPM); //HP bar
+			batch.draw(p1HPBG, p1PosX - .30f, p1PosY - .28f, player1MaxHP1 / (Mutagen.PPM + 250), 3f / Mutagen.PPM); //gray backing behind HP bar	
+			batch.draw(p1HP, p1PosX - .30f, p1PosY - .28f, player1HP / (Mutagen.PPM + 250), 3f / Mutagen.PPM); //HP bar
 
 		}else{
-			batch.draw(p1HPBG, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, .5f, 3f / Mutagen.PPM); //gray backing behind HP bar	
-			batch.draw(p1HP, PlayerOne.p1PosX - .25f, PlayerOne.p1PosY - .20f, PlayerOne.player1HP / (Mutagen.PPM + 150), 3f / Mutagen.PPM); //HP bar			
+			batch.draw(p1HPBG, p1PosX - .3f, p1PosY - .28f, player1MaxHP2 / (Mutagen.PPM + 150), 3f / Mutagen.PPM); //gray backing behind HP bar	
+			batch.draw(p1HP, p1PosX - .3f, p1PosY - .28f, player1HP / (Mutagen.PPM + 150), 3f / Mutagen.PPM); //HP bar			
 		}
 
 		//PLAYER DIES
@@ -398,9 +398,9 @@ public class PlayerOne extends Sprite implements Disposable{
 				break;
 				case "shotgun": timeSinceLastShot = 70;
 				break;
-				case "assault rifle": timeSinceLastShot = 25;
+				case "assault rifle": timeSinceLastShot = 7;
 				break;
-				case "laser": timeSinceLastShot = 80;
+				case "laser": timeSinceLastShot = 40;
 				break;
 				case "battle axe": timeSinceLastShot = 110;
 				break;
@@ -466,9 +466,9 @@ public class PlayerOne extends Sprite implements Disposable{
 					break;
 					case "shotgun": timeSinceLastShot = 70;
 					break;
-					case "assault rifle": timeSinceLastShot = 25;
+					case "assault rifle": timeSinceLastShot = 7;
 					break;
-					case "laser": timeSinceLastShot = 80;
+					case "laser": timeSinceLastShot = 40;
 					break;
 					case "battle axe": timeSinceLastShot = 110;
 					break;

@@ -124,7 +124,7 @@ public class CreateBullet{
 
 			else {
 				if (GunSelectionScreen.p1WeaponSelected == "laser"){
-					speed = 2f;
+					speed = 4f;
 				}
 				posX = (float) (Math.cos(angleR)) * speed;
 				posY = (float) (Math.sin(angleR)) * speed;
@@ -197,7 +197,7 @@ public class CreateBullet{
 
 				else {
 					if (GunSelectionScreen.p2WeaponSelected == "laser"){
-						speed = 2f;
+						speed = 4f;
 					}
 					posX = (float) (Math.cos(angleR)) * speed;
 					posY = (float) (Math.sin(angleR)) * speed;

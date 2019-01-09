@@ -48,7 +48,7 @@ public class CollisionDetector implements ContactListener{
 		pelletHitWall = Mutagen.manager.get("sound effects/impacts/pelletImpact.mp3");
 		bulletBodyImpact = Mutagen.manager.get("sound effects/impacts/bulletBodyImpact.mp3");
 		turretHit = Mutagen.manager.get("sound effects/enemies/turretHit.mp3");
-		hpPickUp = Mutagen.manager.get("sound effects/hpPickUp.mp3");
+		hpPickUp = Mutagen.manager.get("sound effects/hpPickUp.ogg");
 
 		gruntBodyTarget.clear();
 		scientistBodyTarget.clear();

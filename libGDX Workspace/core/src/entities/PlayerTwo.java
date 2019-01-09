@@ -227,11 +227,11 @@ public class PlayerTwo {
 		oldSpeed = speed; //original speed to go back to after being slowed
 		//PLAYER ONE HEALTH
 		if (DifficultyScreen.difficulty == 1) {
-			batch.draw(p2HPBG, p2PosX - .30f, p2PosY - .28f, .5f, 3f / Mutagen.PPM); //gray backing behind HP bar	
-			batch.draw(p2HP, p2PosX - .30f, p2PosY - .28f, PlayerTwo.player2HP / (Mutagen.PPM + 250), 3f / Mutagen.PPM); //HP bar
+			batch.draw(p2HPBG, p2PosX - .30f, p2PosY - .28f, player2MaxHP1 / (Mutagen.PPM +250), 3f / Mutagen.PPM); //gray backing behind HP bar	
+			batch.draw(p2HP, p2PosX - .30f, p2PosY - .28f, player2HP / (Mutagen.PPM + 250), 3f / Mutagen.PPM); //HP bar
 		}else{
-			batch.draw(p2HPBG, p2PosX - .30f, p2PosY - .20f, .5f, 3f / Mutagen.PPM); //gray backing behind HP bar	
-			batch.draw(p2HP, p2PosX - .30f, p2PosY - .20f, PlayerTwo.player2HP / (Mutagen.PPM + 150), 3f / Mutagen.PPM); //HP bar
+			batch.draw(p2HPBG, p2PosX - .3f, p2PosY - .28f, player2MaxHP2 / (Mutagen.PPM + 150), 3f / Mutagen.PPM); //gray backing behind HP bar	
+			batch.draw(p2HP, p2PosX - .3f, p2PosY - .28f, player2HP / (Mutagen.PPM + 150), 3f / Mutagen.PPM); //HP bar
 		}
 
 		//PLAYER DIES
@@ -412,9 +412,9 @@ public class PlayerTwo {
 				break;
 				case "shotgun": timeSinceLastShot = 70;
 				break;
-				case "assault rifle": timeSinceLastShot = 25;
+				case "assault rifle": timeSinceLastShot = 7;
 				break;
-				case "laser": timeSinceLastShot = 80;
+				case "laser": timeSinceLastShot = 40;
 				break;
 				case "battle axe": timeSinceLastShot = 110;
 				break;
