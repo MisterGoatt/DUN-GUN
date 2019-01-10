@@ -332,12 +332,12 @@ public class Level1 implements Screen{
 				b = null;
 			}
 			if (u instanceof Grunt) {
-				Grunt.grunts.removeValue((Grunt) b.getUserData(), true);
+				//Grunt.grunts.removeValue((Grunt) b.getUserData(), true);
 				world.destroyBody(b);
 				b = null;
 			}
 			if (u instanceof Scientist) {
-				Scientist.scientists.removeValue((Scientist) b.getUserData(), true);
+				//Scientist.scientists.removeValue((Scientist) b.getUserData(), true);
 				world.destroyBody(b);
 				b = null;
 			}
@@ -362,7 +362,7 @@ public class Level1 implements Screen{
 				b = null;
 			}
 			if (u instanceof Soldier) {
-				Soldier.soldiers.removeValue((Soldier) b.getUserData(), true);
+				//Soldier.soldiers.removeValue((Soldier) b.getUserData(), true);
 				world.destroyBody(b);
 				b = null;
 			}
@@ -427,9 +427,6 @@ public class Level1 implements Screen{
 
 		}else if (!gamePaused){ //********PLAY********
 
-			if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-				cam.zoom += .1f;
-			}
 			cameraUpdate(delta);
 			mapRenderer.render();
 			//b2dr.render(world, cam.combined);

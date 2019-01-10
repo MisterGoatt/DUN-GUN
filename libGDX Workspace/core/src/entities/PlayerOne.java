@@ -38,13 +38,13 @@ public class PlayerOne extends Sprite implements Disposable{
 	private TextureRegion revolverStandingRegion, axeStandingRegion, rifleStandingRegion, 
 	shotgunStandingRegion, assaultRifleStandingRegion, laserStandingRegion;
 
-	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot;
+	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot, hit1, hit2, hit3, hit4;
 	//sound effect of the player's movement
 	public static Sound runningSound;
-	private float speed = 3, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, slowedCounter, rotationSpeed = 4; //speed of the player, Sqrt 2 divided by 2
+	private float speed = 3, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, slowedCounter, rotationSpeed = 4, storedHP; //speed of the player, Sqrt 2 divided by 2
 	public static float  angle, p1PosX, p1PosY, axeSwingTimer = 0; //get distance between mouse and player in radians
 	//amount of damage each weapon deals
-	public static float laserLanceDamage = 150, battleAxeDamage = 200, assaultRifleDamage = 10, shotgunDamage = 25f, 
+	public static float laserLanceDamage = 150, battleAxeDamage = 200, assaultRifleDamage = 20, shotgunDamage = 25f, 
 			rifleDamage = 150, revolverDamage = 75;
 	public static int player1HP, player1MaxHP1 = 200, player1MaxHP2 = 150;
 	public static boolean p1Dead = false;
@@ -104,7 +104,15 @@ public class PlayerOne extends Sprite implements Disposable{
 		assaultRifleShot = Mutagen.manager.get("sound effects/shooting/assaultRifle.mp3", Sound.class);
 		laserShot = Mutagen.manager.get("sound effects/shooting/laserBlast3.mp3", Sound.class);
 		axeSwing = Mutagen.manager.get("sound effects/shooting/axeSwing.mp3", Sound.class);
-		ID = 1;
+		hit1 = Mutagen.manager.get("sound effects/impacts/hit1.ogg", Sound.class);
+		hit2 = Mutagen.manager.get("sound effects/impacts/hit2.ogg", Sound.class);
+		hit3 = Mutagen.manager.get("sound effects/impacts/hit3.ogg", Sound.class);
+		hit4 = Mutagen.manager.get("sound effects/impacts/hit4.ogg", Sound.class);
+		
+		
+		ID = 1; //defines if player is player 1 or player 2 for the CreateBullet class
+		storedHP = player1HP;
+		
 		definePlayer();
 
 	}
@@ -239,6 +247,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		}
 
 		oldSpeed = speed; //original speed to go back to after being slowed
+		
 		//PLAYER ONE HEALTH
 		if (DifficultyScreen.difficulty == 1) {
 			batch.draw(p1HPBG, p1PosX - .30f, p1PosY - .28f, player1MaxHP1 / (Mutagen.PPM + 250), 3f / Mutagen.PPM); //gray backing behind HP bar	
@@ -256,6 +265,30 @@ public class PlayerOne extends Sprite implements Disposable{
 			p1PosY = 0;
 			p1Dead = true;
 			runningSound.stop();
+		}
+		
+		//HIT SFX
+		if (storedHP > player1HP) {
+			
+			int hitSelect = (int) (Math.random()* 4 + 1);
+			switch (hitSelect) {
+			case 1: 
+				hit1.play();
+				break;
+			case 2:
+				hit2.play();
+				break;
+			case 3:
+				hit3.play();
+				break;
+			case 4:
+				hit4.play();
+				break;
+			}
+			storedHP = player1HP;
+		}
+		else if (player1HP == player1MaxHP1) {
+			storedHP = player1HP;
 		}
 
 

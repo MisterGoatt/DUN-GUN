@@ -2,6 +2,7 @@ package entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -29,7 +30,7 @@ public class Grunt extends Sprite implements Disposable{
 	private TextureAtlas gruntAtkAtlas, gruntDamagedAtlas;
 	private Animation <TextureRegion> gruntAtkAnimation;
 	private Animation <TextureRegion> gruntDamagedAnimation;
-	private float timePassed = 0, runSpeed = 1.5f, differenceX, differenceY;
+	private float timePassed = 0, runSpeed = 1.5f, differenceX, differenceY, oldX, oldY;
 	private TextureRegion gruntStandingRegion;
 	private Sound atkSwoosh;
 	public boolean attack = false, contAtk = false, tookDamage = false;
@@ -37,54 +38,57 @@ public class Grunt extends Sprite implements Disposable{
 	private boolean initialDmg = false; //makes sure the player takes damage at first when the enemy touches player
 	public static Array<Grunt> grunts = new Array<Grunt>();
 	public static Vector2 gruntPos = new Vector2(0,0);
+	private Texture blood;
 
-		
-		public Grunt(World world) {
-			this.world = world;
-			gruntAtkAtlas = Mutagen.manager.get("sprites/grunt/mutantAtkAnimation.atlas");
-			gruntAtkAnimation = new Animation <TextureRegion>(1f/15f, gruntAtkAtlas.getRegions());			
-			gruntStandingRegion = gruntAtkAtlas.findRegion("tile000");
-			gruntDamagedAtlas = Mutagen.manager.get("sprites/grunt/gruntDamaged.atlas");
-			gruntDamagedAnimation = new Animation <TextureRegion>(1f/15f, gruntDamagedAtlas.getRegions());
-			atkSwoosh = Mutagen.manager.get("sound effects/enemies/gruntSwoosh.mp3");
 
-			defineGrunt();
-		}
-		
-		public void defineGrunt() {
-			//define player body
-			
-			bdef.position.set(gruntPos);
-			bdef.type = BodyDef.BodyType.DynamicBody;
-			//create body in the world
-			b2body = world.createBody(bdef);
-			b2body.setLinearDamping(5f);
-			b2body.setUserData(this);
-			FixtureDef fdef = new FixtureDef();
-			CircleShape shape = new CircleShape();
-			shape.setRadius(10 / Mutagen.PPM);
-			fdef.density = 400;
-			fdef.shape = shape;
-			fdef.filter.categoryBits = Mutagen.ENEMY;
-			fdef.filter.maskBits = Mutagen.PLAYER | Mutagen.WALL | Mutagen.BULLET | Mutagen.SHOOT_OVER; //collides with everything
-			b2body.createFixture(fdef).setUserData("grunt");
-		}
-		
-		public void renderSprite(SpriteBatch batch) {
+	public Grunt(World world) {
+		this.world = world;
+		gruntAtkAtlas = Mutagen.manager.get("sprites/grunt/mutantAtkAnimation.atlas");
+		gruntAtkAnimation = new Animation <TextureRegion>(1f/15f, gruntAtkAtlas.getRegions());			
+		gruntStandingRegion = gruntAtkAtlas.findRegion("tile000");
+		gruntDamagedAtlas = Mutagen.manager.get("sprites/grunt/gruntDamaged.atlas");
+		gruntDamagedAnimation = new Animation <TextureRegion>(1f/15f, gruntDamagedAtlas.getRegions());
+		atkSwoosh = Mutagen.manager.get("sound effects/enemies/gruntSwoosh.mp3");
+		blood = Mutagen.manager.get("sprites/MutantBlood.png");
 
-	        //Selects which player to attack depending on which player is closer by using the pythagorean theorem
+		defineGrunt();
+	}
+
+	public void defineGrunt() {
+		//define player body
+
+		bdef.position.set(gruntPos);
+		bdef.type = BodyDef.BodyType.DynamicBody;
+		//create body in the world
+		b2body = world.createBody(bdef);
+		b2body.setLinearDamping(5f);
+		b2body.setUserData(this);
+		FixtureDef fdef = new FixtureDef();
+		CircleShape shape = new CircleShape();
+		shape.setRadius(10 / Mutagen.PPM);
+		fdef.density = 400;
+		fdef.shape = shape;
+		fdef.filter.categoryBits = Mutagen.ENEMY;
+		fdef.filter.maskBits = Mutagen.PLAYER | Mutagen.WALL | Mutagen.BULLET | Mutagen.SHOOT_OVER; //collides with everything
+		b2body.createFixture(fdef).setUserData("grunt");
+	}
+
+	public void renderSprite(SpriteBatch batch) {
+		if (this.health > 0){
+
+			//Selects which player to attack depending on which player is closer by using the pythagorean theorem
 			if (!PlayerMode.OneP) {
 				//PlayerOne
 				float differencePlayerX =  PlayerOne.p1PosX - b2body.getPosition().x;
 				float differencePlayerY =  PlayerOne.p1PosY - b2body.getPosition().y;
-				
+
 				//PlayerTwo
 				float differencePlayer2X =  PlayerTwo.p2PosX - b2body.getPosition().x;
 				float differencePlayer2Y =  PlayerTwo.p2PosY - b2body.getPosition().y;
-				
+
 				float player1Dif = (float) Math.sqrt((differencePlayerX*differencePlayerX)+(differencePlayerY*differencePlayerY));
 				float player2Dif = (float) Math.sqrt((differencePlayer2X*differencePlayer2X)+(differencePlayer2Y*differencePlayer2Y));
-				
+
 				if (player1Dif < player2Dif) {
 					differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
 					differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
@@ -100,14 +104,14 @@ public class Grunt extends Sprite implements Disposable{
 			angle2 = MathUtils.atan2(differenceY, differenceX);
 			float angle = angle2 * MathUtils.radDeg;	
 			angle = angle - 90; //makes it a full 360 degrees
-		    if (angle < 0) {
-		    	angle += 360 ;
-		    }
+			if (angle < 0) {
+				angle += 360 ;
+			}
 			float posX = this.b2body.getPosition().x;
 			float posY = this.b2body.getPosition().y;
 			float gposX = (float) (Math.cos(angle2)) * runSpeed;
 			float gposY = (float) (Math.sin(angle2)) * runSpeed;
-		
+
 			if (!tookDamage && !attack && !contAtk) {
 				batch.draw(gruntStandingRegion, posX - .17f, posY - .13f, 20 / Mutagen.PPM, 10 / Mutagen.PPM, 40 / Mutagen.PPM, 32 / Mutagen.PPM, 1, 1, angle);
 			}
@@ -132,7 +136,7 @@ public class Grunt extends Sprite implements Disposable{
 					initialDmg = false;
 				}
 			}
-			
+
 			else {
 				batch.draw(gruntDamagedAnimation.getKeyFrame(timePassed), posX - .20f, posY -.27f, 20 / Mutagen.PPM, 25 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1.18f, 1.18f, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
@@ -141,7 +145,7 @@ public class Grunt extends Sprite implements Disposable{
 					tookDamage = false;
 				}
 			}
-			
+
 			if (!PlayerMode.OneP) {
 				if (!PlayerOne.p1Dead) {
 					b2body.applyLinearImpulse(gposX, gposY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);	
@@ -160,14 +164,18 @@ public class Grunt extends Sprite implements Disposable{
 				}
 			}
 
-			
-			
+			oldX = this.b2body.getPosition().x;
+			oldY = this.b2body.getPosition().y;
+		}else {
+			batch.draw(blood, oldX, oldY, 32 / Mutagen.PPM, 32 / Mutagen.PPM);
 		}
 
+	}
 
-		@Override
-		public void dispose() {
-		}
+
+	@Override
+	public void dispose() {
+	}
 
 
 }

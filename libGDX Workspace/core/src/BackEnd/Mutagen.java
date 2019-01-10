@@ -42,6 +42,16 @@ public class Mutagen extends Game{
 			//manager.load("sound effects/click.mp3", Sound.class);
 			click = Gdx.audio.newSound(Gdx.files.internal("sound effects/click.mp3"));
 
+			//Player hit sfx
+			manager.load("sound effects/impacts/hit1.ogg", Sound.class);
+			manager.load("sound effects/impacts/hit2.ogg", Sound.class);
+			manager.load("sound effects/impacts/hit3.ogg", Sound.class);
+			manager.load("sound effects/impacts/hit4.ogg", Sound.class);
+
+			//Human and Enemy blood
+			manager.load("sprites/Blood.png", Texture.class);
+			manager.load("sprites/MutantBlood.png", Texture.class);
+
 			//PlayerOne
 			manager.load("sprites/player1/playerRevolver.atlas", TextureAtlas.class);
 			manager.load("sprites/player1/rifleAnimation.atlas", TextureAtlas.class);

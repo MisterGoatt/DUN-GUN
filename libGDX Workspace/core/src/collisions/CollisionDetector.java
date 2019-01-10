@@ -584,12 +584,11 @@ public class CollisionDetector implements ContactListener{
 					break;
 					default: break;
 					}
-					turretBodyTarget.clear();
+					soldierBodyTarget.clear();
 					tempBodyArray.clear();
 
 					if (soldier.health <= 0) {
 						bodiesToRemove.add(fa.getBody()); //grunt
-						//turret.tookDamage = false;
 					}
 				}
 				if (fb.getUserData().equals("soldier")){
@@ -901,7 +900,7 @@ public class CollisionDetector implements ContactListener{
 					break;
 					default: break;
 					}
-					turretBodyTarget.clear();
+					soldierBodyTarget.clear();
 					tempBodyArray.clear();
 					if (soldier.health <= 0) {
 						bodiesToRemove.add(fa.getBody());

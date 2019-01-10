@@ -36,13 +36,13 @@ public class PlayerTwo {
 	private TextureRegion revolverStandingRegion, axeStandingRegion, rifleStandingRegion, 
 	shotgunStandingRegion, assaultRifleStandingRegion, laserStandingRegion;
 
-	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot;
+	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot, hit1, hit2, hit3, hit4;
 	//sound effect of the player's movement
 	public static Sound runningSound;
-	private float speed = 3, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, slowedCounter, rotationSpeed = 4; //speed of the player, Sqrt 2 divided by 2
+	private float speed = 3, storedHP, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, slowedCounter, rotationSpeed = 4; //speed of the player, Sqrt 2 divided by 2
 	public static float  angle, p2PosX, p2PosY; //get distance between mouse and player in radians
 	//amount of damage each weapon deals
-	public static float laserLanceDamage = 150, battleAxeDamage = 200, assaultRifleDamage = 50, shotgunDamage = 25f, 
+	public static float laserLanceDamage = 150, battleAxeDamage = 200, assaultRifleDamage = 20, shotgunDamage = 25f, 
 			rifleDamage = 150, revolverDamage = 75;
 	public static int player2HP, player2MaxHP1 = 200, player2MaxHP2 = 150;
 	public static boolean p2Dead = false;
@@ -65,6 +65,7 @@ public class PlayerTwo {
 		if (DifficultyScreen.difficulty == 2) {
 			player2HP = player2MaxHP2;			
 		}
+		storedHP = player2HP;
 		slowedCounter = 0;
 		p2Dead = false;
 		slowRestart = false;
@@ -101,6 +102,10 @@ public class PlayerTwo {
 		assaultRifleShot = Mutagen.manager.get("sound effects/shooting/assaultRifle.mp3", Sound.class);
 		laserShot = Mutagen.manager.get("sound effects/shooting/laserBlast3.mp3", Sound.class);
 		axeSwing = Mutagen.manager.get("sound effects/shooting/axeSwing.mp3", Sound.class);
+		hit1 = Mutagen.manager.get("sound effects/impacts/hit1.ogg", Sound.class);
+		hit2 = Mutagen.manager.get("sound effects/impacts/hit2.ogg", Sound.class);
+		hit3 = Mutagen.manager.get("sound effects/impacts/hit3.ogg", Sound.class);
+		hit4 = Mutagen.manager.get("sound effects/impacts/hit4.ogg", Sound.class);
 		ID = 2;
 		definePlayer();
 	}
@@ -233,7 +238,31 @@ public class PlayerTwo {
 			batch.draw(p2HPBG, p2PosX - .3f, p2PosY - .28f, player2MaxHP2 / (Mutagen.PPM + 150), 3f / Mutagen.PPM); //gray backing behind HP bar	
 			batch.draw(p2HP, p2PosX - .3f, p2PosY - .28f, player2HP / (Mutagen.PPM + 150), 3f / Mutagen.PPM); //HP bar
 		}
-
+		
+		//HIT SFX
+		if (storedHP > player2HP) {
+			
+			int hitSelect = (int) (Math.random()* 4 + 1);
+			System.out.println(hitSelect);
+			switch (hitSelect) {
+			case 1: 
+				hit1.play();
+				break;
+			case 2:
+				hit2.play();
+				break;
+			case 3:
+				hit3.play();
+				break;
+			case 4:
+				hit4.play();
+				break;
+			}
+			storedHP = player2HP;
+		} else if (player2HP == player2MaxHP1) {
+			storedHP = player2HP;
+		}
+		
 		//PLAYER DIES
 		if (player2HP <= 0) {
 			world.destroyBody(this.b2body);

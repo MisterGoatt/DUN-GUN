@@ -72,7 +72,7 @@ public class ControlScreen implements Screen, InputProcessor{
 		System.out.println(mX + " " + mY);
 		if (0 < mX && mX < 120 && 0 < mY && mY < 61)
 		{
-			activeMenuText.draw(game.batch, "BACK", 10 / Mutagen.PPM, 55);
+			activeMenuText.draw(game.batch, "BACK", 10, 55);
 		}else {
 			inactiveMenuText.draw(game.batch, "BACK", 10, 55);
 		}

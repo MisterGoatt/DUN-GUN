@@ -14,6 +14,7 @@ public class DesktopLauncher {
 		config.height= 800;
 		config.title = "MUTAGEN";
 		config.vSyncEnabled = true;
+		config.useHDPI = false;
 		config.addIcon("MIcon.png", FileType.Internal);
 		new LwjglApplication(new Mutagen(), config);
 
