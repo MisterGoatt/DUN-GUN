@@ -33,6 +33,11 @@ public class DifficultyScreen implements Screen, InputProcessor{
 		back = Mutagen.manager.get("screens/difficultyScreen/difficultyba.jpg");
 		normal = Mutagen.manager.get("screens/difficultyScreen/difficultyn.jpg");
 		challenge = Mutagen.manager.get("screens/difficultyScreen/difficultyc.jpg");
+		blank.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		back.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		normal.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		challenge.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
 	}
 
 	@Override

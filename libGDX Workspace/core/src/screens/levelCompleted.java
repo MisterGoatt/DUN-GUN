@@ -22,6 +22,8 @@ public class levelCompleted implements Screen{
 	public levelCompleted(final Mutagen game) {
 		this.game = game;
 		levelComplete = Mutagen.manager.get("screens/levelCompletedScreen.jpg");
+		levelComplete.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
 		cam = new OrthographicCamera();
 		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);

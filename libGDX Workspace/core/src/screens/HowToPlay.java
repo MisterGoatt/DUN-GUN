@@ -36,7 +36,9 @@ public class HowToPlay implements Screen, InputProcessor{
 	
 	public HowToPlay(final Mutagen game) {
 		this.game = game;
-		howToPlay = new Texture("screens/tutorials/howToPlay.jpg");
+		howToPlay = Mutagen.manager.get("screens/tutorials/howToPlay.jpg");
+		howToPlay.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); //centers the map to center of screen

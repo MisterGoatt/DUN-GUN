@@ -236,7 +236,6 @@ public class PlayerOne extends Sprite implements Disposable{
 			}else {
 				batch.draw(axeStandingRegion, posX - .35f, posY - .3f, 35 / Mutagen.PPM, 30 / Mutagen.PPM, 70 / Mutagen.PPM, 70 / Mutagen.PPM, 1, 1, angle);
 			}
-
 		}
 
 		oldSpeed = speed; //original speed to go back to after being slowed

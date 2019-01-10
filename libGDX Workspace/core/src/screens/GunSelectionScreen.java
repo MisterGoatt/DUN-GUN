@@ -32,6 +32,8 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 	public GunSelectionScreen(final Mutagen game) {
 		this.game = game;
 		gunPickScreen = Mutagen.manager.get("screens/gun_selection.jpg");
+		gunPickScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
 		p1GS = Mutagen.manager.get("screens/p1GS.jpg");
 		p2GS = Mutagen.manager.get("screens/p2GS.jpg");
 		aimStyleScr = Mutagen.manager.get("screens/aimStyle.jpg");

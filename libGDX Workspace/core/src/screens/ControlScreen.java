@@ -37,15 +37,16 @@ public class ControlScreen implements Screen, InputProcessor{
 	
 	public ControlScreen(final Mutagen game) {
 		this.game = game;
-		controlScreen = new Texture("screens/tutorials/controlScreen.jpg");
-		cam = new OrthographicCamera();		
-		gamePort = new FitViewport(Mutagen.V_WIDTH / Mutagen.PPM, Mutagen.V_HEIGHT / Mutagen.PPM, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+		controlScreen = Mutagen.manager.get("screens/tutorials/controlScreen.jpg");
+		controlScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		cam = new OrthographicCamera();
+		gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); //centers the map to center of screen
 		Gdx.input.setInputProcessor(this);
+		//cam.zoom -= .40;
 
 		inactiveMenuText = Mutagen.manager.get("fonts/inactiveMenu(36).fnt", BitmapFont.class);
 		activeMenuText = Mutagen.manager.get("fonts/activeMenu(36).fnt", BitmapFont.class);
-	
 	}
 	
 	@Override
@@ -65,9 +66,7 @@ public class ControlScreen implements Screen, InputProcessor{
 		game.batch.begin();
 		game.batch.setProjectionMatrix(cam.combined);
 		
-		game.batch.draw(controlScreen, 0 / Mutagen.PPM, 0 / Mutagen.PPM);
-		
-		
+		game.batch.draw(controlScreen, 0, 0);
 		mX = mouse_position.x;
 		mY = mouse_position.y;
 		System.out.println(mX + " " + mY);
@@ -114,7 +113,12 @@ public class ControlScreen implements Screen, InputProcessor{
 
 	@Override
 	public boolean keyDown(int keycode) {
-		// TODO Auto-generated method stub
+
+//		if (Gdx.input.isKeyPressed(Input.Keys.P)) {
+//			cam.zoom +=.4;
+//			System.out.println("moving");
+//		}
+		
 		return false;
 	}
 
@@ -133,8 +137,6 @@ public class ControlScreen implements Screen, InputProcessor{
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-
-		
 		if (!buttonPressed) {
 			//back button
 			

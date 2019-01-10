@@ -35,6 +35,11 @@ public class IntroductionScreens implements Screen{
 		creditScreen = Mutagen.manager.get("screens/intro screens/introCredits.jpg");
 		titleScreen = Mutagen.manager.get("screens/intro screens/introTitle.jpg");
 		musicScreen = Mutagen.manager.get("screens/intro screens/musicScreen.jpg");
+		publisherScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		creditScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		titleScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		musicScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
 	}
 
 

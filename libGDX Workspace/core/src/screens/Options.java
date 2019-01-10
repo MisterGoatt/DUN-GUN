@@ -37,6 +37,11 @@ public class Options implements Screen, InputProcessor{
 		noneSelected = Mutagen.manager.get("screens/options/optionsScreenNone.jpg");
 		musicSelected = Mutagen.manager.get("screens/options/optionsScreenMusic.jpg");
 		sfxSelected = Mutagen.manager.get("screens/options/optionsScreenSFX.jpg");
+		allSelected.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		noneSelected.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		musicSelected.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		sfxSelected.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
 		Gdx.input.setInputProcessor(this);
 		if (Mutagen.musicVolume == 0) {
 			music = false;

@@ -29,13 +29,14 @@ public class PlayerMode implements Screen, InputProcessor{
 	public PlayerMode(final Mutagen game) {
 		this.game = game;
 		playerModeScreen = Mutagen.manager.get("screens/playerModeScreen.jpg");
+		playerModeScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		cam = new OrthographicCamera();		
 		gamePort = new StretchViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-		backText = Mutagen.manager.get("fonts/backText(68).fnt", BitmapFont.class);
-		inactiveText =  Mutagen.manager.get("fonts/inactiveText(100).fnt", BitmapFont.class);
-		activeText = Mutagen.manager.get("fonts/activeText(100).fnt", BitmapFont.class);
-		backActiveText = Mutagen.manager.get("fonts/backActiveText(68).fnt", BitmapFont.class);
+		backText = Mutagen.manager.get("fonts/backText(68).fnt");
+		inactiveText =  Mutagen.manager.get("fonts/inactiveText(100).fnt");
+		activeText = Mutagen.manager.get("fonts/activeText(100).fnt");
+		backActiveText = Mutagen.manager.get("fonts/backActiveText(68).fnt");
 		Gdx.input.setInputProcessor(this);
 
 	}

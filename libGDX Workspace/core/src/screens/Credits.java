@@ -24,6 +24,8 @@ public class Credits implements Screen{
 	public Credits(final Mutagen game) {
 		this.game = game;
 		credits = Mutagen.manager.get("screens/ScrollingC.jpg");
+		credits.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
 		cam = new OrthographicCamera();
 		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);

@@ -26,7 +26,9 @@ public class CrashScreen implements Screen {
 	
 	public CrashScreen(final Mutagen game) {
 		this.game = game;
-		crashScreen = new Texture("screens/tutorials/crashScreen.jpg");
+		crashScreen = Mutagen.manager.get("screens/tutorials/crashScreen.jpg");
+		crashScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
 		cam = new OrthographicCamera();
 		gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam);
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
