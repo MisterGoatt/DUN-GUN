@@ -39,7 +39,7 @@ public class PlayerTwo {
 	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot, hit1, hit2, hit3, hit4;
 	//sound effect of the player's movement
 	public static Sound runningSound;
-	private float speed = 3, storedHP, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, slowedCounter, rotationSpeed = 4; //speed of the player, Sqrt 2 divided by 2
+	private float speed = 3, storedHP, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, slowedCounter, rotationSpeed = 4, secondWind = 1; //speed of the player, Sqrt 2 divided by 2
 	public static float  angle, p2PosX, p2PosY; //get distance between mouse and player in radians
 	//amount of damage each weapon deals
 	public static float laserLanceDamage = 150, battleAxeDamage = 200, assaultRifleDamage = 20, shotgunDamage = 25f, 
@@ -238,10 +238,10 @@ public class PlayerTwo {
 			batch.draw(p2HPBG, p2PosX - .3f, p2PosY - .28f, player2MaxHP2 / (Mutagen.PPM + 150), 3f / Mutagen.PPM); //gray backing behind HP bar	
 			batch.draw(p2HP, p2PosX - .3f, p2PosY - .28f, player2HP / (Mutagen.PPM + 150), 3f / Mutagen.PPM); //HP bar
 		}
-		
+
 		//HIT SFX
 		if (storedHP > player2HP) {
-			
+
 			int hitSelect = (int) (Math.random()* 4 + 1);
 			System.out.println(hitSelect);
 			switch (hitSelect) {
@@ -262,14 +262,23 @@ public class PlayerTwo {
 		} else if (player2HP == player2MaxHP1) {
 			storedHP = player2HP;
 		}
-		
+
 		//PLAYER DIES
 		if (player2HP <= 0) {
-			world.destroyBody(this.b2body);
-			p2PosX = 0;
-			p2PosY = 0;
-			p2Dead = true;
-			runningSound.stop();
+			//player's second life
+			if (secondWind == 1) {
+				if (DifficultyScreen.difficulty ==1) {
+					player2HP = player2MaxHP1;					
+				}
+				secondWind += 1;
+			}else if (secondWind > 1 || DifficultyScreen.difficulty == 2){
+
+				world.destroyBody(this.b2body);
+				p2PosX = 0;
+				p2PosY = 0;
+				p2Dead = true;
+				runningSound.stop();
+			}
 		}
 
 	}
@@ -421,7 +430,7 @@ public class PlayerTwo {
 				}else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
 					this.b2body.setLinearVelocity(-speed, 0f);
 					angle = 90;
-					
+
 				}else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
 					this.b2body.setLinearVelocity(speed, 0f);
 					angle = 270;

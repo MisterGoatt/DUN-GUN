@@ -70,17 +70,12 @@ public class Level1 implements Screen{
 	private Music levelOneMusic;
 	private Texture mouseCursor, axeMouseCursor, pauseMenu;
 	private boolean lockCursor = true;
-	private boolean gamePaused = false, spawnEnemies = false, spawnOnce = true;
-	private float elapsed = 0, duration, intensity, radius, randomAngle;	
+	private boolean gamePaused = false;
+	private float elapsed = 0, duration, intensity;
 	public static boolean bulletImpact = false;
-	private boolean room1 = true, room2 = true, room3 = true, room4 = true, room5 = true, 
-			room6 = true, room6t = true, room7 = true, room8 = true, room9 = true, hpSpawn = true; //room spawn control
 	public static Vector3 mousePosition = new Vector3(0, 0, 0);
-	private Vector2 cam2 = new Vector2(0, 0);
-	private Vector2 cam2Hold = new Vector2(0, 0);
 	private Vector2 boundaryAbs = new Vector2(0, 0);
 	private Vector2 boundary = new Vector2(0, 0);
-	private Vector2 boundaryMax = new Vector2(8.9f, 4.7f);
 
 	Random random;
 

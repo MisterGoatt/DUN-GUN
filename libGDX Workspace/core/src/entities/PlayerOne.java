@@ -41,7 +41,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot, hit1, hit2, hit3, hit4;
 	//sound effect of the player's movement
 	public static Sound runningSound;
-	private float speed = 3, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, slowedCounter, rotationSpeed = 4, storedHP; //speed of the player, Sqrt 2 divided by 2
+	private float speed = 3, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, slowedCounter, rotationSpeed = 4, storedHP, secondWind = 1; //speed of the player, Sqrt 2 divided by 2
 	public static float  angle, p1PosX, p1PosY, axeSwingTimer = 0; //get distance between mouse and player in radians
 	//amount of damage each weapon deals
 	public static float laserLanceDamage = 150, battleAxeDamage = 200, assaultRifleDamage = 20, shotgunDamage = 25f, 
@@ -260,11 +260,21 @@ public class PlayerOne extends Sprite implements Disposable{
 
 		//PLAYER DIES
 		if (player1HP <= 0) {
-			world.destroyBody(this.b2body);
-			p1PosX = 0;
-			p1PosY = 0;
-			p1Dead = true;
-			runningSound.stop();
+			//player's second life
+			if (secondWind == 1) {
+				if (DifficultyScreen.difficulty ==1) {
+					player1HP = player1MaxHP1;					
+				}
+				secondWind += 1;
+			}else if (secondWind > 1 || DifficultyScreen.difficulty == 2){
+				world.destroyBody(this.b2body);
+				p1PosX = 0;
+				p1PosY = 0;
+				p1Dead = true;
+				runningSound.stop();				
+			}
+			
+
 		}
 		
 		//HIT SFX
