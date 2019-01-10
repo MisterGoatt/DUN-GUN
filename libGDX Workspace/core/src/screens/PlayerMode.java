@@ -19,6 +19,9 @@ public class PlayerMode implements Screen, InputProcessor{
 	final Mutagen game;
 	public Viewport gamePort;
 	private Texture playerModeScreen;
+	private Texture playerModeBack;
+	private Texture playerModeCoop;
+	private Texture playerModeSingle;
 	private OrthographicCamera cam;
 	private Vector3 mousePosition = new Vector3(0, 0, 0);
 	public static boolean OneP = false;
@@ -28,8 +31,18 @@ public class PlayerMode implements Screen, InputProcessor{
 
 	public PlayerMode(final Mutagen game) {
 		this.game = game;
-		playerModeScreen = Mutagen.manager.get("screens/playerModeScreen.jpg");
+		playerModeScreen = Mutagen.manager.get("screens/playerMode/playerModeBlank.jpg");
 		playerModeScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
+		playerModeBack = Mutagen.manager.get("screens/playerMode/playerModeBack.jpg");
+		playerModeBack.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
+		playerModeSingle = Mutagen.manager.get("screens/playerMode/playerModeSingle.jpg");
+		playerModeSingle.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
+		playerModeCoop = Mutagen.manager.get("screens/playerMode/playerModeCO-OP.jpg");
+		playerModeCoop.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
 		cam = new OrthographicCamera();		
 		gamePort = new StretchViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
@@ -58,26 +71,26 @@ public class PlayerMode implements Screen, InputProcessor{
 		game.batch.draw(playerModeScreen, 0, 0);
 		//single player
 		if ( mX < 1145 && mX > 407 && mY < 660 && mY > 509) {
-			activeText.draw(game.batch, "SINGLE PLAYER", 525, 620);
-		}else {
-			inactiveText.draw(game.batch, "SINGLE PLAYER", 525, 620);
-		}
+			game.batch.draw(playerModeSingle, 0, 0);
+		}//else {
+			//inactiveText.draw(game.batch, "SINGLE PLAYER", 525, 620);
+		//}
 		//co-op
 		if ( mX < 1145 && mX > 407 && mY < 431 && mY > 282) {
-			activeText.draw(game.batch, "CO-OP", 675, 390);
+			game.batch.draw(playerModeCoop, 0, 0);
 
-		}else {
-			inactiveText.draw(game.batch, "CO-OP", 675, 390);
+		}//else {
+			//inactiveText.draw(game.batch, "CO-OP", 675, 390);
 
-		}
+		//}
 		//back
 		if (mX < 271 && mX > 104 && mY < 110 && mY > 40) {
-			backActiveText.draw(game.batch, " BACK", 115, 98);
+			game.batch.draw(playerModeBack, 0, 0);
 
-		}else {
-			backText.draw(game.batch, " BACK", 115, 98);
+		}//else {
+			//backText.draw(game.batch, " BACK", 115, 98);
 
-		}
+		//}
 
 		game.batch.end();
 		cam.update();

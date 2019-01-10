@@ -147,7 +147,10 @@ public class Mutagen extends Game{
 			manager.load("sound effects/enemies/turretHit.mp3", Sound.class);
 
 			//PlayerModeScreen
-			manager.load("screens/playerModeScreen.jpg", Texture.class);
+			manager.load("screens/playerMode/playerModeBlank.jpg", Texture.class);
+			manager.load("screens/playerMode/playerModeBack.jpg", Texture.class);
+			manager.load("screens/playerMode/playerModeSingle.jpg", Texture.class);
+			manager.load("screens/playerMode/playerModeCO-OP.jpg", Texture.class);
 			manager.load("fonts/backText(68).fnt", BitmapFont.class);
 			manager.load("fonts/backActiveText(68).fnt", BitmapFont.class);
 

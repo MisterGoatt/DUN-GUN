@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 public class HowToPlay implements Screen, InputProcessor{
 	final Mutagen game;
 	Texture howToPlay;
+	Texture howToPlayB;
 	private OrthographicCamera cam;
 	private Viewport gamePort;
 	boolean justClicked = false;
@@ -38,7 +39,6 @@ public class HowToPlay implements Screen, InputProcessor{
 		this.game = game;
 		howToPlay = Mutagen.manager.get("screens/tutorials/howToPlay.jpg");
 		howToPlay.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); //centers the map to center of screen
@@ -113,7 +113,6 @@ public class HowToPlay implements Screen, InputProcessor{
 	@Override
 	public void dispose() {
 		game.batch.dispose();
-		howToPlay.dispose();
 		}
 
 	@Override
