@@ -1,0 +1,188 @@
+
+flayerAtkAnimation.png
+size: 2048,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+tile000
+  rotate: false
+  xy: 106, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile025
+  rotate: false
+  xy: 106, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile001
+  rotate: false
+  xy: 158, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile002
+  rotate: false
+  xy: 210, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile003
+  rotate: false
+  xy: 262, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile004
+  rotate: false
+  xy: 314, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile005
+  rotate: false
+  xy: 366, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile006
+  rotate: false
+  xy: 418, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile007
+  rotate: false
+  xy: 470, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile008
+  rotate: false
+  xy: 522, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile009
+  rotate: false
+  xy: 574, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile010
+  rotate: false
+  xy: 730, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile011
+  rotate: false
+  xy: 782, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile012
+  rotate: false
+  xy: 834, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile013
+  rotate: false
+  xy: 886, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile014
+  rotate: false
+  xy: 938, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile015
+  rotate: false
+  xy: 990, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile016
+  rotate: false
+  xy: 1042, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile017
+  rotate: false
+  xy: 1094, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile018
+  rotate: false
+  xy: 1146, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile019
+  rotate: false
+  xy: 1198, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile020
+  rotate: false
+  xy: 2, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile021
+  rotate: false
+  xy: 54, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile022
+  rotate: false
+  xy: 626, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile023
+  rotate: false
+  xy: 1250, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+tile024
+  rotate: false
+  xy: 678, 2
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1

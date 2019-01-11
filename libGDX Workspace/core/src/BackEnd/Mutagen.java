@@ -179,6 +179,11 @@ public class Mutagen extends Game{
 			manager.load("sprites/soldier/pelletR.atlas", TextureAtlas.class);
 			manager.load("sound effects/enemies/soldierShooting.ogg", Sound.class);
 
+			//Mutagen
+			manager.load("sprites/flayer/flayerAtkAnimation.atlas", TextureAtlas.class);
+			manager.load("sprites/flayer/flayerThorn.atlas", TextureAtlas.class);
+			//manager.load("sound effects/enemies/soldierShooting.ogg", Sound.class);
+			
 			manager.finishLoading();
 			this.setScreen(new IntroductionScreens(this));
 //		}catch (Exception e) {
