@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Array;
 
 import BackEnd.Mutagen;
 import entities.CreateBullet;
+import entities.Flayer;
 import entities.Grunt;
 import entities.HealthPickUp;
 import entities.PlayerOne;
@@ -31,6 +32,8 @@ public class CollisionDetector implements ContactListener{
 	private Array<Turret> turretBodyTarget = new Array<Turret>();
 	private Array<CreateBullet> bulletBodyTarget = new Array<CreateBullet>();
 	private Array<Soldier> soldierBodyTarget = new Array<Soldier>();
+	private Array<Flayer> flayerBodyTarget = new Array<Flayer>();
+
 
 	Grunt grunt;
 	Scientist scientist;
@@ -38,7 +41,10 @@ public class CollisionDetector implements ContactListener{
 	CreateBullet createBullet;
 	Soldier soldier;
 	PlayerOne p1;
-	private Sound bulletHitWall, bulletBodyImpact, pelletHitWall, laserHitWall, turretHit, hpPickUp;
+	Flayer flayer;
+
+	private Sound bulletHitWall, bulletBodyImpact, pelletHitWall, laserHitWall, turretHit, hpPickUp,
+		thornHit;
 
 	public CollisionDetector() {	
 		tempBodyArray= new Array<Body>();
@@ -49,12 +55,15 @@ public class CollisionDetector implements ContactListener{
 		bulletBodyImpact = Mutagen.manager.get("sound effects/impacts/bulletBodyImpact.mp3");
 		turretHit = Mutagen.manager.get("sound effects/enemies/turretHit.mp3");
 		hpPickUp = Mutagen.manager.get("sound effects/hpPickUp.ogg");
+		thornHit = Mutagen.manager.get("sound effects/impacts/thorn hit.mp3");
+
 
 		gruntBodyTarget.clear();
 		scientistBodyTarget.clear();
 		tempBodyArray.clear();
 		bulletBodyTarget.clear();
 		soldierBodyTarget.clear();
+		flayerBodyTarget.clear();
 	}
 
 	@Override
@@ -601,7 +610,7 @@ public class CollisionDetector implements ContactListener{
 					if (Mutagen.sfxVolume != 0) {
 						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
 					}
-					
+
 					switch (GunSelectionScreen.p1WeaponSelected){
 					case "battle axe": soldier.health -= PlayerOne.battleAxeDamage;
 					break;
@@ -1106,6 +1115,214 @@ public class CollisionDetector implements ContactListener{
 						bodiesToRemove.add(fb.getBody()); //grunt
 						//turret.tookDamage = false;
 					}
+				}
+			}
+		}
+		//BULLET AND FLAYER COLLISIONS
+		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
+			if (fa.getUserData().equals("flayer") || fb.getUserData().equals("flayer")) {
+				if (fa.getUserData().equals("bullets")){
+
+					if (GunSelectionScreen.p1WeaponSelected != "battle axe") {
+						bodiesToRemove.add(fa.getBody()); //bullet
+					}
+				}
+				if(fb.getUserData().equals("bullets")){
+					if (GunSelectionScreen.p1WeaponSelected != "battle axe") {
+						bodiesToRemove.add(fb.getBody()); //bullet
+					}
+				}				
+				if (fa.getUserData().equals("flayer")){
+
+					tempBodyArray.add(fa.getBody());
+					Body b = tempBodyArray.first();
+					flayerBodyTarget.add((Flayer) b.getUserData()); //casts Grunt on the physics body to get the class instance
+					flayer = flayerBodyTarget.get(0);
+
+					if (Mutagen.sfxVolume != 0) {
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+					}
+					switch (GunSelectionScreen.p1WeaponSelected){
+					case "battle axe": flayer.health -= PlayerOne.battleAxeDamage;
+					break;
+					case "revolver": flayer.health -= PlayerOne.revolverDamage;
+					break;
+					case "rifle": flayer.health -= PlayerOne.rifleDamage;
+					break;	
+					case "assault rifle": flayer.health -= PlayerOne.assaultRifleDamage;
+					break;
+					case "laser": flayer.health -= PlayerOne.laserLanceDamage;
+					break;
+					case "shotgun": flayer.health -= PlayerOne.shotgunDamage;
+					break;
+					default: break;
+					}
+					flayerBodyTarget.clear();
+					tempBodyArray.clear();
+
+					if (flayer.health <= 0) {
+						bodiesToRemove.add(fa.getBody()); //grunt
+					}
+				}
+				if (fb.getUserData().equals("flayer")){
+					tempBodyArray.add(fb.getBody());
+					Body b = tempBodyArray.first();
+					flayerBodyTarget.add((Flayer) b.getUserData()); //casts Grunt on the physics body to get the class instance
+					flayer = flayerBodyTarget.get(0);
+
+					if (Mutagen.sfxVolume != 0) {
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+					}
+
+					switch (GunSelectionScreen.p1WeaponSelected){
+					case "battle axe": flayer.health -= PlayerOne.battleAxeDamage;
+					break;
+					case "revolver": flayer.health -= PlayerOne.revolverDamage;
+					break;
+					case "rifle": flayer.health -= PlayerOne.rifleDamage;
+					break;	
+					case "assault rifle": flayer.health -= PlayerOne.assaultRifleDamage;
+					break;
+					case "laser": flayer.health -= PlayerOne.laserLanceDamage;
+					break;
+					case "shotgun": flayer.health -= PlayerOne.shotgunDamage;
+					break;
+					default: break;
+					}
+					flayerBodyTarget.clear();
+					tempBodyArray.clear();
+
+					if (flayer.health <= 0) {
+						bodiesToRemove.add(fb.getBody()); //grunt
+						//turret.tookDamage = false;
+					}
+				}
+
+			}
+		}//P2's BULLET AND FLAYER COLLISIONS
+		if (fa.getUserData().equals("bullets2") || fb.getUserData().equals("bullets2")) {
+			if (fa.getUserData().equals("flayer") || fb.getUserData().equals("flayer")) {
+				if (fa.getUserData().equals("bullets2")){
+
+					if (GunSelectionScreen.p2WeaponSelected != "battle axe") {
+						bodiesToRemove.add(fa.getBody()); //bullet
+					}
+				}
+				if(fb.getUserData().equals("bullets2")){
+					if (GunSelectionScreen.p2WeaponSelected != "battle axe") {
+						bodiesToRemove.add(fb.getBody()); //bullet
+					}
+				}				
+				if (fa.getUserData().equals("flayer")){
+
+					tempBodyArray.add(fa.getBody());
+					Body b = tempBodyArray.first();
+					flayerBodyTarget.add((Flayer) b.getUserData()); 
+					flayer = flayerBodyTarget.get(0);
+					//not needed yet
+					//scientist.tookDamage = true;
+
+					switch (GunSelectionScreen.p2WeaponSelected){
+					case "battle axe": flayer.health -= PlayerTwo.battleAxeDamage;
+					break;
+					case "revolver": flayer.health -= PlayerTwo.revolverDamage;
+					break;
+					case "rifle": flayer.health -= PlayerTwo.rifleDamage;
+					break;	
+					case "assault rifle": flayer.health -= PlayerTwo.assaultRifleDamage;
+					break;
+					case "laser": flayer.health -= PlayerTwo.laserLanceDamage;
+					break;
+					case "shotgun": flayer.health -= PlayerTwo.shotgunDamage;
+					break;
+					default: break;
+					}
+					flayerBodyTarget.clear();
+					tempBodyArray.clear();
+					if (flayer.health <= 0) {
+						bodiesToRemove.add(fa.getBody());
+						//turret.tookDamage = false;
+					}
+				}
+				if (fb.getUserData().equals("flayer")){
+
+					tempBodyArray.add(fb.getBody());
+					Body b = tempBodyArray.first();
+					flayerBodyTarget.add((Flayer) b.getUserData()); 
+					flayer = flayerBodyTarget.get(0);
+					//not needed yet
+					//scientist.tookDamage = true;
+
+					switch (GunSelectionScreen.p2WeaponSelected){
+					case "battle axe": flayer.health -= PlayerTwo.battleAxeDamage;
+					break;
+					case "revolver": flayer.health -= PlayerTwo.revolverDamage;
+					break;
+					case "rifle": flayer.health -= PlayerTwo.rifleDamage;
+					break;	
+					case "assault rifle": flayer.health -= PlayerTwo.assaultRifleDamage;
+					break;
+					case "laser": flayer.health -= PlayerTwo.laserLanceDamage;
+					break;
+					case "shotgun": flayer.health -= PlayerTwo.shotgunDamage;
+					break;
+					default: break;
+					}
+					flayerBodyTarget.clear();
+					tempBodyArray.clear();
+					System.out.println("here");
+
+					if (flayer.health <= 0) {
+						bodiesToRemove.add(fb.getBody());
+					}
+				}
+
+			}
+		}
+		//thorns AND PLAYER COLLISIONS
+		if (fa.getUserData().equals("player") || fb.getUserData().equals("player")) {
+			if (fa.getUserData().equals("thorns") || fb.getUserData().equals("thorns")) {
+
+				if(fa.getUserData().equals("thorns")){
+					PlayerOne.player1HP -= Flayer.atkDmg;
+					bodiesToRemove.add(fa.getBody()); 
+				}
+				if(fb.getUserData().equals("thorns")){
+					PlayerOne.player1HP -= Flayer.atkDmg;
+					bodiesToRemove.add(fb.getBody());
+				}
+			}
+		}
+		
+		//Flayer BULLETS AND PLAYER COLLISIONS
+		if (fa.getUserData().equals("player2") || fb.getUserData().equals("player2")) {
+			if (fa.getUserData().equals("thorns") || fb.getUserData().equals("thorns")) {
+
+				if(fa.getUserData().equals("thorns")){
+					PlayerTwo.player2HP -= Flayer.atkDmg;
+					bodiesToRemove.add(fa.getBody()); 
+				}
+				if(fb.getUserData().equals("thorns")){
+					PlayerTwo.player2HP -= Flayer.atkDmg;
+					bodiesToRemove.add(fb.getBody());
+				}
+			}
+		}
+		//Flayer & BULLETS AND WALL
+		if (fa.getUserData().equals("walls") || fb.getUserData().equals("walls")) {
+			if (fa.getUserData().equals("thorns") || fb.getUserData().equals("thorns")) {
+
+				if(fa.getUserData().equals("thorns")){
+					if (Mutagen.sfxVolume != 0) {
+						long phwId = pelletHitWall.play(Mutagen.sfxVolume - .8f);
+					}
+					bodiesToRemove.add(fa.getBody()); 
+				}
+				if(fb.getUserData().equals("thorns")){
+					if (Mutagen.sfxVolume != 0) {
+						long phwId = pelletHitWall.play(Mutagen.sfxVolume - .8f);
+					}
+					bodiesToRemove.add(fb.getBody());
 				}
 			}
 		}

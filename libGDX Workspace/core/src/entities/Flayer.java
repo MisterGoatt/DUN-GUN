@@ -23,7 +23,7 @@ public class Flayer {
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
-	public int health = 150;
+	public int health = 200;
 	public static int atkDmg = 8;
 	private TextureAtlas flayerAtkAtlas;
 	private Animation <TextureRegion> flayerAtkAnimation;
@@ -37,7 +37,7 @@ public class Flayer {
 	private Vector2 targetPos = new Vector2(0, 0);
 	private boolean shootAnimation = false, findTarget = true, stationary = false, tooFarAway = false;
 	private Sound flayerShoot;
-	SoldierBullets sB;
+	FlayerThorns fT;
 	public static Array<Soldier> flayers = new Array<Soldier>();
 
 	public Flayer(World world) {
@@ -45,8 +45,8 @@ public class Flayer {
 		flayerAtkAtlas = Mutagen.manager.get("sprites/flayer/flayerAtkAnimation.atlas");
 		flayerAtkAnimation = new Animation <TextureRegion>(1f/15f, flayerAtkAtlas.getRegions());
 		flayerStandingRegion = flayerAtkAtlas.findRegion("tile000");
-		flayerShoot = Mutagen.manager.get("sound effects/enemies/flayerShooting.ogg");
-		blood = Mutagen.manager.get("sprites/Blood.png");
+		flayerShoot = Mutagen.manager.get("sound effects/enemies/thorn throw.mp3");
+		blood = Mutagen.manager.get("sprites/MutantBlood.png");
 		defineSoldier();
 	}
 
@@ -210,7 +210,7 @@ public class Flayer {
 						Long tS = flayerShoot.play(Mutagen.sfxVolume - .8f);					
 					}
 					shootAnimation = true;
-					sB = new SoldierBullets(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);	
+					fT = new FlayerThorns(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);	
 
 					shootTimer = 0;
 				}
@@ -224,7 +224,7 @@ public class Flayer {
 						Long tS = flayerShoot.play(Mutagen.sfxVolume - .8f);					
 					}
 					shootAnimation = true;
-					sB = new SoldierBullets(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);	
+					fT = new FlayerThorns(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);	
 
 					shootTimer = 0;
 				}
