@@ -20,7 +20,7 @@ public class Credits implements Screen, InputProcessor{
 	private OrthographicCamera cam;
 	private float yPos = -5700;
 	private boolean buttonPressed = false;
-	Music creditsMusic = Mutagen.manager.get("music/creditsSong.mp3");
+	Music creditsMusic = Mutagen.manager.get("music/creditsSong.ogg");
 
 
 	public Credits(final Mutagen game) {
@@ -58,7 +58,7 @@ public class Credits implements Screen, InputProcessor{
 		}
 
 		//displays the credits
-		game.batch.draw(credits, 0, yPos);
+		game.batch.draw(credits, -17.5f, yPos);
 
 
 		//mouse x and y

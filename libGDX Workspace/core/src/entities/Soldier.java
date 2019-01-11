@@ -30,14 +30,12 @@ public class Soldier {
 	private TextureRegion soldierStandingRegion;
 	private Texture blood;
 	public static Vector2 soldierPos = new Vector2(0, 0);
-	private float shootTimer = 20, timePassed = 0, angle, angle3, differenceX, differenceY, boundary = .7f, speed = 1, tPosDifX, tPosDifY, wait, oldX, oldY;
+	private float shootTimer = 20, timePassed = 0, angle, angle3, differenceX, differenceY, boundary = .7f, speed = 1, tPosDifX, tPosDifY, wait, oldX, oldY, player1Dif, player2Dif;
 	public static Vector2 soldierSpawnPos = new Vector2(0,0);
 	private Vector2 originPos = new Vector2(0, 0);
 	private Vector2 tPos = new Vector2(0, 0);
 	private Vector2 targetPos = new Vector2(0, 0);
-
-
-	private boolean shootAnimation = false, findTarget = true, stationary = false;
+	private boolean shootAnimation = false, findTarget = true, stationary = false, tooFarAway = false;
 	private Sound soldierShoot;
 	SoldierBullets sB;
 	public static Array<Soldier> soldiers = new Array<Soldier>();
@@ -84,21 +82,59 @@ public class Soldier {
 				float differencePlayer2X =  PlayerTwo.p2PosX - b2body.getPosition().x;
 				float differencePlayer2Y =  PlayerTwo.p2PosY - b2body.getPosition().y;
 
-				float player1Dif = (float) Math.sqrt((differencePlayerX*differencePlayerX)+(differencePlayerY*differencePlayerY));
-				float player2Dif = (float) Math.sqrt((differencePlayer2X*differencePlayer2X)+(differencePlayer2Y*differencePlayer2Y));
-
+				player1Dif = (float) Math.sqrt((differencePlayerX*differencePlayerX)+(differencePlayerY*differencePlayerY));
+				player2Dif = (float) Math.sqrt((differencePlayer2X*differencePlayer2X)+(differencePlayer2Y*differencePlayer2Y));
+				//fire at players 1
 				if (player1Dif < player2Dif) {
 					differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
 					differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
+					//checks to see how far away the soldier is from the targeted player to know whether or not to get closer before shooting
+					if (player1Dif > 5) {
+						tooFarAway = true;
+					}else {
+						tooFarAway = false;
+					}
+					
 				}else {
+					//fire at player 2
 					differenceX = PlayerTwo.p2PosX - b2body.getPosition().x;
 					differenceY = PlayerTwo.p2PosY - b2body.getPosition().y;
+					//checks to see how far away the soldier is from the targeted player to know whether or not to get closer before shooting
+					if (player2Dif > 5) {
+						tooFarAway = true;
+					}else {
+						tooFarAway = false;
+					}
+				}
+				if (tooFarAway) {
+					//move towards the player to get closer
+					angle3 = MathUtils.atan2(differenceY, differenceX);
+					tPos.x = (float) (Math.cos(angle3) * speed);
+					tPos.y = (float) (Math.sin(angle3) * speed);
+					this.b2body.applyLinearImpulse(tPos.x, tPos.y, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);	
 				}
 			}else {
+				//single player
 				differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
 				differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
+				player1Dif = (float) Math.sqrt((differenceX*differenceX)+(differenceY*differenceY));
+				//checks to see how far away the soldier is from the targeted player to know whether or not to get closer before shooting
+				if (player1Dif > 5) {
+					tooFarAway = true;
+				}else {
+					tooFarAway = false;
+				}
+				if (tooFarAway) {
+					//move towards the player to get closer
+					angle3 = MathUtils.atan2(differenceY, differenceX);
+					tPos.x = (float) (Math.cos(angle3) * speed);
+					tPos.y = (float) (Math.sin(angle3) * speed);
+					
+					this.b2body.applyLinearImpulse(tPos.x, tPos.y, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);				
+				}
 			}
-
+			
+			
 			float angle2 = MathUtils.atan2(differenceY, differenceX);
 			angle = angle2 * MathUtils.radDeg;
 			angle = angle - 90; //makes it a full 360 degrees
@@ -118,14 +154,12 @@ public class Soldier {
 				batch.draw(soldierStandingRegion, posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);
 			}
 
-			if (!stationary) {
+			if (!stationary && !tooFarAway) {
 				//movement
 				if (findTarget) {
 					//X 
-					//float maxX = originPos.x + boundaryf;
 					float minX = originPos.x - boundary;
 					//Y
-					//float maxY= originPos.y + boundaryf;
 					float minY = originPos.y - boundary;
 
 					targetPos.x = (float) (Math.random() * (boundary * 2) + minX);
@@ -154,9 +188,12 @@ public class Soldier {
 					stationary = false;
 				}
 			}
+
 			oldX = this.b2body.getPosition().x;
 			oldY = this.b2body.getPosition().y;
-			shooting();
+			if (!tooFarAway) {
+				shooting();				
+			}
 
 		}else {
 			batch.draw(blood, oldX, oldY, 32 / Mutagen.PPM, 32 / Mutagen.PPM);

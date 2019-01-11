@@ -99,7 +99,7 @@ public class Mutagen extends Game{
 
 			//Credit Screen
 			manager.load("screens/ScrollingC.jpg", Texture.class);
-			manager.load("music/creditsSong.mp3", Music.class);
+			manager.load("music/creditsSong.ogg", Music.class);
 			manager.load("music/whistling masterpiece.mp3", Music.class);
 
 			//Introduction Screens

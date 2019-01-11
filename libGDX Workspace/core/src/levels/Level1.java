@@ -51,12 +51,10 @@ public class Level1 implements Screen{
 	final Mutagen game;
 	public OrthographicCamera cam;
 	public Viewport gamePort;
-	private TmxMapLoader maploader; //what loads map into game
 	private TiledMap map; 
 	private OrthogonalTiledMapRenderer mapRenderer; //renders map to the screen
 	TextureRegion textureRegion;
 	MapLayer objectLayer;
-
 	private World world;
 	private Box2DDebugRenderer b2dr; //graphical representation of body fixtures
 	private PlayerOne playerOne;
@@ -65,8 +63,6 @@ public class Level1 implements Screen{
 	private CollisionDetector cd;
 	private Lvl1EntityPositions lvl1EP;
 
-	//private int[] layerBackround = {0, 1, 2, 3};
-	//private int[] layerAfterBackground = {4};
 	private Music levelOneMusic;
 	private Texture mouseCursor, axeMouseCursor, pauseMenu;
 	private boolean lockCursor = true;
@@ -153,7 +149,7 @@ public class Level1 implements Screen{
 			//waitToShootL += 1;
 			switch (GunSelectionScreen.p1WeaponSelected) {
 			case "laser":
-				shake(.25f, 400);
+				shake(.15f, 400);
 				break;
 			case "revolver":
 				shake(.1f, 100);
@@ -165,7 +161,7 @@ public class Level1 implements Screen{
 				shake(.15f, 200);
 				break;
 			case "assault rifle":
-				shake(.1f, 100);
+				shake(.05f, 100);
 				break;
 			}
 			PlayerOne.timeToShake = false;
@@ -173,7 +169,7 @@ public class Level1 implements Screen{
 		if (PlayerTwo.timeToShake) {
 			switch (GunSelectionScreen.p2WeaponSelected) {
 			case "laser":
-				shake(.25f, 400);
+				shake(.15f, 400);
 				break;
 			case "revolver":
 				shake(.1f, 100);
@@ -185,7 +181,7 @@ public class Level1 implements Screen{
 				shake(.15f, 200);
 				break;
 			case "assault rifle":
-				shake(.1f, 100);
+				shake(.05f, 100);
 				break;
 			}
 			PlayerTwo.timeToShake = false;
@@ -211,6 +207,7 @@ public class Level1 implements Screen{
 			cam.position.x = cam.position.x + (playerOne.b2body.getPosition().x - cam.position.x) * .05f;
 			cam.position.y = cam.position.y + (playerOne.b2body.getPosition().y - cam.position.y) * .05f;	
 		} else {
+			//prevents co-op players from moving out of the screen if moving is separate directions
 			if (!PlayerOne.p1Dead && !PlayerTwo.p2Dead) {
 				
 				boundaryAbs.x = Math.abs(playerOne.b2body.getPosition().x - playerTwo.b2body.getPosition().x);
