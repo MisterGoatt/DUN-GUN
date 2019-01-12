@@ -41,14 +41,14 @@ public class PlayerOne extends Sprite implements Disposable{
 	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot, hit1, hit2, hit3, hit4;
 	//sound effect of the player's movement
 	public static Sound runningSound;
-	private float speed = 3, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, slowedCounter, rotationSpeed = 4, storedHP, secondWind = 1; //speed of the player, Sqrt 2 divided by 2
+	private float speed = 3, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, slowedCounter, rotationSpeed = 4, storedHP, secondWind = 1, olA; //speed of the player, Sqrt 2 divided by 2
 	public static float  angle, p1PosX, p1PosY, axeSwingTimer = 0; //get distance between mouse and player in radians
 	//amount of damage each weapon deals
 	public static float laserLanceDamage = 150, battleAxeDamage = 200, assaultRifleDamage = 20, shotgunDamage = 25f, 
 			rifleDamage = 150, revolverDamage = 75;
 	public static int player1HP, player1MaxHP1 = 200, player1MaxHP2 = 150;
 	public static boolean p1Dead = false;
-	private boolean shootAnimation = false, running = false, startLaserCount = false;
+	private boolean shootAnimation = false, running = false, startLaserCount = false, shootBehind = false;
 	public static boolean axeBodyRemoval = false, slowed = false, slowRestart = false, soundStop = false,  axeSwinging = false,  
 			isShooting = false, timeToShake = false, movHalt = false;
 	private int ID;
@@ -108,11 +108,11 @@ public class PlayerOne extends Sprite implements Disposable{
 		hit2 = Mutagen.manager.get("sound effects/impacts/hit2.ogg", Sound.class);
 		hit3 = Mutagen.manager.get("sound effects/impacts/hit3.ogg", Sound.class);
 		hit4 = Mutagen.manager.get("sound effects/impacts/hit4.ogg", Sound.class);
-		
-		
+
+
 		ID = 1; //defines if player is player 1 or player 2 for the CreateBullet class
 		storedHP = player1HP;
-		
+
 		definePlayer();
 
 	}
@@ -247,7 +247,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		}
 
 		oldSpeed = speed; //original speed to go back to after being slowed
-		
+
 		//PLAYER ONE HEALTH
 		if (DifficultyScreen.difficulty == 1) {
 			batch.draw(p1HPBG, p1PosX - .30f, p1PosY - .28f, player1MaxHP1 / (Mutagen.PPM + 250), 3f / Mutagen.PPM); //gray backing behind HP bar	
@@ -273,13 +273,13 @@ public class PlayerOne extends Sprite implements Disposable{
 				p1Dead = true;
 				runningSound.stop();				
 			}
-			
+
 
 		}
-		
+
 		//HIT SFX
 		if (storedHP > player1HP) {
-			
+
 			int hitSelect = (int) (Math.random()* 4 + 1);
 			switch (hitSelect) {
 			case 1: 
@@ -398,7 +398,7 @@ public class PlayerOne extends Sprite implements Disposable{
 			slowedCounter = 0;
 			slowed = false;
 		}
-
+		//Aim styke is rotational
 		if (GunSelectionScreen.p1AimStyle != 2) {
 			if (!movHalt) {
 
@@ -454,18 +454,18 @@ public class PlayerOne extends Sprite implements Disposable{
 		else if (!PlayerMode.OneP) {
 
 
-
+			//rotational 
 			if (GunSelectionScreen.p1AimStyle == 1) {
 				if (Gdx.input.isKeyPressed(Input.Keys.G)){
 					angle += rotationSpeed;
 				}
 				else if (Gdx.input.isKeyPressed(Input.Keys.H)){
 					angle -= rotationSpeed;
-
 				}				
-			}else {
-				if (!movHalt) {
+			}//directional aim style
+			else {
 
+				if (!movHalt) {
 					if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)){
 						this.b2body.setLinearVelocity(-speed * speedAB, speed * speedAB);
 					}else if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)){
@@ -477,25 +477,33 @@ public class PlayerOne extends Sprite implements Disposable{
 					}
 					else if(Gdx.input.isKeyPressed(Input.Keys.W)){
 						this.b2body.setLinearVelocity(0f, speed);
-						angle = 0;
-
+						if (!shootBehind) {
+							angle = 0;
+						}
 					}else if(Gdx.input.isKeyPressed(Input.Keys.S)){
 						this.b2body.setLinearVelocity(0f, -speed);
-						angle = 180;
-
+						if (!shootBehind) {
+							angle = 180;
+						}
 					}else if(Gdx.input.isKeyPressed(Input.Keys.A)){
 						this.b2body.setLinearVelocity(-speed, 0f);
-						angle = 90;
-
+						if (!shootBehind) {
+							angle = 90;
+						}
 					}else if(Gdx.input.isKeyPressed(Input.Keys.D)){
 						this.b2body.setLinearVelocity(speed, 0f);
-						angle = 270;
+						if (!shootBehind) {
+							angle = 270;
+						}
+					}
+					
+					if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+							shootBehind = true;
+					}else {
+						shootBehind = false;
 					}
 				}
 			}
-
-
-
 
 			if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 				if (timeSinceLastShot <=0) {

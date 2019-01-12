@@ -35,18 +35,18 @@ public class PlayerTwo {
 
 	private TextureRegion revolverStandingRegion, axeStandingRegion, rifleStandingRegion, 
 	shotgunStandingRegion, assaultRifleStandingRegion, laserStandingRegion;
-
 	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot, hit1, hit2, hit3, hit4;
 	//sound effect of the player's movement
 	public static Sound runningSound;
-	private float speed = 3, storedHP, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, slowedCounter, rotationSpeed = 4, secondWind = 1; //speed of the player, Sqrt 2 divided by 2
+	private float speed = 3, storedHP, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, 
+			slowedCounter, rotationSpeed = 4, secondWind = 1; //speed of the player, Sqrt 2 divided by 2
 	public static float  angle, p2PosX, p2PosY; //get distance between mouse and player in radians
 	//amount of damage each weapon deals
 	public static float laserLanceDamage = 150, battleAxeDamage = 200, assaultRifleDamage = 20, shotgunDamage = 25f, 
 			rifleDamage = 150, revolverDamage = 75;
 	public static int player2HP, player2MaxHP1 = 200, player2MaxHP2 = 150;
 	public static boolean p2Dead = false;
-	private boolean shootAnimation = false, running = false, startLaserCount = false;
+	private boolean shootAnimation = false, running = false, startLaserCount = false, shootBehind;
 	public static boolean axeBodyRemoval = false, slowed = false, slowRestart = false, soundStop = false,  axeSwinging = false,  
 			isShooting = false, timeToShake = false, movHalt = false;
 	public static float axeSwingTimer = 0;
@@ -421,21 +421,33 @@ public class PlayerTwo {
 				}
 				else if(Gdx.input.isKeyPressed(Input.Keys.UP)){
 					this.b2body.setLinearVelocity(0f, speed);
-					angle = 0;
-
+					if (!shootBehind) {
+						angle = 0;
+					}
 				}else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
 					this.b2body.setLinearVelocity(0f, -speed);
-					angle = 180;
 
+					if (!shootBehind) {
+						angle = 180;
+					}
 				}else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
 					this.b2body.setLinearVelocity(-speed, 0f);
-					angle = 90;
-
+					if (!shootBehind) {
+						angle = 90;
+					}
 				}else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
 					this.b2body.setLinearVelocity(speed, 0f);
-					angle = 270;
+					if (!shootBehind) {
+						angle = 270;
+					}
+				} 
+				if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+					shootBehind = true;
 
+				}else {
+					shootBehind = false;
 				}
+
 			}
 		}
 

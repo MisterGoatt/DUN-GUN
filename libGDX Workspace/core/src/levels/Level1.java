@@ -72,7 +72,6 @@ public class Level1 implements Screen{
 	public static Vector3 mousePosition = new Vector3(0, 0, 0);
 	private Vector2 boundaryAbs = new Vector2(0, 0);
 	private Vector2 boundary = new Vector2(0, 0);
-
 	Random random;
 
 
@@ -135,7 +134,7 @@ public class Level1 implements Screen{
 		levelOneMusic = Mutagen.manager.get("music/song3.ogg");
 		levelOneMusic.setLooping(true);
 		if (Mutagen.musicVolume > 0) {
-			levelOneMusic.setVolume(Mutagen.musicVolume - .5f);
+			levelOneMusic.setVolume(Mutagen.musicVolume - .3f);
 			levelOneMusic.play();
 
 		}

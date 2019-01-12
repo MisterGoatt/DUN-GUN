@@ -37,7 +37,6 @@ public class Mutagen extends Game{
 			manager = new AssetManager();
 
 			//load all of the graphics into memory before game starts
-
 			//Mouse Click
 			//manager.load("sound effects/click.mp3", Sound.class);
 			click = Gdx.audio.newSound(Gdx.files.internal("sound effects/click.mp3"));

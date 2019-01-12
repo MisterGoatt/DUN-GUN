@@ -156,7 +156,7 @@ public class Options implements Screen, InputProcessor{
 					Mutagen.sfxVolume = 0f;
 				}else {
 					sfx = true;
-					Mutagen.sfxVolume = .7f;
+					Mutagen.sfxVolume = 1f;
 					Mutagen.clicking();
 				}
 			}

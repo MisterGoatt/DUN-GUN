@@ -32,7 +32,8 @@ public class Soldier {
 	private TextureRegion soldierStandingRegion;
 	private Texture blood;
 	public static Vector2 soldierPos = new Vector2(0, 0);
-	private float shootTimer = 20, timePassed = 0, angle, angle3, differenceX, differenceY, boundary = .7f, speed = 1, tPosDifX, tPosDifY, wait, oldX, oldY, player1Dif, player2Dif;
+	private float shootTimer = 20, timePassed = 0, angle, angle3, differenceX, differenceY, boundary = .7f, speed = 1, tPosDifX, 
+			tPosDifY, wait, oldX, oldY, player1Dif, player2Dif;
 	public static Vector2 soldierSpawnPos = new Vector2(0,0);
 	private Vector2 originPos = new Vector2(0, 0);
 	private Vector2 tPos = new Vector2(0, 0);
@@ -94,7 +95,7 @@ public class Soldier {
 					differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
 					differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
 					//checks to see how far away the soldier is from the targeted player to know whether or not to get closer before shooting
-					if (player1Dif > 5) {
+					if (player1Dif > 4.7) {
 						tooFarAway = true;
 					}else {
 						tooFarAway = false;
@@ -105,7 +106,7 @@ public class Soldier {
 					differenceX = PlayerTwo.p2PosX - b2body.getPosition().x;
 					differenceY = PlayerTwo.p2PosY - b2body.getPosition().y;
 					//checks to see how far away the soldier is from the targeted player to know whether or not to get closer before shooting
-					if (player2Dif > 5) {
+					if (player2Dif > 4.7) {
 						tooFarAway = true;
 					}else {
 						tooFarAway = false;

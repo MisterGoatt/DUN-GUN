@@ -33,8 +33,7 @@ public class CollisionDetector implements ContactListener{
 	private Array<CreateBullet> bulletBodyTarget = new Array<CreateBullet>();
 	private Array<Soldier> soldierBodyTarget = new Array<Soldier>();
 	private Array<Flayer> flayerBodyTarget = new Array<Flayer>();
-
-
+	
 	Grunt grunt;
 	Scientist scientist;
 	Turret turret;

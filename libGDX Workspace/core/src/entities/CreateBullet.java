@@ -31,8 +31,6 @@ public class CreateBullet{
 	private Animation <TextureRegion> laserAnimation, pelletAnimation, bulletAnimation;
 	private TextureAtlas pelletTextureAtlas, bulletTextureAtlas, laserTextureAtlas;
 
-
-
 	public CreateBullet(World world, int ID) {
 		this.world = world;
 		laserTextureAtlas = Mutagen.manager.get("sprites/player1/laserBlastAnimation.atlas", TextureAtlas.class);

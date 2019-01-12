@@ -89,7 +89,7 @@ public class Flayer {
 					differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
 					differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
 					//checks to see how far away the flayer is from the targeted player to know whether or not to get closer before shooting
-					if (player1Dif > 5) {
+					if (player1Dif > 4.7) {
 						tooFarAway = true;
 					}else {
 						tooFarAway = false;
@@ -100,7 +100,7 @@ public class Flayer {
 					differenceX = PlayerTwo.p2PosX - b2body.getPosition().x;
 					differenceY = PlayerTwo.p2PosY - b2body.getPosition().y;
 					//checks to see how far away the flayer is from the targeted player to know whether or not to get closer before shooting
-					if (player2Dif > 5) {
+					if (player2Dif > 4.7) {
 						tooFarAway = true;
 					}else {
 						tooFarAway = false;
