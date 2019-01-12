@@ -161,7 +161,7 @@ public class Level1 implements Screen{
 				shake(.15f, 200);
 				break;
 			case "assault rifle":
-				shake(.05f, 100);
+				//shake(.01f, 100);
 				break;
 			}
 			PlayerOne.timeToShake = false;
@@ -181,7 +181,7 @@ public class Level1 implements Screen{
 				shake(.15f, 200);
 				break;
 			case "assault rifle":
-				shake(.05f, 100);
+				//shake(.05f, 100);
 				break;
 			}
 			PlayerTwo.timeToShake = false;

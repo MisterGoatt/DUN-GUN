@@ -63,7 +63,7 @@ public class MainMenu implements Screen, InputProcessor{
 
 		mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		cam.unproject(mousePosition); //gets mouse coordinates within viewport
-		System.out.println(mousePosition);
+		//System.out.println(mousePosition);
 		game.batch.begin(); 
 		game.batch.setProjectionMatrix(cam.combined);
 

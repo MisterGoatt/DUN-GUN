@@ -27,6 +27,8 @@ public class Soldier {
 	public static int atkDmg = 8;
 	private TextureAtlas soldierAtkAtlas;
 	private Animation <TextureRegion> soldierAtkAnimation;
+	private TextureAtlas soldierDamagedAtlas;
+	private Animation <TextureRegion> soldierDamagedAnimation;
 	private TextureRegion soldierStandingRegion;
 	private Texture blood;
 	public static Vector2 soldierPos = new Vector2(0, 0);
@@ -36,6 +38,7 @@ public class Soldier {
 	private Vector2 tPos = new Vector2(0, 0);
 	private Vector2 targetPos = new Vector2(0, 0);
 	private boolean shootAnimation = false, findTarget = true, stationary = false, tooFarAway = false;
+	public boolean tookDamage = false;
 	private Sound soldierShoot;
 	SoldierBullets sB;
 	public static Array<Soldier> soldiers = new Array<Soldier>();
@@ -45,6 +48,8 @@ public class Soldier {
 		soldierAtkAtlas = Mutagen.manager.get("sprites/soldier/soldierAtkAnimation.atlas");
 		soldierAtkAnimation = new Animation <TextureRegion>(1f/15f, soldierAtkAtlas.getRegions());
 		soldierStandingRegion = soldierAtkAtlas.findRegion("tile000");
+		soldierDamagedAtlas = Mutagen.manager.get("sprites/soldier/soldierDamaged.atlas");
+		soldierDamagedAnimation = new Animation <TextureRegion>(1f/15f, soldierDamagedAtlas.getRegions());
 		soldierShoot = Mutagen.manager.get("sound effects/enemies/soldierShooting.ogg");
 		blood = Mutagen.manager.get("sprites/Blood.png");
 		defineSoldier();
@@ -143,7 +148,7 @@ public class Soldier {
 			}
 			float posX = this.b2body.getPosition().x;
 			float posY = this.b2body.getPosition().y;
-			if (shootAnimation) {
+			if (shootAnimation && !tookDamage) {
 				batch.draw(soldierAtkAnimation.getKeyFrame(timePassed), posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 50/ Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
 				if(soldierAtkAnimation.isAnimationFinished(timePassed)) {
@@ -151,7 +156,16 @@ public class Soldier {
 					timePassed = 0;
 				}
 			}else {
-				batch.draw(soldierStandingRegion, posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);
+				if (!tookDamage) {
+					batch.draw(soldierStandingRegion, posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);					
+				}else if (tookDamage) {
+					batch.draw(soldierDamagedAnimation.getKeyFrame(timePassed), posX - .17f, posY -.13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 60 / Mutagen.PPM, 1, 1, angle);
+					timePassed += Gdx.graphics.getDeltaTime();
+					if(soldierDamagedAnimation.isAnimationFinished(timePassed)) {
+						timePassed = 0;
+						tookDamage = false;
+					}
+				}
 			}
 
 			if (!stationary && !tooFarAway) {

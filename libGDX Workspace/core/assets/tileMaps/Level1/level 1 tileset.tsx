@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.2.1" name="Level One" tilewidth="32" tileheight="32" tilecount="143" columns="8">
+<tileset version="1.2" tiledversion="1.2.1" name="Level One" tilewidth="32" tileheight="32" tilecount="144" columns="8">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="32" height="32" source="Level One Tiles/tile001.png"/>
@@ -429,5 +429,8 @@
  </tile>
  <tile id="164">
   <image width="32" height="32" source="Level One Tiles/tile129.png"/>
+ </tile>
+ <tile id="165">
+  <image width="32" height="32" source="Level One Tiles/tile130.png"/>
  </tile>
 </tileset>

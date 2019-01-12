@@ -58,7 +58,7 @@ public class Credits implements Screen, InputProcessor{
 		}
 
 		//displays the credits
-		game.batch.draw(credits, -17.5f, yPos);
+		game.batch.draw(credits, 0, yPos);
 
 
 		//mouse x and y

@@ -137,8 +137,14 @@ public class Mutagen extends Game{
 			manager.load("screens/gun_selection.jpg", Texture.class);
 			manager.load("screens/p1GS.jpg", Texture.class);
 			manager.load("screens/p2GS.jpg", Texture.class);
-			manager.load("screens/aimStyle.jpg", Texture.class);
+			manager.load("screens/aim style/aimStyle1b.jpg", Texture.class);
+			manager.load("screens/aim style/aimStyle2b.jpg", Texture.class);
+			manager.load("screens/aim style/aimStylerot1.jpg", Texture.class);
+			manager.load("screens/aim style/aimStylerot2.jpg", Texture.class);
+			manager.load("screens/aim style/aimStyledir1.jpg", Texture.class);
+			manager.load("screens/aim style/aimStyledir2.jpg", Texture.class);
 
+			
 			//Grunt
 			manager.load("sprites/grunt/mutantAtkAnimation.atlas", TextureAtlas.class);
 			manager.load("sprites/grunt/gruntDamaged.atlas", TextureAtlas.class);
@@ -147,7 +153,6 @@ public class Mutagen extends Game{
 			//Scientist
 			manager.load("sprites/scientist/scientistAtk.atlas", TextureAtlas.class);
 			manager.load("sprites/scientist/scientistDamaged.atlas", TextureAtlas.class);
-
 			manager.load("sound effects/enemies/scientistAtk.mp3", Sound.class);
 
 			//Turret
@@ -178,6 +183,7 @@ public class Mutagen extends Game{
 			manager.load("sprites/soldier/soldierAtkAnimation.atlas", TextureAtlas.class);
 			manager.load("sprites/soldier/pelletR.atlas", TextureAtlas.class);
 			manager.load("sound effects/enemies/soldierShooting.ogg", Sound.class);
+			manager.load("sprites/soldier/soldierDamaged.atlas", TextureAtlas.class);
 
 			//Mutagen
 			manager.load("sprites/flayer/flayerAtkAnimation.atlas", TextureAtlas.class);

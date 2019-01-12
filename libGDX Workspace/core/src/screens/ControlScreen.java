@@ -69,7 +69,6 @@ public class ControlScreen implements Screen, InputProcessor{
 		game.batch.draw(controlScreen, 0, 0);
 		mX = mouse_position.x;
 		mY = mouse_position.y;
-		System.out.println(mX + " " + mY);
 		if (0 < mX && mX < 120 && 0 < mY && mY < 61)
 		{
 			activeMenuText.draw(game.batch, "BACK", 10, 55);

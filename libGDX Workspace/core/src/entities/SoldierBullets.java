@@ -19,7 +19,7 @@ public class SoldierBullets {
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
-	private float speed = 3, startX, startY, posX, posY, angle2, angle, shootingAngle, timePassed;
+	private float speed = 2, startX, startY, posX, posY, angle2, angle, shootingAngle, timePassed;
 	private TextureAtlas bulletTextureAtlas;
 	private Animation <TextureRegion> bulletAnimation;
 	public static Array<SoldierBullets> soldierBullets = new Array<SoldierBullets>();

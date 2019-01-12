@@ -62,18 +62,11 @@ public class Tutorial implements Screen, InputProcessor{
 
 		mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		cam.unproject(mouse_position);
-
 		game.batch.begin();
 		game.batch.setProjectionMatrix(cam.combined);
-
 		game.batch.draw(tutorialOptions, 0, 0);
-
-
 		mX = mouse_position.x;
 		mY = mouse_position.y;
-
-		System.out.println(mX + " " + mY);
-
 
 			if (0 < mX && mX < 130 && 0 < mY && mY < 80)
 			{

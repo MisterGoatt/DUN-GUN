@@ -19,24 +19,38 @@ import levels.Level1;
 
 public class GunSelectionScreen implements Screen, InputProcessor{
 	final Mutagen game;
-	private Texture gunPickScreen, p1GS, p2GS, aimStyleScr;
+	private Texture gunPickScreen, p1GS, p2GS, p1b, p1rot, p1dir, p2b, p2rot, p2dir;
 	public Viewport gamePort;
 
 	private OrthographicCamera cam;
 	private Vector3 mousePosition = new Vector3(0, 0, 0);
 	public static String p1WeaponSelected, p2WeaponSelected;
-	private boolean buttonPressed = false, p1Screen = true, gunScr = true;;
+	private boolean buttonPressed = false, p1Screen = true, gunScr = true, next = false;
 	public static int p1AimStyle, p2AimStyle;
 	ShapeRenderer shapeR;
 
 	public GunSelectionScreen(final Mutagen game) {
 		this.game = game;
 		gunPickScreen = Mutagen.manager.get("screens/gun_selection.jpg");
-		gunPickScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-
 		p1GS = Mutagen.manager.get("screens/p1GS.jpg");
-		p2GS = Mutagen.manager.get("screens/p2GS.jpg");
-		aimStyleScr = Mutagen.manager.get("screens/aimStyle.jpg");
+		p2GS = Mutagen.manager.get("screens/p2GS.jpg"); 
+		p1b = Mutagen.manager.get("screens/aim style/aimStyle1b.jpg");
+		p1rot = Mutagen.manager.get("screens/aim style/aimStylerot1.jpg");
+		p1dir = Mutagen.manager.get("screens/aim style/aimStyledir1.jpg");
+		p2b = Mutagen.manager.get("screens/aim style/aimStyle2b.jpg");
+		p2rot = Mutagen.manager.get("screens/aim style/aimStylerot2.jpg");
+		p2dir = Mutagen.manager.get("screens/aim style/aimStyledir2.jpg");
+
+		gunPickScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);		
+		p1GS.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		p2GS.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		p1b.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		p2b.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		p1rot.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		p1dir.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		p2rot.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		p2dir.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
 		p1AimStyle = 0;
 		p2AimStyle = 0;
 		p1AimStyle = 0; 
@@ -64,7 +78,6 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 		mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		cam.unproject(mousePosition); //gets mouse coordinates within viewport
 		game.batch.setProjectionMatrix(cam.combined);
-		System.out.println(mousePosition);
 		game.batch.begin();
 		if (gunScr) {
 			if (PlayerMode.OneP) {
@@ -77,25 +90,31 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 				}
 			}
 		}else {
-			game.batch.draw(aimStyleScr, 0, 0);
+			
+			if (p1AimStyle == 0) {
+				game.batch.draw(p1b, 0, 0);
+			}else if (p1AimStyle == 1) {
+				game.batch.draw(p1rot, 0, 0);
+			}else if (p1AimStyle == 2) {
+				game.batch.draw(p1dir, 0, 0);
+			}
+			
+			if (next) {
+				if (p2AimStyle == 0) {
+					game.batch.draw(p2b, 0, 0);
+				}else if (p2AimStyle == 1) {
+					game.batch.draw(p2rot, 0, 0);
+				}else if (p2AimStyle == 2) {
+					game.batch.draw(p2dir, 0, 0);
+				}				
+			}
+
+			
 			
 		}
 		game.batch.end();
 		shapeR.begin(ShapeType.Filled);
 		shapeR.setColor(255, 0 ,0, 0);
-		if (p1AimStyle == 1) {
-			shapeR.rect(130, 39, 200, 5);
-		}else if (p1AimStyle == 2) {
-			shapeR.rect(367, 39, 200, 5);
-		}
-		
-		if (p2AimStyle == 1) {
-			shapeR.rect(931, 39, 200, 5);
-
-		}else if (p2AimStyle == 2) {
-			shapeR.rect(1167, 39, 200, 5);
-
-		}
 		shapeR.end();
 		
 		cam.update();
@@ -311,8 +330,15 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 					Mutagen.clicking();
 
 				}
+				//next button
+				if (p1AimStyle > 0 && p2AimStyle == 0) {
+					if (mousePosition.x > 639 && mousePosition.x < 857 && mousePosition.y > 44 && mousePosition.y < 150) {
+						Mutagen.clicking();
+						next = true;
+					}
+				}
 				//play button
-				if (p1AimStyle != 0 && p2AimStyle != 0) {
+				if (p2AimStyle > 0) {
 					if (mousePosition.x > 639 && mousePosition.x < 857 && mousePosition.y > 44 && mousePosition.y < 150) {
 						Mutagen.clicking();
 						game.setScreen(new Level1(game));					
