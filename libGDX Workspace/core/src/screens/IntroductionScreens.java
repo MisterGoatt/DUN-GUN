@@ -29,8 +29,9 @@ public class IntroductionScreens implements Screen{
 		this.game = game;
 
 		cam = new OrthographicCamera();		
-		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+		gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+		
 		publisherScreen = Mutagen.manager.get("screens/intro screens/ctm_placeholder.jpg");
 		creditScreen = Mutagen.manager.get("screens/intro screens/introCredits.jpg");
 		titleScreen = Mutagen.manager.get("screens/intro screens/introTitle.jpg");
@@ -39,7 +40,6 @@ public class IntroductionScreens implements Screen{
 		creditScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		titleScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		musicScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-
 	}
 
 
@@ -50,6 +50,8 @@ public class IntroductionScreens implements Screen{
 		//DRAWS INTRO SCREENS
 		//**********************************
 		game.batch.begin();
+		game.batch.setProjectionMatrix(cam.combined);
+
 		if (skipToMainM == false) {
 			if (counter <= 1.5) {
 				game.batch.draw(publisherScreen, 0, 0);

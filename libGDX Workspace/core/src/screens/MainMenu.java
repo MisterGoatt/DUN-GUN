@@ -1,6 +1,7 @@
 package screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
@@ -43,6 +44,13 @@ public class MainMenu implements Screen, InputProcessor{
 		framerate = Mutagen.manager.get("fonts/CourierNew32.fnt", BitmapFont.class) ;
 		inactiveMenuText = Mutagen.manager.get("fonts/inactiveMenu(36).fnt", BitmapFont.class);
 		activeMenuText = Mutagen.manager.get("fonts/activeMenu(36).fnt", BitmapFont.class);
+		
+		Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
+        //Gdx.graphics.setFullscreenMode(currentMode);
+        Gdx.graphics.setWindowedMode(1500, 800);
+
+		
+		
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);

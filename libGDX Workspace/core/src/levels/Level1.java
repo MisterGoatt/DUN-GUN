@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.swing.plaf.synth.SynthSplitPaneUI;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -77,6 +78,10 @@ public class Level1 implements Screen{
 	public Level1(final Mutagen game) {
 		this.game = game;
 
+		Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
+        Gdx.graphics.setFullscreenMode(currentMode);
+
+		
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(Mutagen.V_WIDTH / Mutagen.PPM, Mutagen.V_HEIGHT / Mutagen.PPM, cam);
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
