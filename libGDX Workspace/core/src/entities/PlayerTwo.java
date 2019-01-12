@@ -35,7 +35,8 @@ public class PlayerTwo {
 
 	private TextureRegion revolverStandingRegion, axeStandingRegion, rifleStandingRegion, 
 	shotgunStandingRegion, assaultRifleStandingRegion, laserStandingRegion;
-	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot, hit1, hit2, hit3, hit4;
+	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot, hit1, hit2, hit3, hit4,
+		oneLifeLeft, deadSfx;
 	//sound effect of the player's movement
 	public static Sound runningSound;
 	private float speed = 3, storedHP, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, 
@@ -106,6 +107,9 @@ public class PlayerTwo {
 		hit2 = Mutagen.manager.get("sound effects/impacts/hit2.ogg", Sound.class);
 		hit3 = Mutagen.manager.get("sound effects/impacts/hit3.ogg", Sound.class);
 		hit4 = Mutagen.manager.get("sound effects/impacts/hit4.ogg", Sound.class);
+		oneLifeLeft = Mutagen.manager.get("sound effects/lifeRemaining.mp3");
+		deadSfx = Mutagen.manager.get("sound effects/playerDead.mp3");
+
 		ID = 2;
 		definePlayer();
 	}
@@ -268,7 +272,9 @@ public class PlayerTwo {
 			//player's second life
 			if (secondWind == 1) {
 				if (DifficultyScreen.difficulty ==1) {
-					player2HP = player2MaxHP1;					
+					player2HP = player2MaxHP1;	
+					long oLL = oneLifeLeft.play(Mutagen.sfxVolume);
+
 				}
 				secondWind += 1;
 			}else if (secondWind > 1 || DifficultyScreen.difficulty == 2){
@@ -278,6 +284,8 @@ public class PlayerTwo {
 				p2PosY = 0;
 				p2Dead = true;
 				runningSound.stop();
+				long pD = deadSfx.play(Mutagen.sfxVolume);
+
 			}
 		}
 

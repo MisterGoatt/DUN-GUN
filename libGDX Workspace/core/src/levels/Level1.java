@@ -62,12 +62,11 @@ public class Level1 implements Screen{
 	public CreateBullet createBullet;
 	private CollisionDetector cd;
 	private Lvl1EntityPositions lvl1EP;
-
-	private Music levelOneMusic;
+	private Music levelOneMusic, lvlComplete;
 	private Texture mouseCursor, axeMouseCursor, pauseMenu;
 	private boolean lockCursor = true;
 	private boolean gamePaused = false;
-	private float elapsed = 0, duration, intensity;
+	private float elapsed = 0, duration, intensity, gameOver = 0;
 	public static boolean bulletImpact = false;
 	public static Vector3 mousePosition = new Vector3(0, 0, 0);
 	private Vector2 boundaryAbs = new Vector2(0, 0);
@@ -132,11 +131,14 @@ public class Level1 implements Screen{
 
 		pauseMenu = Mutagen.manager.get("screens/Pause.jpg", Texture.class);
 		levelOneMusic = Mutagen.manager.get("music/song3.ogg");
+		lvlComplete = Mutagen.manager.get("music/lvlComplete.mp3");
+
 		levelOneMusic.setLooping(true);
 		if (Mutagen.musicVolume > 0) {
 			levelOneMusic.setVolume(Mutagen.musicVolume - .3f);
 			levelOneMusic.play();
-
+			lvlComplete.setVolume(Mutagen.musicVolume - .3f);
+			lvlComplete.setLooping(true);
 		}
 		this.world.setContactListener(cd);
 		Gdx.input.setInputProcessor(null);
@@ -194,7 +196,6 @@ public class Level1 implements Screen{
 	}
 
 	public void cameraUpdate(float delta) {
-		//timeStep = 60 times a second, velocity iterations = 6, position iterations = 2
 		world.step(1/60f, 6, 2); //tells game how many times per second for Box2d to make its calculations
 		removeBodies(); //goes to method that removes physics bodies
 		shootGun(); //sees if gun is shooting
@@ -204,11 +205,22 @@ public class Level1 implements Screen{
 		 */
 		if (PlayerMode.OneP) {
 			cam.position.x = cam.position.x + (playerOne.b2body.getPosition().x - cam.position.x) * .05f;
-			cam.position.y = cam.position.y + (playerOne.b2body.getPosition().y - cam.position.y) * .05f;	
+			cam.position.y = cam.position.y + (playerOne.b2body.getPosition().y - cam.position.y) * .05f;
+
+			//GOES TO MAIN MENU IF BOTH PLAYERS ARE DEAD
+			if (PlayerOne.p1Dead) {
+				gameOver +=1;
+
+				if (gameOver > 120) {
+					Gdx.input.setCursorCatched(false);
+					game.setScreen(new MainMenu(game));					
+				}
+
+			}
 		} else {
 			//prevents co-op players from moving out of the screen if moving is separate directions
 			if (!PlayerOne.p1Dead && !PlayerTwo.p2Dead) {
-				
+
 				boundaryAbs.x = Math.abs(playerOne.b2body.getPosition().x - playerTwo.b2body.getPosition().x);
 				boundaryAbs.y = Math.abs(playerOne.b2body.getPosition().y - playerTwo.b2body.getPosition().y);
 				boundary.x = playerOne.b2body.getPosition().x - playerTwo.b2body.getPosition().x;
@@ -228,7 +240,7 @@ public class Level1 implements Screen{
 					PlayerOne.movHalt = false;
 					PlayerTwo.movHalt = false;
 				}
-				
+
 				if (PlayerOne.movHalt && PlayerTwo.movHalt) {
 					//p2 is right of p1
 					if (boundary.x >= 0 ) {
@@ -252,9 +264,9 @@ public class Level1 implements Screen{
 						playerOne.b2body.applyForceToCenter(0, 2f, true);
 						playerTwo.b2body.applyForceToCenter(0, -2f, true);
 					}
-					
+
 				}
-				
+
 				cam.position.x = (playerTwo.b2body.getPosition().x - playerOne.b2body.getPosition().x) / 2;
 				if (playerOne.b2body.getPosition().x > playerTwo.b2body.getPosition().x) {
 					cam.position.x = playerTwo.b2body.getPosition().x + Math.abs(cam.position.x);
@@ -276,6 +288,16 @@ public class Level1 implements Screen{
 				cam.position.x = cam.position.x + (playerOne.b2body.getPosition().x - cam.position.x) * .05f;
 				cam.position.y = cam.position.y + (playerOne.b2body.getPosition().y - cam.position.y) * .05f;	
 			}
+			//GOES TO MAIN MENU IF BOTH PLAYERS ARE DEAD
+			if (PlayerOne.p1Dead && PlayerTwo.p2Dead) {
+				gameOver +=1;
+
+				if (gameOver > 120) {
+					Gdx.input.setCursorCatched(false);
+					game.setScreen(new MainMenu(game));
+				}
+			}
+
 		}
 		// Only screen shake when required.
 		if (elapsed < duration) {
@@ -468,7 +490,7 @@ public class Level1 implements Screen{
 			}
 			//Goes to method that handles spawning the enemies
 			lvl1EP.SpawnEntities(world, map);
-			
+
 			//LEVEL END
 			if (PlayerOne.p1PosX > 85. && PlayerOne.p1PosX < 86.6 && PlayerOne.p1PosY > 10.7 && PlayerOne.p1PosY < 12.4) {
 				PlayerOne.runningSound.stop();					
@@ -478,6 +500,8 @@ public class Level1 implements Screen{
 				}
 				Gdx.input.setCursorCatched(false);
 				levelOneMusic.stop();
+				lvlComplete.play();
+
 				game.setScreen(new levelCompleted(game));
 			}
 			else if (PlayerTwo.p2PosX > 85.1 && PlayerTwo.p2PosX < 86.6 && PlayerTwo.p2PosY > 10.7 && PlayerTwo.p2PosY < 12.4) {
@@ -485,6 +509,8 @@ public class Level1 implements Screen{
 				PlayerTwo.runningSound.stop();
 				Gdx.input.setCursorCatched(false);
 				levelOneMusic.stop();
+				lvlComplete.play();
+
 				game.setScreen(new levelCompleted(game));
 			}
 			//Player One

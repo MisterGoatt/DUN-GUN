@@ -38,7 +38,8 @@ public class PlayerOne extends Sprite implements Disposable{
 	private TextureRegion revolverStandingRegion, axeStandingRegion, rifleStandingRegion, 
 	shotgunStandingRegion, assaultRifleStandingRegion, laserStandingRegion;
 
-	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot, hit1, hit2, hit3, hit4;
+	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot, hit1, hit2, hit3, hit4, 
+		deadSfx, oneLifeLeft;
 	//sound effect of the player's movement
 	public static Sound runningSound;
 	private float speed = 3, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, slowedCounter, rotationSpeed = 4, storedHP, secondWind = 1, olA; //speed of the player, Sqrt 2 divided by 2
@@ -57,7 +58,6 @@ public class PlayerOne extends Sprite implements Disposable{
 	public static Array<CreateBullet> lasers = new Array<CreateBullet>();
 	public static Vector2 player1SpawnPos = new Vector2(0,0);
 	public CreateBullet createBullet;
-
 
 	public PlayerOne(World world) {
 		this.world = world;
@@ -108,7 +108,8 @@ public class PlayerOne extends Sprite implements Disposable{
 		hit2 = Mutagen.manager.get("sound effects/impacts/hit2.ogg", Sound.class);
 		hit3 = Mutagen.manager.get("sound effects/impacts/hit3.ogg", Sound.class);
 		hit4 = Mutagen.manager.get("sound effects/impacts/hit4.ogg", Sound.class);
-
+		deadSfx = Mutagen.manager.get("sound effects/playerDead.mp3");
+		oneLifeLeft = Mutagen.manager.get("sound effects/lifeRemaining.mp3");
 
 		ID = 1; //defines if player is player 1 or player 2 for the CreateBullet class
 		storedHP = player1HP;
@@ -263,15 +264,17 @@ public class PlayerOne extends Sprite implements Disposable{
 			//player's second life
 			if (secondWind == 1) {
 				if (DifficultyScreen.difficulty ==1) {
-					player1HP = player1MaxHP1;					
-				}
+					player1HP = player1MaxHP1;	
+					long oLL = oneLifeLeft.play(Mutagen.sfxVolume)
+;				}
 				secondWind += 1;
 			}else if (secondWind > 1 || DifficultyScreen.difficulty == 2){
 				world.destroyBody(this.b2body);
 				p1PosX = 0;
 				p1PosY = 0;
 				p1Dead = true;
-				runningSound.stop();				
+				runningSound.stop();	
+				long pD = deadSfx.play(Mutagen.sfxVolume);
 			}
 
 
@@ -452,7 +455,6 @@ public class PlayerOne extends Sprite implements Disposable{
 
 		//CO-OP
 		else if (!PlayerMode.OneP) {
-
 
 			//rotational 
 			if (GunSelectionScreen.p1AimStyle == 1) {

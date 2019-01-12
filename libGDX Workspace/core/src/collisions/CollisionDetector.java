@@ -43,7 +43,7 @@ public class CollisionDetector implements ContactListener{
 	Flayer flayer;
 
 	private Sound bulletHitWall, bulletBodyImpact, pelletHitWall, laserHitWall, turretHit, hpPickUp,
-		thornHit;
+		thornHit, turretExp;
 
 	public CollisionDetector() {	
 		tempBodyArray= new Array<Body>();
@@ -53,6 +53,7 @@ public class CollisionDetector implements ContactListener{
 		pelletHitWall = Mutagen.manager.get("sound effects/impacts/pelletImpact.mp3");
 		bulletBodyImpact = Mutagen.manager.get("sound effects/impacts/bulletBodyImpact.mp3");
 		turretHit = Mutagen.manager.get("sound effects/enemies/turretHit.mp3");
+		turretExp = Mutagen.manager.get("sound effects/enemies/turretExplosion.mp3");
 		hpPickUp = Mutagen.manager.get("sound effects/hpPickUp.ogg");
 		thornHit = Mutagen.manager.get("sound effects/impacts/thorn hit.mp3");
 
@@ -446,7 +447,9 @@ public class CollisionDetector implements ContactListener{
 
 					if (turret.health <= 0) {
 						bodiesToRemove.add(fa.getBody()); //grunt
-						//turret.tookDamage = false;
+						if (Mutagen.sfxVolume != 0) {
+							long tH = turretHit.play(Mutagen.sfxVolume);
+						}
 					}
 				}
 				if (fb.getUserData().equals("turret")){
@@ -480,8 +483,9 @@ public class CollisionDetector implements ContactListener{
 
 					if (turret.health <= 0) {
 						bodiesToRemove.add(fb.getBody()); //grunt
-						//turret.tookDamage = false;
-					}
+						if (Mutagen.sfxVolume != 0) {
+							long tH = turretHit.play(Mutagen.sfxVolume);
+						}					}
 				}
 			}
 		}
@@ -912,7 +916,6 @@ public class CollisionDetector implements ContactListener{
 					tempBodyArray.clear();
 					if (soldier.health <= 0) {
 						bodiesToRemove.add(fa.getBody());
-						//turret.tookDamage = false;
 					}
 				}
 				if (fb.getUserData().equals("soldier")){
@@ -1055,8 +1058,7 @@ public class CollisionDetector implements ContactListener{
 					Body b = tempBodyArray.first();
 					turretBodyTarget.add((Turret) b.getUserData()); //casts Grunt on the physics body to get the class instance
 					turret = turretBodyTarget.get(0);
-					//not needed yet
-					//scientist.tookDamage = true;
+
 
 					switch (GunSelectionScreen.p2WeaponSelected){
 					case "battle axe": turret.health -= PlayerTwo.battleAxeDamage;
@@ -1078,7 +1080,9 @@ public class CollisionDetector implements ContactListener{
 
 					if (turret.health <= 0) {
 						bodiesToRemove.add(fa.getBody()); //grunt
-						//turret.tookDamage = false;
+						if (Mutagen.sfxVolume != 0) {
+							long tH = turretHit.play(Mutagen.sfxVolume);
+						}
 					}
 				}
 				if (fb.getUserData().equals("turret")){
@@ -1089,8 +1093,7 @@ public class CollisionDetector implements ContactListener{
 					Body b = tempBodyArray.first();
 					turretBodyTarget.add((Turret) b.getUserData()); //casts Grunt on the physics body to get the class instance
 					turret = turretBodyTarget.get(0);
-					//not needed yet
-					//scientist.tookDamage = true;
+
 
 					switch (GunSelectionScreen.p1WeaponSelected){
 					case "battle axe": turret.health -= PlayerTwo.battleAxeDamage;
@@ -1112,7 +1115,9 @@ public class CollisionDetector implements ContactListener{
 
 					if (turret.health <= 0) {
 						bodiesToRemove.add(fb.getBody()); //grunt
-						//turret.tookDamage = false;
+						if (Mutagen.sfxVolume != 0) {
+							long tH = turretHit.play(Mutagen.sfxVolume);
+						}
 					}
 				}
 			}
@@ -1170,7 +1175,7 @@ public class CollisionDetector implements ContactListener{
 					flayer = flayerBodyTarget.get(0);
 
 					if (Mutagen.sfxVolume != 0) {
-						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume);
 					}
 
 					switch (GunSelectionScreen.p1WeaponSelected){

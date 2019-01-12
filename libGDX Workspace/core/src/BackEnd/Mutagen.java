@@ -61,6 +61,9 @@ public class Mutagen extends Game{
 			manager.load("sound effects/running.mp3", Sound.class);
 			manager.load("sprites/player1/hp.png", Texture.class);
 			manager.load("sprites/player1/hpBg.png", Texture.class); //change for build path
+			manager.load("sound effects/lifeRemaining.mp3", Sound.class);
+			manager.load("sound effects/playerDead.mp3", Sound.class);
+
 
 			//PlayerTwo
 			manager.load("sprites/player2/revolverP2.atlas", TextureAtlas.class);
@@ -83,6 +86,8 @@ public class Mutagen extends Game{
 			manager.load("axeCursor.png", Texture.class);
 			manager.load("screens/Pause.jpg", Texture.class);
 			manager.load("music/song3.ogg", Music.class);
+			manager.load("music/lvlComplete.mp3", Music.class);
+
 
 			//Gun sound effects
 			manager.load("sound effects/shooting/pistol_shot.mp3", Sound.class);
@@ -159,6 +164,8 @@ public class Mutagen extends Game{
 			manager.load("sound effects/enemies/turretAtk.mp3", Sound.class);
 			manager.load("sprites/turret/turretBulletAnimation.atlas", TextureAtlas.class);
 			manager.load("sound effects/enemies/turretHit.mp3", Sound.class);
+			manager.load("sound effects/enemies/turretExplosion.mp3", Sound.class);
+
 
 			//PlayerModeScreen
 			manager.load("screens/playerMode/playerModeBlank.jpg", Texture.class);
