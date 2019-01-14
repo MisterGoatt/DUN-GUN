@@ -448,7 +448,7 @@ public class CollisionDetector implements ContactListener{
 					if (turret.health <= 0) {
 						bodiesToRemove.add(fa.getBody()); //grunt
 						if (Mutagen.sfxVolume != 0) {
-							long tH = turretHit.play(Mutagen.sfxVolume);
+							long tH = turretExp.play(Mutagen.sfxVolume);
 						}
 					}
 				}
@@ -484,7 +484,7 @@ public class CollisionDetector implements ContactListener{
 					if (turret.health <= 0) {
 						bodiesToRemove.add(fb.getBody()); //grunt
 						if (Mutagen.sfxVolume != 0) {
-							long tH = turretHit.play(Mutagen.sfxVolume);
+							long tH = turretExp.play(Mutagen.sfxVolume);
 						}					}
 				}
 			}
@@ -1081,7 +1081,7 @@ public class CollisionDetector implements ContactListener{
 					if (turret.health <= 0) {
 						bodiesToRemove.add(fa.getBody()); //grunt
 						if (Mutagen.sfxVolume != 0) {
-							long tH = turretHit.play(Mutagen.sfxVolume);
+							long tH = turretExp.play(Mutagen.sfxVolume);
 						}
 					}
 				}
@@ -1116,7 +1116,7 @@ public class CollisionDetector implements ContactListener{
 					if (turret.health <= 0) {
 						bodiesToRemove.add(fb.getBody()); //grunt
 						if (Mutagen.sfxVolume != 0) {
-							long tH = turretHit.play(Mutagen.sfxVolume);
+							long tH = turretExp.play(Mutagen.sfxVolume);
 						}
 					}
 				}

@@ -15,6 +15,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -65,9 +67,10 @@ public class Level1 implements Screen{
 	private Lvl1EntityPositions lvl1EP;
 	private Music levelOneMusic, lvlComplete;
 	private Texture mouseCursor, axeMouseCursor, pauseMenu;
+	private ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private boolean lockCursor = true;
 	private boolean gamePaused = false;
-	private float elapsed = 0, duration, intensity, gameOver = 0;
+	private float elapsed = 0, duration, intensity, gameOver = 0, fadeOut = 0;
 	public static boolean bulletImpact = false;
 	public static Vector3 mousePosition = new Vector3(0, 0, 0);
 	private Vector2 boundaryAbs = new Vector2(0, 0);
@@ -80,6 +83,7 @@ public class Level1 implements Screen{
 
 		Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
         Gdx.graphics.setFullscreenMode(currentMode);
+		System.out.println(currentMode);
 
 		
 		cam = new OrthographicCamera();		
@@ -450,6 +454,7 @@ public class Level1 implements Screen{
 			//b2dr.render(world, cam.combined);
 			game.batch.begin(); //starts sprite spriteBatch
 
+
 			//RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER BODY OBJECTS
 			for (int i = 0; i < Grunt.grunts.size; i++) {
 				Grunt.grunts.get(i).renderSprite(game.batch);
@@ -495,7 +500,6 @@ public class Level1 implements Screen{
 			}
 			//Goes to method that handles spawning the enemies
 			lvl1EP.SpawnEntities(world, map);
-
 			//LEVEL END
 			if (PlayerOne.p1PosX > 85. && PlayerOne.p1PosX < 86.6 && PlayerOne.p1PosY > 10.7 && PlayerOne.p1PosY < 12.4) {
 				PlayerOne.runningSound.stop();					
@@ -506,8 +510,23 @@ public class Level1 implements Screen{
 				Gdx.input.setCursorCatched(false);
 				levelOneMusic.stop();
 				lvlComplete.play();
+				gameOver+=1;
+				shapeRenderer.setProjectionMatrix(cam.combined);
+				 
+				shapeRenderer.begin(ShapeType.Filled);
+				Gdx.gl.glEnable(GL20.GL_BLEND);
+				Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+				fadeOut += .01f;
+				shapeRenderer.setColor(0, 0, 0, fadeOut);
+				shapeRenderer.rect(PlayerOne.p1PosX - 15, PlayerOne.p1PosY- 15, 30, 30);
+				shapeRenderer.end();
+			    Gdx.gl.glDisable(GL20.GL_BLEND);
 
-				game.setScreen(new levelCompleted(game));
+				if (gameOver > 180) {
+					game.setScreen(new levelCompleted(game));
+					
+				}
+				
 			}
 			else if (PlayerTwo.p2PosX > 85.1 && PlayerTwo.p2PosX < 86.6 && PlayerTwo.p2PosY > 10.7 && PlayerTwo.p2PosY < 12.4) {
 				PlayerOne.runningSound.stop();
@@ -548,6 +567,7 @@ public class Level1 implements Screen{
 		mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		cam.unproject(mousePosition); //gets mouse coordinates within viewport
 		game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
+		//System.out.println(mousePosition);
 	}
 
 	@Override
