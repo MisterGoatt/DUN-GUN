@@ -534,8 +534,22 @@ public class Level1 implements Screen{
 				Gdx.input.setCursorCatched(false);
 				levelOneMusic.stop();
 				lvlComplete.play();
+				gameOver+=1;
+				shapeRenderer.setProjectionMatrix(cam.combined);
+				 
+				shapeRenderer.begin(ShapeType.Filled);
+				Gdx.gl.glEnable(GL20.GL_BLEND);
+				Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+				fadeOut += .01f;
+				shapeRenderer.setColor(0, 0, 0, fadeOut);
+				shapeRenderer.rect(PlayerOne.p1PosX - 15, PlayerOne.p1PosY- 15, 30, 30);
+				shapeRenderer.end();
+			    Gdx.gl.glDisable(GL20.GL_BLEND);
 
-				game.setScreen(new levelCompleted(game));
+				if (gameOver > 180) {
+					game.setScreen(new levelCompleted(game));
+					
+				}
 			}
 			//Player One
 			if (!PlayerOne.p1Dead) {

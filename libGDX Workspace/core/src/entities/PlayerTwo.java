@@ -410,10 +410,10 @@ public class PlayerTwo {
 		shootGun();
 		//If player has chosen the rotational or directional aim style
 		if (GunSelectionScreen.p2AimStyle == 1) {
-			if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_5)){
+			if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_8)){
 				angle += rotationSpeed;
 			}
-			else if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_6)){
+			else if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_9)){
 				angle -= rotationSpeed;
 			}			
 		}else {
@@ -449,7 +449,7 @@ public class PlayerTwo {
 						angle = 270;
 					}
 				} 
-				if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+				if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
 					shootBehind = true;
 
 				}else {
@@ -459,7 +459,7 @@ public class PlayerTwo {
 			}
 		}
 
-		if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_0)) {
+		if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
 			if (timeSinceLastShot <=0) {
 				isShooting = true;
 				shootAnimation = true;

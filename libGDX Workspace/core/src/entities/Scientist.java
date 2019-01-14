@@ -24,7 +24,7 @@ public class Scientist{
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
-	private float runSpeed = 1.5f, timePassed = 0, differenceX, differenceY, oldX, oldY;
+	private float runSpeed = 2.2f, timePassed = 0, differenceX, differenceY, oldX, oldY;
 	private TextureAtlas scientistDamagedAtlas, scientistAtkAtlas;
 	private Animation <TextureRegion> scientistDamagedAnimation, scientistAtkAnimation;
 	private TextureRegion scientistStandingRegion;
