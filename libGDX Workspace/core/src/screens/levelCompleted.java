@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import BackEnd.Mutagen;
+import levels.Level2;
 
 public class levelCompleted implements Screen{
 	final Mutagen game;
@@ -43,7 +44,7 @@ public class levelCompleted implements Screen{
 			yPos -= 10;
 		}else {
 			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-				System.out.println("NEXT LEVEL");
+				game.setScreen(new Level2(game));
 			}
 		}
 		

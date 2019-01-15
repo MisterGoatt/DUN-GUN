@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.utils.Disposable;
 
 import BackEnd.Mutagen;
 import levels.Level1;
+import levels.Level2;
 import screens.GunSelectionScreen;
 import screens.PlayerMode;
 
@@ -30,6 +32,7 @@ public class CreateBullet{
 	private int playerID;
 	private Animation <TextureRegion> laserAnimation, pelletAnimation, bulletAnimation;
 	private TextureAtlas pelletTextureAtlas, bulletTextureAtlas, laserTextureAtlas;
+	private Vector3 mousePosition = new Vector3(0,0, 0);
 
 	public CreateBullet(World world, int ID) {
 		this.world = world;
@@ -45,7 +48,12 @@ public class CreateBullet{
 	}
 
 	public void defineBullet() {
-		
+		//if player is on a certain level then assign correct static vector3 mouse positions
+		if (Mutagen.level == "1") {
+			mousePosition = Level1.mousePosition;
+		}else if (Mutagen.level == "2") {
+			mousePosition = Level2.mousePosition;
+		}
 		if (playerID == 1) {
 			bdef.position.set(PlayerOne.p1PosX, PlayerOne.p1PosY);
 
@@ -100,8 +108,8 @@ public class CreateBullet{
 			fdef.filter.maskBits = Mutagen.WALL | Mutagen.ENEMY; // what masking bit the category bit collides with
 			b2body.createFixture(fdef).setUserData("bullets");
 			if (PlayerMode.OneP) {
-				float differenceX = Level1.mousePosition.x - b2body.getPosition().x;
-				float differenceY = Level1.mousePosition.y - b2body.getPosition().y;
+				float differenceX = mousePosition.x - b2body.getPosition().x;
+				float differenceY = mousePosition.y - b2body.getPosition().y;
 				angleR = MathUtils.atan2(differenceY, differenceX);
 				angleD = MathUtils.atan2( differenceY, differenceX)* MathUtils.radDeg; //find the angle between mouse and player in degrees
 			}
@@ -211,8 +219,8 @@ public class CreateBullet{
 	//Render all of the textures for bullets and lasers
 	public void renderSprite(SpriteBatch batch) {
 		if (PlayerMode.OneP) {
-			float differenceX = Level1.mousePosition.x - b2body.getPosition().x;
-			float differenceY = Level1.mousePosition.y - b2body.getPosition().y;
+			float differenceX = mousePosition.x - b2body.getPosition().x;
+			float differenceY = mousePosition.y - b2body.getPosition().y;
 			angleR = MathUtils.atan2(differenceY, differenceX);
 		}
 		else if (!PlayerMode.OneP) {

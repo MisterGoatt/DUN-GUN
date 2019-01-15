@@ -65,6 +65,7 @@ public class Level1 implements Screen{
 	public CreateBullet createBullet;
 	private CollisionDetector cd;
 	private Lvl1EntityPositions lvl1EP;
+	private Level2 lvl2;
 	private Music levelOneMusicAll, lvlComplete;
 	private Texture mouseCursor, axeMouseCursor, pauseMenu;
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -84,7 +85,7 @@ public class Level1 implements Screen{
 //        Gdx.graphics.setFullscreenMode(currentMode);
 //		System.out.println(currentMode);
 
-		
+		Mutagen.level = "1";
 		cam = new OrthographicCamera();		
 		gamePort = new FitViewport(Mutagen.V_WIDTH / Mutagen.PPM, Mutagen.V_HEIGHT / Mutagen.PPM, cam);
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
@@ -138,9 +139,7 @@ public class Level1 implements Screen{
 		}
 
 		pauseMenu = Mutagen.manager.get("screens/Pause.jpg", Texture.class);
-//		levelOneMusic1 = Mutagen.manager.get("music/song1.mp3");
-//		levelOneMusic2 = Mutagen.manager.get("music/song2.mp3");
-//		levelOneMusic3 = Mutagen.manager.get("music/song3.mp3");
+
 		levelOneMusicAll = Mutagen.manager.get("music/songAll.mp3");
 		lvlComplete = Mutagen.manager.get("music/lvlComplete.mp3");
 
@@ -163,6 +162,8 @@ public class Level1 implements Screen{
 	//Creation of bullet objects and playing shooting and swinging sound effects
 	public void shootGun() {
 		if (PlayerOne.timeToShake) {
+			game.setScreen(new levelCompleted(game));
+
 			//waitToShootL += 1;
 			switch (GunSelectionScreen.p1WeaponSelected) {
 			case "laser":
@@ -592,7 +593,7 @@ public class Level1 implements Screen{
 		mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		cam.unproject(mousePosition); //gets mouse coordinates within viewport
 		game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
-		System.out.println(mousePosition);
+		//System.out.println(mousePosition);
 	}
 
 	@Override

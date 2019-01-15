@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -19,6 +20,7 @@ import com.badlogic.gdx.utils.Array;
 
 import BackEnd.Mutagen;
 import levels.Level1;
+import levels.Level2;
 import screens.DifficultyScreen;
 import screens.GunSelectionScreen;
 import screens.PlayerMode;
@@ -56,6 +58,8 @@ public class PlayerTwo {
 	public static Array<CreateBullet> bullets2 = new Array<CreateBullet>();
 	public static Array<CreateBullet> lasers2 = new Array<CreateBullet>();
 	public static Vector2 player2SpawnPos = new Vector2(0,0);
+	private Vector3 mousePosition = new Vector3(0,0, 0);
+
 	public CreateBullet createBullet;
 
 	public PlayerTwo(World world) {
@@ -65,6 +69,12 @@ public class PlayerTwo {
 		}
 		if (DifficultyScreen.difficulty == 2) {
 			player2HP = player2MaxHP2;			
+		}
+		//if player is on a certain level then assign correct static vector3 mouse positions
+		if (Mutagen.level == "1") {
+			mousePosition = Level1.mousePosition;
+		}else if (Mutagen.level == "2") {
+			mousePosition = Level2.mousePosition;
 		}
 		storedHP = player2HP;
 		slowedCounter = 0;

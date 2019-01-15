@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -21,6 +22,7 @@ import com.badlogic.gdx.utils.Disposable;
 
 import BackEnd.Mutagen;
 import levels.Level1;
+import levels.Level2;
 import screens.DifficultyScreen;
 import screens.GunSelectionScreen;
 import screens.PlayerMode;
@@ -57,6 +59,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	public static Array<CreateBullet> bullets = new Array<CreateBullet>();
 	public static Array<CreateBullet> lasers = new Array<CreateBullet>();
 	public static Vector2 player1SpawnPos = new Vector2(0,0);
+	private Vector3 mousePosition = new Vector3(0,0, 0);
 	public CreateBullet createBullet;
 
 	public PlayerOne(World world) {
@@ -113,7 +116,7 @@ public class PlayerOne extends Sprite implements Disposable{
 
 		ID = 1; //defines if player is player 1 or player 2 for the CreateBullet class
 		storedHP = player1HP;
-
+		
 		definePlayer();
 
 	}
@@ -144,9 +147,17 @@ public class PlayerOne extends Sprite implements Disposable{
 	public void renderSprite(SpriteBatch batch) {
 		float posX = b2body.getPosition().x;
 		float posY = b2body.getPosition().y;
+		
+		//if player is on a certain level then assign correct static vector3 mouse positions
+		if (Mutagen.level == "1") {
+			mousePosition = Level1.mousePosition;
+		}else if (Mutagen.level == "2") {
+			mousePosition = Level2.mousePosition;
+		}
+		
 		//If Single Player
 		if (PlayerMode.OneP) {
-			angle = MathUtils.atan2(Level1.mousePosition.y - getY(), Level1.mousePosition.x - getX()) * MathUtils.radDeg; //find the distance between mouse and player
+			angle = MathUtils.atan2(mousePosition.y - getY(), mousePosition.x - getX()) * MathUtils.radDeg; //find the distance between mouse and player
 			angle = angle - 90; //makes it a full 360 degrees
 			if (angle < 0) {
 				angle += 360 ;
