@@ -65,11 +65,10 @@ public class Level1 implements Screen{
 	public CreateBullet createBullet;
 	private CollisionDetector cd;
 	private Lvl1EntityPositions lvl1EP;
-	private Music levelOneMusic, lvlComplete;
+	private Music levelOneMusicAll, lvlComplete;
 	private Texture mouseCursor, axeMouseCursor, pauseMenu;
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
-	private boolean lockCursor = true;
-	private boolean gamePaused = false;
+	private boolean lockCursor = true, gamePaused = false;
 	private float elapsed = 0, duration, intensity, gameOver = 0, fadeOut = 0;
 	public static boolean bulletImpact = false;
 	public static Vector3 mousePosition = new Vector3(0, 0, 0);
@@ -81,9 +80,9 @@ public class Level1 implements Screen{
 	public Level1(final Mutagen game) {
 		this.game = game;
 
-		Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
-        Gdx.graphics.setFullscreenMode(currentMode);
-		System.out.println(currentMode);
+//		Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
+//        Gdx.graphics.setFullscreenMode(currentMode);
+//		System.out.println(currentMode);
 
 		
 		cam = new OrthographicCamera();		
@@ -139,18 +138,26 @@ public class Level1 implements Screen{
 		}
 
 		pauseMenu = Mutagen.manager.get("screens/Pause.jpg", Texture.class);
-		levelOneMusic = Mutagen.manager.get("music/song3.ogg");
+//		levelOneMusic1 = Mutagen.manager.get("music/song1.mp3");
+//		levelOneMusic2 = Mutagen.manager.get("music/song2.mp3");
+//		levelOneMusic3 = Mutagen.manager.get("music/song3.mp3");
+		levelOneMusicAll = Mutagen.manager.get("music/songAll.mp3");
 		lvlComplete = Mutagen.manager.get("music/lvlComplete.mp3");
 
-		levelOneMusic.setLooping(true);
+		//levelOneMusi.setLooping(true);
 		if (Mutagen.musicVolume > 0) {
-			levelOneMusic.setVolume(Mutagen.musicVolume - .3f);
-			levelOneMusic.play();
+			levelOneMusicAll.setLooping(true);
+			levelOneMusicAll.play();
+
+			levelOneMusicAll.setVolume(Mutagen.musicVolume - .3f);
+
+
 			lvlComplete.setVolume(Mutagen.musicVolume - .3f);
 			lvlComplete.setLooping(true);
 		}
 		this.world.setContactListener(cd);
 		Gdx.input.setInputProcessor(null);
+		
 	}
 
 	//Creation of bullet objects and playing shooting and swinging sound effects
@@ -435,7 +442,7 @@ public class Level1 implements Screen{
 				}
 				//QUIT TO MENU
 				if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < 0.221 && mousePosition.y > -.38) {
-					levelOneMusic.stop();
+					levelOneMusicAll.stop();
 					Mutagen.clicking();
 					game.setScreen(new MainMenu(game));
 				}	
@@ -508,7 +515,8 @@ public class Level1 implements Screen{
 					PlayerTwo.runningSound.stop();
 				}
 				Gdx.input.setCursorCatched(false);
-				levelOneMusic.stop();
+				levelOneMusicAll.stop();
+			
 				lvlComplete.play();
 				gameOver+=1;
 				shapeRenderer.setProjectionMatrix(cam.combined);
@@ -532,7 +540,8 @@ public class Level1 implements Screen{
 				PlayerOne.runningSound.stop();
 				PlayerTwo.runningSound.stop();
 				Gdx.input.setCursorCatched(false);
-				levelOneMusic.stop();
+				levelOneMusicAll.stop();
+
 				lvlComplete.play();
 				gameOver+=1;
 				shapeRenderer.setProjectionMatrix(cam.combined);
@@ -578,10 +587,12 @@ public class Level1 implements Screen{
 
 		} //closing bracket for game not paused
 
+
+		
 		mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		cam.unproject(mousePosition); //gets mouse coordinates within viewport
 		game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
-		//System.out.println(mousePosition);
+		System.out.println(mousePosition);
 	}
 
 	@Override

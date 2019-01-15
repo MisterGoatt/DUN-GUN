@@ -56,7 +56,7 @@ public class Lvl1EntityPositions {
 		
 		//Sol1
 		if (room1) {
-			if (p1X > 10.8 && p1X < 12.8 && p1Y > 55.6 && p1Y < 56.1) {
+			if (p1X > 23 && p1X < 23.9 && p1Y > 45 && p1Y < 49.2) {
 				MapLayer Layer = map.getLayers().get("Sol1");
 				for (MapObject mo : Layer.getObjects()) {
 					Soldier.soldierSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
@@ -67,7 +67,7 @@ public class Lvl1EntityPositions {
 				room1= false;
 			}
 
-			else if (p2X > 10.8 && p2X < 12.8 && p2Y > 55.6 && p2Y < 56.1) {
+			else if (p2X > 23 && p2X < 23.9 && p2Y > 45 && p2Y < 55.6) {
 				MapLayer Layer = map.getLayers().get("Sol1");
 				for (MapObject mo : Layer.getObjects()) {
 					Soldier.soldierSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
@@ -80,7 +80,7 @@ public class Lvl1EntityPositions {
 		}
 		//Sol2
 		if (room2) {
-			if (p1X > 15.5 && p1X < 15.9 && p1Y > 46 && p1Y < 49.3) {
+			if (p1X > 25.8 && p1X < 25.9 && p1Y > 46 && p1Y < 49.3) {
 				MapLayer Layer = map.getLayers().get("Sol2");
 				for (MapObject mo : Layer.getObjects()) {
 					Soldier.soldierSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
@@ -91,7 +91,7 @@ public class Lvl1EntityPositions {
 				room2= false;
 			}
 
-			else if (p2X > 15.5 && p2X < 15.9 && p2Y > 46 && p2Y < 49.3) {
+			else if (p2X > 25.8 && p2X < 25.9 && p2Y > 46 && p2Y < 49.3) {
 				MapLayer Layer = map.getLayers().get("Sol2");
 				for (MapObject mo : Layer.getObjects()) {
 					Soldier.soldierSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;

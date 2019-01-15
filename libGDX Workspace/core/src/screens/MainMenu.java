@@ -45,9 +45,9 @@ public class MainMenu implements Screen, InputProcessor{
 		inactiveMenuText = Mutagen.manager.get("fonts/inactiveMenu(36).fnt", BitmapFont.class);
 		activeMenuText = Mutagen.manager.get("fonts/activeMenu(36).fnt", BitmapFont.class);
 		
-		Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
-        //Gdx.graphics.setFullscreenMode(currentMode);
-        Gdx.graphics.setWindowedMode(1500, 800);
+//		Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
+//        //Gdx.graphics.setFullscreenMode(currentMode);
+//        Gdx.graphics.setWindowedMode(1500, 800);
 
 		
 		

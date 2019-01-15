@@ -22,7 +22,7 @@ public class TurretBullets {
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
-	private float speed = 1, startX, startY, posX, posY, angle2, angle, shootingAngle, timePassed;
+	private float speed = 1.5f, startX, startY, posX, posY, shootingAngle, timePassed;
 	private TextureAtlas bulletTextureAtlas;
 	private Animation <TextureRegion> bulletAnimation;
 	public static Array<TurretBullets> turretBullets = new Array<TurretBullets>();
@@ -64,7 +64,7 @@ public class TurretBullets {
 		b2body.applyLinearImpulse(posX, posY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);
 	}
 	public void renderSprite(SpriteBatch batch) {
-		batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 9 / Mutagen.PPM,  16 / Mutagen.PPM, 20 / Mutagen.PPM, 32 / Mutagen.PPM, 1, 1, shootingAngle);
+		batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 4 / Mutagen.PPM,  10 / Mutagen.PPM, 7 / Mutagen.PPM, 20 / Mutagen.PPM, 1, 1, shootingAngle);
 		timePassed += Gdx.graphics.getDeltaTime();
 
 	}
