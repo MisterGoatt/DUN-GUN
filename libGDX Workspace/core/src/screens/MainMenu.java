@@ -81,34 +81,34 @@ public class MainMenu implements Screen, InputProcessor{
 		game.batch.draw(mainMenuScreen, 0, 0); // draw background screen
 
 		//START goes to player mode screen
-		if (88 < mX && mX < 311 && 40 < mY && mY < 95)  {
+		if (88 < mX && mX < 311 && 40 < mY && mY < 110)  {
 			activeMenuText.draw(game.batch, "START", 140, 90);
 		}else {
 			inactiveMenuText.draw(game.batch, "START", 140, 90);
 		}
 
 		//OPTIONS
-		if (645 < mX && mX < 874 && 40 < mY && mY < 95){
+		if (645 < mX && mX < 874 && 40 < mY && mY < 110){
 			activeMenuText.draw(game.batch, "OPTIONS", 670, 90);
 		}else {
 			inactiveMenuText.draw(game.batch, "OPTIONS", 670, 90);
 		}
 		//CREDITS
-		if (916 < mX && mX < 1152 && 40< mY && mY < 95){
+		if (916 < mX && mX < 1152 && 40< mY && mY < 110){
 			activeMenuText.draw(game.batch, "CREDITS", 952, 90);
 		}else {
 			inactiveMenuText.draw(game.batch, "CREDITS", 952, 90);
 		}
 
 		//QUIT
-		if (1201 < mX && mX < 1435 && 40 < mY && mY < 95){
+		if (1201 < mX && mX < 1435 && 40 < mY && mY < 110){
 			activeMenuText.draw(game.batch, "QUIT", 1270, 90);
 		}else{
 			inactiveMenuText.draw(game.batch, "QUIT", 1270, 90);
 		}
 		
 		//tutorial
-		if (365 < mX && mX < 598 && 40 < mY && mY < 95){
+		if (365 < mX && mX < 598 && 40 < mY && mY < 110){
 			activeMenuText.draw(game.batch, "TUTORIAL", 382, 90);
 		}else {
 			inactiveMenuText.draw(game.batch, "TUTORIAL", 382, 90);
@@ -190,30 +190,30 @@ public class MainMenu implements Screen, InputProcessor{
 
 		if (!buttonPressed) {
 			//START goes to player mode screen
-			if (88 < mX && mX < 311 && 40 < mY && mY < 95)  {
+			if (88 < mX && mX < 311 && 40 < mY && mY < 100)  {
 				Mutagen.clicking();
 				game.setScreen(new DifficultyScreen(game));
 			}
 			//TUTORIAL
-			if (365 < mX && mX < 598 && 40 < mY && mY < 95) {
+			if (365 < mX && mX < 598 && 40 < mY && mY < 110) {
 				game.setScreen(new Tutorial(game));
 			}
 			
 			//OPTIONS
-			if (645 < mX && mX < 874 && 40 < mY && mY < 95){
+			if (645 < mX && mX < 874 && 40 < mY && mY < 110){
 				themeMusic.stop();
 				Mutagen.clicking();
 				game.setScreen(new Options(game));
 			}
 			//CREDITS
-			if (916 < mX && mX < 1152 && 40< mY && mY < 95){
+			if (916 < mX && mX < 1152 && 40< mY && mY < 110){
 				themeMusic.stop();
 				Mutagen.clicking();
 				game.setScreen(new Credits(game));
 			}
 
 			//QUIT
-			if (1201 < mX && mX < 1435 && 40 < mY && mY < 95){
+			if (1201 < mX && mX < 1435 && 40 < mY && mY < 110){
 				Gdx.app.exit();
 			}
 		}

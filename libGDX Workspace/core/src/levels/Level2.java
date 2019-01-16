@@ -68,10 +68,10 @@ public class Level2 implements Screen{
 	public CreateBullet createBullet;
 	private CollisionDetector cd;
 	private Lvl2EntityPositions lvl2EP;
-	private Music levelOneMusicAll, lvlComplete;
+	private Music levelTwoMusicAll, lvlComplete, secretRoomMusic;
 	private Texture mouseCursor, axeMouseCursor, pauseMenu;
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
-	private boolean lockCursor = true, gamePaused = false;
+	private boolean lockCursor = true, gamePaused = false, sMusic = false;
 	private float elapsed = 0, duration, intensity, gameOver = 0, fadeOut = 0;
 	public static boolean bulletImpact = false;
 	public static Vector3 mousePosition = new Vector3(0, 0, 0);
@@ -146,19 +146,20 @@ public class Level2 implements Screen{
 		}
 
 
-		levelOneMusicAll = Mutagen.manager.get("music/songAll.mp3");
+		levelTwoMusicAll = Mutagen.manager.get("music/songAll.mp3");
 		lvlComplete = Mutagen.manager.get("music/lvlComplete.mp3");
-
+		secretRoomMusic = Mutagen.manager.get("music/whistling masterpiece.mp3");
+		
 		//levelOneMusi.setLooping(true);
 		if (Mutagen.musicVolume > 0) {
-			levelOneMusicAll.setLooping(true);
-			levelOneMusicAll.play();
-
-			levelOneMusicAll.setVolume(Mutagen.musicVolume - .3f);
-
-
-			lvlComplete.setVolume(Mutagen.musicVolume - .3f);
+			levelTwoMusicAll.setLooping(true);
+			levelTwoMusicAll.play();
+			
+			levelTwoMusicAll.setVolume(Mutagen.musicVolume - .3f);
+			secretRoomMusic.setVolume(Mutagen.musicVolume);
+			
 			lvlComplete.setLooping(true);
+			lvlComplete.setVolume(Mutagen.musicVolume - .3f);
 		}
 		this.world.setContactListener(cd);
 		Gdx.input.setInputProcessor(null);
@@ -461,7 +462,7 @@ public class Level2 implements Screen{
 				}
 				//QUIT TO MENU
 				if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < 0.221 && mousePosition.y > -.38) {
-					levelOneMusicAll.stop();
+					levelTwoMusicAll.stop();
 					Mutagen.clicking();
 					game.setScreen(new MainMenu(game));
 				}	
@@ -531,6 +532,19 @@ public class Level2 implements Screen{
 			}
 			//Goes to method that handles spawning the enemies
 			lvl2EP.SpawnEntities(world, map);
+			
+			//Secret Room Music
+			if (PlayerOne.p1PosX > 10.8 && PlayerOne.p1PosX < 11 && PlayerOne.p1PosY > 44 && PlayerOne.p1PosY < 46.6 && !sMusic) {
+				levelTwoMusicAll.stop();
+				secretRoomMusic.play();
+				sMusic = true;
+			}
+			if (PlayerOne.p1PosX > 13 && PlayerOne.p1PosX < 13.5 && PlayerOne.p1PosY > 44 && PlayerOne.p1PosY < 46.6 && sMusic) {
+				secretRoomMusic.stop();
+				levelTwoMusicAll.play();
+				sMusic = false;
+			}
+
 			//LEVEL END
 			if (PlayerOne.p1PosX > 97 && PlayerOne.p1PosX < 98.4 && PlayerOne.p1PosY > 25.3 && PlayerOne.p1PosY < 26.7) {
 				PlayerOne.runningSound.stop();					
@@ -539,7 +553,7 @@ public class Level2 implements Screen{
 					PlayerTwo.runningSound.stop();
 				}
 				Gdx.input.setCursorCatched(false);
-				levelOneMusicAll.stop();
+				levelTwoMusicAll.stop();
 
 				lvlComplete.play();
 				gameOver+=1;
@@ -564,7 +578,7 @@ public class Level2 implements Screen{
 				PlayerOne.runningSound.stop();
 				PlayerTwo.runningSound.stop();
 				Gdx.input.setCursorCatched(false);
-				levelOneMusicAll.stop();
+				levelTwoMusicAll.stop();
 
 				lvlComplete.play();
 				gameOver+=1;

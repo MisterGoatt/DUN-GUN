@@ -195,7 +195,7 @@ public class CollisionDetector implements ContactListener{
 				}				
 				if (fa.getUserData().equals("grunt")){
 					if (Mutagen.sfxVolume != 0) {
-						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .6f);
 					}
 					tempBodyArray.add(fa.getBody());
 					Body b = tempBodyArray.first();
@@ -229,7 +229,7 @@ public class CollisionDetector implements ContactListener{
 
 				if(fb.getUserData().equals("grunt")){
 					if (Mutagen.sfxVolume != 0) {
-						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .6f);
 					}
 					tempBodyArray.add(fb.getBody());
 					Body b = tempBodyArray.first();
@@ -333,7 +333,7 @@ public class CollisionDetector implements ContactListener{
 				}				
 				if (fa.getUserData().equals("scientist")){
 					if (Mutagen.sfxVolume != 0) {
-						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .6f);
 					}
 					tempBodyArray.add(fa.getBody());
 					Body b = tempBodyArray.first();
@@ -368,7 +368,7 @@ public class CollisionDetector implements ContactListener{
 
 				if(fb.getUserData().equals("scientist")){
 					if (Mutagen.sfxVolume != 0) {
-						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .6f);
 					}
 					tempBodyArray.add(fb.getBody());
 					Body b = tempBodyArray.first();
@@ -579,7 +579,7 @@ public class CollisionDetector implements ContactListener{
 					//not needed yet
 					soldier.tookDamage = true;
 					if (Mutagen.sfxVolume != 0) {
-						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .6f);
 					}
 					switch (GunSelectionScreen.p1WeaponSelected){
 					case "battle axe": soldier.health -= PlayerOne.battleAxeDamage;
@@ -611,7 +611,7 @@ public class CollisionDetector implements ContactListener{
 					//not needed yet
 					soldier.tookDamage = true;
 					if (Mutagen.sfxVolume != 0) {
-						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .6f);
 					}
 
 					switch (GunSelectionScreen.p1WeaponSelected){
@@ -804,7 +804,7 @@ public class CollisionDetector implements ContactListener{
 				}				
 				if (fa.getUserData().equals("scientist")){
 					if (Mutagen.sfxVolume != 0) {
-						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .6f);
 					}
 					tempBodyArray.add(fa.getBody());
 					Body b = tempBodyArray.first();
@@ -839,7 +839,7 @@ public class CollisionDetector implements ContactListener{
 
 				if(fb.getUserData().equals("scientist")){
 					if (Mutagen.sfxVolume != 0) {
-						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .6f);
 					}
 					tempBodyArray.add(fb.getBody());
 					Body b = tempBodyArray.first();
@@ -969,7 +969,7 @@ public class CollisionDetector implements ContactListener{
 				}				
 				if (fa.getUserData().equals("grunt")){
 					if (Mutagen.sfxVolume != 0) {
-						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .6f);
 					}
 					tempBodyArray.add(fa.getBody());
 					Body b = tempBodyArray.first();
@@ -1003,7 +1003,7 @@ public class CollisionDetector implements ContactListener{
 
 				if(fb.getUserData().equals("grunt")){
 					if (Mutagen.sfxVolume != 0) {
-						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .6f);
 					}
 					tempBodyArray.add(fb.getBody());
 					Body b = tempBodyArray.first();
@@ -1145,7 +1145,7 @@ public class CollisionDetector implements ContactListener{
 					flayer.tookDamage = true;
 
 					if (Mutagen.sfxVolume != 0) {
-						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
+						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .6f);
 					}
 					switch (GunSelectionScreen.p1WeaponSelected){
 					case "battle axe": flayer.health -= PlayerOne.battleAxeDamage;

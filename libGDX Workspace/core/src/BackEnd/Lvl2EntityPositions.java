@@ -242,7 +242,7 @@ public class Lvl2EntityPositions {
 				room6= false;
 			}
 		}
-		//Sci11
+		//Sci11 Mut9 Flay6
 		if (room7) {
 			if (p1X > 28.4 && p1X < 28.5 && p1Y > 38 && p1Y < 40) {
 
@@ -252,6 +252,20 @@ public class Lvl2EntityPositions {
 					Scientist.scientistPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
 					scientist = new Scientist(world);
 					Scientist.scientists.add(scientist);
+				}
+				MapLayer MutLayer = map.getLayers().get("Mut9");
+				for (MapObject mo : MutLayer.getObjects()) {
+					Grunt.gruntPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+					Grunt.gruntPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+					grunt = new Grunt(world);
+					Grunt.grunts.add(grunt);
+				}
+				MapLayer FlayLayer = map.getLayers().get("Flay6");
+				for (MapObject mo : FlayLayer.getObjects()) {
+					Flayer.flayerSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+					Flayer.flayerSpawnPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+					flayer = new Flayer(world);
+					Flayer.flayers.add(flayer);
 				}
 				room7= false;
 			}
@@ -264,6 +278,20 @@ public class Lvl2EntityPositions {
 					Scientist.scientistPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
 					scientist = new Scientist(world);
 					Scientist.scientists.add(scientist);
+				}
+				MapLayer MutLayer = map.getLayers().get("Mut9");
+				for (MapObject mo : MutLayer.getObjects()) {
+					Grunt.gruntPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+					Grunt.gruntPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+					grunt = new Grunt(world);
+					Grunt.grunts.add(grunt);
+				}
+				MapLayer FlayLayer = map.getLayers().get("Flay6");
+				for (MapObject mo : FlayLayer.getObjects()) {
+					Flayer.flayerSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+					Flayer.flayerSpawnPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+					flayer = new Flayer(world);
+					Flayer.flayers.add(flayer);
 				}
 				room7= false;
 			}
@@ -765,8 +793,10 @@ public class Lvl2EntityPositions {
 			}
 		}
 		//Sci8 Sol13
-		if (room19) {
+		if (room20) {
 			if (p1X > 78.9 && p1X < 83.9 && p1Y > 34.3 && p1Y < 34.4) {
+				
+				System.out.println("mate");
 				MapLayer Layer = map.getLayers().get("Sol13");
 				for (MapObject mo : Layer.getObjects()) {
 					Soldier.soldierSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
@@ -782,7 +812,7 @@ public class Lvl2EntityPositions {
 					Scientist.scientists.add(scientist);
 				}
 
-				room19= false;
+				room20= false;
 			}
 
 			else if (p2X > 78.9 && p2X < 83.9 && p2Y > 34.3 && p2Y < 34.4) {
@@ -801,11 +831,11 @@ public class Lvl2EntityPositions {
 					Scientist.scientists.add(scientist);
 				}
 
-				room19 = false;
+				room20 = false;
 			}
 		}
 		//Sci9 Sol14 Mut8 Tur3 Flay5
-		if (room20) {
+		if (room21) {
 			if (p1X > 83.5 && p1X < 83.6 && p1Y > 20.6 && p1Y < 28.8) {
 				MapLayer Layer = map.getLayers().get("Sol14");
 				for (MapObject mo : Layer.getObjects()) {
@@ -842,7 +872,7 @@ public class Lvl2EntityPositions {
 					flayer = new Flayer(world);
 					Flayer.flayers.add(flayer);
 				}
-				room20= false;
+				room21= false;
 			}
 
 			else if (p2X > 83.5 && p2X < 83.6 && p2Y > 20.6 && p2Y < 28.8) {
@@ -881,7 +911,7 @@ public class Lvl2EntityPositions {
 					flayer = new Flayer(world);
 					Flayer.flayers.add(flayer);
 				}
-				room20 = false;
+				room21 = false;
 			}
 		}
 	}
