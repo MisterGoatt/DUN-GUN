@@ -1142,6 +1142,7 @@ public class CollisionDetector implements ContactListener{
 					Body b = tempBodyArray.first();
 					flayerBodyTarget.add((Flayer) b.getUserData()); //casts Grunt on the physics body to get the class instance
 					flayer = flayerBodyTarget.get(0);
+					flayer.tookDamage = true;
 
 					if (Mutagen.sfxVolume != 0) {
 						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume - .2f);
@@ -1224,7 +1225,7 @@ public class CollisionDetector implements ContactListener{
 					flayerBodyTarget.add((Flayer) b.getUserData()); 
 					flayer = flayerBodyTarget.get(0);
 					//not needed yet
-					//scientist.tookDamage = true;
+					flayer.tookDamage = true;
 
 					switch (GunSelectionScreen.p2WeaponSelected){
 					case "battle axe": flayer.health -= PlayerTwo.battleAxeDamage;
@@ -1245,7 +1246,6 @@ public class CollisionDetector implements ContactListener{
 					tempBodyArray.clear();
 					if (flayer.health <= 0) {
 						bodiesToRemove.add(fa.getBody());
-						//turret.tookDamage = false;
 					}
 				}
 				if (fb.getUserData().equals("flayer")){
@@ -1255,7 +1255,7 @@ public class CollisionDetector implements ContactListener{
 					flayerBodyTarget.add((Flayer) b.getUserData()); 
 					flayer = flayerBodyTarget.get(0);
 					//not needed yet
-					//scientist.tookDamage = true;
+					flayer.tookDamage = true;
 
 					switch (GunSelectionScreen.p2WeaponSelected){
 					case "battle axe": flayer.health -= PlayerTwo.battleAxeDamage;
@@ -1274,7 +1274,6 @@ public class CollisionDetector implements ContactListener{
 					}
 					flayerBodyTarget.clear();
 					tempBodyArray.clear();
-					System.out.println("here");
 
 					if (flayer.health <= 0) {
 						bodiesToRemove.add(fb.getBody());

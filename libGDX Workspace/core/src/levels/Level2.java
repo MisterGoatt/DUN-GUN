@@ -37,6 +37,8 @@ import BackEnd.Mutagen;
 import collisions.B2DWorldCreator;
 import collisions.CollisionDetector;
 import entities.CreateBullet;
+import entities.Flayer;
+import entities.FlayerThorns;
 import entities.Grunt;
 import entities.HealthPickUp;
 import entities.PlayerOne;
@@ -81,9 +83,9 @@ public class Level2 implements Screen{
 	public Level2(final Mutagen game) {
 		this.game = game;
 
-		//			Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
-		//	        Gdx.graphics.setFullscreenMode(currentMode);
-		//			System.out.println(currentMode);
+//					Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
+//			        Gdx.graphics.setFullscreenMode(currentMode);
+//					System.out.println(currentMode);
 
 		Mutagen.level = "2";
 		cam = new OrthographicCamera();		
@@ -133,6 +135,10 @@ public class Level2 implements Screen{
 		HealthPickUp.hpPickUp.clear();
 		Soldier.soldiers.clear();
 		SoldierBullets.soldierBullets.clear();
+		Flayer.flayers.clear();
+		FlayerThorns.flayerThorns.clear();
+
+
 		if (!PlayerMode.OneP) {
 			PlayerTwo.pellets2.clear();
 			PlayerTwo.lasers2.clear();
@@ -156,6 +162,7 @@ public class Level2 implements Screen{
 		}
 		this.world.setContactListener(cd);
 		Gdx.input.setInputProcessor(null);
+//        Gdx.graphics.setWindowedMode(1500, 800);
 
 	}
 
@@ -394,6 +401,16 @@ public class Level2 implements Screen{
 				world.destroyBody(b);
 				b = null;
 			}
+			if (u instanceof Flayer) {
+				//Soldier.soldiers.removeValue((Soldier) b.getUserData(), true);
+				world.destroyBody(b);
+				b = null;
+			}
+			if (u instanceof FlayerThorns) {
+				FlayerThorns.flayerThorns.removeValue((FlayerThorns) b.getUserData(), true);
+				world.destroyBody(b);
+				b = null;
+			}
 		}
 		bodiesToRemove.clear();
 	}
@@ -502,6 +519,12 @@ public class Level2 implements Screen{
 			for (int i = 0; i < TurretBullets.turretBullets.size; i++) {
 				TurretBullets.turretBullets.get(i).renderSprite(game.batch);
 			}
+			for (int i = 0; i < Flayer.flayers.size; i++) {
+				Flayer.flayers.get(i).renderSprite(game.batch);
+			}
+			for (int i = 0; i < FlayerThorns.flayerThorns.size; i++) {
+				FlayerThorns.flayerThorns.get(i).renderSprite(game.batch);
+			}
 
 			for (int i = 0; i < HealthPickUp.hpPickUp.size; i++) {
 				HealthPickUp.hpPickUp.get(i).renderSprite(game.batch);
@@ -509,7 +532,7 @@ public class Level2 implements Screen{
 			//Goes to method that handles spawning the enemies
 			lvl2EP.SpawnEntities(world, map);
 			//LEVEL END
-			if (PlayerOne.p1PosX > 85. && PlayerOne.p1PosX < 86.6 && PlayerOne.p1PosY > 10.7 && PlayerOne.p1PosY < 12.4) {
+			if (PlayerOne.p1PosX > 97 && PlayerOne.p1PosX < 98.4 && PlayerOne.p1PosY > 25.3 && PlayerOne.p1PosY < 26.7) {
 				PlayerOne.runningSound.stop();					
 
 				if (!PlayerMode.OneP) {
@@ -537,7 +560,7 @@ public class Level2 implements Screen{
 				}
 
 			}
-			else if (PlayerTwo.p2PosX > 85.1 && PlayerTwo.p2PosX < 86.6 && PlayerTwo.p2PosY > 10.7 && PlayerTwo.p2PosY < 12.4) {
+			else if (PlayerTwo.p2PosX > 97 && PlayerTwo.p2PosX < 98.4 && PlayerTwo.p2PosY > 25.3 && PlayerTwo.p2PosY < 26.7) {
 				PlayerOne.runningSound.stop();
 				PlayerTwo.runningSound.stop();
 				Gdx.input.setCursorCatched(false);

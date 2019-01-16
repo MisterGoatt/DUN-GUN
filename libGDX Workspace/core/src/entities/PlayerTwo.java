@@ -257,19 +257,18 @@ public class PlayerTwo {
 		if (storedHP > player2HP) {
 
 			int hitSelect = (int) (Math.random()* 4 + 1);
-			System.out.println(hitSelect);
 			switch (hitSelect) {
 			case 1: 
-				hit1.play();
+				long h1 = hit1.play(Mutagen.sfxVolume);
 				break;
 			case 2:
-				hit2.play();
+				long h2 = hit2.play(Mutagen.sfxVolume);
 				break;
 			case 3:
-				hit3.play();
+				long h3 = hit3.play(Mutagen.sfxVolume);
 				break;
 			case 4:
-				hit4.play();
+				long h4 = hit4.play(Mutagen.sfxVolume);
 				break;
 			}
 			storedHP = player2HP;

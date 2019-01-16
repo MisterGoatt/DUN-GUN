@@ -45,7 +45,6 @@ public class Turret {
 	}
 
 	public void defineTurret() {
-		System.out.println("Turret turret");
 		bdef.position.set(turretSpawnPos);
 		turretPos = bdef.position;
 		bdef.type = BodyDef.BodyType.DynamicBody;

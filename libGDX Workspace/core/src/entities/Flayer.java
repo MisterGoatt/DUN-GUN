@@ -27,7 +27,10 @@ public class Flayer {
 	public static int atkDmg = 8;
 	private TextureAtlas flayerAtkAtlas;
 	private Animation <TextureRegion> flayerAtkAnimation;
+	private TextureAtlas flayerDamagedAtlas;
+	private Animation <TextureRegion> flayerDamagedAnimation;
 	private TextureRegion flayerStandingRegion;
+	
 	private Texture blood;
 	public static Vector2 flayerPos = new Vector2(0, 0);
 	private float shootTimer = 20, timePassed = 0, angle, angle3, differenceX, differenceY, boundary = .7f, speed = 1, tPosDifX, tPosDifY, wait, oldX, oldY, player1Dif, player2Dif;
@@ -36,21 +39,25 @@ public class Flayer {
 	private Vector2 tPos = new Vector2(0, 0);
 	private Vector2 targetPos = new Vector2(0, 0);
 	private boolean shootAnimation = false, findTarget = true, stationary = false, tooFarAway = false;
+	public boolean tookDamage = false;
+
 	private Sound flayerShoot;
 	FlayerThorns fT;
-	public static Array<Soldier> flayers = new Array<Soldier>();
+	public static Array<Flayer> flayers = new Array<Flayer>();
 
 	public Flayer(World world) {
 		this.world = world;
 		flayerAtkAtlas = Mutagen.manager.get("sprites/flayer/flayerAtkAnimation.atlas");
 		flayerAtkAnimation = new Animation <TextureRegion>(1f/15f, flayerAtkAtlas.getRegions());
+		flayerDamagedAtlas = Mutagen.manager.get("sprites/flayer/flayerDamaged.atlas");
+		flayerDamagedAnimation = new Animation <TextureRegion>(1f/15f, flayerDamagedAtlas.getRegions());
 		flayerStandingRegion = flayerAtkAtlas.findRegion("tile000");
 		flayerShoot = Mutagen.manager.get("sound effects/enemies/thorn throw.mp3");
 		blood = Mutagen.manager.get("sprites/MutantBlood.png");
-		defineSoldier();
+		defineFlayer();
 	}
 
-	public void defineSoldier() {
+	public void defineFlayer() {
 		bdef.position.set(flayerSpawnPos);
 		flayerPos = bdef.position;
 		originPos = bdef.position;
@@ -143,7 +150,7 @@ public class Flayer {
 			}
 			float posX = this.b2body.getPosition().x;
 			float posY = this.b2body.getPosition().y;
-			if (shootAnimation) {
+			if (shootAnimation && !tookDamage) {
 				batch.draw(flayerAtkAnimation.getKeyFrame(timePassed), posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 50/ Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
 				if(flayerAtkAnimation.isAnimationFinished(timePassed)) {
@@ -151,7 +158,16 @@ public class Flayer {
 					timePassed = 0;
 				}
 			}else {
-				batch.draw(flayerStandingRegion, posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);
+				if (!tookDamage) {
+					batch.draw(flayerStandingRegion, posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);					
+				}else if (tookDamage) {
+					batch.draw(flayerDamagedAnimation.getKeyFrame(timePassed), posX - .17f, posY -.13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 60 / Mutagen.PPM, 1, 1, angle);
+					timePassed += Gdx.graphics.getDeltaTime();
+					if(flayerDamagedAnimation.isAnimationFinished(timePassed)) {
+						timePassed = 0;
+						tookDamage = false;
+					}
+				}
 			}
 
 			if (!stationary && !tooFarAway) {
@@ -205,7 +221,7 @@ public class Flayer {
 		if (PlayerMode.OneP) {
 			if (!PlayerOne.p1Dead) {
 				shootTimer += .50;
-				if (shootTimer >= 26) {
+				if (shootTimer >= 35) {
 					if (Mutagen.sfxVolume != 0) {
 						Long tS = flayerShoot.play(Mutagen.sfxVolume - .8f);					
 					}
