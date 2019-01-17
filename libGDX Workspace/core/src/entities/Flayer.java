@@ -33,7 +33,7 @@ public class Flayer {
 	
 	private Texture blood;
 	public static Vector2 flayerPos = new Vector2(0, 0);
-	private float shootTimer = 50, timePassed = 0, angle, angleRad, oldAngle, differenceX, differenceY, boundary = .7f, speed = 1, tPosDifX, tPosDifY, wait, oldX, oldY, player1Dif, player2Dif;
+	private float shootTimer = 0, timePassed = 0, angle, angleRad, oldAngle, differenceX, differenceY, boundary = .7f, speed = 1, tPosDifX, tPosDifY, wait, oldX, oldY, player1Dif, player2Dif;
 	public static Vector2 flayerSpawnPos = new Vector2(0,0);
 	private Vector2 originPos = new Vector2(0, 0);
 	private Vector2 tPos = new Vector2(0, 0);
@@ -222,7 +222,7 @@ public class Flayer {
 		if (PlayerMode.OneP) {
 			if (!PlayerOne.p1Dead) {
 				shootTimer += .50;
-				if (shootTimer >= 35) {
+				if (shootTimer >= 65) {
 					if (Mutagen.sfxVolume != 0) {
 						Long tS = flayerShoot.play(Mutagen.sfxVolume - .8f);					
 					}
@@ -253,7 +253,7 @@ public class Flayer {
 		else {
 			if (!PlayerOne.p1Dead || !PlayerTwo.p2Dead) {
 				shootTimer += .50;
-				if (shootTimer >= 33) {
+				if (shootTimer >= 65) {
 					if (Mutagen.sfxVolume != 0) {
 						Long tS = flayerShoot.play(Mutagen.sfxVolume - .8f);					
 					}

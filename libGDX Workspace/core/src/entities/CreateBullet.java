@@ -91,12 +91,22 @@ public class CreateBullet{
 				shape.set(vertice);
 				fdef.shape = shape;
 			}
+			else if (GunSelectionScreen.p1WeaponSelected == "revolver") {
+				CircleShape shape = new CircleShape();
+				fdef.shape = shape;
+				shape.setPosition(new Vector2(5, 7).scl(1/Mutagen.PPM));
+				shape.setRadius(4 / Mutagen.PPM);
+				speed = 70;
+				fdef.density = 4000;
+			}
 			else {
 				CircleShape shape = new CircleShape();
 				fdef.shape = shape;
 				if (GunSelectionScreen.p1WeaponSelected == "shotgun") {
 					shape.setPosition(new Vector2(5, 7).scl(1/Mutagen.PPM));
 					shape.setRadius(2 / Mutagen.PPM);
+					shape.setPosition(new Vector2(5, 7).scl(1/Mutagen.PPM));
+					shape.setRadius(4 / Mutagen.PPM);
 				}
 				else {
 					shape.setPosition(new Vector2(5, 7).scl(1/Mutagen.PPM));

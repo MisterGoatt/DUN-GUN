@@ -32,7 +32,7 @@ public class Soldier {
 	private TextureRegion soldierStandingRegion;
 	private Texture blood;
 	public static Vector2 soldierPos = new Vector2(0, 0);
-	private float shootTimer = 20, timePassed = 0, angle, angle3, differenceX, differenceY, boundary = .7f, speed = 1, tPosDifX, 
+	private float shootTimer = 30, timePassed = 0, angle, angle3, differenceX, differenceY, boundary = .7f, speed = 1, tPosDifX, 
 			tPosDifY, wait, oldX, oldY, player1Dif, player2Dif;
 	public static Vector2 soldierSpawnPos = new Vector2(0,0);
 	private Vector2 originPos = new Vector2(0, 0);
