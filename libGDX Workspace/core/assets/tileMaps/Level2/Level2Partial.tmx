@@ -3004,9 +3004,6 @@
   </object>
  </objectgroup>
  <objectgroup color="#aa0000" id="55" name="Mut4">
-  <object id="164" x="7456" y="1472">
-   <ellipse/>
-  </object>
   <object id="165" x="7424" y="1600">
    <ellipse/>
   </object>
