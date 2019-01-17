@@ -19,7 +19,7 @@ public class FlayerThorns {
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
-	private float speed = 1, startX, startY, posX, posY, shootingAngle, timePassed;
+	private float speed = 1, startX, startY, posX, posY, shootingAngle, timePassed, angle;
 	private TextureAtlas thornTextureAtlas;
 	private Animation <TextureRegion> thornAnimation;
 	public static Array<FlayerThorns> flayerThorns = new Array<FlayerThorns>();
@@ -52,8 +52,11 @@ public class FlayerThorns {
 		fdef.filter.maskBits = Mutagen.WALL | Mutagen.PLAYER; // what masking bit the category bit collides with
 		b2body.createFixture(fdef).setUserData("thorns");
 	    float shootingAngleRadians = (float) Math.toRadians(shootingAngle);
-		float angleVary = (int)(Math.random() * 40 - 20);
-		shootingAngleRadians = shootingAngleRadians + angleVary / Mutagen.PPM;
+		//float angleVary = (int)(Math.random() * 40 - 20);
+	    //shootingAngleRadians = shootingAngleRadians + angleVary / Mutagen.PPM;
+
+	    
+	    
 	    shootingAngleRadians = shootingAngleRadians + 1.57f;
 		posX = (float) (Math.cos(shootingAngleRadians)) * speed;
 		posY = (float) (Math.sin(shootingAngleRadians)) * speed;
@@ -62,7 +65,7 @@ public class FlayerThorns {
 		b2body.applyLinearImpulse(posX, posY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);
 	}
 	public void renderSprite(SpriteBatch batch) {
-		batch.draw(thornAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0, 0, 9 / Mutagen.PPM, 9 / Mutagen.PPM, 1, 1, shootingAngle);
+		batch.draw(thornAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0, 0, 9 / Mutagen.PPM, 20 / Mutagen.PPM, 1, 1, shootingAngle);
 		timePassed += Gdx.graphics.getDeltaTime();
 
 	}

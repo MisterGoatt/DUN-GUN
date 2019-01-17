@@ -127,6 +127,13 @@ public class CreateBullet{
 				posX = (float) (Math.cos(angleR)) * speedVary;
 				posY = (float) (Math.sin(angleR)) * speedVary;
 			}
+			else if (GunSelectionScreen.p1WeaponSelected == "assault rifle") {
+				float angleVary = (int)(Math.random() * 30 - 15);
+				angleVary = angleVary / Mutagen.PPM;
+				angleR = angleR + angleVary;
+				posX = (float) (Math.cos(angleR)) * speed;
+				posY = (float) (Math.sin(angleR)) * speed;
+			}
 
 			else {
 				if (GunSelectionScreen.p1WeaponSelected == "laser"){
@@ -137,6 +144,8 @@ public class CreateBullet{
 				angleR = angleR - 1.57f ;
 				b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angleR); //sets the position of the body to the position of the body and implements rotation
 			}
+			
+			
 			if (GunSelectionScreen.p1WeaponSelected != "battle axe") {
 				b2body.applyLinearImpulse(posX, posY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);
 			}

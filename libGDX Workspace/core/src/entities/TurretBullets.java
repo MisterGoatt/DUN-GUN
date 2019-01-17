@@ -64,7 +64,7 @@ public class TurretBullets {
 		b2body.applyLinearImpulse(posX, posY, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);
 	}
 	public void renderSprite(SpriteBatch batch) {
-		batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 4 / Mutagen.PPM,  10 / Mutagen.PPM, 7 / Mutagen.PPM, 20 / Mutagen.PPM, 1, 1, shootingAngle);
+		batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 4 / Mutagen.PPM,  15 / Mutagen.PPM, 9 / Mutagen.PPM, 30 / Mutagen.PPM, 1, 1, shootingAngle);
 		timePassed += Gdx.graphics.getDeltaTime();
 
 	}

@@ -33,7 +33,7 @@ public class Flayer {
 	
 	private Texture blood;
 	public static Vector2 flayerPos = new Vector2(0, 0);
-	private float shootTimer = 20, timePassed = 0, angle, angle3, differenceX, differenceY, boundary = .7f, speed = 1, tPosDifX, tPosDifY, wait, oldX, oldY, player1Dif, player2Dif;
+	private float shootTimer = 50, timePassed = 0, angle, angleRad, oldAngle, differenceX, differenceY, boundary = .7f, speed = 1, tPosDifX, tPosDifY, wait, oldX, oldY, player1Dif, player2Dif;
 	public static Vector2 flayerSpawnPos = new Vector2(0,0);
 	private Vector2 originPos = new Vector2(0, 0);
 	private Vector2 tPos = new Vector2(0, 0);
@@ -115,9 +115,9 @@ public class Flayer {
 				}
 				if (tooFarAway) {
 					//move towards the player to get closer
-					angle3 = MathUtils.atan2(differenceY, differenceX);
-					tPos.x = (float) (Math.cos(angle3) * speed);
-					tPos.y = (float) (Math.sin(angle3) * speed);
+					angleRad = MathUtils.atan2(differenceY, differenceX);
+					tPos.x = (float) (Math.cos(angleRad) * speed);
+					tPos.y = (float) (Math.sin(angleRad) * speed);
 					this.b2body.applyLinearImpulse(tPos.x, tPos.y, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);	
 				}
 			}else {
@@ -133,9 +133,9 @@ public class Flayer {
 				}
 				if (tooFarAway) {
 					//move towards the player to get closer
-					angle3 = MathUtils.atan2(differenceY, differenceX);
-					tPos.x = (float) (Math.cos(angle3) * speed);
-					tPos.y = (float) (Math.sin(angle3) * speed);
+					angleRad = MathUtils.atan2(differenceY, differenceX);
+					tPos.x = (float) (Math.cos(angleRad) * speed);
+					tPos.y = (float) (Math.sin(angleRad) * speed);
 					
 					this.b2body.applyLinearImpulse(tPos.x, tPos.y, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);				
 				}
@@ -145,6 +145,7 @@ public class Flayer {
 			float angle2 = MathUtils.atan2(differenceY, differenceX);
 			angle = angle2 * MathUtils.radDeg;
 			angle = angle - 90; //makes it a full 360 degrees
+			
 			if (angle < 0) {
 				angle += 360 ;
 			}
@@ -182,9 +183,9 @@ public class Flayer {
 					targetPos.y = (float) (Math.random() * (boundary * 2) + minY);
 					tPosDifX = targetPos.x - this.b2body.getPosition().x;
 					tPosDifY = targetPos.y - this.b2body.getPosition().y;
-					angle3 = MathUtils.atan2(tPosDifY, tPosDifX);
-					tPos.x = (float) (Math.cos(angle3) * speed);
-					tPos.y = (float) (Math.sin(angle3) * speed);
+					angleRad = MathUtils.atan2(tPosDifY, tPosDifX);
+					tPos.x = (float) (Math.cos(angleRad) * speed);
+					tPos.y = (float) (Math.sin(angleRad) * speed);
 					findTarget = false;
 				}
 
@@ -217,7 +218,7 @@ public class Flayer {
 
 	}
 	public void shooting() {
-
+		oldAngle = angle;
 		if (PlayerMode.OneP) {
 			if (!PlayerOne.p1Dead) {
 				shootTimer += .50;
@@ -226,7 +227,24 @@ public class Flayer {
 						Long tS = flayerShoot.play(Mutagen.sfxVolume - .8f);					
 					}
 					shootAnimation = true;
-					fT = new FlayerThorns(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);	
+					
+					for (int i = 0; i < 3; i++) {
+						angle = oldAngle;
+
+						if (i == 0) {
+							angle = angle - 23;
+							fT = new FlayerThorns(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);								
+						}
+						else if (i == 1) {
+							angle = oldAngle;
+							fT = new FlayerThorns(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);								
+						}
+						else if (i == 2) {
+							angle = angle + 23;
+							fT = new FlayerThorns(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);								
+						}
+						
+					}
 
 					shootTimer = 0;
 				}
@@ -240,8 +258,23 @@ public class Flayer {
 						Long tS = flayerShoot.play(Mutagen.sfxVolume - .8f);					
 					}
 					shootAnimation = true;
-					fT = new FlayerThorns(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);	
+					for (int i = 0; i < 3; i++) {
+						angle = oldAngle;
 
+						if (i == 0) {
+							angle = angle - 23;
+							fT = new FlayerThorns(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);								
+						}
+						else if (i == 1) {
+							angle = oldAngle;
+							fT = new FlayerThorns(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);								
+						}
+						else if (i == 2) {
+							angle = angle + 23;
+							fT = new FlayerThorns(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);								
+						}
+						
+					}
 					shootTimer = 0;
 				}
 			}

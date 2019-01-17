@@ -6,50 +6,29 @@ filter: Nearest,Nearest
 repeat: none
 tile000
   rotate: false
-  xy: 2, 134
-  size: 7, 20
-  orig: 7, 20
+  xy: 2, 98
+  size: 9, 30
+  orig: 9, 30
   offset: 0, 0
   index: -1
 tile001
   rotate: false
-  xy: 2, 112
-  size: 7, 20
-  orig: 7, 20
+  xy: 2, 66
+  size: 9, 30
+  orig: 9, 30
   offset: 0, 0
   index: -1
 tile002
   rotate: false
-  xy: 2, 90
-  size: 7, 20
-  orig: 7, 20
+  xy: 2, 34
+  size: 9, 30
+  orig: 9, 30
   offset: 0, 0
   index: -1
 tile003
   rotate: false
-  xy: 2, 68
-  size: 7, 20
-  orig: 7, 20
-  offset: 0, 0
-  index: -1
-tile004
-  rotate: false
-  xy: 2, 46
-  size: 7, 20
-  orig: 7, 20
-  offset: 0, 0
-  index: -1
-tile005
-  rotate: false
-  xy: 2, 24
-  size: 7, 20
-  orig: 7, 20
-  offset: 0, 0
-  index: -1
-tile006
-  rotate: false
   xy: 2, 2
-  size: 7, 20
-  orig: 7, 20
+  size: 9, 30
+  orig: 9, 30
   offset: 0, 0
   index: -1
