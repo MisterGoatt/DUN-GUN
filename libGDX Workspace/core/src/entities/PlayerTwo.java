@@ -362,11 +362,23 @@ public class PlayerTwo {
 			timeToShake = true;
 		}
 		//laser blast delay
-		if (waitToShootL >= 20){
-			createBullet = new CreateBullet(world, ID);
-			lasers2.add(createBullet);
-			waitToShootL = 0;
-			startLaserCount = false;
+		if (startLaserCount) {
+			if (waitToShootL >= 0 && waitToShootL < 1){
+				createBullet = new CreateBullet(world, ID);
+				lasers2.add(createBullet);
+			}
+
+			if (waitToShootL >=20 && waitToShootL < 21) {
+				createBullet = new CreateBullet(world, ID);
+				lasers2.add(createBullet);
+			}
+
+			if (waitToShootL >= 40 && waitToShootL < 41) {
+				createBullet = new CreateBullet(world, ID);
+				lasers2.add(createBullet);
+				waitToShootL = 0;
+				startLaserCount = false;
+			}
 		}
 	}
 	public void handleInput(float delta) {
@@ -481,7 +493,7 @@ public class PlayerTwo {
 				break;
 				case "assault rifle": timeSinceLastShot = 7;
 				break;
-				case "laser": timeSinceLastShot = 40;
+				case "laser": timeSinceLastShot = 75;
 				break;
 				case "battle axe": timeSinceLastShot = 110;
 				break;

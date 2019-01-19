@@ -91,7 +91,7 @@ public class PlayerOne extends Sprite implements Disposable{
 
 		laserTextureAtlas = Mutagen.manager.get("sprites/player1/laserAnimation.atlas", TextureAtlas.class);
 		laserAnimation = new Animation <TextureRegion>(1f/15f, laserTextureAtlas.getRegions());
-		laserStandingRegion = laserTextureAtlas.findRegion("tile002");
+		laserStandingRegion = laserTextureAtlas.findRegion("tile000");
 
 		axeSwingTextureAtlas = Mutagen.manager.get("sprites/player1/axeSwingAnimation.atlas", TextureAtlas.class);
 		axeSwingAnimation = new Animation <TextureRegion>(1f/15f, axeSwingTextureAtlas.getRegions());
@@ -541,7 +541,7 @@ public class PlayerOne extends Sprite implements Disposable{
 					break;
 					case "assault rifle": timeSinceLastShot = 7;
 					break;
-					case "laser": timeSinceLastShot = 70;
+					case "laser": timeSinceLastShot = 75;
 					break;
 					case "battle axe": timeSinceLastShot = 110;
 					break;

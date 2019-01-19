@@ -113,7 +113,7 @@ public class Turret {
 			shootTimer += .50;
 			if (shootTimer >= 35) {
 				if (Mutagen.sfxVolume != 0) {
-					Long tS = turretShoot.play(Mutagen.sfxVolume - .8f);					
+					Long tS = turretShoot.play(Mutagen.sfxVolume - .9f);					
 				}
 				shootAnimation = true;
 				for (int i = 0; i < 1; i++) {

@@ -11,13 +11,6 @@ tile000
   orig: 40, 60
   offset: 0, 0
   index: -1
-tile014
-  rotate: false
-  xy: 2, 2
-  size: 40, 60
-  orig: 40, 60
-  offset: 0, 0
-  index: -1
 tile001
   rotate: false
   xy: 44, 2
@@ -105,6 +98,48 @@ tile012
 tile013
   rotate: false
   xy: 548, 2
+  size: 40, 60
+  orig: 40, 60
+  offset: 0, 0
+  index: -1
+tile014
+  rotate: false
+  xy: 590, 2
+  size: 40, 60
+  orig: 40, 60
+  offset: 0, 0
+  index: -1
+tile015
+  rotate: false
+  xy: 632, 2
+  size: 40, 60
+  orig: 40, 60
+  offset: 0, 0
+  index: -1
+tile016
+  rotate: false
+  xy: 674, 2
+  size: 40, 60
+  orig: 40, 60
+  offset: 0, 0
+  index: -1
+tile017
+  rotate: false
+  xy: 716, 2
+  size: 40, 60
+  orig: 40, 60
+  offset: 0, 0
+  index: -1
+tile018
+  rotate: false
+  xy: 758, 2
+  size: 40, 60
+  orig: 40, 60
+  offset: 0, 0
+  index: -1
+tile019
+  rotate: false
+  xy: 800, 2
   size: 40, 60
   orig: 40, 60
   offset: 0, 0

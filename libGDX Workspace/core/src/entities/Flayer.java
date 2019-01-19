@@ -162,7 +162,7 @@ public class Flayer {
 				if (!tookDamage) {
 					batch.draw(flayerStandingRegion, posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);					
 				}else if (tookDamage) {
-					batch.draw(flayerDamagedAnimation.getKeyFrame(timePassed), posX - .17f, posY -.13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 60 / Mutagen.PPM, 1, 1, angle);
+					batch.draw(flayerDamagedAnimation.getKeyFrame(timePassed), posX - .17f, posY -.13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);
 					timePassed += Gdx.graphics.getDeltaTime();
 					if(flayerDamagedAnimation.isAnimationFinished(timePassed)) {
 						timePassed = 0;
