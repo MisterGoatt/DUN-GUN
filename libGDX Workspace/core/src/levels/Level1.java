@@ -65,7 +65,6 @@ public class Level1 implements Screen{
 	public CreateBullet createBullet;
 	private CollisionDetector cd;
 	private Lvl1EntityPositions lvl1EP;
-	private Level2 lvl2;
 	private Music levelOneMusicAll, lvlComplete;
 	private Texture mouseCursor, axeMouseCursor, pauseMenu;
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -94,7 +93,7 @@ public class Level1 implements Screen{
 		TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
 		params.textureMinFilter = TextureFilter.Linear;
 		params.textureMagFilter = TextureFilter.Linear;
-		map = new TmxMapLoader().load("tileMaps/Level1/Level1Complete.tmx", params);
+		map = new TmxMapLoader().load("tileMaps/Levels/Level1Complete.tmx", params);
 		mouseCursor = Mutagen.manager.get("crosshair 1.png", Texture.class);
 		axeMouseCursor = Mutagen.manager.get("axeCursor.png");
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / Mutagen.PPM);
@@ -162,7 +161,6 @@ public class Level1 implements Screen{
 	//Creation of bullet objects and playing shooting and swinging sound effects
 	public void shootGun() {
 		if (PlayerOne.timeToShake) {
-			game.setScreen(new levelCompleted(game));
 
 			//waitToShootL += 1;
 			switch (GunSelectionScreen.p1WeaponSelected) {
@@ -419,6 +417,15 @@ public class Level1 implements Screen{
 		}else if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && lockCursor) {
 			lockCursor = false;
 		}
+		
+		//DEV KEY THAT WILL SKIP TO LEVEL 2
+		if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
+			levelOneMusicAll.stop();
+			Mutagen.clicking();
+			PlayerOne.runningSound.stop();
+			game.setScreen(new levelCompleted(game));
+
+		}
 
 		if (lockCursor) {
 			Gdx.input.setCursorCatched(true);
@@ -459,7 +466,7 @@ public class Level1 implements Screen{
 
 			cameraUpdate(delta);
 			mapRenderer.render();
-			//b2dr.render(world, cam.combined);
+			b2dr.render(world, cam.combined);
 			game.batch.begin(); //starts sprite spriteBatch
 
 

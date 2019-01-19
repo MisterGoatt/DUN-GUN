@@ -41,13 +41,13 @@ public class PlayerOne extends Sprite implements Disposable{
 	shotgunStandingRegion, assaultRifleStandingRegion, laserStandingRegion;
 
 	private Sound assaultRifleShot, axeSwing, laserShot, shotgunShot, rifleShot, gunShot, hit1, hit2, hit3, hit4, 
-		deadSfx, oneLifeLeft;
+	deadSfx, oneLifeLeft;
 	//sound effect of the player's movement
 	public static Sound runningSound;
 	private float speed = 3, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, slowedCounter, rotationSpeed = 4, storedHP, secondWind = 1, olA; //speed of the player, Sqrt 2 divided by 2
 	public static float  angle, p1PosX, p1PosY, axeSwingTimer = 0; //get distance between mouse and player in radians
 	//amount of damage each weapon deals
-	public static float laserLanceDamage = 150, battleAxeDamage = 200, assaultRifleDamage = 20, shotgunDamage = 25f, 
+	public static float laserLanceDamage = 75, battleAxeDamage = 200, assaultRifleDamage = 20, shotgunDamage = 25f, 
 			rifleDamage = 150, revolverDamage = 75;
 	public static int player1HP, player1MaxHP1 = 200, player1MaxHP2 = 150;
 	public static boolean p1Dead = false;
@@ -73,7 +73,6 @@ public class PlayerOne extends Sprite implements Disposable{
 		slowedCounter = 0;
 		p1Dead = false;
 		slowRestart = false;
-		//Getting the assets for 
 		revolverTextureAtlas = Mutagen.manager.get("sprites/player1/playerRevolver.atlas", TextureAtlas.class);
 		revolverAnimation = new Animation <TextureRegion>(1f/15f, revolverTextureAtlas.getRegions());
 		revolverStandingRegion = revolverTextureAtlas.findRegion("tile000");
@@ -92,7 +91,7 @@ public class PlayerOne extends Sprite implements Disposable{
 
 		laserTextureAtlas = Mutagen.manager.get("sprites/player1/laserAnimation.atlas", TextureAtlas.class);
 		laserAnimation = new Animation <TextureRegion>(1f/15f, laserTextureAtlas.getRegions());
-		laserStandingRegion = laserTextureAtlas.findRegion("tile000");
+		laserStandingRegion = laserTextureAtlas.findRegion("tile002");
 
 		axeSwingTextureAtlas = Mutagen.manager.get("sprites/player1/axeSwingAnimation.atlas", TextureAtlas.class);
 		axeSwingAnimation = new Animation <TextureRegion>(1f/15f, axeSwingTextureAtlas.getRegions());
@@ -116,7 +115,7 @@ public class PlayerOne extends Sprite implements Disposable{
 
 		ID = 1; //defines if player is player 1 or player 2 for the CreateBullet class
 		storedHP = player1HP;
-		
+
 		definePlayer();
 
 	}
@@ -147,14 +146,14 @@ public class PlayerOne extends Sprite implements Disposable{
 	public void renderSprite(SpriteBatch batch) {
 		float posX = b2body.getPosition().x;
 		float posY = b2body.getPosition().y;
-		
+
 		//if player is on a certain level then assign correct static vector3 mouse positions
 		if (Mutagen.level == "1") {
 			mousePosition = Level1.mousePosition;
 		}else if (Mutagen.level == "2") {
 			mousePosition = Level2.mousePosition;
 		}
-		
+
 		//If Single Player
 		if (PlayerMode.OneP) {
 			angle = MathUtils.atan2(mousePosition.y - getY(), mousePosition.x - getX()) * MathUtils.radDeg; //find the distance between mouse and player
@@ -236,7 +235,7 @@ public class PlayerOne extends Sprite implements Disposable{
 					timePassed = 0;
 				}
 			}else {
-				batch.draw(laserStandingRegion,posX - .2f, posY - .2f, 20 / Mutagen.PPM, 20 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle );
+				batch.draw(laserStandingRegion, posX - .2f, posY - .2f, 20 / Mutagen.PPM, 20 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle );
 			}
 		}
 
@@ -252,7 +251,7 @@ public class PlayerOne extends Sprite implements Disposable{
 					timePassed = 0;
 					axeBodyRemoval = true;
 					axeSwinging = false;
-				}
+				}	
 			}else {
 				batch.draw(axeStandingRegion, posX - .35f, posY - .3f, 35 / Mutagen.PPM, 30 / Mutagen.PPM, 70 / Mutagen.PPM, 70 / Mutagen.PPM, 1, 1, angle);
 			}
@@ -277,7 +276,7 @@ public class PlayerOne extends Sprite implements Disposable{
 				if (DifficultyScreen.difficulty ==1) {
 					player1HP = player1MaxHP1;	
 					long oLL = oneLifeLeft.play(Mutagen.sfxVolume)
-;				}
+							;				}
 				secondWind += 1;
 			}else if (secondWind > 1 || DifficultyScreen.difficulty == 2){
 				world.destroyBody(this.b2body);
@@ -334,7 +333,7 @@ public class PlayerOne extends Sprite implements Disposable{
 			case "laser":
 				startLaserCount = true;
 				if (Mutagen.sfxVolume != 0) {
-					long lsId = laserShot.play(Mutagen.sfxVolume / 2);
+					long lsId = laserShot.play(Mutagen.sfxVolume - .7f);
 				}
 				break;
 			case "revolver":
@@ -380,13 +379,26 @@ public class PlayerOne extends Sprite implements Disposable{
 			isShooting = false;
 			timeToShake = true;
 		}
-		//laser blast delay
-		if (waitToShootL >= 20){
-			createBullet = new CreateBullet(world, ID);
-			lasers.add(createBullet);
-			waitToShootL = 0;
-			startLaserCount = false;
+
+		if (startLaserCount) {
+			if (waitToShootL >= 0 && waitToShootL < 1){
+				createBullet = new CreateBullet(world, ID);
+				lasers.add(createBullet);
+			}
+
+			if (waitToShootL >=20 && waitToShootL < 21) {
+				createBullet = new CreateBullet(world, ID);
+				lasers.add(createBullet);
+			}
+
+			if (waitToShootL >= 40 && waitToShootL < 41) {
+				createBullet = new CreateBullet(world, ID);
+				lasers.add(createBullet);
+				waitToShootL = 0;
+				startLaserCount = false;
+			}
 		}
+
 	}
 	public void handleInput(float delta) {
 		setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2 + (5 / Mutagen.PPM));
@@ -410,7 +422,7 @@ public class PlayerOne extends Sprite implements Disposable{
 			slowedCounter = 0;
 			slowed = false;
 		}
-		//Aim styke is rotational
+		//Aim style is rotational
 		if (GunSelectionScreen.p1AimStyle != 2) {
 			if (!movHalt) {
 
@@ -454,7 +466,7 @@ public class PlayerOne extends Sprite implements Disposable{
 				break;
 				case "assault rifle": timeSinceLastShot = 7;
 				break;
-				case "laser": timeSinceLastShot = 40;
+				case "laser": timeSinceLastShot = 75;
 				break;
 				case "battle axe": timeSinceLastShot = 110;
 				break;
@@ -507,9 +519,9 @@ public class PlayerOne extends Sprite implements Disposable{
 							angle = 270;
 						}
 					}
-					
+
 					if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-							shootBehind = true;
+						shootBehind = true;
 					}else {
 						shootBehind = false;
 					}
@@ -529,7 +541,7 @@ public class PlayerOne extends Sprite implements Disposable{
 					break;
 					case "assault rifle": timeSinceLastShot = 7;
 					break;
-					case "laser": timeSinceLastShot = 40;
+					case "laser": timeSinceLastShot = 70;
 					break;
 					case "battle axe": timeSinceLastShot = 110;
 					break;

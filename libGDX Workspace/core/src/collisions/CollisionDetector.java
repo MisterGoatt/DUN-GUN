@@ -86,9 +86,9 @@ public class CollisionDetector implements ContactListener{
 					}
 					else if (GunSelectionScreen.p1WeaponSelected == "laser") {
 
-						if (Mutagen.sfxVolume != 0) {
-							laserHitWall.play(Mutagen.sfxVolume);
-						}
+//						if (Mutagen.sfxVolume != 0) {
+//							laserHitWall.play(Mutagen.sfxVolume);
+//						}
 					}
 					else if (GunSelectionScreen.p1WeaponSelected == "shotgun") {
 						if (Mutagen.sfxVolume != 0) {
@@ -110,9 +110,9 @@ public class CollisionDetector implements ContactListener{
 						}
 					}
 					else if (GunSelectionScreen.p1WeaponSelected == "laser") {
-						if (Mutagen.sfxVolume != 0) {
-							laserHitWall.play(Mutagen.sfxVolume);
-						}
+//						if (Mutagen.sfxVolume != 0) {
+//							laserHitWall.play(Mutagen.sfxVolume);
+//						}
 					}
 					else if (GunSelectionScreen.p1WeaponSelected == "shotgun") {
 						if (Mutagen.sfxVolume != 0) {
@@ -139,9 +139,9 @@ public class CollisionDetector implements ContactListener{
 					}
 					else if (GunSelectionScreen.p2WeaponSelected == "laser") {
 
-						if (Mutagen.sfxVolume != 0) {
-							laserHitWall.play(Mutagen.sfxVolume);
-						}
+//						if (Mutagen.sfxVolume != 0) {
+//							laserHitWall.play(Mutagen.sfxVolume);
+//						}
 					}
 					else if (GunSelectionScreen.p2WeaponSelected == "shotgun") {
 						if (Mutagen.sfxVolume != 0) {
@@ -163,9 +163,9 @@ public class CollisionDetector implements ContactListener{
 						}
 					}
 					else if (GunSelectionScreen.p2WeaponSelected == "laser") {
-						if (Mutagen.sfxVolume != 0) {
-							laserHitWall.play(Mutagen.sfxVolume);
-						}
+//						if (Mutagen.sfxVolume != 0) {
+//							laserHitWall.play(Mutagen.sfxVolume);
+//						}
 					}
 					else if (GunSelectionScreen.p2WeaponSelected == "shotgun") {
 						if (Mutagen.sfxVolume != 0) {
@@ -1174,6 +1174,7 @@ public class CollisionDetector implements ContactListener{
 					Body b = tempBodyArray.first();
 					flayerBodyTarget.add((Flayer) b.getUserData()); //casts Grunt on the physics body to get the class instance
 					flayer = flayerBodyTarget.get(0);
+					flayer.tookDamage = true;
 
 					if (Mutagen.sfxVolume != 0) {
 						long bBI = bulletBodyImpact.play(Mutagen.sfxVolume);
@@ -1224,7 +1225,6 @@ public class CollisionDetector implements ContactListener{
 					Body b = tempBodyArray.first();
 					flayerBodyTarget.add((Flayer) b.getUserData()); 
 					flayer = flayerBodyTarget.get(0);
-					//not needed yet
 					flayer.tookDamage = true;
 
 					switch (GunSelectionScreen.p2WeaponSelected){
@@ -1254,7 +1254,6 @@ public class CollisionDetector implements ContactListener{
 					Body b = tempBodyArray.first();
 					flayerBodyTarget.add((Flayer) b.getUserData()); 
 					flayer = flayerBodyTarget.get(0);
-					//not needed yet
 					flayer.tookDamage = true;
 
 					switch (GunSelectionScreen.p2WeaponSelected){

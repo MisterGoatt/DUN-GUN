@@ -97,7 +97,7 @@ public class Level2 implements Screen{
 		TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
 		params.textureMinFilter = TextureFilter.Linear;
 		params.textureMagFilter = TextureFilter.Linear;
-		map = new TmxMapLoader().load("tileMaps/Level2/Level2Partial.tmx", params);
+		map = new TmxMapLoader().load("tileMaps/Levels/Level2Partial.tmx", params);
 		mouseCursor = Mutagen.manager.get("crosshair 1.png", Texture.class);
 		axeMouseCursor = Mutagen.manager.get("axeCursor.png");
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / Mutagen.PPM);

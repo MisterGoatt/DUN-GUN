@@ -34,10 +34,12 @@ public class CreateBullet{
 	private TextureAtlas pelletTextureAtlas, bulletTextureAtlas, laserTextureAtlas;
 	private Vector3 mousePosition = new Vector3(0,0, 0);
 
+	//load assets from asset manager and create animation objects for the various bullets
 	public CreateBullet(World world, int ID) {
+		
 		this.world = world;
-		laserTextureAtlas = Mutagen.manager.get("sprites/player1/laserBlastAnimation.atlas", TextureAtlas.class);
-		laserAnimation = new Animation <TextureRegion>(1f/15f, laserTextureAtlas.getRegions());
+		laserTextureAtlas = Mutagen.manager.get("sprites/player1/laserBlastAnimation.atlas", TextureAtlas.class);			
+		laserAnimation = new Animation <TextureRegion>(1f/15f, laserTextureAtlas.getRegions());								
 		laserTextureAtlas = Mutagen.manager.get("sprites/player1/pellet.atlas", TextureAtlas.class);
 		pelletTextureAtlas = Mutagen.manager.get("sprites/player1/pellet.atlas", TextureAtlas.class);
 		pelletAnimation = new Animation <TextureRegion>(1f / 15f, pelletTextureAtlas.getRegions());
@@ -47,6 +49,8 @@ public class CreateBullet{
 		defineBullet();
 	}
 
+	
+	//create the physics bodies for the different bullets and set the direction and speed the bullets move
 	public void defineBullet() {
 		//if player is on a certain level then assign correct static vector3 mouse positions
 		if (Mutagen.level == "1") {
@@ -96,7 +100,7 @@ public class CreateBullet{
 				fdef.shape = shape;
 				shape.setPosition(new Vector2(5, 7).scl(1/Mutagen.PPM));
 				shape.setRadius(4 / Mutagen.PPM);
-				speed = 70;
+				speed = 100;
 				fdef.density = 4000;
 			}
 			else {
@@ -146,9 +150,7 @@ public class CreateBullet{
 			}
 
 			else {
-				if (GunSelectionScreen.p1WeaponSelected == "laser"){
-					speed = 4f;
-				}
+
 				posX = (float) (Math.cos(angleR)) * speed;
 				posY = (float) (Math.sin(angleR)) * speed;
 				angleR = angleR - 1.57f ;
@@ -207,10 +209,6 @@ public class CreateBullet{
 				fdef.filter.maskBits = Mutagen.WALL | Mutagen.ENEMY; // what masking bit the category bit collides with
 				b2body.createFixture(fdef).setUserData("bullets2");
 
-				//CO-OP
-				//						angleR = PlayerOne.angle * MathUtils.degreesToRadians + 1.5078f;
-				//						angleD = PlayerOne.angle;
-
 				if (GunSelectionScreen.p2WeaponSelected == "shotgun") {
 					float speedVary = (int)(Math.random() * 10 + 5f);
 					float angleVary = (int)(Math.random() * 40 - 20);
@@ -221,9 +219,7 @@ public class CreateBullet{
 				}
 
 				else {
-					if (GunSelectionScreen.p2WeaponSelected == "laser"){
-						speed = 4f;
-					}
+
 					posX = (float) (Math.cos(angleR)) * speed;
 					posY = (float) (Math.sin(angleR)) * speed;
 					angleR = angleR - 1.57f ;
@@ -235,8 +231,11 @@ public class CreateBullet{
 			}
 		}
 	}
-	//Render all of the textures for bullets and lasers
+	
+	//Render all of the textures and animations for every type of bullet / projectile
 	public void renderSprite(SpriteBatch batch) {
+		
+		//GET THE ANGLE BETWEEN PLAYER AND MOUSE
 		if (PlayerMode.OneP) {
 			float differenceX = mousePosition.x - b2body.getPosition().x;
 			float differenceY = mousePosition.y - b2body.getPosition().y;
@@ -246,15 +245,19 @@ public class CreateBullet{
 			if (playerID == 1 && GunSelectionScreen.p1WeaponSelected == "battle axe") {
 				angleR = PlayerOne.angle * MathUtils.degreesToRadians + 1.507f;
 				angleD = PlayerOne.angle;
+			}	
+			else if (playerID == 2 && GunSelectionScreen.p2WeaponSelected == "battle axe") {
+				angleR = PlayerTwo.angle * MathUtils.degreesToRadians + 1.507f;
+				angleD = PlayerTwo.angle;
 			}
-			//else if player ID == 2 *****
 		}
 		if (playerID == 1) {
-
+ 
+			//PLAYER 1 ANIMATIONS
 			switch (GunSelectionScreen.p1WeaponSelected) {
 	
 			case "laser":
-				batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / Mutagen.PPM, 45 / Mutagen.PPM, 1, 1, angleD - 90);
+				batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 9 / Mutagen.PPM, 25 / Mutagen.PPM, 1, 1, angleD - 90);
 				timePassed += Gdx.graphics.getDeltaTime();
 				break;
 			case "shotgun":
@@ -271,10 +274,11 @@ public class CreateBullet{
 				break;
 			}
 		}
+			//PLAYER TWO ANIMATIONS
 			else if (playerID == 2){
 				switch (GunSelectionScreen.p2WeaponSelected) {
 				case "laser":
-					batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 10 / Mutagen.PPM, 45 / Mutagen.PPM, 1, 1, angleD );
+					batch.draw(laserAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 9 / Mutagen.PPM, 25 / Mutagen.PPM, 1, 1, angleD );
 					timePassed += Gdx.graphics.getDeltaTime();
 					break;
 				case "shotgun":
@@ -282,7 +286,7 @@ public class CreateBullet{
 					timePassed += Gdx.graphics.getDeltaTime();
 					break;
 				case "battle axe":
-					b2body.setTransform(PlayerOne.p1PosX, PlayerOne.p1PosY, angleR); //sets the position of the body to the position of the body and implements rotation
+					b2body.setTransform(PlayerTwo.p2PosX, PlayerTwo.p2PosY, angleR - 1.507f); //sets the position of the body to the position of the body and implements rotation
 					break;
 				default: 
 					batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x, b2body.getPosition().y, 0,  0, 5 / Mutagen.PPM, 20 / Mutagen.PPM, 1, 1, angleD);	
