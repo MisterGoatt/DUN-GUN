@@ -45,6 +45,7 @@ import entities.Soldier;
 import entities.SoldierBullets;
 import entities.Turret;
 import entities.TurretBullets;
+import screens.DifficultyScreen;
 import screens.GunSelectionScreen;
 import screens.MainMenu;
 import screens.PlayerMode;
@@ -65,7 +66,7 @@ public class Level1 implements Screen{
 	public CreateBullet createBullet;
 	private CollisionDetector cd;
 	private Lvl1EntityPositions lvl1EP;
-	private Music levelOneMusicAll, lvlComplete;
+	private Music levelOneMusicAll;
 	private Texture mouseCursor, axeMouseCursor, pauseMenu;
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private boolean lockCursor = true, gamePaused = false;
@@ -93,7 +94,13 @@ public class Level1 implements Screen{
 		TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
 		params.textureMinFilter = TextureFilter.Linear;
 		params.textureMagFilter = TextureFilter.Linear;
-		map = new TmxMapLoader().load("tileMaps/Levels/Level1Complete.tmx", params);
+		
+		if (DifficultyScreen.difficulty == 1) {
+			map = new TmxMapLoader().load("tileMaps/Levels/Level1Easy.tmx", params);
+		}else {
+			map = new TmxMapLoader().load("tileMaps/Levels/Level1Challenging.tmx", params);
+
+		}
 		mouseCursor = Mutagen.manager.get("crosshair 1.png", Texture.class);
 		axeMouseCursor = Mutagen.manager.get("axeCursor.png");
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / Mutagen.PPM);
@@ -140,7 +147,6 @@ public class Level1 implements Screen{
 		pauseMenu = Mutagen.manager.get("screens/Pause.jpg", Texture.class);
 
 		levelOneMusicAll = Mutagen.manager.get("music/songAll.mp3");
-		lvlComplete = Mutagen.manager.get("music/lvlComplete.mp3");
 
 		//levelOneMusi.setLooping(true);
 		if (Mutagen.musicVolume > 0) {
@@ -148,10 +154,6 @@ public class Level1 implements Screen{
 			levelOneMusicAll.play();
 
 			levelOneMusicAll.setVolume(Mutagen.musicVolume - .3f);
-
-
-			lvlComplete.setVolume(Mutagen.musicVolume - .3f);
-			lvlComplete.setLooping(true);
 		}
 		this.world.setContactListener(cd);
 		Gdx.input.setInputProcessor(null);
@@ -423,6 +425,9 @@ public class Level1 implements Screen{
 			levelOneMusicAll.stop();
 			Mutagen.clicking();
 			PlayerOne.runningSound.stop();
+			if (!PlayerMode.OneP) {
+				PlayerTwo.runningSound.stop();				
+			}
 			game.setScreen(new levelCompleted(game));
 
 		}
@@ -466,7 +471,7 @@ public class Level1 implements Screen{
 
 			cameraUpdate(delta);
 			mapRenderer.render();
-			b2dr.render(world, cam.combined);
+			//b2dr.render(world, cam.combined);
 			game.batch.begin(); //starts sprite spriteBatch
 
 
@@ -525,7 +530,6 @@ public class Level1 implements Screen{
 				Gdx.input.setCursorCatched(false);
 				levelOneMusicAll.stop();
 			
-				lvlComplete.play();
 				gameOver+=1;
 				shapeRenderer.setProjectionMatrix(cam.combined);
 				 
@@ -550,7 +554,6 @@ public class Level1 implements Screen{
 				Gdx.input.setCursorCatched(false);
 				levelOneMusicAll.stop();
 
-				lvlComplete.play();
 				gameOver+=1;
 				shapeRenderer.setProjectionMatrix(cam.combined);
 				 

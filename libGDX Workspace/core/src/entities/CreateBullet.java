@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.Disposable;
 import BackEnd.Mutagen;
 import levels.Level1;
 import levels.Level2;
+import levels.Level3;
 import screens.GunSelectionScreen;
 import screens.PlayerMode;
 
@@ -57,7 +58,10 @@ public class CreateBullet{
 			mousePosition = Level1.mousePosition;
 		}else if (Mutagen.level == "2") {
 			mousePosition = Level2.mousePosition;
+		}else if (Mutagen.level == "3") {
+			mousePosition = Level3.mousePosition;
 		}
+		
 		if (playerID == 1) {
 			bdef.position.set(PlayerOne.p1PosX, PlayerOne.p1PosY);
 

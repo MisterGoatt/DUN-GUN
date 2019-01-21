@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.Disposable;
 import BackEnd.Mutagen;
 import levels.Level1;
 import levels.Level2;
+import levels.Level3;
 import screens.DifficultyScreen;
 import screens.GunSelectionScreen;
 import screens.PlayerMode;
@@ -152,6 +153,8 @@ public class PlayerOne extends Sprite implements Disposable{
 			mousePosition = Level1.mousePosition;
 		}else if (Mutagen.level == "2") {
 			mousePosition = Level2.mousePosition;
+		}else if (Mutagen.level == "3") {
+			mousePosition = Level3.mousePosition;
 		}
 
 		//If Single Player
@@ -386,12 +389,12 @@ public class PlayerOne extends Sprite implements Disposable{
 				lasers.add(createBullet);
 			}
 
-			if (waitToShootL >=20 && waitToShootL < 21) {
+			if (waitToShootL >=17 && waitToShootL < 18) {
 				createBullet = new CreateBullet(world, ID);
 				lasers.add(createBullet);
 			}
 
-			if (waitToShootL >= 40 && waitToShootL < 41) {
+			if (waitToShootL >= 27 && waitToShootL < 28) {
 				createBullet = new CreateBullet(world, ID);
 				lasers.add(createBullet);
 				waitToShootL = 0;
@@ -423,72 +426,11 @@ public class PlayerOne extends Sprite implements Disposable{
 			slowed = false;
 		}
 		//Aim style is rotational
-		if (GunSelectionScreen.p1AimStyle != 2) {
-			if (!movHalt) {
 
-				if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)){
-					this.b2body.setLinearVelocity(-speed * speedAB, speed * speedAB);
-				}else if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)){
-					this.b2body.setLinearVelocity(speed * speedAB, speed * speedAB);
-				}else if(Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)){
-					this.b2body.setLinearVelocity(-speed * speedAB, -speed * speedAB );   
-				}else if(Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)){
-					this.b2body.setLinearVelocity(speed * speedAB, -speed * speedAB );
-				}
-				else if(Gdx.input.isKeyPressed(Input.Keys.W)){
-					this.b2body.setLinearVelocity(0f, speed);
-
-				}else if(Gdx.input.isKeyPressed(Input.Keys.S)){
-					this.b2body.setLinearVelocity(0f, -speed);
-
-				}else if(Gdx.input.isKeyPressed(Input.Keys.A)){
-					this.b2body.setLinearVelocity(-speed, 0f);
-
-				}else if(Gdx.input.isKeyPressed(Input.Keys.D)){
-					this.b2body.setLinearVelocity(speed, 0f);
-				}
-			}			
-		}
-
-
-		shootGun();
-		//CONTROLS THE SPEED OF FIRE & SINGLE PLAYER
-		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && PlayerMode.OneP) {
-			if (timeSinceLastShot <=0) {
-				isShooting = true;
-				shootAnimation = true;
-				switch (GunSelectionScreen.p1WeaponSelected) {
-				case "revolver": timeSinceLastShot = 50;
-				break;
-				case "rifle": timeSinceLastShot = 90;
-				break;
-				case "shotgun": timeSinceLastShot = 70;
-				break;
-				case "assault rifle": timeSinceLastShot = 7;
-				break;
-				case "laser": timeSinceLastShot = 75;
-				break;
-				case "battle axe": timeSinceLastShot = 110;
-				break;
-				}
-			}
-		}
-
-		//CO-OP
-		else if (!PlayerMode.OneP) {
-
-			//rotational 
-			if (GunSelectionScreen.p1AimStyle == 1) {
-				if (Gdx.input.isKeyPressed(Input.Keys.G)){
-					angle += rotationSpeed;
-				}
-				else if (Gdx.input.isKeyPressed(Input.Keys.H)){
-					angle -= rotationSpeed;
-				}				
-			}//directional aim style
-			else {
-
+		if (!Level3.cin) {
+			if (GunSelectionScreen.p1AimStyle != 2) {
 				if (!movHalt) {
+
 					if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)){
 						this.b2body.setLinearVelocity(-speed * speedAB, speed * speedAB);
 					}else if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)){
@@ -500,35 +442,23 @@ public class PlayerOne extends Sprite implements Disposable{
 					}
 					else if(Gdx.input.isKeyPressed(Input.Keys.W)){
 						this.b2body.setLinearVelocity(0f, speed);
-						if (!shootBehind) {
-							angle = 0;
-						}
+
 					}else if(Gdx.input.isKeyPressed(Input.Keys.S)){
 						this.b2body.setLinearVelocity(0f, -speed);
-						if (!shootBehind) {
-							angle = 180;
-						}
+
 					}else if(Gdx.input.isKeyPressed(Input.Keys.A)){
 						this.b2body.setLinearVelocity(-speed, 0f);
-						if (!shootBehind) {
-							angle = 90;
-						}
+
 					}else if(Gdx.input.isKeyPressed(Input.Keys.D)){
 						this.b2body.setLinearVelocity(speed, 0f);
-						if (!shootBehind) {
-							angle = 270;
-						}
 					}
-
-					if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-						shootBehind = true;
-					}else {
-						shootBehind = false;
-					}
-				}
+				}			
 			}
 
-			if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+
+			shootGun();
+			//CONTROLS THE SPEED OF FIRE & SINGLE PLAYER
+			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && PlayerMode.OneP) {
 				if (timeSinceLastShot <=0) {
 					isShooting = true;
 					shootAnimation = true;
@@ -541,13 +471,90 @@ public class PlayerOne extends Sprite implements Disposable{
 					break;
 					case "assault rifle": timeSinceLastShot = 7;
 					break;
-					case "laser": timeSinceLastShot = 75;
+					case "laser": timeSinceLastShot = 85;
 					break;
 					case "battle axe": timeSinceLastShot = 110;
 					break;
 					}
 				}
-			}	
+			}
+
+			//CO-OP
+			else if (!PlayerMode.OneP) {
+
+				//rotational 
+				if (GunSelectionScreen.p1AimStyle == 1) {
+					if (Gdx.input.isKeyPressed(Input.Keys.G)){
+						angle += rotationSpeed;
+					}
+					else if (Gdx.input.isKeyPressed(Input.Keys.H)){
+						angle -= rotationSpeed;
+					}				
+				}//directional aim style
+				else {
+
+					if (!movHalt) {
+						if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)){
+							this.b2body.setLinearVelocity(-speed * speedAB, speed * speedAB);
+						}else if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)){
+							this.b2body.setLinearVelocity(speed * speedAB, speed * speedAB);
+						}else if(Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)){
+							this.b2body.setLinearVelocity(-speed * speedAB, -speed * speedAB );   
+						}else if(Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)){
+							this.b2body.setLinearVelocity(speed * speedAB, -speed * speedAB );
+						}
+						else if(Gdx.input.isKeyPressed(Input.Keys.W)){
+							this.b2body.setLinearVelocity(0f, speed);
+							if (!shootBehind) {
+								angle = 0;
+							}
+						}else if(Gdx.input.isKeyPressed(Input.Keys.S)){
+							this.b2body.setLinearVelocity(0f, -speed);
+							if (!shootBehind) {
+								angle = 180;
+							}
+						}else if(Gdx.input.isKeyPressed(Input.Keys.A)){
+							this.b2body.setLinearVelocity(-speed, 0f);
+							if (!shootBehind) {
+								angle = 90;
+							}
+						}else if(Gdx.input.isKeyPressed(Input.Keys.D)){
+							this.b2body.setLinearVelocity(speed, 0f);
+							if (!shootBehind) {
+								angle = 270;
+							}
+						}
+
+						if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+							shootBehind = true;
+						}else {
+							shootBehind = false;
+						}
+					}
+				}
+
+				if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+					if (timeSinceLastShot <=0) {
+						isShooting = true;
+						shootAnimation = true;
+						switch (GunSelectionScreen.p1WeaponSelected) {
+						case "revolver": timeSinceLastShot = 50;
+						break;
+						case "rifle": timeSinceLastShot = 90;
+						break;
+						case "shotgun": timeSinceLastShot = 70;
+						break;
+						case "assault rifle": timeSinceLastShot = 7;
+						break;
+						case "laser": timeSinceLastShot = 85;
+						break;
+						case "battle axe": timeSinceLastShot = 110;
+						break;
+						}
+					}
+				}	
+			}
+
 		}
 
 		if (b2body.getLinearVelocity().x > 0 || b2body.getLinearVelocity().x < 0 || b2body.getLinearVelocity().y > 0 || b2body.getLinearVelocity().y < 0) {

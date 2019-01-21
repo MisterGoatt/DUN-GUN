@@ -14,6 +14,7 @@ import entities.CreateBullet;
 import entities.Flayer;
 import entities.Grunt;
 import entities.HealthPickUp;
+import entities.Ivanov;
 import entities.PlayerOne;
 import entities.PlayerTwo;
 import entities.Scientist;
@@ -33,7 +34,7 @@ public class CollisionDetector implements ContactListener{
 	private Array<CreateBullet> bulletBodyTarget = new Array<CreateBullet>();
 	private Array<Soldier> soldierBodyTarget = new Array<Soldier>();
 	private Array<Flayer> flayerBodyTarget = new Array<Flayer>();
-	
+
 	Grunt grunt;
 	Scientist scientist;
 	Turret turret;
@@ -41,15 +42,16 @@ public class CollisionDetector implements ContactListener{
 	Soldier soldier;
 	PlayerOne p1;
 	Flayer flayer;
+	Ivanov ivanov;
 
-	private Sound bulletHitWall, bulletBodyImpact, pelletHitWall, laserHitWall, turretHit, hpPickUp,
-		thornHit, turretExp;
+	private Sound bulletHitWall, bulletBodyImpact, pelletHitWall, turretHit, hpPickUp,
+	thornHit, turretExp;
 
 	public CollisionDetector() {	
 		tempBodyArray= new Array<Body>();
 		bodiesToRemove = new Array<Body>();
 		bulletHitWall = Mutagen.manager.get("sound effects/impacts/bulletImpact.mp3");
-		laserHitWall = Mutagen.manager.get("sound effects/impacts/laserImpact.mp3");
+		//laserHitWall = Mutagen.manager.get("sound effects/impacts/laserImpact.mp3");
 		pelletHitWall = Mutagen.manager.get("sound effects/impacts/pelletImpact.mp3");
 		bulletBodyImpact = Mutagen.manager.get("sound effects/impacts/bulletBodyImpact.mp3");
 		turretHit = Mutagen.manager.get("sound effects/enemies/turretHit.mp3");
@@ -86,9 +88,9 @@ public class CollisionDetector implements ContactListener{
 					}
 					else if (GunSelectionScreen.p1WeaponSelected == "laser") {
 
-//						if (Mutagen.sfxVolume != 0) {
-//							laserHitWall.play(Mutagen.sfxVolume);
-//						}
+						//						if (Mutagen.sfxVolume != 0) {
+						//							laserHitWall.play(Mutagen.sfxVolume);
+						//						}
 					}
 					else if (GunSelectionScreen.p1WeaponSelected == "shotgun") {
 						if (Mutagen.sfxVolume != 0) {
@@ -110,9 +112,9 @@ public class CollisionDetector implements ContactListener{
 						}
 					}
 					else if (GunSelectionScreen.p1WeaponSelected == "laser") {
-//						if (Mutagen.sfxVolume != 0) {
-//							laserHitWall.play(Mutagen.sfxVolume);
-//						}
+						//						if (Mutagen.sfxVolume != 0) {
+						//							laserHitWall.play(Mutagen.sfxVolume);
+						//						}
 					}
 					else if (GunSelectionScreen.p1WeaponSelected == "shotgun") {
 						if (Mutagen.sfxVolume != 0) {
@@ -139,9 +141,9 @@ public class CollisionDetector implements ContactListener{
 					}
 					else if (GunSelectionScreen.p2WeaponSelected == "laser") {
 
-//						if (Mutagen.sfxVolume != 0) {
-//							laserHitWall.play(Mutagen.sfxVolume);
-//						}
+						//						if (Mutagen.sfxVolume != 0) {
+						//							laserHitWall.play(Mutagen.sfxVolume);
+						//						}
 					}
 					else if (GunSelectionScreen.p2WeaponSelected == "shotgun") {
 						if (Mutagen.sfxVolume != 0) {
@@ -163,9 +165,9 @@ public class CollisionDetector implements ContactListener{
 						}
 					}
 					else if (GunSelectionScreen.p2WeaponSelected == "laser") {
-//						if (Mutagen.sfxVolume != 0) {
-//							laserHitWall.play(Mutagen.sfxVolume);
-//						}
+						//						if (Mutagen.sfxVolume != 0) {
+						//							laserHitWall.play(Mutagen.sfxVolume);
+						//						}
 					}
 					else if (GunSelectionScreen.p2WeaponSelected == "shotgun") {
 						if (Mutagen.sfxVolume != 0) {
@@ -175,7 +177,6 @@ public class CollisionDetector implements ContactListener{
 					if (GunSelectionScreen.p2WeaponSelected != "battle axe") {
 						bodiesToRemove.add(fb.getBody());
 					}
-
 				}
 			}
 		}
@@ -1205,7 +1206,8 @@ public class CollisionDetector implements ContactListener{
 				}
 
 			}
-		}//P2's BULLET AND FLAYER COLLISIONS
+		}
+		//P2's BULLET AND FLAYER COLLISIONS
 		if (fa.getUserData().equals("bullets2") || fb.getUserData().equals("bullets2")) {
 			if (fa.getUserData().equals("flayer") || fb.getUserData().equals("flayer")) {
 				if (fa.getUserData().equals("bullets2")){
@@ -1295,7 +1297,7 @@ public class CollisionDetector implements ContactListener{
 				}
 			}
 		}
-		
+
 		//Flayer BULLETS AND PLAYER COLLISIONS
 		if (fa.getUserData().equals("player2") || fb.getUserData().equals("player2")) {
 			if (fa.getUserData().equals("thorns") || fb.getUserData().equals("thorns")) {
@@ -1326,6 +1328,164 @@ public class CollisionDetector implements ContactListener{
 					}
 					bodiesToRemove.add(fb.getBody());
 				}
+			}
+		}
+
+		//IVANOV AND PLAYER2 COLLISIONS
+		if (fa.getUserData().equals("player") || fb.getUserData().equals("player")) {
+			if (fa.getUserData().equals("ivanov") || fb.getUserData().equals("ivanov")) {
+				if(fa.getUserData().equals("ivanov")){
+					Ivanov.contAtk = true;
+					Ivanov.target = 1;
+				}
+
+				if(fb.getUserData().equals("ivanov")){
+					Ivanov.contAtk = true;
+					Ivanov.target = 1;
+				}
+			}
+		}
+		
+		//IVANOV AND PLAYER2 COLLISIONS
+		if (fa.getUserData().equals("player2") || fb.getUserData().equals("player2")) {
+			if (fa.getUserData().equals("ivanov") || fb.getUserData().equals("ivanov")) {
+				if(fa.getUserData().equals("ivanov")){
+					Ivanov.contAtk = true;
+					Ivanov.target = 2;
+
+				}
+
+				if(fb.getUserData().equals("ivanov")){
+					Ivanov.contAtk = true;
+					Ivanov.target = 2;
+
+				}
+			}
+		}
+		
+		//P1's BULLET AND IVANOV COLLISIONS
+		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
+			if (fa.getUserData().equals("ivanov") || fb.getUserData().equals("ivanov")) {
+				if (fa.getUserData().equals("bullets")){
+
+					if (GunSelectionScreen.p1WeaponSelected != "battle axe") {
+						bodiesToRemove.add(fa.getBody()); //bullet
+					}
+				}
+				if(fb.getUserData().equals("bullets")){
+					if (GunSelectionScreen.p1WeaponSelected != "battle axe") {
+						bodiesToRemove.add(fb.getBody()); //bullet
+					}
+				}				
+				if (fa.getUserData().equals("ivanov")){
+
+
+					switch (GunSelectionScreen.p1WeaponSelected){
+					case "battle axe": Ivanov.health -= PlayerOne.battleAxeDamage;
+					break;
+					case "revolver": Ivanov.health -= PlayerOne.revolverDamage;
+					break;
+					case "rifle": Ivanov.health -= PlayerOne.rifleDamage;
+					break;	
+					case "assault rifle": Ivanov.health -= PlayerOne.assaultRifleDamage;
+					break;
+					case "laser": Ivanov.health -= PlayerOne.laserLanceDamage;
+					break;
+					case "shotgun": Ivanov.health -= PlayerOne.shotgunDamage;
+					break;
+					default: break;
+					}
+					System.out.println(Ivanov.health);
+					if (Ivanov.health <= 0) {
+						bodiesToRemove.add(fa.getBody());
+					}
+				}
+				if (fb.getUserData().equals("ivanov")){
+
+					switch (GunSelectionScreen.p1WeaponSelected){
+					case "battle axe": Ivanov.health -= PlayerOne.battleAxeDamage;
+					break;
+					case "revolver": Ivanov.health -= PlayerOne.revolverDamage;
+					break;
+					case "rifle": Ivanov.health -= PlayerOne.rifleDamage;
+					break;	
+					case "assault rifle": Ivanov.health -= PlayerOne.assaultRifleDamage;
+					break;
+					case "laser": Ivanov.health -= PlayerOne.laserLanceDamage;
+					break;
+					case "shotgun": Ivanov.health -= PlayerOne.shotgunDamage;
+					break;
+					default: break;
+					}
+					System.out.println(Ivanov.health);
+
+					if (Ivanov.health <= 0) {
+						bodiesToRemove.add(fb.getBody());
+					}
+				}
+
+			}
+		}
+		//P2's BULLET AND IVANOV COLLISIONS
+		if (fa.getUserData().equals("bullets2") || fb.getUserData().equals("bullets2")) {
+			if (fa.getUserData().equals("ivanov") || fb.getUserData().equals("ivanov")) {
+				if (fa.getUserData().equals("bullets2")){
+
+					if (GunSelectionScreen.p2WeaponSelected != "battle axe") {
+						bodiesToRemove.add(fa.getBody()); //bullet
+					}
+				}
+				if(fb.getUserData().equals("bullets2")){
+					if (GunSelectionScreen.p2WeaponSelected != "battle axe") {
+						bodiesToRemove.add(fb.getBody()); //bullet
+					}
+				}				
+				if (fa.getUserData().equals("ivanov")){
+
+
+					switch (GunSelectionScreen.p2WeaponSelected){
+					case "battle axe": Ivanov.health -= PlayerTwo.battleAxeDamage;
+					break;
+					case "revolver": Ivanov.health -= PlayerTwo.revolverDamage;
+					break;
+					case "rifle": Ivanov.health -= PlayerTwo.rifleDamage;
+					break;	
+					case "assault rifle": Ivanov.health -= PlayerTwo.assaultRifleDamage;
+					break;
+					case "laser": Ivanov.health -= PlayerTwo.laserLanceDamage;
+					break;
+					case "shotgun": Ivanov.health -= PlayerTwo.shotgunDamage;
+					break;
+					default: break;
+					}
+
+					if (Ivanov.health <= 0) {
+						bodiesToRemove.add(fa.getBody());
+					}
+				}
+				if (fb.getUserData().equals("ivanov")){
+
+					switch (GunSelectionScreen.p2WeaponSelected){
+					case "battle axe": Ivanov.health -= PlayerTwo.battleAxeDamage;
+					break;
+					case "revolver": Ivanov.health -= PlayerTwo.revolverDamage;
+					break;
+					case "rifle": Ivanov.health -= PlayerTwo.rifleDamage;
+					break;	
+					case "assault rifle": Ivanov.health -= PlayerTwo.assaultRifleDamage;
+					break;
+					case "laser": Ivanov.health -= PlayerTwo.laserLanceDamage;
+					break;
+					case "shotgun": Ivanov.health -= PlayerTwo.shotgunDamage;
+					break;
+					default: break;
+					}
+
+					if (Ivanov.health <= 0) {
+						bodiesToRemove.add(fb.getBody());
+					}
+				}
+
 			}
 		}
 	}

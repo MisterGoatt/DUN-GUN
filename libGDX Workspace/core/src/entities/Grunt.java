@@ -34,7 +34,7 @@ public class Grunt extends Sprite implements Disposable{
 	private TextureRegion gruntStandingRegion;
 	private Sound atkSwoosh;
 	public boolean attack = false, contAtk = false, tookDamage = false;
-	public int atkdmg = 5, target, aimTarget;
+	public int atkdmg = 8, target, aimTarget;
 	private boolean initialDmg = false; //makes sure the player takes damage at first when the enemy touches player
 	public static Array<Grunt> grunts = new Array<Grunt>();
 	public static Vector2 gruntPos = new Vector2(0,0);

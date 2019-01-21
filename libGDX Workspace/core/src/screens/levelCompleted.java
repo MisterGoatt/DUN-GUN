@@ -3,6 +3,7 @@ package screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import BackEnd.Mutagen;
 import levels.Level2;
+import levels.Level3;
 
 public class levelCompleted implements Screen{
 	final Mutagen game;
@@ -18,7 +20,7 @@ public class levelCompleted implements Screen{
 	private Viewport gamePort;
 	private OrthographicCamera cam;
 	private float yPos = -1000;
-
+	private Music lvlComplete;
 	
 	public levelCompleted(final Mutagen game) {
 		this.game = game;
@@ -28,6 +30,12 @@ public class levelCompleted implements Screen{
 		cam = new OrthographicCamera();
 		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+		lvlComplete = Mutagen.manager.get("music/lvlComplete.mp3");
+		if (Mutagen.musicVolume > 0) {
+			lvlComplete.setVolume(Mutagen.musicVolume - .3f);
+			lvlComplete.setLooping(true);
+			lvlComplete.play();
+		}
 	}
 
 
@@ -44,7 +52,20 @@ public class levelCompleted implements Screen{
 			yPos -= 10;
 		}else {
 			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-				game.setScreen(new Level2(game));
+				if (Mutagen.level == "1") {
+					lvlComplete.stop();
+					game.setScreen(new Level2(game));
+					
+				}
+				else if (Mutagen.level == "2") {
+					lvlComplete.stop();
+					game.setScreen(new Level3(game));
+				}
+				else if (Mutagen.level == "3") {
+					System.out.println("GAME OVER");
+					lvlComplete.stop();
+					game.setScreen(new MainMenu(game));
+				}
 			}
 		}
 		

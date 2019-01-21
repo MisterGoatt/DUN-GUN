@@ -29,7 +29,7 @@ public class Scientist{
 	private Animation <TextureRegion> scientistDamagedAnimation, scientistAtkAnimation;
 	private TextureRegion scientistStandingRegion;
 	private Texture blood;
-	public int atkdmg = 8, health = 120, target;
+	public int atkdmg = 12, health = 120, target;
 	public boolean attack = false, tookDamage = false, contAtk = false, atkSoundStop = true;
 	private Sound atkSound;
 	private boolean initialDmg = false; //makes sure the player takes damage at first when the enemy touches player

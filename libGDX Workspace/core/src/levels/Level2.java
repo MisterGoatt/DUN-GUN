@@ -48,6 +48,7 @@ import entities.Soldier;
 import entities.SoldierBullets;
 import entities.Turret;
 import entities.TurretBullets;
+import screens.DifficultyScreen;
 import screens.GunSelectionScreen;
 import screens.MainMenu;
 import screens.PlayerMode;
@@ -68,7 +69,7 @@ public class Level2 implements Screen{
 	public CreateBullet createBullet;
 	private CollisionDetector cd;
 	private Lvl2EntityPositions lvl2EP;
-	private Music levelTwoMusicAll, lvlComplete, secretRoomMusic;
+	private Music levelThreeMusicAll, secretRoomMusic;
 	private Texture mouseCursor, axeMouseCursor, pauseMenu;
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private boolean lockCursor = true, gamePaused = false, sMusic = false;
@@ -97,7 +98,11 @@ public class Level2 implements Screen{
 		TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
 		params.textureMinFilter = TextureFilter.Linear;
 		params.textureMagFilter = TextureFilter.Linear;
-		map = new TmxMapLoader().load("tileMaps/Levels/Level2Partial.tmx", params);
+		if (DifficultyScreen.difficulty == 1) {
+			map = new TmxMapLoader().load("tileMaps/Levels/Level2Easy.tmx", params);
+		}else {
+			map = new TmxMapLoader().load("tileMaps/Levels/Level2Challenging.tmx", params);
+		}
 		mouseCursor = Mutagen.manager.get("crosshair 1.png", Texture.class);
 		axeMouseCursor = Mutagen.manager.get("axeCursor.png");
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / Mutagen.PPM);
@@ -146,20 +151,16 @@ public class Level2 implements Screen{
 		}
 
 
-		levelTwoMusicAll = Mutagen.manager.get("music/songAll.mp3");
-		lvlComplete = Mutagen.manager.get("music/lvlComplete.mp3");
+		levelThreeMusicAll = Mutagen.manager.get("music/songAll.mp3");
 		secretRoomMusic = Mutagen.manager.get("music/whistling masterpiece.mp3");
 		
 		//levelOneMusi.setLooping(true);
 		if (Mutagen.musicVolume > 0) {
-			levelTwoMusicAll.setLooping(true);
-			levelTwoMusicAll.play();
+			levelThreeMusicAll.setLooping(true);
+			levelThreeMusicAll.play();
 			
-			levelTwoMusicAll.setVolume(Mutagen.musicVolume - .3f);
+			levelThreeMusicAll.setVolume(Mutagen.musicVolume - .3f);
 			secretRoomMusic.setVolume(Mutagen.musicVolume);
-			
-			lvlComplete.setLooping(true);
-			lvlComplete.setVolume(Mutagen.musicVolume - .3f);
 		}
 		this.world.setContactListener(cd);
 		Gdx.input.setInputProcessor(null);
@@ -440,6 +441,17 @@ public class Level2 implements Screen{
 			Gdx.input.setCursorCatched(true);
 		}else Gdx.input.setCursorCatched(false);
 
+		if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
+			levelThreeMusicAll.stop();
+			Mutagen.clicking();
+			PlayerOne.runningSound.stop();
+			if (!PlayerMode.OneP) {
+				PlayerTwo.runningSound.stop();				
+			}
+			game.setScreen(new levelCompleted(game));
+
+		}
+		
 		//*********GAME IS PAUSED*********
 		if (gamePaused) {
 			PlayerOne.runningSound.stop();
@@ -462,7 +474,7 @@ public class Level2 implements Screen{
 				}
 				//QUIT TO MENU
 				if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < 0.221 && mousePosition.y > -.38) {
-					levelTwoMusicAll.stop();
+					levelThreeMusicAll.stop();
 					Mutagen.clicking();
 					game.setScreen(new MainMenu(game));
 				}	
@@ -535,13 +547,13 @@ public class Level2 implements Screen{
 			
 			//Secret Room Music
 			if (PlayerOne.p1PosX > 10.8 && PlayerOne.p1PosX < 11 && PlayerOne.p1PosY > 44 && PlayerOne.p1PosY < 46.6 && !sMusic) {
-				levelTwoMusicAll.stop();
+				levelThreeMusicAll.stop();
 				secretRoomMusic.play();
 				sMusic = true;
 			}
 			if (PlayerOne.p1PosX > 13 && PlayerOne.p1PosX < 13.5 && PlayerOne.p1PosY > 44 && PlayerOne.p1PosY < 46.6 && sMusic) {
 				secretRoomMusic.stop();
-				levelTwoMusicAll.play();
+				levelThreeMusicAll.play();
 				sMusic = false;
 			}
 
@@ -553,9 +565,8 @@ public class Level2 implements Screen{
 					PlayerTwo.runningSound.stop();
 				}
 				Gdx.input.setCursorCatched(false);
-				levelTwoMusicAll.stop();
+				levelThreeMusicAll.stop();
 
-				lvlComplete.play();
 				gameOver+=1;
 				shapeRenderer.setProjectionMatrix(cam.combined);
 
@@ -578,9 +589,8 @@ public class Level2 implements Screen{
 				PlayerOne.runningSound.stop();
 				PlayerTwo.runningSound.stop();
 				Gdx.input.setCursorCatched(false);
-				levelTwoMusicAll.stop();
+				levelThreeMusicAll.stop();
 
-				lvlComplete.play();
 				gameOver+=1;
 				shapeRenderer.setProjectionMatrix(cam.combined);
 

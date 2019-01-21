@@ -43,12 +43,6 @@ public class Lvl2EntityPositions {
 			hpSpawn = false;
 		}
 
-		//		if (p1X >  && p1X < x && p1Y > y && p1Y < y) {
-		//
-		//		}else if (p2X > x && p2X < x && p2Y > y && p2Y < y) {
-		//
-		//		}
-
 		p1X = PlayerOne.p1PosX;
 		p1Y = PlayerOne.p1PosY;
 		p2X = PlayerTwo.p2PosX;
