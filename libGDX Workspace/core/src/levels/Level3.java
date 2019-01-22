@@ -491,7 +491,7 @@ public class Level3 implements Screen{
 		}else if (!gamePaused){ //********PLAY*******
 			cameraUpdate(delta);
 			mapRenderer.render();
-			//b2dr.render(world, cam.combined);
+			b2dr.render(world, cam.combined);
 			game.batch.begin(); //starts sprite spriteBatch
 
 

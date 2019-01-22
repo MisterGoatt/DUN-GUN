@@ -29,15 +29,15 @@ public class Ivanov {
 	public static Vector2 ivanovPos = new Vector2(0, 0);
 	public static Vector2 ivanovSpawnPos = new Vector2(0,0);
 	private Vector2 tPos = new Vector2(0, 0);
-	private float shootTimer = 30, timePassed = 0, angle, angle3, differenceX, differenceY, boundary = .7f, speed = 1, tPosDifX, 
-			tPosDifY, wait, oldX, oldY, player1Dif, player2Dif;
-	private boolean shootAnimation = false, tooFarAway = false, startAnimation = true;
+	private float shootTimer = 30, timePassed = 0, angle, angle3, differenceX, differenceY, boundary = .7f, speed = 9, tPosDifX, 
+			tPosDifY, wait, oldX, oldY, player1Dif, player2Dif, atk = 25;
+	private boolean shootAnimation = false, tooFarAway = false, startAnimation = true, animationFinished = true;
 	private TextureRegion ivanovStandingRegion;
 	private Texture HP, HPBG;
-	
-	private TextureAtlas ivanovTransAtlas;
-	private Animation <TextureRegion> ivanovTransAnimation;
-	public static Array<CreateBullet> ivanov = new Array<CreateBullet>();
+
+	private TextureAtlas ivanovTransAtlas, atkAtlas, thornAtlas;
+	private Animation <TextureRegion> ivanovTransAnimation, atkAnimation, thornAnimation;
+	//public static Array<CreateBullet> ivanov = new Array<CreateBullet>();
 
 	public Ivanov(World world) {
 		this.world = world;
@@ -45,10 +45,14 @@ public class Ivanov {
 		HPBG = Mutagen.manager.get("sprites/ivanov/ivanovHPBG.png");
 		ivanovTransAtlas = Mutagen.manager.get("sprites/ivanov/ivanovTransformation.atlas");
 		ivanovTransAnimation = new Animation <TextureRegion>(1f/15f, ivanovTransAtlas.getRegions());
+		atkAtlas = Mutagen.manager.get("sprites/ivanov/atkAnimation.atlas");
+		atkAnimation = new Animation <TextureRegion>(1f/15f, atkAtlas.getRegions());
+		thornAtlas = Mutagen.manager.get("sprites/ivanov/thornAnimation.atlas");
+		thornAnimation = new Animation <TextureRegion>(1f/15f, thornAtlas.getRegions());
 		ivanovStandingRegion = ivanovTransAtlas.findRegion("tile078");
 		defineIvanov();
 	}
-	
+
 	public void defineIvanov() {
 		bdef.position.set(ivanovSpawnPos);
 		health = 10000;
@@ -61,7 +65,7 @@ public class Ivanov {
 		b2body.setUserData(this);
 		FixtureDef fdef = new FixtureDef();
 		CircleShape shape = new CircleShape();
-		shape.setRadius(18 / Mutagen.PPM);
+		shape.setRadius(28 / Mutagen.PPM);
 		b2body.setLinearDamping(5f);
 		fdef.density = 800; //made extremely dense to prevent anything from moving it
 		fdef.shape = shape;
@@ -72,7 +76,7 @@ public class Ivanov {
 	public void renderSprite(SpriteBatch batch) {
 
 		//Selects which player to attack depending on which player is closer by using the pythagorean theorem
-		if (this.health > 0){
+		if (health > 0 && !startAnimation){
 			//CO-OP
 			if (!PlayerMode.OneP) {
 				//PlayerOne
@@ -90,101 +94,115 @@ public class Ivanov {
 					differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
 					differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
 					//checks to see how far away the ivanov is from the targeted player to know whether or not to get closer before shooting
-					if (player1Dif > 4.7) {
-						tooFarAway = true;
-					}else {
-						tooFarAway = false;
-					}
-					
+					//					if (player1Dif > 4.7) {
+					//						tooFarAway = true;
+					//					}else {
+					//						tooFarAway = false;
+					//					}
+
 				}else {
 					//fire at player 2
 					differenceX = PlayerTwo.p2PosX - b2body.getPosition().x;
 					differenceY = PlayerTwo.p2PosY - b2body.getPosition().y;
 					//checks to see how far away the ivanov is from the targeted player to know whether or not to get closer before shooting
-					if (player2Dif > 4.7) {
-						tooFarAway = true;
-					}else {
-						tooFarAway = false;
-					}
+					//					if (player2Dif > 4.7) {
+					//						tooFarAway = true;
+					//					}else {
+					//						tooFarAway = false;
+					//					}
 				}
-				if (tooFarAway) {
-					//move towards the player to get closer
-					angle3 = MathUtils.atan2(differenceY, differenceX);
-					tPos.x = (float) (Math.cos(angle3) * speed);
-					tPos.y = (float) (Math.sin(angle3) * speed);
-					this.b2body.applyLinearImpulse(tPos.x, tPos.y, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);	
-				}
+				//				if (tooFarAway) {
+				//move towards the player to get closer
+				angle3 = MathUtils.atan2(differenceY, differenceX);
+				tPos.x = (float) (Math.cos(angle3) * speed);
+				tPos.y = (float) (Math.sin(angle3) * speed);
+				this.b2body.applyLinearImpulse(tPos.x, tPos.y, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);	
+				//				}
 			}else {
 				//single player
 				differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
 				differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
 				player1Dif = (float) Math.sqrt((differenceX*differenceX)+(differenceY*differenceY));
 				//checks to see how far away the ivanov is from the targeted player to know whether or not to get closer before shooting
-				if (player1Dif > 5) {
-					tooFarAway = true;
-				}else {
-					tooFarAway = false;
-				}
-				if (tooFarAway) {
-					//move towards the player to get closer
-					angle3 = MathUtils.atan2(differenceY, differenceX);
-					tPos.x = (float) (Math.cos(angle3) * speed);
-					tPos.y = (float) (Math.sin(angle3) * speed);
-					
-					this.b2body.applyLinearImpulse(tPos.x, tPos.y, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);				
-				}
-			}
-			
-			
-			float angle2 = MathUtils.atan2(differenceY, differenceX);
-			angle2 += 3.14159;
-			angle = angle2 * MathUtils.radDeg;
-			angle = angle - 90; //makes it a full 360 degrees
-			if (angle < 0) {
-				angle += 360 ;
-			}
-			float posX = this.b2body.getPosition().x;
-			float posY = this.b2body.getPosition().y;
-//			if (shootAnimation) {
-//				batch.draw(ivanovAnimation.getKeyFrame(timePassed), posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 50/ Mutagen.PPM, 1, 1, angle);
-//				timePassed += Gdx.graphics.getDeltaTime();
-//				if(ivanovAtkAnimation.isAnimationFinished(timePassed)) {
-//					shootAnimation = false;
-//					timePassed = 0;
-//				}
-//			}
-			if(startAnimation) {
-				Level3.cin = true;
-				batch.draw(ivanovTransAnimation.getKeyFrame(timePassed), posX - .37f, posY - .37f,  40 / Mutagen.PPM, 40 / Mutagen.PPM, 80 / Mutagen.PPM, 80/ Mutagen.PPM, 2, 2, angle);
-				timePassed += Gdx.graphics.getDeltaTime();
-				if(ivanovTransAnimation.isAnimationFinished(timePassed)) {
-					startAnimation = false;
-					timePassed = 0;
-					Level3.cin = false;
+				//				if (player1Dif > 5) {
+				//					tooFarAway = true;
+				//				}else {
+				//					tooFarAway = false;
+				//				}
+				//				if (tooFarAway) {
+				//move towards the player to get closer
+				angle3 = MathUtils.atan2(differenceY, differenceX);
+				tPos.x = (float) (Math.cos(angle3) * speed);
+				tPos.y = (float) (Math.sin(angle3) * speed);
 
-				}
+				this.b2body.applyLinearImpulse(tPos.x, tPos.y, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);				
 			}
-			else {
-				batch.draw(ivanovStandingRegion, posX - .37f, posY - .37f, 40  / Mutagen.PPM, 40 / Mutagen.PPM, 80 / Mutagen.PPM, 80 / Mutagen.PPM, 2, 2, angle);					
-			}
-			
-			
-			//IVANOV'S HEALTH
-			if (DifficultyScreen.difficulty == 1 || DifficultyScreen.difficulty == 2) {
-				if (!Level3.cin) {
-					batch.draw(HPBG, this.b2body.getPosition().x - .5f, this.b2body.getPosition().y- .66f, 10000 / (Mutagen.PPM + 9750), 9f / Mutagen.PPM); //gray backing behind HP bar	
-					batch.draw(HP, this.b2body.getPosition().x - .5f, this.b2body.getPosition().y - .63f, health / (Mutagen.PPM + 9750), 3f / Mutagen.PPM); //HP bar					
-				}
-
-			}
-//			else{
-//				batch.draw(p1HPBG, p1PosX - .3f, p1PosY - .28f, player1MaxHP2 / (Mutagen.PPM + 150), 3f / Mutagen.PPM); //gray backing behind HP bar	
-//				batch.draw(p1HP, p1PosX - .3f, p1PosY - .28f, player1HP / (Mutagen.PPM + 150), 3f / Mutagen.PPM); //HP bar			
-//			}
-			
-			oldX = this.b2body.getPosition().x;
-			oldY = this.b2body.getPosition().y;
 		}
 
+
+		float angle2 = MathUtils.atan2(differenceY, differenceX);
+		angle2 += 3.14159;
+		angle = angle2 * MathUtils.radDeg;
+		angle = angle - 90; //makes it a full 360 degrees
+		if (angle < 0) {
+			angle += 360 ;
+		}
+		float posX = this.b2body.getPosition().x;
+		float posY = this.b2body.getPosition().y;
+		//			if (shootAnimation) {
+		//				batch.draw(ivanovAnimation.getKeyFrame(timePassed), posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 50/ Mutagen.PPM, 1, 1, angle);
+		//				timePassed += Gdx.graphics.getDeltaTime();
+		//				if(ivanovAtkAnimation.isAnimationFinished(timePassed)) {
+		//					shootAnimation = false;
+		//					timePassed = 0;
+		//				}
+		//			}
+		if(startAnimation) {
+			Level3.cin = true;
+			batch.draw(ivanovTransAnimation.getKeyFrame(timePassed), posX - .37f, posY - .37f,  40 / Mutagen.PPM, 40 / Mutagen.PPM, 80 / Mutagen.PPM, 80/ Mutagen.PPM, 2, 2, angle - 90);
+			timePassed += Gdx.graphics.getDeltaTime();
+			if(ivanovTransAnimation.isAnimationFinished(timePassed)) {
+				startAnimation = false;
+				timePassed = 0;
+				Level3.cin = false;
+
+			}
+			//Ivanov's melee atk
+		}else if (contAtk || !animationFinished) {
+			animationFinished = false;
+			batch.draw(atkAnimation.getKeyFrame(timePassed), posX - .37f, posY - .37f, 40 / Mutagen.PPM, 40 / Mutagen.PPM, 80 / Mutagen.PPM, 80/ Mutagen.PPM, 2, 2, angle);
+			timePassed += Gdx.graphics.getDeltaTime();
+			if(atkAnimation.isAnimationFinished(timePassed)) {
+				//shootAnimation = false;
+				if (target == 1) {
+					PlayerOne.player1HP -= atk;
+				}else if (target == 2) {
+					PlayerTwo.player2HP -= atk;
+				}
+				animationFinished = true;
+				timePassed = 0;
+			}
+		}
+		else {
+			batch.draw(ivanovStandingRegion, posX - .37f, posY - .37f, 40  / Mutagen.PPM, 40 / Mutagen.PPM, 80 / Mutagen.PPM, 80 / Mutagen.PPM, 2, 2, angle);					
+		}
+
+
+		//IVANOV'S HEALTH
+		if (DifficultyScreen.difficulty == 1 || DifficultyScreen.difficulty == 2) {
+			if (!Level3.cin) {
+				batch.draw(HPBG, this.b2body.getPosition().x - .5f, this.b2body.getPosition().y- .66f, 10000 / (Mutagen.PPM + 9750), 9f / Mutagen.PPM); //gray backing behind HP bar	
+				batch.draw(HP, this.b2body.getPosition().x - .5f, this.b2body.getPosition().y - .63f, health / (Mutagen.PPM + 9750), 3f / Mutagen.PPM); //HP bar					
+			}
+
+		}
+		//			else{
+		//				batch.draw(p1HPBG, p1PosX - .3f, p1PosY - .28f, player1MaxHP2 / (Mutagen.PPM + 150), 3f / Mutagen.PPM); //gray backing behind HP bar	
+		//				batch.draw(p1HP, p1PosX - .3f, p1PosY - .28f, player1HP / (Mutagen.PPM + 150), 3f / Mutagen.PPM); //HP bar			
+		//			}
+
+		oldX = this.b2body.getPosition().x;
+		oldY = this.b2body.getPosition().y;
 	}
+
 }

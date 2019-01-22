@@ -1345,7 +1345,7 @@ public class CollisionDetector implements ContactListener{
 				}
 			}
 		}
-		
+
 		//IVANOV AND PLAYER2 COLLISIONS
 		if (fa.getUserData().equals("player2") || fb.getUserData().equals("player2")) {
 			if (fa.getUserData().equals("ivanov") || fb.getUserData().equals("ivanov")) {
@@ -1362,7 +1362,7 @@ public class CollisionDetector implements ContactListener{
 				}
 			}
 		}
-		
+
 		//P1's BULLET AND IVANOV COLLISIONS
 		if (fa.getUserData().equals("bullets") || fb.getUserData().equals("bullets")) {
 			if (fa.getUserData().equals("ivanov") || fb.getUserData().equals("ivanov")) {
@@ -1598,6 +1598,43 @@ public class CollisionDetector implements ContactListener{
 					scientist.contAtk = false;
 					scientistBodyTarget.clear();
 					tempBodyArray.clear();
+				}
+			}
+		}
+		//IVANOV AND PLAYER COLLISIONS
+		if (fa.getUserData().equals("player") || fb.getUserData().equals("player")) {
+			if (fa.getUserData().equals("ivanov") || fb.getUserData().equals("ivanov")) {
+				if(fa.getUserData().equals("ivanov")){
+
+					Ivanov.contAtk = false;						
+
+
+				}
+
+				if(fb.getUserData().equals("ivanov")){
+
+
+					Ivanov.contAtk = false;						
+
+				}
+			}
+		}
+		//IVANOV AND PLAYER2 COLLISIONS
+		if (fa.getUserData().equals("player2") || fb.getUserData().equals("player2")) {
+			if (fa.getUserData().equals("ivanov") || fb.getUserData().equals("ivanov")) {
+
+				if(fa.getUserData().equals("ivanov")){
+
+
+					Ivanov.contAtk = false;						
+
+				}
+
+				if(fb.getUserData().equals("ivanov")){
+
+
+					Ivanov.contAtk = false;						
+
 				}
 			}
 		}

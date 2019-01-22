@@ -32,7 +32,7 @@ public class Scientist{
 	public int atkdmg = 12, health = 120, target;
 	public boolean attack = false, tookDamage = false, contAtk = false, atkSoundStop = true;
 	private Sound atkSound;
-	private boolean initialDmg = false; //makes sure the player takes damage at first when the enemy touches player
+	private boolean initialDmg = false, animationFinished = true;; //makes sure the player takes damage at first when the enemy touches player
 	public static Array<Scientist> scientists = new Array<Scientist>();
 	public static Vector2 scientistPos = new Vector2(0,0);
 
@@ -109,11 +109,25 @@ public class Scientist{
 			float gposY = (float) (Math.sin(angle2)) * runSpeed;
 
 			//TOOK OUT !tookDamage
-			if (!attack && !contAtk && !tookDamage) {
+			if (!attack && !contAtk && !tookDamage && animationFinished) {
 				batch.draw(scientistStandingRegion, posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 60 / Mutagen.PPM, 1, 1, angle);
 			}
-			else if (contAtk && !tookDamage) {
+			else if (tookDamage) {
 
+				batch.draw(scientistDamagedAnimation.getKeyFrame(timePassed), posX - .17f, posY -.13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 60 / Mutagen.PPM, 1, 1, angle);
+				timePassed += Gdx.graphics.getDeltaTime();
+				if(scientistDamagedAnimation.isAnimationFinished(timePassed)) {
+					timePassed = 0;
+					tookDamage = false;
+				}
+			}
+			else {
+//				batch.draw(scientistDamagedAnimation.getKeyFrame(timePassed), posX - .17f, posY -.13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 60 / Mutagen.PPM, 1, 1, angle);
+//				timePassed += Gdx.graphics.getDeltaTime();
+//				if(scientistDamagedAnimation.isAnimationFinished(timePassed)) {
+//					timePassed = 0;
+//					tookDamage = false;
+//				}
 				if (!initialDmg) {
 					if (target ==1) {
 						PlayerOne.player1HP -= atkdmg;					
@@ -130,6 +144,7 @@ public class Scientist{
 					}
 					atkSoundStop = true;
 				}
+				animationFinished = false;
 				if(scientistAtkAnimation.isAnimationFinished(timePassed)) {
 					//long sSId = atkSound.play(1f);
 					timePassed = 0;
@@ -142,14 +157,7 @@ public class Scientist{
 						PlayerTwo.slowRestart = true;
 					}
 					atkSoundStop = false;
-				}
-			}
-			else {
-				batch.draw(scientistDamagedAnimation.getKeyFrame(timePassed), posX - .17f, posY -.13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 60 / Mutagen.PPM, 1, 1, angle);
-				timePassed += Gdx.graphics.getDeltaTime();
-				if(scientistDamagedAnimation.isAnimationFinished(timePassed)) {
-					timePassed = 0;
-					tookDamage = false;
+					animationFinished = true;
 				}
 			}
 
