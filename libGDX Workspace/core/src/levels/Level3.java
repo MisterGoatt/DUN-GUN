@@ -320,13 +320,14 @@ public class Level3 implements Screen{
 			if (!zoom) {
 				cam.zoom += .005f;
 				if (cam.zoom >= .6) {
+					
 					zoom = true;					
 				}
 			}
 		}else {
 			if (zoom) {
 				cam.zoom -= .005f;
-				if (cam.zoom <= .2 ) {
+				if (cam.zoom <= .25 ) {
 					zoom = false;
 				}
 			}

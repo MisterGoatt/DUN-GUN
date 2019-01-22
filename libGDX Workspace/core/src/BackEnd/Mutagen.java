@@ -205,7 +205,9 @@ public class Mutagen extends Game{
 			
 			//Doctor Ivanov
 			manager.load("sprites/ivanov/ivanovTransformation.atlas", TextureAtlas.class);
-			
+			manager.load("sprites/ivanov/ivanovHP.png", Texture.class);
+			manager.load("sprites/ivanov/ivanovHPBG.png", Texture.class);
+
 			
 			
 			manager.finishLoading();

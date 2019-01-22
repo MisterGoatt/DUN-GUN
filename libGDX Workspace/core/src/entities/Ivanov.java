@@ -1,6 +1,7 @@
 package entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.utils.Array;
 
 import BackEnd.Mutagen;
 import levels.Level3;
+import screens.DifficultyScreen;
 import screens.PlayerMode;
 
 public class Ivanov {
@@ -31,12 +33,16 @@ public class Ivanov {
 			tPosDifY, wait, oldX, oldY, player1Dif, player2Dif;
 	private boolean shootAnimation = false, tooFarAway = false, startAnimation = true;
 	private TextureRegion ivanovStandingRegion;
+	private Texture HP, HPBG;
+	
 	private TextureAtlas ivanovTransAtlas;
 	private Animation <TextureRegion> ivanovTransAnimation;
 	public static Array<CreateBullet> ivanov = new Array<CreateBullet>();
 
 	public Ivanov(World world) {
 		this.world = world;
+		HP = Mutagen.manager.get("sprites/ivanov/ivanovHP.png");
+		HPBG = Mutagen.manager.get("sprites/ivanov/ivanovHPBG.png");
 		ivanovTransAtlas = Mutagen.manager.get("sprites/ivanov/ivanovTransformation.atlas");
 		ivanovTransAnimation = new Animation <TextureRegion>(1f/15f, ivanovTransAtlas.getRegions());
 		ivanovStandingRegion = ivanovTransAtlas.findRegion("tile078");
@@ -149,7 +155,7 @@ public class Ivanov {
 //			}
 			if(startAnimation) {
 				Level3.cin = true;
-				batch.draw(ivanovTransAnimation.getKeyFrame(timePassed), posX - .37f, posY - .37f,  40 / Mutagen.PPM, 40 / Mutagen.PPM, 80 / Mutagen.PPM, 80/ Mutagen.PPM, 1, 1, angle);
+				batch.draw(ivanovTransAnimation.getKeyFrame(timePassed), posX - .37f, posY - .37f,  40 / Mutagen.PPM, 40 / Mutagen.PPM, 80 / Mutagen.PPM, 80/ Mutagen.PPM, 2, 2, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
 				if(ivanovTransAnimation.isAnimationFinished(timePassed)) {
 					startAnimation = false;
@@ -161,6 +167,20 @@ public class Ivanov {
 			else {
 				batch.draw(ivanovStandingRegion, posX - .37f, posY - .37f, 40  / Mutagen.PPM, 40 / Mutagen.PPM, 80 / Mutagen.PPM, 80 / Mutagen.PPM, 2, 2, angle);					
 			}
+			
+			
+			//IVANOV'S HEALTH
+			if (DifficultyScreen.difficulty == 1 || DifficultyScreen.difficulty == 2) {
+				if (!Level3.cin) {
+					batch.draw(HPBG, this.b2body.getPosition().x - .5f, this.b2body.getPosition().y- .66f, 10000 / (Mutagen.PPM + 9750), 9f / Mutagen.PPM); //gray backing behind HP bar	
+					batch.draw(HP, this.b2body.getPosition().x - .5f, this.b2body.getPosition().y - .63f, health / (Mutagen.PPM + 9750), 3f / Mutagen.PPM); //HP bar					
+				}
+
+			}
+//			else{
+//				batch.draw(p1HPBG, p1PosX - .3f, p1PosY - .28f, player1MaxHP2 / (Mutagen.PPM + 150), 3f / Mutagen.PPM); //gray backing behind HP bar	
+//				batch.draw(p1HP, p1PosX - .3f, p1PosY - .28f, player1HP / (Mutagen.PPM + 150), 3f / Mutagen.PPM); //HP bar			
+//			}
 			
 			oldX = this.b2body.getPosition().x;
 			oldY = this.b2body.getPosition().y;
