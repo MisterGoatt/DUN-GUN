@@ -1488,6 +1488,52 @@ public class CollisionDetector implements ContactListener{
 
 			}
 		}
+		//IVANOV & BULLETS AND WALL
+		if (fa.getUserData().equals("walls") || fb.getUserData().equals("walls")) {
+			if (fa.getUserData().equals("ivanov thorns") || fb.getUserData().equals("ivanov thorns")) {
+
+				if(fa.getUserData().equals("ivanov thorns")){
+					if (Mutagen.sfxVolume != 0) {
+						long phwId = thornHit.play(Mutagen.sfxVolume - .8f);
+					}
+					bodiesToRemove.add(fa.getBody()); 
+				}
+				if(fb.getUserData().equals("ivanov thorns")){
+					if (Mutagen.sfxVolume != 0) {
+						long phwId = thornHit.play(Mutagen.sfxVolume - .8f);
+					}
+					bodiesToRemove.add(fb.getBody());
+				}
+			}
+		}
+		//IVANOV'S THORNS AND PLAYER2 COLLISIONS
+		if (fa.getUserData().equals("player2") || fb.getUserData().equals("player2")) {
+			if (fa.getUserData().equals("ivanov thorns") || fb.getUserData().equals("ivanov thorns")) {
+
+				if(fa.getUserData().equals("ivanov thorns")){
+					PlayerTwo.player2HP -= Ivanov.thornAtk;
+					bodiesToRemove.add(fa.getBody()); 
+				}
+				if(fb.getUserData().equals("ivanov thorns")){
+					PlayerTwo.player2HP -= Ivanov.thornAtk;
+					bodiesToRemove.add(fb.getBody());
+				}
+			}
+		}
+		//IVANOV'S THORNS AND PLAYER2 COLLISIONS
+		if (fa.getUserData().equals("player") || fb.getUserData().equals("player")) {
+			if (fa.getUserData().equals("ivanov thorns") || fb.getUserData().equals("ivanov thorns")) {
+
+				if(fa.getUserData().equals("ivanov thorns")){
+					PlayerOne.player1HP -= Ivanov.thornAtk;
+					bodiesToRemove.add(fa.getBody()); 
+				}
+				if(fb.getUserData().equals("ivanov thorns")){
+					PlayerOne.player1HP -= Ivanov.thornAtk;
+					bodiesToRemove.add(fb.getBody());
+				}
+			}
+		}
 	}
 
 
