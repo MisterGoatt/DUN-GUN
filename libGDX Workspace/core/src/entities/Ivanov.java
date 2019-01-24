@@ -24,14 +24,14 @@ public class Ivanov {
 	public World world; // world player will live in
 	public Body b2body; //creates body for player
 	private BodyDef bdef = new BodyDef();
-	public static int health = 0, target = 0, thornAtk = 50;
-	public static boolean contAtk = false;
+	public static int health = 0, target = 0, thornAtk = 50, maxHP = 0;
+	public static boolean contAtk = false, shake = false;
 	public static Vector2 ivanovPos = new Vector2(0, 0);
 	public static Vector2 ivanovSpawnPos = new Vector2(0,0);
 	private Vector2 tPos = new Vector2(0, 0);
-	private float shootTimer = 0, chargeTimer = 0, timePassed = 0, angle, angle3, differenceX, differenceY, boundary = .7f, speed = 9, tPosDifX, 
-			tPosDifY, wait, oldAngle, player1Dif, player2Dif, atk = 15, thornSpeed = 2, maxHP = 0;
-	private boolean alreadyShot = false, tooFarAway = false, startAnimation = true, animationFinished = true;
+	private float shootTimer = 0, chargeTimer = 0, timePassed = 0, angle, angle3, differenceX, differenceY, speed = 9, 
+			oldAngle, player1Dif, player2Dif, atk = 30, thornSpeed = 2, shakeTimer = 0;
+	private boolean alreadyShot = false, startAnimation = true, animationFinished = true, alreadyShook = false;
 	private TextureRegion ivanovStandingRegion;
 	private Texture HP, HPBG;
 	private TextureAtlas ivanovTransAtlas, atkAtlas, thornAtlas;
@@ -55,7 +55,16 @@ public class Ivanov {
 
 	public void defineIvanov() {
 		bdef.position.set(ivanovSpawnPos);
-		health = 5000;
+		if (DifficultyScreen.difficulty == 2 && PlayerMode.OneP) {
+			health = 7500;
+		}else if (DifficultyScreen.difficulty == 2 && !PlayerMode.OneP) {
+			health = 10000;			
+		}else if (DifficultyScreen.difficulty == 1 && PlayerMode.OneP) {
+			health = 5000;			
+		}else if (DifficultyScreen.difficulty == 1 && !PlayerMode.OneP) {
+			health = 7500;
+		}
+
 		maxHP = health;
 		contAtk = false;
 		ivanovPos = bdef.position;
@@ -149,13 +158,42 @@ public class Ivanov {
 			animationFinished = false;
 			batch.draw(atkAnimation.getKeyFrame(timePassed), posX - .37f, posY - .37f, 40 / Mutagen.PPM, 40 / Mutagen.PPM, 80 / Mutagen.PPM, 80/ Mutagen.PPM, 2, 2, angle);
 			timePassed += Gdx.graphics.getDeltaTime();
+
+			//PlayerOne
+			float differencePlayerX =  PlayerOne.p1PosX - b2body.getPosition().x;
+			float differencePlayerY =  PlayerOne.p1PosY - b2body.getPosition().y;
+
+			//PlayerTwo
+			float differencePlayer2X =  PlayerTwo.p2PosX - b2body.getPosition().x;
+			float differencePlayer2Y =  PlayerTwo.p2PosY - b2body.getPosition().y;
+
+			player1Dif = (float) Math.sqrt((differencePlayerX*differencePlayerX)+(differencePlayerY*differencePlayerY));
+			player2Dif = (float) Math.sqrt((differencePlayer2X*differencePlayer2X)+(differencePlayer2Y*differencePlayer2Y));
+			if (!alreadyShook) {
+				shakeTimer += .1f;
+
+				if (shakeTimer >= 4) {
+					shake = true;
+					shakeTimer = 0;
+					alreadyShook = true;
+				}
+			}
+
 			if(atkAnimation.isAnimationFinished(timePassed)) {
 				//shootAnimation = false;
-				if (target == 1) {
+				if (player1Dif < 1.1) {
 					PlayerOne.player1HP -= atk;
-				}else if (target == 2) {
+				}
+				if (player2Dif < 1.1) {
 					PlayerTwo.player2HP -= atk;
 				}
+				alreadyShook = false;
+				//				
+				//				if (target == 1) {
+				//					PlayerOne.player1HP -= atk;
+				//				}else if (target == 2) {
+				//					PlayerTwo.player2HP -= atk;
+				//				}
 				animationFinished = true;
 				timePassed = 0;
 
@@ -184,7 +222,6 @@ public class Ivanov {
 			speed = 30;
 			if (chargeTimer > 55) {
 				chargeTimer = 0;
-
 			}
 		}
 
@@ -192,9 +229,9 @@ public class Ivanov {
 		if (DifficultyScreen.difficulty == 1 || DifficultyScreen.difficulty == 2) {
 			if (!Level3.cin) {
 				batch.draw(HPBG, this.b2body.getPosition().x - .5f, this.b2body.getPosition().y- .66f, maxHP / ( maxHP - 100), 9f / Mutagen.PPM); //gray backing behind HP bar	
+				System.out.println(health);
 				batch.draw(HP, this.b2body.getPosition().x - .5f, this.b2body.getPosition().y - .63f, health / (maxHP - 100), 3f / Mutagen.PPM); //HP bar					
 			}
-
 		}
 		//			else{
 		//				batch.draw(p1HPBG, p1PosX - .3f, p1PosY - .28f, player1MaxHP2 / (Mutagen.PPM + 150), 3f / Mutagen.PPM); //gray backing behind HP bar	
@@ -211,7 +248,7 @@ public class Ivanov {
 
 				//shoots 36 thorns
 				for (int p = 0; p < 2; p++) {
-					
+
 					for (int i = 0; i <= 360; i += 10) {
 						if (p == 0) {
 							thornSpeed = 2;
@@ -234,7 +271,7 @@ public class Ivanov {
 
 				//shoots 36 thorns
 				for (int p = 0; p < 2; p++) {
-					
+
 					for (int i = 0; i <= 360; i += 10) {
 						if (p == 0) {
 							thornSpeed = 2;

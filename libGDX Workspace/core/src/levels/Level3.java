@@ -75,7 +75,7 @@ public class Level3 implements Screen{
 	private Music levelThreeMusicAll, secretRoomMusic;
 	private Texture mouseCursor, axeMouseCursor, pauseMenu;
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
-	private boolean lockCursor = true, gamePaused = false, sMusic = false, spawnIvanov = true, zoom = true;
+	private boolean lockCursor = true, gamePaused = false, sMusic = false, spawnIvanov = true, zoom = true, wave1 = true, wave2 = true, wave3 = true, wave4 = true, wave5 = true;
 	private float elapsed = 0, duration, intensity, gameOver = 0, fadeOut = 0;
 	public static boolean bulletImpact = false, cin = false;
 	public static Vector3 mousePosition = new Vector3(0, 0, 0);
@@ -205,6 +205,11 @@ public class Level3 implements Screen{
 				break;
 			}
 			PlayerTwo.timeToShake = false;
+		}
+		
+		if (Ivanov.shake) {
+			shake(.5f, 200);
+			Ivanov.shake = false;
 		}
 	}
 
@@ -489,7 +494,7 @@ public class Level3 implements Screen{
 					levelThreeMusicAll.stop();
 					Mutagen.clicking();
 					game.setScreen(new MainMenu(game));
-				}	
+				}
 				//QUIT GAME
 				else if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < -.46 && mousePosition.y > -1.06) {
 					Gdx.app.exit();
@@ -557,7 +562,33 @@ public class Level3 implements Screen{
 				HealthPickUp.hpPickUp.get(i).renderSprite(game.batch);
 			}
 
-
+			//Spawn waves of enemies depending on Ivanov's remaining health
+			if (Ivanov.health < (Ivanov.maxHP * .8) && wave1) {
+				Lvl3EntityPositions.spawnGrunts = true;
+				wave1 = false;
+			}
+			if (Ivanov.health < (Ivanov.maxHP * .6f) && wave2) {
+				Lvl3EntityPositions.spawnGrunts = true;
+				Lvl3EntityPositions.spawnScientists = true;
+				wave2 = false;
+			}
+			if (Ivanov.health < (Ivanov.maxHP * .5f) && wave5) {
+				wave5 = false;
+			}
+			if (Ivanov.health < (Ivanov.maxHP * .4f) && wave3) {
+				Lvl3EntityPositions.spawnGrunts = true;
+				Lvl3EntityPositions.spawnScientists = true;
+				Lvl3EntityPositions.spawnSoldiers = true;
+				wave3 = false;
+			}
+			if (Ivanov.health < (Ivanov.maxHP * .2f) && wave4) {
+				Lvl3EntityPositions.spawnGrunts = true;
+				Lvl3EntityPositions.spawnScientists = true;
+				Lvl3EntityPositions.spawnSoldiers = true;
+				Lvl3EntityPositions.spawnFlayers = true;
+				wave4 = false;
+			}
+			
 			//Goes to class that handles spawning the enemies
 			lvl3EP.SpawnEntities(world, map);
 
@@ -670,10 +701,8 @@ public class Level3 implements Screen{
 				}
 			}else {
 				if (Ivanov.health > 0) {
-					ivanov.renderSprite(game.batch);
-					
+					ivanov.renderSprite(game.batch);	
 				}
-
 			}
 
 			if (PlayerMode.OneP) {
