@@ -510,7 +510,7 @@ public class Lvl1EntityPositions {
 		}
 		//Sol13 Sci12
 		if (room15) {
-			if (p1X > 59.6 && p1X < 59.5 && p1Y > 57.4 && p1Y < 45.1) {
+			if (p1X > 59.5 && p1X < 59.6 && p1Y > 45.1 && p1Y < 57.4) {
 				MapLayer Layer = map.getLayers().get("Sol13");
 				for (MapObject mo : Layer.getObjects()) {
 					Soldier.soldierSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
@@ -527,7 +527,7 @@ public class Lvl1EntityPositions {
 				}
 				room15 = false;
 			}
-			else if (p1X > 53.2 && p1X < 55.7 && p1Y > 45.2 && p1Y < 45.3) {
+			else if (p1X > 59.5 && p1X < 59.6 && p1Y > 45.1 && p1Y < 57.4) {
 				MapLayer Layer = map.getLayers().get("Sol13");
 				for (MapObject mo : Layer.getObjects()) {
 					Soldier.soldierSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;

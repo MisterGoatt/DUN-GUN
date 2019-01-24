@@ -25,56 +25,80 @@ public class Lvl3EntityPositions {
 	private HealthPickUp hpPickUp;
 	private Ivanov ivanov;
 	//Every spawn point trigger's boolean
-	private boolean hpSpawn = true, room1 = true, room2 = true, room3 = true, room4 = true, room5 = true, room6 = true, room7 = true,
-			room8 = true, room9 = true, room10 = true, room11 = true, room12 = true, room13 = true, room14 = true, room15 = true, 
-			room16 = true, room17 = true, room18 = true, room19 = true, room20 = true, room21 = true, room22 = true,
-			room23 = true, room24 = true, room25 = true, room26 = true;
+	public static boolean hpSpawn = false, spawnGrunts = false, spawnScientists = false, spawnSoldiers = false, spawnFlayers = false;
 	private float p1X, p1Y, p2X, p2Y;
 	
 	public void SpawnEntities(World world, TiledMap map) {
 
-//		//SPAWN HEALTH PICK_UPS
-//		if (hpSpawn) {
-//			MapLayer hpLayer = map.getLayers().get("Health Pickups");
-//			for (MapObject mo : hpLayer.getObjects()) {
-//				HealthPickUp.hpSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-//				HealthPickUp.hpSpawnPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-//				hpPickUp = new HealthPickUp(world);
-//				HealthPickUp.hpPickUp.add(hpPickUp);
-//			}
-//			hpSpawn = false;
-//		}
+		//SPAWN HEALTH PICK_UPS
+		if (hpSpawn) {
+			MapLayer hpLayer = map.getLayers().get("Health Pickups");
+			for (MapObject mo : hpLayer.getObjects()) {
+				HealthPickUp.hpSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+				HealthPickUp.hpSpawnPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+				hpPickUp = new HealthPickUp(world);
+				HealthPickUp.hpPickUp.add(hpPickUp);
+			}
+			hpSpawn = false;
+		}
 
 		p1X = PlayerOne.p1PosX;
 		p1Y = PlayerOne.p1PosY;
 		p2X = PlayerTwo.p2PosX;
 		p2Y = PlayerTwo.p2PosY;
 
-//		if (room6) {
-//			if (p1X > 16.2 && p1X < 17.28 && p1Y > 8.9 && p1Y < 9.28) {
-//
-//				MapLayer IvaLayer = map.getLayers().get("Doctor Ivanov");
-//				for (MapObject mo : IvaLayer.getObjects()) {
-//					Ivanov.ivanovSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-//					Ivanov.ivanovSpawnPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-//					ivanov = new Ivanov(world);
-//				}
-//				room6= false;
-//			}
-//
-//			else if (p2X > 16.2 && p2X < 17.28 && p2Y > 8.9 && p2Y < 9.28) {
-//
-//				MapLayer IvaLayer = map.getLayers().get("Doctor Ivanov");
-//				for (MapObject mo : IvaLayer.getObjects()) {
-//					Ivanov.ivanovSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-//					Ivanov.ivanovSpawnPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-//					ivanov = new Ivanov(world);
-//				}
-//				room6= false;
-//			}
-//		}
-		
+		//spawn grunts
+		if (spawnGrunts) {
+			System.out.println("spawn grunts");
+			MapLayer MutLayer = map.getLayers().get("mut");
+			for (MapObject mo : MutLayer.getObjects()) {
+				Grunt.gruntPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+				Grunt.gruntPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+				grunt = new Grunt(world);
+				Grunt.grunts.add(grunt);
+			}
+			spawnGrunts = false;
 		}
+		//spawn scientists
+		if (spawnScientists) {
+			System.out.println("spawn scientists");
+			MapLayer SciLayer = map.getLayers().get("sci");
+			for (MapObject mo : SciLayer.getObjects()) {
+				Scientist.scientistPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+				Scientist.scientistPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+				scientist = new Scientist(world);
+				Scientist.scientists.add(scientist);
+			}
+			spawnScientists= false;
+		}
+		//spawn soldiers
+		if (spawnSoldiers) {
+			System.out.println("spawn soldiers");
+
+			MapLayer Layer = map.getLayers().get("sol");
+			for (MapObject mo : Layer.getObjects()) {
+				Soldier.soldierSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+				Soldier.soldierSpawnPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+				soldier = new Soldier(world);
+				Soldier.soldiers.add(soldier);
+			}
+			spawnSoldiers = false;
+		}
+		//spawn flayers
+		if (spawnFlayers) {
+			System.out.println("spawn flayers");
+
+			MapLayer FlayLayer = map.getLayers().get("flay");
+			for (MapObject mo : FlayLayer.getObjects()) {
+				Flayer.flayerSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+				Flayer.flayerSpawnPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+				flayer = new Flayer(world);
+				Flayer.flayers.add(flayer);
+			}
+			spawnFlayers = false;
+		}
+		
+	}
 
 }
 

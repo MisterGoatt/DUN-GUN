@@ -114,14 +114,14 @@ public class MainMenu implements Screen, InputProcessor{
 			inactiveMenuText.draw(game.batch, "TUTORIAL", 382, 90);
 			}
 	
-
-		//***********************************		
-		//FRAMES PER SECOND
-		//**********************************
-		int f = Gdx.graphics.getFramesPerSecond(); // grabs frames per second
-		String frames = Integer.toString(f); //converts frames per second to a string
-		framerate.draw(game.batch, frames, 5, 785); //displays frames per second as text in top left
-		//**********************************
+//
+//		//***********************************		
+//		//FRAMES PER SECOND
+//		//**********************************
+//		int f = Gdx.graphics.getFramesPerSecond(); // grabs frames per second
+//		String frames = Integer.toString(f); //converts frames per second to a string
+//		framerate.draw(game.batch, frames, 5, 785); //displays frames per second as text in top left
+//		//**********************************
 
 		cam.update();
 		game.batch.end(); 

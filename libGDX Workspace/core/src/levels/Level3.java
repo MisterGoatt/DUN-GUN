@@ -43,6 +43,7 @@ import entities.FlayerThorns;
 import entities.Grunt;
 import entities.HealthPickUp;
 import entities.Ivanov;
+import entities.IvanovThorns;
 import entities.PlayerOne;
 import entities.PlayerTwo;
 import entities.Scientist;
@@ -71,7 +72,7 @@ public class Level3 implements Screen{
 	public CreateBullet createBullet;
 	private CollisionDetector cd;
 	private Lvl3EntityPositions lvl3EP;
-	private Music levelTwoMusicAll, secretRoomMusic;
+	private Music levelThreeMusicAll, secretRoomMusic;
 	private Texture mouseCursor, axeMouseCursor, pauseMenu;
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private boolean lockCursor = true, gamePaused = false, sMusic = false, spawnIvanov = true, zoom = true;
@@ -136,8 +137,7 @@ public class Level3 implements Screen{
 		SoldierBullets.soldierBullets.clear();
 		Flayer.flayers.clear();
 		FlayerThorns.flayerThorns.clear();
-
-
+		
 		if (!PlayerMode.OneP) {
 			PlayerTwo.pellets2.clear();
 			PlayerTwo.lasers2.clear();
@@ -145,15 +145,15 @@ public class Level3 implements Screen{
 		}
 
 
-		levelTwoMusicAll = Mutagen.manager.get("music/songAll.mp3");
+		levelThreeMusicAll = Mutagen.manager.get("music/songAll.mp3");
 		secretRoomMusic = Mutagen.manager.get("music/whistling masterpiece.mp3");
 
 		//levelOneMusi.setLooping(true);
 		if (Mutagen.musicVolume > 0) {
-			levelTwoMusicAll.setLooping(true);
-			levelTwoMusicAll.play();
+			levelThreeMusicAll.setLooping(true);
+			levelThreeMusicAll.play();
 
-			levelTwoMusicAll.setVolume(Mutagen.musicVolume - .3f);
+			levelThreeMusicAll.setVolume(Mutagen.musicVolume - .3f);
 			secretRoomMusic.setVolume(Mutagen.musicVolume);
 
 		}
@@ -205,6 +205,11 @@ public class Level3 implements Screen{
 				break;
 			}
 			PlayerTwo.timeToShake = false;
+		}
+		
+		if (Ivanov.shake) {
+			shake(.5f, 200);
+			Ivanov.shake = false;
 		}
 	}
 
@@ -320,13 +325,14 @@ public class Level3 implements Screen{
 			if (!zoom) {
 				cam.zoom += .005f;
 				if (cam.zoom >= .6) {
+					
 					zoom = true;					
 				}
 			}
 		}else {
 			if (zoom) {
 				cam.zoom -= .005f;
-				if (cam.zoom <= .2 ) {
+				if (cam.zoom <= .25 ) {
 					zoom = false;
 				}
 			}
@@ -426,6 +432,15 @@ public class Level3 implements Screen{
 				world.destroyBody(b);
 				b = null;
 			}
+			if (u instanceof IvanovThorns) {
+				IvanovThorns.ivanovThorns.removeValue((IvanovThorns) b.getUserData(), true);
+				world.destroyBody(b);
+				b = null;
+			}
+			if (u instanceof Ivanov) {
+				world.destroyBody(b);
+				b = null;
+			}
 		}
 		bodiesToRemove.clear();
 	}
@@ -476,10 +491,10 @@ public class Level3 implements Screen{
 				}
 				//QUIT TO MENU
 				if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < 0.221 && mousePosition.y > -.38) {
-					levelTwoMusicAll.stop();
+					levelThreeMusicAll.stop();
 					Mutagen.clicking();
 					game.setScreen(new MainMenu(game));
-				}	
+				}
 				//QUIT GAME
 				else if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < -.46 && mousePosition.y > -1.06) {
 					Gdx.app.exit();
@@ -540,62 +555,39 @@ public class Level3 implements Screen{
 			for (int i = 0; i < FlayerThorns.flayerThorns.size; i++) {
 				FlayerThorns.flayerThorns.get(i).renderSprite(game.batch);
 			}
-
-			for (int i = 0; i < HealthPickUp.hpPickUp.size; i++) {
-				HealthPickUp.hpPickUp.get(i).renderSprite(game.batch);
+			for (int i = 0; i < IvanovThorns.ivanovThorns.size; i++) {
+				IvanovThorns.ivanovThorns.get(i).renderSprite(game.batch);
 			}
 			for (int i = 0; i < HealthPickUp.hpPickUp.size; i++) {
 				HealthPickUp.hpPickUp.get(i).renderSprite(game.batch);
 			}
 
+
+			
 			//Goes to class that handles spawning the enemies
 			lvl3EP.SpawnEntities(world, map);
 
 			//Secret Room Music
 			if (PlayerOne.p1PosX > 10.8 && PlayerOne.p1PosX < 11 && PlayerOne.p1PosY > 44 && PlayerOne.p1PosY < 46.6 && !sMusic) {
-				levelTwoMusicAll.stop();
+				levelThreeMusicAll.stop();
 				secretRoomMusic.play();
 				sMusic = true;
 			}
 			if (PlayerOne.p1PosX > 13 && PlayerOne.p1PosX < 13.5 && PlayerOne.p1PosY > 44 && PlayerOne.p1PosY < 46.6 && sMusic) {
 				secretRoomMusic.stop();
-				levelTwoMusicAll.play();
+				levelThreeMusicAll.play();
 				sMusic = false;
 			}
 
 			//LEVEL END
-			if (PlayerOne.p1PosX > 97 && PlayerOne.p1PosX < 98.4 && PlayerOne.p1PosY > 25.3 && PlayerOne.p1PosY < 26.7) {
+			if (Ivanov.dead) {
 				PlayerOne.runningSound.stop();					
 
 				if (!PlayerMode.OneP) {
 					PlayerTwo.runningSound.stop();
 				}
 				Gdx.input.setCursorCatched(false);
-				levelTwoMusicAll.stop();
-
-				gameOver+=1;
-				shapeRenderer.setProjectionMatrix(cam.combined);
-
-				shapeRenderer.begin(ShapeType.Filled);
-				Gdx.gl.glEnable(GL20.GL_BLEND);
-				Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-				fadeOut += .01f;
-				shapeRenderer.setColor(0, 0, 0, fadeOut);
-				shapeRenderer.rect(PlayerOne.p1PosX - 15, PlayerOne.p1PosY- 15, 30, 30);
-				shapeRenderer.end();
-				Gdx.gl.glDisable(GL20.GL_BLEND);
-
-				if (gameOver > 180) {
-					game.setScreen(new levelCompleted(game));
-
-				}
-
-			}
-			else if (PlayerTwo.p2PosX > 97 && PlayerTwo.p2PosX < 98.4 && PlayerTwo.p2PosY > 25.3 && PlayerTwo.p2PosY < 26.7) {
-				PlayerOne.runningSound.stop();
-				PlayerTwo.runningSound.stop();
-				Gdx.input.setCursorCatched(false);
-				levelTwoMusicAll.stop();
+				levelThreeMusicAll.stop();
 
 				gameOver+=1;
 				shapeRenderer.setProjectionMatrix(cam.combined);
@@ -659,9 +651,8 @@ public class Level3 implements Screen{
 					spawnIvanov= false;
 				}
 			}else {
-
-				ivanov.renderSprite(game.batch);
-
+					ivanov.renderSprite(game.batch);	
+				
 			}
 
 			if (PlayerMode.OneP) {

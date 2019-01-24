@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="24" nextobjectid="63">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="24" nextobjectid="65">
  <tileset firstgid="1" source="Level2 Tileset.tsx"/>
  <layer id="11" name="Ground" width="100" height="100">
   <data encoding="csv">
@@ -1193,20 +1193,21 @@
    <ellipse/>
   </object>
  </objectgroup>
- <objectgroup id="23" name="Health Pickups"/>
+ <objectgroup color="#ff0000" id="23" name="Health Pickups">
+  <object id="63" x="1340" y="1808">
+   <ellipse/>
+  </object>
+  <object id="64" x="2019" y="1854">
+   <ellipse/>
+  </object>
+ </objectgroup>
  <objectgroup color="#00007f" id="16" name="Doctor Ivanov">
-  <object id="2" x="1676.43" y="2032.43">
+  <object id="2" x="1690.43" y="1947.43">
    <ellipse/>
   </object>
  </objectgroup>
  <objectgroup color="#ffff00" id="19" name="sci">
   <object id="47" x="1662" y="2290">
-   <ellipse/>
-  </object>
-  <object id="48" x="1661.33" y="2325.67">
-   <ellipse/>
-  </object>
-  <object id="49" x="1698" y="2324.67">
    <ellipse/>
   </object>
   <object id="50" x="1697.33" y="2289.33">
@@ -1215,9 +1216,6 @@
  </objectgroup>
  <objectgroup color="#005500" id="20" name="sol">
   <object id="51" x="1620" y="2253.33">
-   <ellipse/>
-  </object>
-  <object id="52" x="1682.67" y="2253.33">
    <ellipse/>
   </object>
   <object id="53" x="1737.33" y="2253.33">
@@ -1243,12 +1241,6 @@
    <ellipse/>
   </object>
   <object id="59" x="1697.33" y="2400">
-   <ellipse/>
-  </object>
-  <object id="60" x="1668" y="2444">
-   <ellipse/>
-  </object>
-  <object id="61" x="1702.67" y="2445.33">
    <ellipse/>
   </object>
  </objectgroup>

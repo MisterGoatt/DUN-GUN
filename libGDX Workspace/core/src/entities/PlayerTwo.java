@@ -46,7 +46,7 @@ public class PlayerTwo {
 			slowedCounter, rotationSpeed = 4, secondWind = 1; //speed of the player, Sqrt 2 divided by 2
 	public static float  angle, p2PosX, p2PosY; //get distance between mouse and player in radians
 	//amount of damage each weapon deals
-	public static float laserLanceDamage = 150, battleAxeDamage = 200, assaultRifleDamage = 20, shotgunDamage = 25f, 
+	public static float laserLanceDamage = 150, battleAxeDamage = 200, assaultRifleDamage = 20, shotgunDamage = 45f, 
 			rifleDamage = 150, revolverDamage = 75;
 	public static int player2HP, player2MaxHP1 = 200, player2MaxHP2 = 150;
 	public static boolean p2Dead = false;

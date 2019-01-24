@@ -35,7 +35,7 @@ public class Grunt extends Sprite implements Disposable{
 	private Sound atkSwoosh;
 	public boolean attack = false, contAtk = false, tookDamage = false;
 	public int atkdmg = 8, target, aimTarget;
-	private boolean initialDmg = false; //makes sure the player takes damage at first when the enemy touches player
+	private boolean initialDmg = false, animationFinished = false; //makes sure the player takes damage at first when the enemy touches player
 	public static Array<Grunt> grunts = new Array<Grunt>();
 	public static Vector2 gruntPos = new Vector2(0,0);
 	private Texture blood;
@@ -112,10 +112,20 @@ public class Grunt extends Sprite implements Disposable{
 			float gposX = (float) (Math.cos(angle2)) * runSpeed;
 			float gposY = (float) (Math.sin(angle2)) * runSpeed;
 
-			if (!tookDamage && !attack && !contAtk) {
+			if (!tookDamage && !attack && !contAtk && animationFinished) {
 				batch.draw(gruntStandingRegion, posX - .17f, posY - .13f, 20 / Mutagen.PPM, 10 / Mutagen.PPM, 40 / Mutagen.PPM, 32 / Mutagen.PPM, 1, 1, angle);
 			}
-			else if (contAtk) {
+			else if (tookDamage) {
+
+				batch.draw(gruntDamagedAnimation.getKeyFrame(timePassed), posX - .20f, posY -.27f, 20 / Mutagen.PPM, 25 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1.18f, 1.18f, angle);
+				timePassed += Gdx.graphics.getDeltaTime();
+				if(gruntDamagedAnimation.isAnimationFinished(timePassed)) {
+					timePassed = 0;
+					tookDamage = false;
+				}
+			}
+
+			else {
 				if (!initialDmg) {
 					if (target == 1) {
 						PlayerOne.player1HP -= atkdmg;						
@@ -127,6 +137,7 @@ public class Grunt extends Sprite implements Disposable{
 				}
 				batch.draw(gruntAtkAnimation.getKeyFrame(timePassed), posX - .17f, posY - .13f, 20 / Mutagen.PPM, 10 / Mutagen.PPM, 40 / Mutagen.PPM, 32 / Mutagen.PPM, 1, 1, angle);
 				timePassed += Gdx.graphics.getDeltaTime();
+				animationFinished = false;
 
 				if(gruntAtkAnimation.isAnimationFinished(timePassed)) {
 					if (Mutagen.sfxVolume != 0) {
@@ -134,17 +145,10 @@ public class Grunt extends Sprite implements Disposable{
 					}
 					timePassed = 0;
 					initialDmg = false;
+					animationFinished = true;
 				}
 			}
 
-			else {
-				batch.draw(gruntDamagedAnimation.getKeyFrame(timePassed), posX - .20f, posY -.27f, 20 / Mutagen.PPM, 25 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1.18f, 1.18f, angle);
-				timePassed += Gdx.graphics.getDeltaTime();
-				if(gruntDamagedAnimation.isAnimationFinished(timePassed)) {
-					timePassed = 0;
-					tookDamage = false;
-				}
-			}
 
 			if (!PlayerMode.OneP) {
 				if (!PlayerOne.p1Dead) {
