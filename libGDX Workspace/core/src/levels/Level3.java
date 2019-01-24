@@ -75,7 +75,7 @@ public class Level3 implements Screen{
 	private Music levelThreeMusicAll, secretRoomMusic;
 	private Texture mouseCursor, axeMouseCursor, pauseMenu;
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
-	private boolean lockCursor = true, gamePaused = false, sMusic = false, spawnIvanov = true, zoom = true, wave1 = true, wave2 = true, wave3 = true, wave4 = true, wave5 = true;
+	private boolean lockCursor = true, gamePaused = false, sMusic = false, spawnIvanov = true, zoom = true;
 	private float elapsed = 0, duration, intensity, gameOver = 0, fadeOut = 0;
 	public static boolean bulletImpact = false, cin = false;
 	public static Vector3 mousePosition = new Vector3(0, 0, 0);
@@ -562,32 +562,7 @@ public class Level3 implements Screen{
 				HealthPickUp.hpPickUp.get(i).renderSprite(game.batch);
 			}
 
-			//Spawn waves of enemies depending on Ivanov's remaining health
-			if (Ivanov.health < (Ivanov.maxHP * .8) && wave1) {
-				Lvl3EntityPositions.spawnGrunts = true;
-				wave1 = false;
-			}
-			if (Ivanov.health < (Ivanov.maxHP * .6f) && wave2) {
-				Lvl3EntityPositions.spawnGrunts = true;
-				Lvl3EntityPositions.spawnScientists = true;
-				wave2 = false;
-			}
-			if (Ivanov.health < (Ivanov.maxHP * .5f) && wave5) {
-				wave5 = false;
-			}
-			if (Ivanov.health < (Ivanov.maxHP * .4f) && wave3) {
-				Lvl3EntityPositions.spawnGrunts = true;
-				Lvl3EntityPositions.spawnScientists = true;
-				Lvl3EntityPositions.spawnSoldiers = true;
-				wave3 = false;
-			}
-			if (Ivanov.health < (Ivanov.maxHP * .2f) && wave4) {
-				Lvl3EntityPositions.spawnGrunts = true;
-				Lvl3EntityPositions.spawnScientists = true;
-				Lvl3EntityPositions.spawnSoldiers = true;
-				Lvl3EntityPositions.spawnFlayers = true;
-				wave4 = false;
-			}
+
 			
 			//Goes to class that handles spawning the enemies
 			lvl3EP.SpawnEntities(world, map);
@@ -605,36 +580,12 @@ public class Level3 implements Screen{
 			}
 
 			//LEVEL END
-			if (PlayerOne.p1PosX > 97 && PlayerOne.p1PosX < 98.4 && PlayerOne.p1PosY > 25.3 && PlayerOne.p1PosY < 26.7) {
+			if (Ivanov.dead) {
 				PlayerOne.runningSound.stop();					
 
 				if (!PlayerMode.OneP) {
 					PlayerTwo.runningSound.stop();
 				}
-				Gdx.input.setCursorCatched(false);
-				levelThreeMusicAll.stop();
-
-				gameOver+=1;
-				shapeRenderer.setProjectionMatrix(cam.combined);
-
-				shapeRenderer.begin(ShapeType.Filled);
-				Gdx.gl.glEnable(GL20.GL_BLEND);
-				Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-				fadeOut += .01f;
-				shapeRenderer.setColor(0, 0, 0, fadeOut);
-				shapeRenderer.rect(PlayerOne.p1PosX - 15, PlayerOne.p1PosY- 15, 30, 30);
-				shapeRenderer.end();
-				Gdx.gl.glDisable(GL20.GL_BLEND);
-
-				if (gameOver > 180) {
-					game.setScreen(new levelCompleted(game));
-
-				}
-
-			}
-			else if (PlayerTwo.p2PosX > 97 && PlayerTwo.p2PosX < 98.4 && PlayerTwo.p2PosY > 25.3 && PlayerTwo.p2PosY < 26.7) {
-				PlayerOne.runningSound.stop();
-				PlayerTwo.runningSound.stop();
 				Gdx.input.setCursorCatched(false);
 				levelThreeMusicAll.stop();
 
@@ -700,9 +651,8 @@ public class Level3 implements Screen{
 					spawnIvanov= false;
 				}
 			}else {
-				if (Ivanov.health > 0) {
 					ivanov.renderSprite(game.batch);	
-				}
+				
 			}
 
 			if (PlayerMode.OneP) {

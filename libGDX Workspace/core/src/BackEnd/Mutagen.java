@@ -209,6 +209,14 @@ public class Mutagen extends Game{
 			manager.load("sprites/ivanov/ivanovHPBG.png", Texture.class);
 			manager.load("sprites/ivanov/atkAnimation.atlas", TextureAtlas.class);
 			manager.load("sprites/ivanov/thornAnimation.atlas", TextureAtlas.class);
+			manager.load("sprites/ivanov/ivanovDeath.atlas", TextureAtlas.class);
+			manager.load("sound effects/enemies/ivanovAtk.mp3", Sound.class);
+			manager.load("sound effects/enemies/smash2.mp3", Sound.class);
+			manager.load("sound effects/enemies/transYell.mp3", Sound.class);
+			manager.load("sound effects/enemies/waveAlarm.mp3", Sound.class);
+			manager.load("sound effects/enemies/chargeSFX.mp3", Sound.class);
+			manager.load("sound effects/enemies/thornLaunch.mp3", Sound.class);
+			manager.load("sound effects/enemies/ivanovDeath.mp3", Sound.class);
 
 			
 			manager.finishLoading();

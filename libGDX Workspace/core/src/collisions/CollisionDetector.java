@@ -1395,10 +1395,9 @@ public class CollisionDetector implements ContactListener{
 					break;
 					default: break;
 					}
-					System.out.println(Ivanov.health);
-					if (Ivanov.health <= 0) {
-						bodiesToRemove.add(fa.getBody());
-					}
+//					if (Ivanov.health <= 0) {
+//						bodiesToRemove.add(fa.getBody());
+//					}
 				}
 				if (fb.getUserData().equals("ivanov")){
 
@@ -1417,11 +1416,10 @@ public class CollisionDetector implements ContactListener{
 					break;
 					default: break;
 					}
-					System.out.println(Ivanov.health);
 
-					if (Ivanov.health <= 0) {
-						bodiesToRemove.add(fb.getBody());
-					}
+//					if (Ivanov.health <= 0) {
+//						bodiesToRemove.add(fb.getBody());
+//					}
 				}
 
 			}
@@ -1459,9 +1457,9 @@ public class CollisionDetector implements ContactListener{
 					default: break;
 					}
 
-					if (Ivanov.health <= 0) {
-						bodiesToRemove.add(fa.getBody());
-					}
+//					if (Ivanov.health <= 0) {
+//						bodiesToRemove.add(fa.getBody());
+//					}
 				}
 				if (fb.getUserData().equals("ivanov")){
 
@@ -1481,9 +1479,9 @@ public class CollisionDetector implements ContactListener{
 					default: break;
 					}
 
-					if (Ivanov.health <= 0) {
-						bodiesToRemove.add(fb.getBody());
-					}
+//					if (Ivanov.health <= 0) {
+//						bodiesToRemove.add(fb.getBody());
+//					}
 				}
 
 			}
