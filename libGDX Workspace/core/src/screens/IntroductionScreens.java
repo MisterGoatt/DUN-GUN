@@ -21,6 +21,7 @@ public class IntroductionScreens implements Screen{
 	Texture publisherScreen;
 	Texture creditScreen;
 	Texture titleScreen;
+	Texture musicScreen;
 	private long startTime = System.currentTimeMillis();
 	private Viewport gamePort;
 	private OrthographicCamera cam;
@@ -37,9 +38,11 @@ public class IntroductionScreens implements Screen{
 			publisherScreen = Mutagen.manager.get("screens/intro screens/ctm_placeholder.jpg");
 			creditScreen = Mutagen.manager.get("screens/intro screens/introCredits.jpg");
 			titleScreen = Mutagen.manager.get("screens/intro screens/introTitle.jpg");
+			musicScreen = Mutagen.manager.get("screens/intro screens/musicScreen.jpg");
 			publisherScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 			creditScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 			titleScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			musicScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
 		} catch (Exception e) {
 			//Logs that this method of this class triggered an exception
@@ -72,8 +75,9 @@ public class IntroductionScreens implements Screen{
 					game.batch.draw(creditScreen, 0, 0);
 				}
 				//RYAN'S CREDIT
-				else if (counter >= 6.7){
-					game.setScreen(new MainMenu(game));
+				else if (counter >= 6.7 && counter <= 7.7){
+					game.batch.draw(musicScreen, 0, 0);
+
 				}else game.setScreen(new MainMenu(game));
 				//skips the introduction screens
 				if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
@@ -131,6 +135,10 @@ public class IntroductionScreens implements Screen{
 
 	@Override
 	public void dispose() {
+		publisherScreen.dispose();
+		creditScreen.dispose();
+		titleScreen.dispose();
+		musicScreen.dispose();
 
 	}
 }

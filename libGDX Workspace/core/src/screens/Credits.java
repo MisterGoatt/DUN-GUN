@@ -27,13 +27,11 @@ public class Credits implements Screen, InputProcessor {
 	public Credits(final Mutagen game) {
 		this.game = game;
 		try {
-			credits = Mutagen.manager.get("screens/ScrollingCN.jpg");
+			credits = Mutagen.manager.get("screens/ScrollingC.jpg");
 			credits.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
 			cam = new OrthographicCamera();
-			gamePort = new FitViewport(1500, 800, cam); // fits view port to match map's dimensions (in this case
-			// 320x320)
-			// and scales. Adds black bars to adjust
+			gamePort = new FitViewport(1500, 800, cam);
 			cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 			creditsMusic.setVolume(Mutagen.musicVolume);
 			creditsMusic.play();

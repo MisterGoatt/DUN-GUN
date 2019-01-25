@@ -27,30 +27,30 @@ public class CrashScreen implements Screen {
 	
 	public CrashScreen(final Mutagen game) {
 		this.game = game;
-		try {
-			crashScreen = Mutagen.manager.get("screens/tutorials/crashScreen.jpg");
+//		try {
+			crashScreen = new Texture(Gdx.files.internal("screens/tutorials/crashScreen.jpg"));
 			crashScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
 			cam = new OrthographicCamera();
 			gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam);
 			cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-		} catch (Exception e) {
-			//Logs that this method of this class triggered an exception
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
-
-		}
+//		} 
+//		catch (Exception e) {
+//			//Logs that this method of this class triggered an exception
+//			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+//			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+//
+//		}
 	}
 	
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void render(float delta) {
-		try {
+//		try {
 			// clears screen
 			Gdx.gl.glClearColor(0, 0, 0 , 1);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -66,11 +66,7 @@ public class CrashScreen implements Screen {
 			
 			float mX = mouse_position.x;
 			float mY = mouse_position.y;
-			
-			//System.out.println(mouse_position.x);
-			//System.out.println(mouse_position.y);
-			
-			
+
 			if (640 < mX && mX < 860 && 110 < mY && mY < 330)
 			{
 				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
@@ -78,14 +74,16 @@ public class CrashScreen implements Screen {
 				}
 			}
 				
-			cam.update();
-			game.batch.end();
-		} catch (Exception e) {
-			//Logs that this method of this class triggered an exception
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
 
-		}
+			game.batch.end();
+			cam.update();
+		
+//		} catch (Exception e) {
+//			//Logs that this method of this class triggered an exception
+//			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+//			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+//
+//		}
 	}
 
 	@Override
@@ -95,19 +93,14 @@ public class CrashScreen implements Screen {
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
 		
 	}
 
