@@ -547,12 +547,24 @@ public class PlayerOne extends Sprite implements Disposable{
 						if (!movHalt) {
 							if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)){
 								this.b2body.setLinearVelocity(-speed * speedAB, speed * speedAB);
+								if (!shootBehind) {
+									angle = 45;
+								}
 							}else if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)){
 								this.b2body.setLinearVelocity(speed * speedAB, speed * speedAB);
+								if (!shootBehind) {
+									angle = 315;
+								}
 							}else if(Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)){
-								this.b2body.setLinearVelocity(-speed * speedAB, -speed * speedAB );   
+								this.b2body.setLinearVelocity(-speed * speedAB, -speed * speedAB );
+								if (!shootBehind) {
+									angle = 135;
+								}
 							}else if(Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)){
 								this.b2body.setLinearVelocity(speed * speedAB, -speed * speedAB );
+								if (!shootBehind) {
+									angle = 225;
+								}
 							}
 							else if(Gdx.input.isKeyPressed(Input.Keys.W)){
 								this.b2body.setLinearVelocity(0f, speed);

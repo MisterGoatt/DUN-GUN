@@ -502,12 +502,24 @@ public class PlayerTwo {
 					if (!movHalt) {
 						if(Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.LEFT)){
 							this.b2body.setLinearVelocity(-speed * speedAB, speed * speedAB);
+							if (!shootBehind) {
+								angle = 45;
+							}
 						}else if(Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
 							this.b2body.setLinearVelocity(speed * speedAB, speed * speedAB);
+							if (!shootBehind) {
+								angle = 315;
+							}
 						}else if(Gdx.input.isKeyPressed(Input.Keys.DOWN) && Gdx.input.isKeyPressed(Input.Keys.LEFT)){
 							this.b2body.setLinearVelocity(-speed * speedAB, -speed * speedAB );   
+							if (!shootBehind) {
+								angle = 135;
+							}
 						}else if(Gdx.input.isKeyPressed(Input.Keys.DOWN) && Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
 							this.b2body.setLinearVelocity(speed * speedAB, -speed * speedAB );
+							if (!shootBehind) {
+								angle = 225;
+							}
 						}
 						else if(Gdx.input.isKeyPressed(Input.Keys.UP)){
 							this.b2body.setLinearVelocity(0f, speed);
