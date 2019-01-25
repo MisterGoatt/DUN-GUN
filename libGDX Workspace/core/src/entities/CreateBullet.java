@@ -195,7 +195,8 @@ public class CreateBullet{
 					vertice[3] = new Vector2(15, 10).scl(1/Mutagen.PPM);
 					shape.set(vertice);
 					fdef.shape = shape;
-				}
+				}	
+
 				else {
 					CircleShape shape = new CircleShape();
 					fdef.shape = shape;
@@ -208,6 +209,7 @@ public class CreateBullet{
 						shape.setRadius(4 / Mutagen.PPM);
 					}
 				}
+
 				//Sets size of the physics bodies depending on the type of gun
 				fdef.filter.categoryBits = Mutagen.BULLET; //identifies the category bit is
 				fdef.filter.maskBits = Mutagen.WALL | Mutagen.ENEMY; // what masking bit the category bit collides with
@@ -220,6 +222,13 @@ public class CreateBullet{
 					angleR = angleR + angleVary;
 					posX = (float) (Math.cos(angleR)) * speedVary;
 					posY = (float) (Math.sin(angleR)) * speedVary;
+				}	
+				else if (GunSelectionScreen.p2WeaponSelected == "assault rifle") {
+					float angleVary = (int)(Math.random() * 30 - 15);
+					angleVary = angleVary / Mutagen.PPM;
+					angleR = angleR + angleVary;
+					posX = (float) (Math.cos(angleR)) * speed;
+					posY = (float) (Math.sin(angleR)) * speed;
 				}
 
 				else {

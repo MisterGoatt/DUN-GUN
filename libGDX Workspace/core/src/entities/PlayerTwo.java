@@ -46,7 +46,7 @@ public class PlayerTwo {
 			slowedCounter, rotationSpeed = 4, secondWind = 1; //speed of the player, Sqrt 2 divided by 2
 	public static float  angle, p2PosX, p2PosY; //get distance between mouse and player in radians
 	//amount of damage each weapon deals
-	public static float laserLanceDamage = 150, battleAxeDamage = 200, assaultRifleDamage = 20, shotgunDamage = 45f, 
+	public static float laserLanceDamage = 60, battleAxeDamage = 175, assaultRifleDamage = 22, shotgunDamage = 38f, 
 			rifleDamage = 150, revolverDamage = 75;
 	public static int player2HP, player2MaxHP1 = 200, player2MaxHP2 = 150;
 	public static boolean p2Dead = false;
@@ -64,6 +64,8 @@ public class PlayerTwo {
 
 	public PlayerTwo(World world) {
 		this.world = world;
+		
+		//determines the health depending on the difficulty
 		if (DifficultyScreen.difficulty == 1) {
 			player2HP = player2MaxHP1;			
 		}
@@ -82,6 +84,8 @@ public class PlayerTwo {
 		slowedCounter = 0;
 		p2Dead = false;
 		slowRestart = false;
+		
+		//retrieves atlas assets loaded from asset manager and creates animation and standing region objects
 		revolverTextureAtlas = Mutagen.manager.get("sprites/player2/revolverP2.atlas", TextureAtlas.class);
 		revolverAnimation = new Animation <TextureRegion>(1f/15f, revolverTextureAtlas.getRegions());
 		revolverStandingRegion = revolverTextureAtlas.findRegion("tile000");
@@ -105,8 +109,9 @@ public class PlayerTwo {
 		axeSwingTextureAtlas = Mutagen.manager.get("sprites/player2/battleAxeP2.atlas", TextureAtlas.class);
 		axeSwingAnimation = new Animation <TextureRegion>(1f/15f, axeSwingTextureAtlas.getRegions());
 		axeStandingRegion = axeSwingTextureAtlas.findRegion("tile000");
-
 		runningSound = Gdx.audio.newSound(Gdx.files.internal("sound effects/running.mp3"));
+		
+		//GETS ASSETS THAT HAVE BEEN LOADED BY ASSET MANAGER
 		p2HP = Mutagen.manager.get("sprites/player2/hp2.png");
 		p2HPBG = Mutagen.manager.get("sprites/player2/hpBg2.png");
 		gunShot = Mutagen.manager.get("sound effects/shooting/pistol_shot.mp3", Sound.class);
@@ -121,7 +126,7 @@ public class PlayerTwo {
 		hit4 = Mutagen.manager.get("sound effects/impacts/hit4.ogg", Sound.class);
 		oneLifeLeft = Mutagen.manager.get("sound effects/lifeRemaining.mp3");
 		deadSfx = Mutagen.manager.get("sound effects/playerDead.mp3");
-		ID = 2;
+		ID = 2; //defines if player is player 1 or player 2 for the CreateBullet class
 		definePlayer();
 	}
 
@@ -145,9 +150,12 @@ public class PlayerTwo {
 
 		shape.dispose();
 	}
+	//create b2body physics body, set spawn location, masking, and category bits
 	public void renderSprite(SpriteBatch batch) {
 		float posX = b2body.getPosition().x;
 		float posY = b2body.getPosition().y;
+		
+		//DEPENDING ON THE WEAPON THEN IT DETERMINES THE SPEED OF PLAYER AS WELL AS THE ANIMATIONS TO USE FOR THE PLAYER
 		//revolver			
 		if (GunSelectionScreen.p2WeaponSelected == "revolver") {
 			speed = 1.5f;
@@ -287,7 +295,7 @@ public class PlayerTwo {
 				}
 				secondWind += 1;
 			}else if (secondWind > 1 || DifficultyScreen.difficulty == 2){
-
+				//player dies
 				world.destroyBody(this.b2body);
 				p2PosX = 0;
 				p2PosY = 0;
@@ -299,6 +307,7 @@ public class PlayerTwo {
 		}
 
 	}
+	//CALLED WHEN PLAYER SHOOTS GUN AND HANDLES SFX AND CALLS CreateBullet.java
 	public void shootGun() {
 
 		//laser delay for build up of power effect
@@ -313,7 +322,6 @@ public class PlayerTwo {
 			createBullet.b2body = null;
 		}
 		if (isShooting) {
-			//waitToShootL += 1;
 			switch (GunSelectionScreen.p2WeaponSelected) {
 			case "laser":
 				startLaserCount = true;
@@ -381,6 +389,7 @@ public class PlayerTwo {
 			}
 		}
 	}
+	//PLAYER INPUT FOR MOVEMENT AND SHOOTING
 	public void handleInput(float delta) {
 		//setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2 + (5 / Mutagen.PPM));
 		p2PosX = b2body.getPosition().x;

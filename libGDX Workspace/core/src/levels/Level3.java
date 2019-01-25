@@ -251,17 +251,10 @@ public class Level3 implements Screen{
 					boundaryAbs.y = Math.abs(playerOne.b2body.getPosition().y - playerTwo.b2body.getPosition().y);
 					boundary.x = playerOne.b2body.getPosition().x - playerTwo.b2body.getPosition().x;
 					boundary.y = playerOne.b2body.getPosition().y - playerTwo.b2body.getPosition().y;
-					if (boundaryAbs.x > 8.9) {
+					if (boundaryAbs.x > 8.9 || boundaryAbs.y > 4.7) {
 						PlayerOne.movHalt = true;
 						PlayerTwo.movHalt = true;
 
-					}else {
-						PlayerOne.movHalt = false;
-						PlayerTwo.movHalt = false;
-					}
-					if (boundaryAbs.y > 4.7) {
-						PlayerOne.movHalt = true;
-						PlayerTwo.movHalt = true;
 					}else {
 						PlayerOne.movHalt = false;
 						PlayerTwo.movHalt = false;
@@ -270,13 +263,13 @@ public class Level3 implements Screen{
 					if (PlayerOne.movHalt && PlayerTwo.movHalt) {
 						//p2 is right of p1
 						if (boundary.x >= 0 ) {
-							playerOne.b2body.applyForceToCenter(2, 0, true);
-							playerTwo.b2body.applyForceToCenter(-2, 0, true);
+							playerOne.b2body.applyForceToCenter(5, 0, true);
+							playerTwo.b2body.applyForceToCenter(-5, 0, true);
 						}
 						//p2 if left of p1
 						else {
-							playerOne.b2body.applyForceToCenter(-2, 0, true);
-							playerTwo.b2body.applyForceToCenter(2, 0, true);
+							playerOne.b2body.applyForceToCenter(-5, 0, true);
+							playerTwo.b2body.applyForceToCenter(5, 0, true);
 
 						}
 						//p2 is below p1
@@ -290,7 +283,7 @@ public class Level3 implements Screen{
 							playerTwo.b2body.applyForceToCenter(0, -2f, true);
 						}
 					}
-
+					//PLACES CAMERA IN BETWEEN PLAYER 1 AND PLAYER 2
 					cam.position.x = (playerTwo.b2body.getPosition().x - playerOne.b2body.getPosition().x) / 2;
 					if (playerOne.b2body.getPosition().x > playerTwo.b2body.getPosition().x) {
 						cam.position.x = playerTwo.b2body.getPosition().x + Math.abs(cam.position.x);
@@ -322,6 +315,7 @@ public class Level3 implements Screen{
 				}
 
 			}
+			//zoom in on Ivanov when he's doing his transformation
 			if (!zoom) {
 				cam.zoom += .005f;
 				if (cam.zoom >= .6) {
@@ -329,7 +323,7 @@ public class Level3 implements Screen{
 					zoom = true;					
 				}
 			}
-		}else {
+		}else { //zoom out after Ivanov's transformation
 			if (zoom) {
 				cam.zoom -= .005f;
 				if (cam.zoom <= .25 ) {

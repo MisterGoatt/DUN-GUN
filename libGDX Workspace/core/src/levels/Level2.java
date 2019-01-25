@@ -249,17 +249,10 @@ public class Level2 implements Screen{
 				boundaryAbs.y = Math.abs(playerOne.b2body.getPosition().y - playerTwo.b2body.getPosition().y);
 				boundary.x = playerOne.b2body.getPosition().x - playerTwo.b2body.getPosition().x;
 				boundary.y = playerOne.b2body.getPosition().y - playerTwo.b2body.getPosition().y;
-				if (boundaryAbs.x > 8.9) {
+				if (boundaryAbs.x > 8.9 || boundaryAbs.y > 4.7) {
 					PlayerOne.movHalt = true;
 					PlayerTwo.movHalt = true;
 
-				}else {
-					PlayerOne.movHalt = false;
-					PlayerTwo.movHalt = false;
-				}
-				if (boundaryAbs.y > 4.7) {
-					PlayerOne.movHalt = true;
-					PlayerTwo.movHalt = true;
 				}else {
 					PlayerOne.movHalt = false;
 					PlayerTwo.movHalt = false;
@@ -638,7 +631,7 @@ public class Level2 implements Screen{
 		mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		cam.unproject(mousePosition); //gets mouse coordinates within viewport
 		game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
-		//System.out.println(mousePosition);
+		System.out.println(mousePosition);
 	}
 
 	@Override

@@ -48,7 +48,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	private float speed = 3, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, slowedCounter, rotationSpeed = 4, storedHP, secondWind = 1, olA; //speed of the player, Sqrt 2 divided by 2
 	public static float  angle, p1PosX, p1PosY, axeSwingTimer = 0; //get distance between mouse and player in radians
 	//amount of damage each weapon deals
-	public static float laserLanceDamage = 75, battleAxeDamage = 200, assaultRifleDamage = 20, shotgunDamage = 45f, 
+	public static float laserLanceDamage = 60, battleAxeDamage = 175, assaultRifleDamage = 22, shotgunDamage = 38f, 
 			rifleDamage = 150, revolverDamage = 75;
 	public static int player1HP, player1MaxHP1 = 200, player1MaxHP2 = 150;
 	public static boolean p1Dead = false;
@@ -64,7 +64,9 @@ public class PlayerOne extends Sprite implements Disposable{
 	public CreateBullet createBullet;
 
 	public PlayerOne(World world) {
+		
 		this.world = world;
+		//determines the health depending on the difficulty
 		if (DifficultyScreen.difficulty == 1) {
 			player1HP = player1MaxHP1;			
 		}
@@ -74,6 +76,8 @@ public class PlayerOne extends Sprite implements Disposable{
 		slowedCounter = 0;
 		p1Dead = false;
 		slowRestart = false;
+		
+		//retrieves atlas assets loaded from asset manager and creates animation and standing region objects
 		revolverTextureAtlas = Mutagen.manager.get("sprites/player1/playerRevolver.atlas", TextureAtlas.class);
 		revolverAnimation = new Animation <TextureRegion>(1f/15f, revolverTextureAtlas.getRegions());
 		revolverStandingRegion = revolverTextureAtlas.findRegion("tile000");
@@ -99,6 +103,8 @@ public class PlayerOne extends Sprite implements Disposable{
 		axeStandingRegion = axeSwingTextureAtlas.findRegion("tile000");
 
 		runningSound = Gdx.audio.newSound(Gdx.files.internal("sound effects/running.mp3"));
+		
+		//GETS ASSETS THAT HAVE BEEN LOADED BY ASSET MANAGER
 		p1HP = Mutagen.manager.get("sprites/player1/hp.png", Texture.class);
 		p1HPBG = Mutagen.manager.get("sprites/player1/hpBg.png", Texture.class);
 		gunShot = Mutagen.manager.get("sound effects/shooting/pistol_shot.mp3", Sound.class);
@@ -121,10 +127,10 @@ public class PlayerOne extends Sprite implements Disposable{
 
 	}
 
-	public void definePlayer() {
+	//create b2body physics body, set spawn location, masking, and category bits
+	public void definePlayer() { 
 		//define player body
 		bdef.position.set(player1SpawnPos);
-
 		bdef.type = BodyDef.BodyType.DynamicBody;
 		//create body in the world
 		b2body = world.createBody(bdef);
@@ -138,6 +144,7 @@ public class PlayerOne extends Sprite implements Disposable{
 		fdef.filter.maskBits = Mutagen.ENEMY | Mutagen.ENEMY_BULLET | Mutagen.WALL | Mutagen.SHOOT_OVER | Mutagen.HP_PICKUP;
 
 		b2body.createFixture(fdef).setUserData("player");;
+		
 		if (!PlayerMode.OneP) {
 			angle = 0;
 		}
@@ -145,6 +152,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	}
 
 	public void renderSprite(SpriteBatch batch) {
+		
 		float posX = b2body.getPosition().x;
 		float posY = b2body.getPosition().y;
 
@@ -165,6 +173,9 @@ public class PlayerOne extends Sprite implements Disposable{
 				angle += 360 ;
 			}
 		}
+		
+		//DEPENDING ON THE WEAPON THEN IT DETERMINES THE SPEED OF PLAYER AS WELL AS THE ANIMATIONS TO USE FOR THE PLAYER
+
 		//revolver			
 		if (GunSelectionScreen.p1WeaponSelected == "revolver") {
 			speed = 1.5f;
@@ -282,6 +293,7 @@ public class PlayerOne extends Sprite implements Disposable{
 							;				}
 				secondWind += 1;
 			}else if (secondWind > 1 || DifficultyScreen.difficulty == 2){
+				//player dies
 				world.destroyBody(this.b2body);
 				p1PosX = 0;
 				p1PosY = 0;
@@ -317,6 +329,7 @@ public class PlayerOne extends Sprite implements Disposable{
 
 
 	}
+	//CALLED WHEN PLAYER SHOOTS GUN AND HANDLES SFX AND CALLS CreateBullet.java
 	public void shootGun() {
 
 		//laser delay for build up of power effect
@@ -382,7 +395,8 @@ public class PlayerOne extends Sprite implements Disposable{
 			isShooting = false;
 			timeToShake = true;
 		}
-
+		
+		//SHOOTS THE LASERS DELAYED (hence the counter) AFTER MOUSE CLICKED 
 		if (startLaserCount) {
 			if (waitToShootL >= 0 && waitToShootL < 1){
 				createBullet = new CreateBullet(world, ID);
@@ -403,6 +417,8 @@ public class PlayerOne extends Sprite implements Disposable{
 		}
 
 	}
+	
+	//PLAYER INPUT FOR MOVEMENT AND SHOOTING
 	public void handleInput(float delta) {
 		setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2 + (5 / Mutagen.PPM));
 		p1PosX = b2body.getPosition().x;

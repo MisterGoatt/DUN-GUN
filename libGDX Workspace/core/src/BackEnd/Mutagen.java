@@ -171,6 +171,10 @@ public class Mutagen extends Game{
 			manager.load("sound effects/enemies/turretHit.mp3", Sound.class);
 			manager.load("sound effects/enemies/turretExplosion.mp3", Sound.class);
 
+			//Story Screen
+			manager.load("screens/story/Terminal.png", Texture.class);
+			manager.load("screens/story/terminalSFX.mp3", Sound.class);
+
 
 			//PlayerModeScreen
 			manager.load("screens/playerMode/playerModeBlank.jpg", Texture.class);

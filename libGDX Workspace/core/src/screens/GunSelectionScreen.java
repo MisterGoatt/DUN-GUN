@@ -189,7 +189,7 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 						p1Screen = false;
 						if (PlayerMode.OneP) {
 							MainMenu.themeMusic.stop();
-							game.setScreen(new Level1(game));					
+							game.setScreen(new Story(game));					
 						}
 					}else {
 						p2WeaponSelected = "revolver";
@@ -206,7 +206,7 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 						if (PlayerMode.OneP) {
 							MainMenu.themeMusic.stop();
 							Mutagen.clicking();
-							game.setScreen(new Level1(game));					
+							game.setScreen(new Story(game));					
 						}
 
 					}else {
@@ -225,7 +225,7 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 						if (PlayerMode.OneP) {
 							MainMenu.themeMusic.stop();
 							Mutagen.clicking();
-							game.setScreen(new Level1(game));					
+							game.setScreen(new Story(game));					
 
 
 						}
@@ -246,7 +246,7 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 						if (PlayerMode.OneP) {
 							MainMenu.themeMusic.stop();
 							Mutagen.clicking();
-							game.setScreen(new Level1(game));					
+							game.setScreen(new Story(game));					
 
 						}
 
@@ -286,7 +286,7 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 						if (PlayerMode.OneP) {
 							MainMenu.themeMusic.stop();
 							Mutagen.clicking();
-							game.setScreen(new Level1(game));					
+							game.setScreen(new Story(game));					
 
 						}
 

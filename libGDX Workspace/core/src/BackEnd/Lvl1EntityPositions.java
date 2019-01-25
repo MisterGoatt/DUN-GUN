@@ -115,7 +115,7 @@ public class Lvl1EntityPositions {
 				room3= false;
 			}
 
-			else if (p2X > 29 && p2X < 29.2 && p2Y > 46 && p2Y < 40.3) {
+			else if (p2X > 29 && p2X < 29.2 && p2Y > 46 && p2Y < 49.3) {
 				MapLayer Layer = map.getLayers().get("Sol3");
 				for (MapObject mo : Layer.getObjects()) {
 					Soldier.soldierSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
@@ -236,7 +236,7 @@ public class Lvl1EntityPositions {
 				room7 = false;
 			}
 
-			else if (p2X > 40.2 && p2X < 40.6 && p2Y > 51 && p2Y < 52) {
+			else if (p2X > 38.9 && p2X < 42.1 && p2Y > 51 && p2Y < 52) {
 				MapLayer Layer = map.getLayers().get("Sol5");
 				for (MapObject mo : Layer.getObjects()) {
 					Soldier.soldierSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
@@ -344,7 +344,7 @@ public class Lvl1EntityPositions {
 				room10 = false;
 			}
 
-			else if (p2X > 42.4 && p2X < 45.5 && p2Y > 50 && p2Y < 50.2) {
+			else if (p2X > 42.1 && p2X < 45.5 && p2Y > 46.1 && p2Y < 46.3) {
 				MapLayer Layer = map.getLayers().get("Sol8");
 				for (MapObject mo : Layer.getObjects()) {
 					Soldier.soldierSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
@@ -527,42 +527,8 @@ public class Lvl1EntityPositions {
 				}
 				room15 = false;
 			}
-			else if (p1X > 59.5 && p1X < 59.6 && p1Y > 45.1 && p1Y < 57.4) {
-				MapLayer Layer = map.getLayers().get("Sol13");
-				for (MapObject mo : Layer.getObjects()) {
-					Soldier.soldierSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-					Soldier.soldierSpawnPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-					soldier = new Soldier(world);
-					Soldier.soldiers.add(soldier);
-				}
-				MapLayer SciLayer = map.getLayers().get("Sci12");
-				for (MapObject mo : SciLayer.getObjects()) {
-					Scientist.scientistPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-					Scientist.scientistPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-					scientist = new Scientist(world);
-					Scientist.scientists.add(scientist);
-				}
-				room15 = false;
-			}
 
-			else if (p2X > 59.6 && p2X < 59.5 && p2Y > 57.4 && p2Y < 45.1) {
-				MapLayer Layer = map.getLayers().get("Sol13");
-				for (MapObject mo : Layer.getObjects()) {
-					Soldier.soldierSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-					Soldier.soldierSpawnPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-					soldier = new Soldier(world);
-					Soldier.soldiers.add(soldier);
-				}
-				MapLayer SciLayer = map.getLayers().get("Sci12");
-				for (MapObject mo : SciLayer.getObjects()) {
-					Scientist.scientistPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
-					Scientist.scientistPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
-					scientist = new Scientist(world);
-					Scientist.scientists.add(scientist);
-				}
-				room15 = false;
-			}
-			else if (p2X > 53.2 && p2X < 55.7 && p2Y > 45.2 && p2Y < 45.3) {
+			else if (p2X > 59.5 && p2X < 59.6 && p2Y > 45.1 && p2Y < 57.4) {
 				MapLayer Layer = map.getLayers().get("Sol13");
 				for (MapObject mo : Layer.getObjects()) {
 					Soldier.soldierSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
@@ -837,7 +803,7 @@ public class Lvl1EntityPositions {
 				room21 = false;
 			}
 
-			else if (p2X > 43.4 && p2X < 46.5 && p2Y > 20 && p2Y < 20.4) {
+			else if (p2X > 43.4 && p2X < 46.8 && p2Y > 20 && p2Y < 20.4) {
 				MapLayer Layer = map.getLayers().get("Sol19");
 				for (MapObject mo : Layer.getObjects()) {
 					Soldier.soldierSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
@@ -883,7 +849,7 @@ public class Lvl1EntityPositions {
 				room22 = false;
 			}
 
-			else if (p2X > 43.4 && p2X < 46.5 && p2Y > 13.1 && p2Y < 13.2) {
+			else if (p2X > 43.4 && p2X < 46.8 && p2Y > 13.1 && p2Y < 13.2) {
 				MapLayer Layer = map.getLayers().get("Sol20");
 				for (MapObject mo : Layer.getObjects()) {
 					Soldier.soldierSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
@@ -974,7 +940,7 @@ public class Lvl1EntityPositions {
 					Grunt.grunts.add(grunt);
 				}
 				room25 = false;
-			}
+			} 
 
 			else if (p2X > 72.2 && p2X < 72.3 && p2Y > 10.7 && p2Y < 12.5) {
 

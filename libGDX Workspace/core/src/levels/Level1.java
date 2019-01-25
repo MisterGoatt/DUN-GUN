@@ -242,7 +242,7 @@ public class Level1 implements Screen{
 				boundaryAbs.y = Math.abs(playerOne.b2body.getPosition().y - playerTwo.b2body.getPosition().y);
 				boundary.x = playerOne.b2body.getPosition().x - playerTwo.b2body.getPosition().x;
 				boundary.y = playerOne.b2body.getPosition().y - playerTwo.b2body.getPosition().y;
-				if (boundaryAbs.x > 8.9) {
+				if (boundaryAbs.x > 8.9 || boundaryAbs.y > 4.7) {
 					PlayerOne.movHalt = true;
 					PlayerTwo.movHalt = true;
 
@@ -250,24 +250,19 @@ public class Level1 implements Screen{
 					PlayerOne.movHalt = false;
 					PlayerTwo.movHalt = false;
 				}
-				if (boundaryAbs.y > 4.7) {
-					PlayerOne.movHalt = true;
-					PlayerTwo.movHalt = true;
-				}else {
-					PlayerOne.movHalt = false;
-					PlayerTwo.movHalt = false;
-				}
+
 
 				if (PlayerOne.movHalt && PlayerTwo.movHalt) {
 					//p2 is right of p1
+					System.out.println(boundary.x);
 					if (boundary.x >= 0 ) {
-						playerOne.b2body.applyForceToCenter(2, 0, true);
-						playerTwo.b2body.applyForceToCenter(-2, 0, true);
+						playerOne.b2body.applyForceToCenter(-2, 0, true);
+						playerTwo.b2body.applyForceToCenter(2, 0, true);
 					}
 					//p2 if left of p1
 					else {
-						playerOne.b2body.applyForceToCenter(-2, 0, true);
-						playerTwo.b2body.applyForceToCenter(2, 0, true);
+						playerOne.b2body.applyForceToCenter(2, 0, true);
+						playerTwo.b2body.applyForceToCenter(-2, 0, true);
 
 					}
 					//p2 is below p1
