@@ -38,11 +38,9 @@ public class IntroductionScreens implements Screen{
 			publisherScreen = Mutagen.manager.get("screens/intro screens/ctm_placeholder.jpg");
 			creditScreen = Mutagen.manager.get("screens/intro screens/introCredits.jpg");
 			titleScreen = Mutagen.manager.get("screens/intro screens/introTitle.jpg");
-			musicScreen = Mutagen.manager.get("screens/intro screens/musicScreen.jpg");
 			publisherScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 			creditScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 			titleScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-			musicScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
 		} catch (Exception e) {
 			//Logs that this method of this class triggered an exception
@@ -69,15 +67,13 @@ public class IntroductionScreens implements Screen{
 				}
 				else if (counter <=  3.5 && counter > 1.5) {
 					game.batch.draw(titleScreen, 0, 0);
-
 				}
 				else if (counter >= 3.6 && counter < 6.6) {
 					game.batch.draw(creditScreen, 0, 0);
 				}
 				//RYAN'S CREDIT
-				else if (counter >= 6.7 && counter <= 7.7){
-					game.batch.draw(musicScreen, 0, 0);
-
+				else if (counter >= 6.7){
+					game.setScreen(new MainMenu(game));
 				}else game.setScreen(new MainMenu(game));
 				//skips the introduction screens
 				if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {

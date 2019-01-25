@@ -27,7 +27,7 @@ public class Credits implements Screen, InputProcessor {
 	public Credits(final Mutagen game) {
 		this.game = game;
 		try {
-			credits = Mutagen.manager.get("screens/ScrollingC.jpg");
+			credits = Mutagen.manager.get("screens/ScrollingCN.jpg");
 			credits.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
 			cam = new OrthographicCamera();

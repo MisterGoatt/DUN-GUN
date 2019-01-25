@@ -105,7 +105,7 @@ public class Mutagen extends Game{
 			manager.load("sound effects/impacts/bulletBodyImpact.mp3", Sound.class);
 
 			//Credit Screen
-			manager.load("screens/ScrollingC.jpg", Texture.class);
+			manager.load("screens/ScrollingCN.jpg", Texture.class);
 			manager.load("music/creditsSong.ogg", Music.class);
 			manager.load("music/whistling masterpiece.mp3", Music.class);
 
