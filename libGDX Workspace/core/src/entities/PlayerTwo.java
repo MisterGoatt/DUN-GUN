@@ -545,7 +545,7 @@ public class PlayerTwo {
 					}
 				}
 
-				if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_1)) {
+				if (Gdx.input.isKeyPressed(Input.Keys.BACKSLASH)) {
 					if (timeSinceLastShot <=0) {
 						isShooting = true;
 						shootAnimation = true;
