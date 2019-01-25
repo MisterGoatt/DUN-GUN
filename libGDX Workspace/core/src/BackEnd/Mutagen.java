@@ -174,8 +174,9 @@ public class Mutagen extends Game{
 			//Story Screen
 			manager.load("screens/story/Terminal.png", Texture.class);
 			manager.load("screens/story/terminalSFX.mp3", Sound.class);
+			manager.load("screens/story/static.mp3", Sound.class);
 
-
+			
 			//PlayerModeScreen
 			manager.load("screens/playerMode/playerModeBlank.jpg", Texture.class);
 			manager.load("screens/playerMode/playerModeBack.jpg", Texture.class);

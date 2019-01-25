@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
+ 
 import BackEnd.Mutagen;
 import levels.Level1;
 
@@ -24,8 +24,7 @@ public class Story implements Screen, InputProcessor{
 	private boolean buttonPressed = false;
 	private float mX, mY;
 	public static int difficulty;
-	private Sound terminalSFX;
-	
+	private Sound terminalSFX, staticSFX;
 	
 	public Story(final Mutagen game) {
 		this.game = game;
@@ -35,10 +34,12 @@ public class Story implements Screen, InputProcessor{
 		Gdx.input.setInputProcessor(this);
 		
 		terminalSFX = Mutagen.manager.get("screens/story/terminalSFX.mp3");
+		staticSFX = Mutagen.manager.get("screens/story/static.mp3");
 		terminal = Mutagen.manager.get("screens/story/Terminal.png");
 		terminal.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		terminalSFX.play(Mutagen.sfxVolume);
-
+		staticSFX.play(Mutagen.sfxVolume);
+		staticSFX.loop();
 	}
 
 	@Override
@@ -115,6 +116,7 @@ public class Story implements Screen, InputProcessor{
 
 		if (!buttonPressed) {
 			terminalSFX.stop();
+			staticSFX.stop();
 			Mutagen.clicking();
 			
 			//continue to level 1

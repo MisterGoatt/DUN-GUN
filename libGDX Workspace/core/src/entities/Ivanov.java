@@ -308,7 +308,7 @@ public class Ivanov {
 				}
 			}
 		}else { //IVANOV HAS PERISHED
-			batch.draw(deathAnimation.getKeyFrame(timePassed), b2body.getPosition().x - .37f, b2body.getPosition().y - .37f,  40 / Mutagen.PPM, 40 / Mutagen.PPM, 110 / Mutagen.PPM, 110 / Mutagen.PPM, 2, 2, angle - 90);
+			batch.draw(deathAnimation.getKeyFrame(timePassed), b2body.getPosition().x - .37f, b2body.getPosition().y - .37f,  40 / Mutagen.PPM, 40 / Mutagen.PPM, 110 / Mutagen.PPM, 110 / Mutagen.PPM, 2, 2, angle);
 			timePassed += Gdx.graphics.getDeltaTime();
 			if(ivanovTransAnimation.isAnimationFinished(timePassed)) {
 				timePassed = 0;
