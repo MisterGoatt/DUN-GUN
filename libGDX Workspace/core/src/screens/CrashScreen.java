@@ -27,20 +27,20 @@ public class CrashScreen implements Screen {
 	
 	public CrashScreen(final Mutagen game) {
 		this.game = game;
-//		try {
+		try {
 			crashScreen = new Texture(Gdx.files.internal("screens/tutorials/crashScreen.jpg"));
 			crashScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
 			cam = new OrthographicCamera();
 			gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam);
 			cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-//		} 
-//		catch (Exception e) {
-//			//Logs that this method of this class triggered an exception
-//			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-//			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
-//
-//		}
+		} 
+		catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+
+		}
 	}
 	
 	@Override
@@ -50,7 +50,7 @@ public class CrashScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-//		try {
+		try {
 			// clears screen
 			Gdx.gl.glClearColor(0, 0, 0 , 1);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -73,17 +73,16 @@ public class CrashScreen implements Screen {
 					Gdx.app.exit();
 				}
 			}
-				
-
+			
 			game.batch.end();
 			cam.update();
 		
-//		} catch (Exception e) {
-//			//Logs that this method of this class triggered an exception
-//			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-//			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
-//
-//		}
+		} catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+
+		}
 	}
 
 	@Override
