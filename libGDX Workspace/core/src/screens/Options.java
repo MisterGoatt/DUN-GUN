@@ -56,9 +56,7 @@ public class Options implements Screen, InputProcessor {
 			if (Mutagen.sfxVolume == 0) {
 				sfx = false;
 			}
-			// Logs that this method of this class worked properly
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
+			
 		} catch (Exception e) {
 			// Logs that this method of this class triggered an exception
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
@@ -98,9 +96,7 @@ public class Options implements Screen, InputProcessor {
 				game.batch.draw(noneSelected, 0, 0);
 			}
 			game.batch.end();
-			// Logs that this method of this class worked properly
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
+			
 		} catch (Exception e) {
 			// Logs that this method of this class triggered an exception
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();

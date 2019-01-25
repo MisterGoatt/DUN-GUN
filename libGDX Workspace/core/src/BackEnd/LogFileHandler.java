@@ -9,9 +9,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class LogFileHandler{
-
+	Path filepath = Paths.get("loggingFile.txt");
+	//gets path to the file that was created in the method fileCreate()
+	String filestring = filepath.toString();
+	//converts the path to a string variable so it can be referenced by the BufferedWriter and FileWriter
 	public void fileCreate() {
-
 		try {
 			PrintWriter writer = new PrintWriter("loggingFile.txt", "UTF-8");
 			//Creates a file using the PrintWriter class
@@ -20,21 +22,15 @@ public class LogFileHandler{
 		} 
 		catch (FileNotFoundException e) {
 
-			e.printStackTrace();
 		} 
 		catch (UnsupportedEncodingException e) {
 
-			e.printStackTrace();
 		}
-
 	}
 
 	public void fileLog(String c, String m, String s) {
-		Path filepath = Paths.get("loggingFile.txt");
-		//gets path to the file that was created in the method fileCreate()
-		String filestring = filepath.toString();
-		//converts the path to a string variable so it can be referenced by the BufferedWriter and FileWriter
 		try {
+			
 			BufferedWriter bw = new BufferedWriter(new FileWriter(filestring, true));
 			bw.newLine();
 			bw.write(c + m + s);
@@ -42,8 +38,7 @@ public class LogFileHandler{
 			//writes message to the text file and closes it
 		} 
 		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 		}
 
 	}
