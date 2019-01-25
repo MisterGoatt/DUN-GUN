@@ -14,9 +14,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import BackEnd.LogFileHandler;
 import BackEnd.Mutagen;
 
+
+
+
 public class Options implements Screen, InputProcessor {
 	final Mutagen game;
-
 	private Viewport gamePort;
 	private OrthographicCamera cam;
 	private Vector3 mouse_position = new Vector3(0, 0, 0);
@@ -27,6 +29,7 @@ public class Options implements Screen, InputProcessor {
 	static boolean music = true, sfx = true;
 	private boolean buttonPressed;
 	private float mX, mY;
+	LogFileHandler lfh = new LogFileHandler();
 
 	public Options(final Mutagen game) {
 		this.game = game;
@@ -54,12 +57,10 @@ public class Options implements Screen, InputProcessor {
 				sfx = false;
 			}
 			// Logs that this method of this class worked properly
-			LogFileHandler lfh = new LogFileHandler();
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
 			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
 		} catch (Exception e) {
 			// Logs that this method of this class triggered an exception
-			LogFileHandler lfh = new LogFileHandler();
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
 			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
 		}
@@ -98,12 +99,10 @@ public class Options implements Screen, InputProcessor {
 			}
 			game.batch.end();
 			// Logs that this method of this class worked properly
-			LogFileHandler lfh = new LogFileHandler();
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
 			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
 		} catch (Exception e) {
 			// Logs that this method of this class triggered an exception
-			LogFileHandler lfh = new LogFileHandler();
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
 			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
 		}

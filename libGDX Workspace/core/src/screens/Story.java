@@ -14,7 +14,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
- 
+
+import BackEnd.LogFileHandler;
 import BackEnd.Mutagen;
 import entities.PlayerOne;
 import levels.Level1;
@@ -30,55 +31,66 @@ public class Story implements Screen, InputProcessor{
 	private float mX, mY, fadeOut= 1;
 	public static int difficulty;
 	private Sound terminalSFX, staticSFX;
+	LogFileHandler lfh = new LogFileHandler();
+
 	
 	public Story(final Mutagen game) {
 		this.game = game;
-		cam = new OrthographicCamera();		
-		gamePort = new StretchViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
-		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-		Gdx.input.setInputProcessor(this);
-		//fadeOut = 1.0f;
-		terminalSFX = Mutagen.manager.get("screens/story/terminalSFX.mp3");
-		staticSFX = Mutagen.manager.get("screens/story/static.mp3");
-		terminal = Mutagen.manager.get("screens/story/Terminal.png");
-		terminal.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		terminalSFX.play(Mutagen.sfxVolume);
-		staticSFX.play(Mutagen.sfxVolume);
-		staticSFX.loop();
+		try {
+			cam = new OrthographicCamera();		
+			gamePort = new StretchViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+			cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+			Gdx.input.setInputProcessor(this);
+			//fadeOut = 1.0f;
+			terminalSFX = Mutagen.manager.get("screens/story/terminalSFX.mp3");
+			staticSFX = Mutagen.manager.get("screens/story/static.mp3");
+			terminal = Mutagen.manager.get("screens/story/Terminal.png");
+			terminal.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			terminalSFX.play(Mutagen.sfxVolume);
+			staticSFX.play(Mutagen.sfxVolume);
+			staticSFX.loop();
+
+		} catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+
+		}
 	}
 
 	@Override
 	public void render(float delta) {
 
-		//clears screen
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		cam.update();
-		game.batch.setProjectionMatrix(cam.combined);
-		game.batch.begin();
-		//IMAGE OF THE TERMINAL
-		game.batch.draw(terminal, 0, 0);	
-		game.batch.end();
+		try {
+			//clears screen
+			Gdx.gl.glClearColor(0, 0, 0, 1);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			cam.update();
+			game.batch.setProjectionMatrix(cam.combined);
+			game.batch.begin();
+			//IMAGE OF THE TERMINAL
+			game.batch.draw(terminal, 0, 0);	
+			game.batch.end();
 
-		Gdx.gl.glEnable(GL20.GL_BLEND);
-		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-		//FADE IN TO THE TERMINAL SCREEN
-		shapeRenderer.begin(ShapeType.Filled);
+			Gdx.gl.glEnable(GL20.GL_BLEND);
+			Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+			//FADE IN TO THE TERMINAL SCREEN
+			shapeRenderer.begin(ShapeType.Filled);
 
-		shapeRenderer.setProjectionMatrix(cam.combined);		 
+			shapeRenderer.setProjectionMatrix(cam.combined);		 
 
-		fadeOut -= .005f;
-		shapeRenderer.setColor(0, 0, 0, fadeOut);
-		shapeRenderer.rect(0, 0, 1500, 800);
-		shapeRenderer.end();
-	    Gdx.gl.glDisable(GL20.GL_BLEND);
+			fadeOut -= .005f;
+			shapeRenderer.setColor(0, 0, 0, fadeOut);
+			shapeRenderer.rect(0, 0, 1500, 800);
+			shapeRenderer.end();
+			Gdx.gl.glDisable(GL20.GL_BLEND);
 
+		} catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
 
-		
-
-
-
-
+		}
 
 	}
 

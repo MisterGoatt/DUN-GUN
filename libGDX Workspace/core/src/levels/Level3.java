@@ -34,7 +34,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import BackEnd.Lvl1EntityPositions;
 import BackEnd.Lvl2EntityPositions;
 import BackEnd.Lvl3EntityPositions;
-import BackEnd.Mutagen;
+import BackEnd.Mutagen;import BackEnd.PointSystem;
+
 import collisions.B2DWorldCreator;
 import collisions.CollisionDetector;
 import entities.CreateBullet;
@@ -82,6 +83,8 @@ public class Level3 implements Screen{
 	private Vector2 boundaryAbs = new Vector2(0, 0);
 	private Vector2 boundary = new Vector2(0, 0);
 	Random random;
+
+	public static boolean pointCountGame;
 
 
 	public Level3(final Mutagen game) {
@@ -596,6 +599,10 @@ public class Level3 implements Screen{
 				Gdx.gl.glDisable(GL20.GL_BLEND);
 
 				if (gameOver > 180) {
+					
+					pointCountGame = true;
+					PointSystem.pointFile();
+
 					game.setScreen(new levelCompleted(game));
 
 				}

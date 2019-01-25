@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import BackEnd.LogFileHandler;
 import BackEnd.Mutagen;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -32,20 +33,30 @@ public class Tutorial implements Screen, InputProcessor{
 	BitmapFont activeMenuText;
 	private int wait = 0;
 	private float mX, mY;
+	LogFileHandler lfh = new LogFileHandler();
 
 
 	public Tutorial(final Mutagen game) {
 		this.game = game;
-		tutorialOptions = Mutagen.manager.get("screens/tutorials/tutorialOptions.jpg");
-		tutorialOptions.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
-		cam = new OrthographicCamera();		
-		gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
-		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); //centers the map to center of screen
-		Gdx.input.setInputProcessor(this);
+		try {
+			tutorialOptions = Mutagen.manager.get("screens/tutorials/tutorialOptions.jpg");
+			tutorialOptions.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
-		inactiveMenuText = Mutagen.manager.get("fonts/inactiveMenu(36).fnt", BitmapFont.class);
-		activeMenuText = Mutagen.manager.get("fonts/activeMenu(36).fnt", BitmapFont.class);
+			cam = new OrthographicCamera();		
+			gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+			cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); //centers the map to center of screen
+			Gdx.input.setInputProcessor(this);
+
+			inactiveMenuText = Mutagen.manager.get("fonts/inactiveMenu(36).fnt", BitmapFont.class);
+			activeMenuText = Mutagen.manager.get("fonts/activeMenu(36).fnt", BitmapFont.class);
+
+		} catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+
+		}
 
 	}
 
@@ -57,26 +68,34 @@ public class Tutorial implements Screen, InputProcessor{
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0 , 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		try {
+			Gdx.gl.glClearColor(0, 0, 0 , 1);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-		cam.unproject(mouse_position);
-		game.batch.begin();
-		game.batch.setProjectionMatrix(cam.combined);
-		game.batch.draw(tutorialOptions, 0, 0);
-		mX = mouse_position.x;
-		mY = mouse_position.y;
+			mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+			cam.unproject(mouse_position);
+			game.batch.begin();
+			game.batch.setProjectionMatrix(cam.combined);
+			game.batch.draw(tutorialOptions, 0, 0);
+			mX = mouse_position.x;
+			mY = mouse_position.y;
 
-			if (0 < mX && mX < 130 && 0 < mY && mY < 80)
-			{
-				inactiveMenuText.draw(game.batch, "BACK", 10, 55);
-			}else {
-				inactiveMenuText.draw(game.batch, "BACK", 10, 55);
-			}
-		
-		cam.update();
-		game.batch.end();
+				if (0 < mX && mX < 130 && 0 < mY && mY < 80)
+				{
+					inactiveMenuText.draw(game.batch, "BACK", 10, 55);
+				}else {
+					inactiveMenuText.draw(game.batch, "BACK", 10, 55);
+				}
+			
+			cam.update();
+			game.batch.end();
+
+		} catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+
+		}
 	}
 
 	@Override

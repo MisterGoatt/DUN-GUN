@@ -39,12 +39,10 @@ public class Credits implements Screen, InputProcessor {
 			creditsMusic.play();
 			Gdx.input.setInputProcessor(this);
 			// Logs that this method of this class worked properly
-			LogFileHandler lfh = new LogFileHandler();
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
 			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
 		} catch (Exception e) {
 			// Logs that this method of this class triggered an exception
-			LogFileHandler lfh = new LogFileHandler();
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
 			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
 		}
@@ -81,12 +79,10 @@ public class Credits implements Screen, InputProcessor {
 
 			game.batch.end();
 			// Logs that this method of this class worked properly
-			LogFileHandler lfh = new LogFileHandler();
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
 			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
 		} catch (Exception e) {
 			// Logs that this method of this class triggered an exception
-			LogFileHandler lfh = new LogFileHandler();
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
 			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
 		}
@@ -97,12 +93,10 @@ public class Credits implements Screen, InputProcessor {
 		try {
 			gamePort.update(width, height);
 			// Logs that this method of this class worked properly
-			LogFileHandler lfh = new LogFileHandler();
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
 			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
 		} catch (Exception e) {
 			// Logs that this method of this class triggered an exception
-			LogFileHandler lfh = new LogFileHandler();
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
 			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
 		}
@@ -129,12 +123,10 @@ public class Credits implements Screen, InputProcessor {
 			game.batch.dispose();
 			credits.dispose();
 			// Logs that this method of this class worked properly
-			LogFileHandler lfh = new LogFileHandler();
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
 			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
 		} catch (Exception e) {
 			// Logs that this method of this class triggered an exception
-			LogFileHandler lfh = new LogFileHandler();
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
 			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
 		}

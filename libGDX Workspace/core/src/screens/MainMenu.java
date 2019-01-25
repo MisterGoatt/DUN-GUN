@@ -14,6 +14,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import screens.Tutorial;
 
 import BackEnd.Mutagen;
+import BackEnd.PointSystem;
+
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -36,6 +38,10 @@ public class MainMenu implements Screen, InputProcessor{
 	static Music themeMusic = Mutagen.manager.get("music/Dun-Gun2.ogg", Music.class);
 	private Vector3 mousePosition = new Vector3(0, 0, 0);
 	private float mX, mY;
+	
+	public static boolean pointStart = true;
+	public static boolean pointsMenu = false;
+
 
 	public MainMenu(final Mutagen game) {
 		this.game = game;
@@ -58,6 +64,8 @@ public class MainMenu implements Screen, InputProcessor{
 		themeMusic.setLooping(true);
 		themeMusic.play();
 		themeMusic.setVolume(Mutagen.musicVolume);
+		pointsMenu = true;
+
 	}
 
 
@@ -114,6 +122,8 @@ public class MainMenu implements Screen, InputProcessor{
 			inactiveMenuText.draw(game.batch, "TUTORIAL", 382, 90);
 			}
 	
+		PointSystem.pointFile();
+		
 //
 //		//***********************************		
 //		//FRAMES PER SECOND

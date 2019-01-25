@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
+import BackEnd.LogFileHandler;
 import BackEnd.Mutagen;
 import screens.PlayerMode;
 
@@ -43,207 +44,243 @@ public class Soldier {
 	private Sound soldierShoot;
 	SoldierBullets sB;
 	public static Array<Soldier> soldiers = new Array<Soldier>();
+	LogFileHandler lfh = new LogFileHandler();
+
 
 	public Soldier(World world) {
 		this.world = world;
-		soldierAtkAtlas = Mutagen.manager.get("sprites/soldier/soldierAtkAnimation.atlas");
-		soldierAtkAnimation = new Animation <TextureRegion>(1f/15f, soldierAtkAtlas.getRegions());
-		soldierStandingRegion = soldierAtkAtlas.findRegion("tile000");
-		soldierDamagedAtlas = Mutagen.manager.get("sprites/soldier/soldierDamaged.atlas");
-		soldierDamagedAnimation = new Animation <TextureRegion>(1f/15f, soldierDamagedAtlas.getRegions());
-		soldierShoot = Mutagen.manager.get("sound effects/enemies/soldierShooting.ogg");
-		blood = Mutagen.manager.get("sprites/Blood.png");
-		defineSoldier();
+		try {
+			soldierAtkAtlas = Mutagen.manager.get("sprites/soldier/soldierAtkAnimation.atlas");
+			soldierAtkAnimation = new Animation <TextureRegion>(1f/15f, soldierAtkAtlas.getRegions());
+			soldierStandingRegion = soldierAtkAtlas.findRegion("tile000");
+			soldierDamagedAtlas = Mutagen.manager.get("sprites/soldier/soldierDamaged.atlas");
+			soldierDamagedAnimation = new Animation <TextureRegion>(1f/15f, soldierDamagedAtlas.getRegions());
+			soldierShoot = Mutagen.manager.get("sound effects/enemies/soldierShooting.ogg");
+			blood = Mutagen.manager.get("sprites/Blood.png");
+			defineSoldier();
+
+		} catch (Exception e) {
+
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+
+		}
 	}
 
 	public void defineSoldier() {
-		bdef.position.set(soldierSpawnPos);
-		soldierPos = bdef.position;
-		originPos = bdef.position;
+		try {
+			bdef.position.set(soldierSpawnPos);
+			soldierPos = bdef.position;
+			originPos = bdef.position;
 
-		bdef.type = BodyDef.BodyType.DynamicBody;
-		//create body in the world
-		b2body = world.createBody(bdef);
-		b2body.setUserData(this);
-		FixtureDef fdef = new FixtureDef();
-		CircleShape shape = new CircleShape();
-		shape.setRadius(12 / Mutagen.PPM);
-		b2body.setLinearDamping(5f);
-		fdef.density = 400; //made extremely dense to prevent anything from moving it
-		fdef.shape = shape;
-		fdef.filter.categoryBits = Mutagen.ENEMY;
-		fdef.filter.maskBits = Mutagen.PLAYER | Mutagen.WALL | Mutagen.BULLET | Mutagen.SHOOT_OVER;
-		b2body.createFixture(fdef).setUserData("soldier"); 
+			bdef.type = BodyDef.BodyType.DynamicBody;
+			//create body in the world
+			b2body = world.createBody(bdef);
+			b2body.setUserData(this);
+			FixtureDef fdef = new FixtureDef();
+			CircleShape shape = new CircleShape();
+			shape.setRadius(12 / Mutagen.PPM);
+			b2body.setLinearDamping(5f);
+			fdef.density = 400; //made extremely dense to prevent anything from moving it
+			fdef.shape = shape;
+			fdef.filter.categoryBits = Mutagen.ENEMY;
+			fdef.filter.maskBits = Mutagen.PLAYER | Mutagen.WALL | Mutagen.BULLET | Mutagen.SHOOT_OVER;
+			b2body.createFixture(fdef).setUserData("soldier");
+
+		} catch (Exception e) {
+
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+
+		} 
 	}
 	public void renderSprite(SpriteBatch batch) {
 
-		//Selects which player to attack depending on which player is closer by using the pythagorean theorem
-		if (this.health > 0){
-			if (!PlayerMode.OneP) {
-				//PlayerOne
-				float differencePlayerX =  PlayerOne.p1PosX - b2body.getPosition().x;
-				float differencePlayerY =  PlayerOne.p1PosY - b2body.getPosition().y;
+		try {
+			//Selects which player to attack depending on which player is closer by using the pythagorean theorem
+			if (this.health > 0){
+				if (!PlayerMode.OneP) {
+					//PlayerOne
+					float differencePlayerX =  PlayerOne.p1PosX - b2body.getPosition().x;
+					float differencePlayerY =  PlayerOne.p1PosY - b2body.getPosition().y;
 
-				//PlayerTwo
-				float differencePlayer2X =  PlayerTwo.p2PosX - b2body.getPosition().x;
-				float differencePlayer2Y =  PlayerTwo.p2PosY - b2body.getPosition().y;
+					//PlayerTwo
+					float differencePlayer2X =  PlayerTwo.p2PosX - b2body.getPosition().x;
+					float differencePlayer2Y =  PlayerTwo.p2PosY - b2body.getPosition().y;
 
-				player1Dif = (float) Math.sqrt((differencePlayerX*differencePlayerX)+(differencePlayerY*differencePlayerY));
-				player2Dif = (float) Math.sqrt((differencePlayer2X*differencePlayer2X)+(differencePlayer2Y*differencePlayer2Y));
-				//fire at players 1
-				if (player1Dif < player2Dif) {
+					player1Dif = (float) Math.sqrt((differencePlayerX*differencePlayerX)+(differencePlayerY*differencePlayerY));
+					player2Dif = (float) Math.sqrt((differencePlayer2X*differencePlayer2X)+(differencePlayer2Y*differencePlayer2Y));
+					//fire at players 1
+					if (player1Dif < player2Dif) {
+						differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
+						differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
+						//checks to see how far away the soldier is from the targeted player to know whether or not to get closer before shooting
+						if (player1Dif > 4.7) {
+							tooFarAway = true;
+						}else {
+							tooFarAway = false;
+						}
+
+					}else {
+						//fire at player 2
+						differenceX = PlayerTwo.p2PosX - b2body.getPosition().x;
+						differenceY = PlayerTwo.p2PosY - b2body.getPosition().y;
+						//checks to see how far away the soldier is from the targeted player to know whether or not to get closer before shooting
+						if (player2Dif > 4.7) {
+							tooFarAway = true;
+						}else {
+							tooFarAway = false;
+						}
+					}
+					if (tooFarAway) {
+						//move towards the player to get closer
+						angle3 = MathUtils.atan2(differenceY, differenceX);
+						tPos.x = (float) (Math.cos(angle3) * speed);
+						tPos.y = (float) (Math.sin(angle3) * speed);
+						this.b2body.applyLinearImpulse(tPos.x, tPos.y, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);	
+					}
+				}else {
+					//single player
 					differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
 					differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
+					player1Dif = (float) Math.sqrt((differenceX*differenceX)+(differenceY*differenceY));
 					//checks to see how far away the soldier is from the targeted player to know whether or not to get closer before shooting
-					if (player1Dif > 4.7) {
+					if (player1Dif > 5) {
 						tooFarAway = true;
 					}else {
 						tooFarAway = false;
 					}
-					
-				}else {
-					//fire at player 2
-					differenceX = PlayerTwo.p2PosX - b2body.getPosition().x;
-					differenceY = PlayerTwo.p2PosY - b2body.getPosition().y;
-					//checks to see how far away the soldier is from the targeted player to know whether or not to get closer before shooting
-					if (player2Dif > 4.7) {
-						tooFarAway = true;
-					}else {
-						tooFarAway = false;
+					if (tooFarAway) {
+						//move towards the player to get closer
+						angle3 = MathUtils.atan2(differenceY, differenceX);
+						tPos.x = (float) (Math.cos(angle3) * speed);
+						tPos.y = (float) (Math.sin(angle3) * speed);
+
+						this.b2body.applyLinearImpulse(tPos.x, tPos.y, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);				
 					}
 				}
-				if (tooFarAway) {
-					//move towards the player to get closer
-					angle3 = MathUtils.atan2(differenceY, differenceX);
-					tPos.x = (float) (Math.cos(angle3) * speed);
-					tPos.y = (float) (Math.sin(angle3) * speed);
-					this.b2body.applyLinearImpulse(tPos.x, tPos.y, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);	
+
+
+				float angle2 = MathUtils.atan2(differenceY, differenceX);
+				angle = angle2 * MathUtils.radDeg;
+				angle = angle - 90; //makes it a full 360 degrees
+				if (angle < 0) {
+					angle += 360 ;
 				}
-			}else {
-				//single player
-				differenceX = PlayerOne.p1PosX - b2body.getPosition().x;
-				differenceY = PlayerOne.p1PosY - b2body.getPosition().y;
-				player1Dif = (float) Math.sqrt((differenceX*differenceX)+(differenceY*differenceY));
-				//checks to see how far away the soldier is from the targeted player to know whether or not to get closer before shooting
-				if (player1Dif > 5) {
-					tooFarAway = true;
-				}else {
-					tooFarAway = false;
-				}
-				if (tooFarAway) {
-					//move towards the player to get closer
-					angle3 = MathUtils.atan2(differenceY, differenceX);
-					tPos.x = (float) (Math.cos(angle3) * speed);
-					tPos.y = (float) (Math.sin(angle3) * speed);
-					
-					this.b2body.applyLinearImpulse(tPos.x, tPos.y, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);				
-				}
-			}
-			
-			
-			float angle2 = MathUtils.atan2(differenceY, differenceX);
-			angle = angle2 * MathUtils.radDeg;
-			angle = angle - 90; //makes it a full 360 degrees
-			if (angle < 0) {
-				angle += 360 ;
-			}
-			float posX = this.b2body.getPosition().x;
-			float posY = this.b2body.getPosition().y;
-			if (shootAnimation && !tookDamage) {
-				batch.draw(soldierAtkAnimation.getKeyFrame(timePassed), posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 50/ Mutagen.PPM, 1, 1, angle);
-				timePassed += Gdx.graphics.getDeltaTime();
-				if(soldierAtkAnimation.isAnimationFinished(timePassed)) {
-					shootAnimation = false;
-					timePassed = 0;
-				}
-			}else {
-				if (!tookDamage) {
-					batch.draw(soldierStandingRegion, posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);					
-				}else if (tookDamage) {
-					batch.draw(soldierDamagedAnimation.getKeyFrame(timePassed), posX - .17f, posY -.13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 60 / Mutagen.PPM, 1, 1, angle);
+				float posX = this.b2body.getPosition().x;
+				float posY = this.b2body.getPosition().y;
+				if (shootAnimation && !tookDamage) {
+					batch.draw(soldierAtkAnimation.getKeyFrame(timePassed), posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 50/ Mutagen.PPM, 1, 1, angle);
 					timePassed += Gdx.graphics.getDeltaTime();
-					if(soldierDamagedAnimation.isAnimationFinished(timePassed)) {
+					if(soldierAtkAnimation.isAnimationFinished(timePassed)) {
+						shootAnimation = false;
 						timePassed = 0;
-						tookDamage = false;
+					}
+				}else {
+					if (!tookDamage) {
+						batch.draw(soldierStandingRegion, posX - .17f, posY - .13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 50 / Mutagen.PPM, 1, 1, angle);					
+					}else if (tookDamage) {
+						batch.draw(soldierDamagedAnimation.getKeyFrame(timePassed), posX - .17f, posY -.13f, 20 / Mutagen.PPM, 16 / Mutagen.PPM, 40 / Mutagen.PPM, 60 / Mutagen.PPM, 1, 1, angle);
+						timePassed += Gdx.graphics.getDeltaTime();
+						if(soldierDamagedAnimation.isAnimationFinished(timePassed)) {
+							timePassed = 0;
+							tookDamage = false;
+						}
 					}
 				}
-			}
 
-			if (!stationary && !tooFarAway) {
-				//movement
-				if (findTarget) {
-					//X 
-					float minX = originPos.x - boundary;
-					//Y
-					float minY = originPos.y - boundary;
+				if (!stationary && !tooFarAway) {
+					//movement
+					if (findTarget) {
+						//X 
+						float minX = originPos.x - boundary;
+						//Y
+						float minY = originPos.y - boundary;
 
-					targetPos.x = (float) (Math.random() * (boundary * 2) + minX);
-					targetPos.y = (float) (Math.random() * (boundary * 2) + minY);
-					tPosDifX = targetPos.x - this.b2body.getPosition().x;
-					tPosDifY = targetPos.y - this.b2body.getPosition().y;
-					angle3 = MathUtils.atan2(tPosDifY, tPosDifX);
-					tPos.x = (float) (Math.cos(angle3) * speed);
-					tPos.y = (float) (Math.sin(angle3) * speed);
-					findTarget = false;
+						targetPos.x = (float) (Math.random() * (boundary * 2) + minX);
+						targetPos.y = (float) (Math.random() * (boundary * 2) + minY);
+						tPosDifX = targetPos.x - this.b2body.getPosition().x;
+						tPosDifY = targetPos.y - this.b2body.getPosition().y;
+						angle3 = MathUtils.atan2(tPosDifY, tPosDifX);
+						tPos.x = (float) (Math.cos(angle3) * speed);
+						tPos.y = (float) (Math.sin(angle3) * speed);
+						findTarget = false;
+					}
+
+					if (!findTarget) {
+						if (this.b2body.getPosition().x > targetPos.x - .2 && this.b2body.getPosition().x < targetPos.x + .2 && 
+								this.b2body.getPosition().y > targetPos.y - .2f && this.b2body.getPosition().y < targetPos.y +.2f) {
+							findTarget = true;
+							stationary = true;
+						}
+						this.b2body.applyLinearImpulse(tPos.x, tPos.y, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);				
+					}
+
+				}else {
+					wait +=1;
+					if (wait > 45) {
+						wait = 0;
+						stationary = false;
+					}
 				}
 
-				if (!findTarget) {
-					if (this.b2body.getPosition().x > targetPos.x - .2 && this.b2body.getPosition().x < targetPos.x + .2 && 
-							this.b2body.getPosition().y > targetPos.y - .2f && this.b2body.getPosition().y < targetPos.y +.2f) {
-						findTarget = true;
-						stationary = true;
-					}
-					this.b2body.applyLinearImpulse(tPos.x, tPos.y, b2body.getWorldCenter().x, b2body.getWorldCenter().y, true);				
+				oldX = this.b2body.getPosition().x;
+				oldY = this.b2body.getPosition().y;
+				if (!tooFarAway) {
+					shooting();				
 				}
 
 			}else {
-				wait +=1;
-				if (wait > 45) {
-					wait = 0;
-					stationary = false;
-				}
+				batch.draw(blood, oldX, oldY, 32 / Mutagen.PPM, 32 / Mutagen.PPM);
 			}
 
-			oldX = this.b2body.getPosition().x;
-			oldY = this.b2body.getPosition().y;
-			if (!tooFarAway) {
-				shooting();				
-			}
+		} catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
 
-		}else {
-			batch.draw(blood, oldX, oldY, 32 / Mutagen.PPM, 32 / Mutagen.PPM);
 		}
 
 	}
 	public void shooting() {
 
-		if (PlayerMode.OneP) {
-			if (!PlayerOne.p1Dead) {
-				shootTimer += .50;
-				if (shootTimer >= 26) {
-					if (Mutagen.sfxVolume != 0) {
-						Long tS = soldierShoot.play(Mutagen.sfxVolume - .8f);					
+		try {
+			if (PlayerMode.OneP) {
+				if (!PlayerOne.p1Dead) {
+					shootTimer += .50;
+					if (shootTimer >= 26) {
+						if (Mutagen.sfxVolume != 0) {
+							Long tS = soldierShoot.play(Mutagen.sfxVolume - .8f);					
+						}
+						shootAnimation = true;
+						sB = new SoldierBullets(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);	
+						shootTimer = 0;
 					}
-					shootAnimation = true;
-					sB = new SoldierBullets(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);	
-
-					shootTimer = 0;
 				}
 			}
-		}
-		else {
-			if (!PlayerOne.p1Dead || !PlayerTwo.p2Dead) {
-				shootTimer += .50;
-				if (shootTimer >= 33) {
-					if (Mutagen.sfxVolume != 0) {
-						Long tS = soldierShoot.play(Mutagen.sfxVolume - .8f);					
-					}
-					shootAnimation = true;
-					sB = new SoldierBullets(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);	
+			else {
+				if (!PlayerOne.p1Dead || !PlayerTwo.p2Dead) {
+					shootTimer += .50;
+					if (shootTimer >= 33) {
+						if (Mutagen.sfxVolume != 0) {
+							Long tS = soldierShoot.play(Mutagen.sfxVolume - .8f);					
+						}
+						shootAnimation = true;
+						sB = new SoldierBullets(world, this.b2body.getPosition().x, this.b2body.getPosition().y, angle);	
 
-					shootTimer = 0;
+						shootTimer = 0;
+					}
 				}
 			}
+
+		} catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+
+
 		}
 	}
 

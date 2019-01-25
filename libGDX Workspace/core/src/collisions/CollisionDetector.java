@@ -10,6 +10,8 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.utils.Array;
 
 import BackEnd.Mutagen;
+import BackEnd.PointSystem;
+
 import entities.CreateBullet;
 import entities.Flayer;
 import entities.Grunt;
@@ -35,6 +37,14 @@ public class CollisionDetector implements ContactListener{
 	private Array<Soldier> soldierBodyTarget = new Array<Soldier>();
 	private Array<Flayer> flayerBodyTarget = new Array<Flayer>();
 
+	public static boolean soldierDeath = false;
+	public static boolean scientistDeath = false;
+	public static boolean gruntDeath = false;
+	public static boolean flayerDeath = false;
+	public static boolean turretDeath = false;
+	public static boolean ivanovDeath = false;
+
+	
 	Grunt grunt;
 	Scientist scientist;
 	Turret turret;
@@ -225,6 +235,9 @@ public class CollisionDetector implements ContactListener{
 					if (grunt.health <= 0) {
 						bodiesToRemove.add(fa.getBody()); //grunt
 						grunt.tookDamage = false;
+						
+						gruntDeath = true;
+						PointSystem.pointFile();
 					}
 				}
 
@@ -259,6 +272,9 @@ public class CollisionDetector implements ContactListener{
 					if (grunt.health <= 0) {
 						bodiesToRemove.add(fb.getBody()); //grunt
 						grunt.tookDamage = false;
+
+						gruntDeath = true;
+						PointSystem.pointFile();
 					}
 				}
 			}
@@ -364,6 +380,9 @@ public class CollisionDetector implements ContactListener{
 					if (scientist.health <= 0) {
 						bodiesToRemove.add(fa.getBody()); //grunt
 						scientist.tookDamage = false;
+						
+						scientistDeath = true;
+						PointSystem.pointFile();
 					}
 				}
 
@@ -399,6 +418,9 @@ public class CollisionDetector implements ContactListener{
 					if (scientist.health <= 0) {
 						bodiesToRemove.add(fb.getBody()); //grunt
 						scientist.tookDamage = false;
+						
+						scientistDeath = true;
+						PointSystem.pointFile();
 					}
 				}
 			}
@@ -451,6 +473,8 @@ public class CollisionDetector implements ContactListener{
 						if (Mutagen.sfxVolume != 0) {
 							long tH = turretExp.play(Mutagen.sfxVolume);
 						}
+						turretDeath = true;
+						PointSystem.pointFile();
 					}
 				}
 				if (fb.getUserData().equals("turret")){
@@ -486,7 +510,10 @@ public class CollisionDetector implements ContactListener{
 						bodiesToRemove.add(fb.getBody()); //grunt
 						if (Mutagen.sfxVolume != 0) {
 							long tH = turretExp.play(Mutagen.sfxVolume);
-						}					}
+						}
+					}
+					turretDeath = true;
+					PointSystem.pointFile();
 				}
 			}
 		}
@@ -602,6 +629,9 @@ public class CollisionDetector implements ContactListener{
 
 					if (soldier.health <= 0) {
 						bodiesToRemove.add(fa.getBody()); //grunt
+						
+						soldierDeath = true;
+						PointSystem.pointFile();
 					}
 				}
 				if (fb.getUserData().equals("soldier")){
@@ -636,6 +666,9 @@ public class CollisionDetector implements ContactListener{
 					if (soldier.health <= 0) {
 						bodiesToRemove.add(fb.getBody()); //grunt
 						//turret.tookDamage = false;
+
+						soldierDeath = true;
+						PointSystem.pointFile();
 					}
 				}
 
@@ -835,6 +868,9 @@ public class CollisionDetector implements ContactListener{
 					if (scientist.health <= 0) {
 						bodiesToRemove.add(fa.getBody()); //grunt
 						scientist.tookDamage = false;
+
+						scientistDeath = true;
+						PointSystem.pointFile();
 					}
 				}
 
@@ -870,6 +906,9 @@ public class CollisionDetector implements ContactListener{
 					if (scientist.health <= 0) {
 						bodiesToRemove.add(fb.getBody()); //grunt
 						scientist.tookDamage = false;
+
+						scientistDeath = true;
+						PointSystem.pointFile();
 					}
 				}
 			}
@@ -917,6 +956,9 @@ public class CollisionDetector implements ContactListener{
 					tempBodyArray.clear();
 					if (soldier.health <= 0) {
 						bodiesToRemove.add(fa.getBody());
+
+						soldierDeath = true;
+						PointSystem.pointFile();
 					}
 				}
 				if (fb.getUserData().equals("soldier")){
@@ -945,10 +987,12 @@ public class CollisionDetector implements ContactListener{
 					}
 					soldierBodyTarget.clear();
 					tempBodyArray.clear();
-					System.out.println("here");
 
 					if (soldier.health <= 0) {
 						bodiesToRemove.add(fb.getBody());
+
+						soldierDeath = true;
+						PointSystem.pointFile();
 					}
 				}
 
@@ -999,6 +1043,9 @@ public class CollisionDetector implements ContactListener{
 					if (grunt.health <= 0) {
 						bodiesToRemove.add(fa.getBody()); //grunt
 						grunt.tookDamage = false;
+						
+						gruntDeath = true;
+						PointSystem.pointFile();
 					}
 				}
 
@@ -1033,6 +1080,9 @@ public class CollisionDetector implements ContactListener{
 					if (grunt.health <= 0) {
 						bodiesToRemove.add(fb.getBody()); //grunt
 						grunt.tookDamage = false;
+						
+						gruntDeath = true;
+						PointSystem.pointFile();
 					}
 				}
 			}
@@ -1084,6 +1134,8 @@ public class CollisionDetector implements ContactListener{
 						if (Mutagen.sfxVolume != 0) {
 							long tH = turretExp.play(Mutagen.sfxVolume);
 						}
+						turretDeath = true;
+						PointSystem.pointFile();
 					}
 				}
 				if (fb.getUserData().equals("turret")){
@@ -1119,6 +1171,8 @@ public class CollisionDetector implements ContactListener{
 						if (Mutagen.sfxVolume != 0) {
 							long tH = turretExp.play(Mutagen.sfxVolume);
 						}
+						turretDeath = true;
+						PointSystem.pointFile();
 					}
 				}
 			}
@@ -1168,6 +1222,9 @@ public class CollisionDetector implements ContactListener{
 
 					if (flayer.health <= 0) {
 						bodiesToRemove.add(fa.getBody()); //grunt
+
+						flayerDeath = true;
+						PointSystem.pointFile();
 					}
 				}
 				if (fb.getUserData().equals("flayer")){
@@ -1200,8 +1257,10 @@ public class CollisionDetector implements ContactListener{
 					tempBodyArray.clear();
 
 					if (flayer.health <= 0) {
-						bodiesToRemove.add(fb.getBody()); //grunt
-						//turret.tookDamage = false;
+						bodiesToRemove.add(fb.getBody()); 
+						
+						flayerDeath = true;
+						PointSystem.pointFile();
 					}
 				}
 
@@ -1248,6 +1307,9 @@ public class CollisionDetector implements ContactListener{
 					tempBodyArray.clear();
 					if (flayer.health <= 0) {
 						bodiesToRemove.add(fa.getBody());
+						
+						flayerDeath = true;
+						PointSystem.pointFile();
 					}
 				}
 				if (fb.getUserData().equals("flayer")){
@@ -1395,9 +1457,12 @@ public class CollisionDetector implements ContactListener{
 					break;
 					default: break;
 					}
-//					if (Ivanov.health <= 0) {
+					if (Ivanov.health <= 0) {
 //						bodiesToRemove.add(fa.getBody());
-//					}
+					
+					ivanovDeath = true;
+					PointSystem.pointFile();
+					}
 				}
 				if (fb.getUserData().equals("ivanov")){
 
@@ -1417,9 +1482,11 @@ public class CollisionDetector implements ContactListener{
 					default: break;
 					}
 
-//					if (Ivanov.health <= 0) {
+					if (Ivanov.health <= 0) {
 //						bodiesToRemove.add(fb.getBody());
-//					}
+						ivanovDeath = true;
+						PointSystem.pointFile();
+					}
 				}
 
 			}
@@ -1457,9 +1524,11 @@ public class CollisionDetector implements ContactListener{
 					default: break;
 					}
 
-//					if (Ivanov.health <= 0) {
+					if (Ivanov.health <= 0) {
 //						bodiesToRemove.add(fa.getBody());
-//					}
+					ivanovDeath = true;
+					PointSystem.pointFile();
+					}
 				}
 				if (fb.getUserData().equals("ivanov")){
 
@@ -1479,9 +1548,11 @@ public class CollisionDetector implements ContactListener{
 					default: break;
 					}
 
-//					if (Ivanov.health <= 0) {
+					if (Ivanov.health <= 0) {
 //						bodiesToRemove.add(fb.getBody());
-//					}
+					ivanovDeath = true;
+					PointSystem.pointFile();
+					}
 				}
 
 			}

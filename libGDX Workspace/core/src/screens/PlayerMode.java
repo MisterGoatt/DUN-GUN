@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import BackEnd.LogFileHandler;
 import BackEnd.Mutagen;
 
 public class PlayerMode implements Screen, InputProcessor{
@@ -28,72 +29,89 @@ public class PlayerMode implements Screen, InputProcessor{
 	private float mX, mY;
 	private boolean buttonPressed = false;
 	BitmapFont activeText, inactiveText, backText, backActiveText;
-
+	LogFileHandler lfh = new LogFileHandler();
+	
 	public PlayerMode(final Mutagen game) {
 		this.game = game;
-		playerModeScreen = Mutagen.manager.get("screens/playerMode/playerModeBlank.jpg");
-		playerModeScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		
-		playerModeBack = Mutagen.manager.get("screens/playerMode/playerModeBack.jpg");
-		playerModeBack.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		
-		playerModeSingle = Mutagen.manager.get("screens/playerMode/playerModeSingle.jpg");
-		playerModeSingle.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		
-		playerModeCoop = Mutagen.manager.get("screens/playerMode/playerModeCO-OP.jpg");
-		playerModeCoop.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		
-		cam = new OrthographicCamera();		
-		gamePort = new StretchViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
-		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-		backText = Mutagen.manager.get("fonts/backText(68).fnt");
-		inactiveText =  Mutagen.manager.get("fonts/inactiveText(100).fnt");
-		activeText = Mutagen.manager.get("fonts/activeText(100).fnt");
-		backActiveText = Mutagen.manager.get("fonts/backActiveText(68).fnt");
-		Gdx.input.setInputProcessor(this);
+		try {
+			playerModeScreen = Mutagen.manager.get("screens/playerMode/playerModeBlank.jpg");
+			playerModeScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			
+			playerModeBack = Mutagen.manager.get("screens/playerMode/playerModeBack.jpg");
+			playerModeBack.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			
+			playerModeSingle = Mutagen.manager.get("screens/playerMode/playerModeSingle.jpg");
+			playerModeSingle.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			
+			playerModeCoop = Mutagen.manager.get("screens/playerMode/playerModeCO-OP.jpg");
+			playerModeCoop.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			
+			cam = new OrthographicCamera();		
+			gamePort = new StretchViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+			cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+			backText = Mutagen.manager.get("fonts/backText(68).fnt");
+			inactiveText =  Mutagen.manager.get("fonts/inactiveText(100).fnt");
+			activeText = Mutagen.manager.get("fonts/activeText(100).fnt");
+			backActiveText = Mutagen.manager.get("fonts/backActiveText(68).fnt");
+			Gdx.input.setInputProcessor(this);
+
+		} catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+
+		}
 
 	}
 
 	@Override
 	public void render(float delta) {
-		//clears screen
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		try {
+			//clears screen
+			Gdx.gl.glClearColor(0, 0, 0, 1);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-		cam.unproject(mousePosition); //gets mouse coordinates within viewport
-		game.batch.setProjectionMatrix(cam.combined);
+			mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+			cam.unproject(mousePosition); //gets mouse coordinates within viewport
+			game.batch.setProjectionMatrix(cam.combined);
 
-		//mouse x and y
-		mX = mousePosition.x;
-		mY = mousePosition.y;
-		game.batch.begin();
-		game.batch.draw(playerModeScreen, 0, 0);
-		//single player
-		if ( mX < 1145 && mX > 407 && mY < 660 && mY > 509) {
-			game.batch.draw(playerModeSingle, 0, 0);
-		}//else {
-			//inactiveText.draw(game.batch, "SINGLE PLAYER", 525, 620);
-		//}
-		//co-op
-		if ( mX < 1145 && mX > 407 && mY < 431 && mY > 282) {
-			game.batch.draw(playerModeCoop, 0, 0);
+			//mouse x and y
+			mX = mousePosition.x;
+			mY = mousePosition.y;
+			game.batch.begin();
+			game.batch.draw(playerModeScreen, 0, 0);
+			//single player
+			if ( mX < 1145 && mX > 407 && mY < 660 && mY > 509) {
+				game.batch.draw(playerModeSingle, 0, 0);
+			}//else {
+				//inactiveText.draw(game.batch, "SINGLE PLAYER", 525, 620);
+			//}
+			//co-op
+			if ( mX < 1145 && mX > 407 && mY < 431 && mY > 282) {
+				game.batch.draw(playerModeCoop, 0, 0);
 
-		}//else {
-			//inactiveText.draw(game.batch, "CO-OP", 675, 390);
+			}//else {
+				//inactiveText.draw(game.batch, "CO-OP", 675, 390);
 
-		//}
-		//back
-		if (mX < 271 && mX > 104 && mY < 110 && mY > 40) {
-			game.batch.draw(playerModeBack, 0, 0);
+			//}
+			//back
+			if (mX < 271 && mX > 104 && mY < 110 && mY > 40) {
+				game.batch.draw(playerModeBack, 0, 0);
 
-		}//else {
-			//backText.draw(game.batch, " BACK", 115, 98);
+			}//else {
+				//backText.draw(game.batch, " BACK", 115, 98);
 
-		//}
+			//}
 
-		game.batch.end();
-		cam.update();
+			game.batch.end();
+			cam.update();
+
+		} catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+
+		}
 	}
 
 	@Override
