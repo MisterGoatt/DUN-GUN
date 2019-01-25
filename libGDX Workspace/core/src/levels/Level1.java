@@ -424,7 +424,6 @@ public class Level1 implements Screen{
 				PlayerTwo.runningSound.stop();				
 			}
 			game.setScreen(new levelCompleted(game));
-
 		}
 
 		if (lockCursor) {
@@ -539,7 +538,6 @@ public class Level1 implements Screen{
 
 				if (gameOver > 180) {
 					game.setScreen(new levelCompleted(game));
-					
 				}
 				
 			}
