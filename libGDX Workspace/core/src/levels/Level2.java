@@ -163,9 +163,7 @@ public class Level2 implements Screen{
 			}
 			this.world.setContactListener(cd);
 			Gdx.input.setInputProcessor(null);
-			//Logs that this method of this class worked properly
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
+
 
 		} catch (Exception e) {
 

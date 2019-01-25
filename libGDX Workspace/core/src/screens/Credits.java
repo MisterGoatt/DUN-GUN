@@ -38,9 +38,7 @@ public class Credits implements Screen, InputProcessor {
 			creditsMusic.setVolume(Mutagen.musicVolume);
 			creditsMusic.play();
 			Gdx.input.setInputProcessor(this);
-			// Logs that this method of this class worked properly
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
+
 		} catch (Exception e) {
 			// Logs that this method of this class triggered an exception
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
@@ -78,9 +76,6 @@ public class Credits implements Screen, InputProcessor {
 			cam.update();
 
 			game.batch.end();
-			// Logs that this method of this class worked properly
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
 		} catch (Exception e) {
 			// Logs that this method of this class triggered an exception
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
@@ -92,9 +87,7 @@ public class Credits implements Screen, InputProcessor {
 	public void resize(int width, int height) {
 		try {
 			gamePort.update(width, height);
-			// Logs that this method of this class worked properly
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
+			
 		} catch (Exception e) {
 			// Logs that this method of this class triggered an exception
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
@@ -122,9 +115,7 @@ public class Credits implements Screen, InputProcessor {
 		try {
 			game.batch.dispose();
 			credits.dispose();
-			// Logs that this method of this class worked properly
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
+			
 		} catch (Exception e) {
 			// Logs that this method of this class triggered an exception
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();

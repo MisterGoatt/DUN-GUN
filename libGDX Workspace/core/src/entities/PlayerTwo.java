@@ -132,9 +132,7 @@ public class PlayerTwo {
 			deadSfx = Mutagen.manager.get("sound effects/playerDead.mp3");
 			ID = 2; //defines if player is player 1 or player 2 for the CreateBullet class
 			definePlayer();
-			//Logs that this method of this class worked properly
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
+
 
 		} catch (Exception e) {
 			//Logs that this method of this class triggered an exception
@@ -162,9 +160,7 @@ public class PlayerTwo {
 			angle = 0;
 
 			shape.dispose();
-			//Logs that this method of this class worked properly
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
+			
 
 
 		} catch (Exception e) {
@@ -332,9 +328,7 @@ public class PlayerTwo {
 
 				}
 			}
-			//Logs that this method of this class worked properly
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
+			
 
 
 		} catch (Exception e) {
@@ -427,9 +421,7 @@ public class PlayerTwo {
 					startLaserCount = false;
 				}
 			}
-			//Logs that this method of this class worked properly
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
+		
 
 		} catch (Exception e) {
 			//Logs that this method of this class triggered an exception
@@ -587,10 +579,7 @@ public class PlayerTwo {
 				runningSound.stop();
 				running = true;
 			}
-			//Logs that this method of this class worked properly
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
-
+	
 		} catch (Exception e) {
 			//Logs that this method of this class triggered an exception
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
