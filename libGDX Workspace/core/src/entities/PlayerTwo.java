@@ -544,27 +544,52 @@ public class PlayerTwo {
 
 					}
 				}
-
-				if (Gdx.input.isKeyPressed(Input.Keys.BACKSLASH)) {
-					if (timeSinceLastShot <=0) {
-						isShooting = true;
-						shootAnimation = true;
-						switch (GunSelectionScreen.p2WeaponSelected) {
-						case "revolver": timeSinceLastShot = 50;
-						break;
-						case "rifle": timeSinceLastShot = 90;
-						break;
-						case "shotgun": timeSinceLastShot = 70;
-						break;
-						case "assault rifle": timeSinceLastShot = 7;
-						break;
-						case "laser": timeSinceLastShot = 85;
-						break;
-						case "battle axe": timeSinceLastShot = 110;
-						break;
+				
+				if(GunSelectionScreen.p2AimStyle == 2) {
+					if (Gdx.input.isKeyPressed(Input.Keys.BACKSLASH)) {
+						if (timeSinceLastShot <=0) {
+							isShooting = true;
+							shootAnimation = true;
+							switch (GunSelectionScreen.p2WeaponSelected) {
+							case "revolver": timeSinceLastShot = 50;
+							break;
+							case "rifle": timeSinceLastShot = 90;
+							break;
+							case "shotgun": timeSinceLastShot = 70;
+							break;
+							case "assault rifle": timeSinceLastShot = 7;
+							break;
+							case "laser": timeSinceLastShot = 85;
+							break;
+							case "battle axe": timeSinceLastShot = 110;
+							break;
+							}
+						}
+					}					
+				}
+				else if (GunSelectionScreen.p2AimStyle == 1) {
+					if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_1)) {
+						if (timeSinceLastShot <=0) {
+							isShooting = true;
+							shootAnimation = true;
+							switch (GunSelectionScreen.p2WeaponSelected) {
+							case "revolver": timeSinceLastShot = 50;
+							break;
+							case "rifle": timeSinceLastShot = 90;
+							break;
+							case "shotgun": timeSinceLastShot = 70;
+							break;
+							case "assault rifle": timeSinceLastShot = 7;
+							break;
+							case "laser": timeSinceLastShot = 85;
+							break;
+							case "battle axe": timeSinceLastShot = 110;
+							break;
+							}
 						}
 					}
 				}
+
 			}
 
 			if (b2body.getLinearVelocity().x > 0 || b2body.getLinearVelocity().x < 0 || b2body.getLinearVelocity().y > 0 || b2body.getLinearVelocity().y < 0) {

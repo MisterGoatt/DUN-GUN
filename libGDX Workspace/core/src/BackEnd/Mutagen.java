@@ -88,9 +88,6 @@ public class Mutagen extends Game{
 		manager.load("crosshair 1.png", Texture.class);
 		manager.load("axeCursor.png", Texture.class);
 		manager.load("screens/Pause.jpg", Texture.class);
-		//			manager.load("music/song2.mp3", Music.class);
-		//			manager.load("music/song3.mp3", Music.class);
-		//			manager.load("music/song1.mp3", Music.class);
 		manager.load("music/songAll.mp3", Music.class);
 		manager.load("music/lvlComplete.mp3", Music.class);
 
@@ -108,7 +105,7 @@ public class Mutagen extends Game{
 		manager.load("sound effects/impacts/bulletBodyImpact.mp3", Sound.class);
 
 		//Credit Screen
-		manager.load("screens/ScrollingC.jpg", Texture.class);
+		manager.load("screens/ScrollingCN.jpg", Texture.class);
 		manager.load("music/creditsSong.ogg", Music.class);
 		manager.load("music/whistling masterpiece.mp3", Music.class);
 
@@ -116,7 +113,6 @@ public class Mutagen extends Game{
 		manager.load("screens/intro screens/ctm_placeholder.jpg", Texture.class);
 		manager.load("screens/intro screens/introCredits.jpg", Texture.class);
 		manager.load("screens/intro screens/introTitle.jpg", Texture.class);
-		manager.load("screens/intro screens/musicScreen.jpg", Texture.class);
 
 		//Difficulty Screen
 		manager.load("screens/difficultyScreen/difficultyb.jpg", Texture.class);
@@ -196,6 +192,8 @@ public class Mutagen extends Game{
 		//LevelCompleted Screen
 		manager.load("screens/levelCompletedScreen.jpg", Texture.class);
 		manager.load("screens/highScore.jpg", Texture.class);
+		manager.load("music/gameCompleteSFX.mp3", Music.class);
+
 
 		//Soldier
 		manager.load("sprites/soldier/soldierAtkAnimation.atlas", TextureAtlas.class);

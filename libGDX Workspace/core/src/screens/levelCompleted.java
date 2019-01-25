@@ -25,7 +25,7 @@ public class levelCompleted implements Screen{
 	private Viewport gamePort;
 	private OrthographicCamera cam;
 	private float yPos = -1000;
-	private Music lvlComplete;
+	private Music lvlComplete, gameComplete;
 
 	BitmapFont inactiveMenuText;
 	BitmapFont activeMenuText;
@@ -33,7 +33,6 @@ public class levelCompleted implements Screen{
 	private float mX, mY;
 	LogFileHandler lfh = new LogFileHandler();
 
-	
 	public levelCompleted(final Mutagen game) {
 		this.game = game;
 		try {
@@ -49,10 +48,19 @@ public class levelCompleted implements Screen{
 			gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
 			cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 			lvlComplete = Mutagen.manager.get("music/lvlComplete.mp3");
+			gameComplete = Mutagen.manager.get("music/gameCompleteSFX.mp3");
 			if (Mutagen.musicVolume > 0) {
-				lvlComplete.setVolume(Mutagen.musicVolume - .3f);
-				lvlComplete.setLooping(true);
-				lvlComplete.play();
+				if (Mutagen.level != "3") {
+					System.out.println();
+					lvlComplete.setVolume(Mutagen.musicVolume);
+					lvlComplete.setLooping(true);
+					lvlComplete.play();					
+				}else if (Mutagen.level == "3") {
+					gameComplete.setVolume(Mutagen.musicVolume);
+					gameComplete.setLooping(true);
+					gameComplete.play();	
+				}
+
 			}
 		} catch (Exception e) {
 			//Logs that this method of this class triggered an exception
@@ -104,7 +112,7 @@ public class levelCompleted implements Screen{
 						activeMenuText.draw(game.batch, "MAIN MENU", 42, 88);
 						
 						if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-							lvlComplete.stop();
+							gameComplete.stop();
 							game.setScreen(new MainMenu(game));
 						}
 					}else {
