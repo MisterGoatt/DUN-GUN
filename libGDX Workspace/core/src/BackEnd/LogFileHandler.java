@@ -16,6 +16,16 @@ public class LogFileHandler{
 	public void fileCreate() {
 		try {
 			PrintWriter writer = new PrintWriter("loggingFile.txt", "UTF-8");
+			try {
+				BufferedWriter bw = new BufferedWriter(new FileWriter(filestring, true));
+				bw.newLine();
+				bw.write("******\nLogging only contains errors because it is redundant to log methods are functioning \nwhen no error being logged is the same as writing that it is working\n******");
+				bw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 			//Creates a file using the PrintWriter class
 			writer.close();
 			//closes the file to prevent resource leak

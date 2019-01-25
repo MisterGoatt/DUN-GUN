@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import screens.Tutorial;
-
+import BackEnd.LogFileHandler;
 import BackEnd.Mutagen;
 import BackEnd.PointSystem;
 
@@ -41,30 +41,32 @@ public class MainMenu implements Screen, InputProcessor{
 	
 	public static boolean pointStart = true;
 	public static boolean pointsMenu = false;
+	LogFileHandler lfh = new LogFileHandler();
 
 
 	public MainMenu(final Mutagen game) {
 		this.game = game;
-		mainMenuScreen = Mutagen.manager.get("screens/menuScreen.jpg", Texture.class);
-		mainMenuScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		framerate = Mutagen.manager.get("fonts/CourierNew32.fnt", BitmapFont.class) ;
-		inactiveMenuText = Mutagen.manager.get("fonts/inactiveMenu(36).fnt", BitmapFont.class);
-		activeMenuText = Mutagen.manager.get("fonts/activeMenu(36).fnt", BitmapFont.class);
-		
-//		Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
-//        //Gdx.graphics.setFullscreenMode(currentMode);
-//        Gdx.graphics.setWindowedMode(1500, 800);
+		try {
+			mainMenuScreen = Mutagen.manager.get("screens/menuScreen.jpg", Texture.class);
+			mainMenuScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			framerate = Mutagen.manager.get("fonts/CourierNew32.fnt", BitmapFont.class) ;
+			inactiveMenuText = Mutagen.manager.get("fonts/inactiveMenu(36).fnt", BitmapFont.class);
+			activeMenuText = Mutagen.manager.get("fonts/activeMenu(36).fnt", BitmapFont.class);
+			
+			cam = new OrthographicCamera();		
+			gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+			cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+			Gdx.input.setInputProcessor(this);
+			themeMusic.setLooping(true);
+			themeMusic.play();
+			themeMusic.setVolume(Mutagen.musicVolume);
+			pointsMenu = true;
+		} catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
 
-		
-		
-		cam = new OrthographicCamera();		
-		gamePort = new FitViewport(Mutagen.V_WIDTH, Mutagen.V_HEIGHT, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
-		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-		Gdx.input.setInputProcessor(this);
-		themeMusic.setLooping(true);
-		themeMusic.play();
-		themeMusic.setVolume(Mutagen.musicVolume);
-		pointsMenu = true;
+		}
 
 	}
 
@@ -73,69 +75,65 @@ public class MainMenu implements Screen, InputProcessor{
 	@Override
 	public void render(float delta) {
 
-		//clears screen
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		try {
+			//clears screen
+			Gdx.gl.glClearColor(0, 0, 0, 1);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-		cam.unproject(mousePosition); //gets mouse coordinates within viewport
-		//System.out.println(mousePosition);
-		game.batch.begin(); 
-		game.batch.setProjectionMatrix(cam.combined);
+			mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+			cam.unproject(mousePosition); //gets mouse coordinates within viewport
+			//System.out.println(mousePosition);
+			game.batch.begin(); 
+			game.batch.setProjectionMatrix(cam.combined);
 
-		//mouse x and y
-		mX = mousePosition.x;
-		mY = mousePosition.y;
-		game.batch.draw(mainMenuScreen, 0, 0); // draw background screen
+			//mouse x and y
+			mX = mousePosition.x;
+			mY = mousePosition.y;
+			game.batch.draw(mainMenuScreen, 0, 0); // draw background screen
 
-		//START goes to player mode screen
-		if (88 < mX && mX < 311 && 40 < mY && mY < 110)  {
-			activeMenuText.draw(game.batch, "START", 140, 90);
-		}else {
-			inactiveMenuText.draw(game.batch, "START", 140, 90);
-		}
-
-		//OPTIONS
-		if (645 < mX && mX < 874 && 40 < mY && mY < 110){
-			activeMenuText.draw(game.batch, "OPTIONS", 670, 90);
-		}else {
-			inactiveMenuText.draw(game.batch, "OPTIONS", 670, 90);
-		}
-		//CREDITS
-		if (916 < mX && mX < 1152 && 40< mY && mY < 110){
-			activeMenuText.draw(game.batch, "CREDITS", 952, 90);
-		}else {
-			inactiveMenuText.draw(game.batch, "CREDITS", 952, 90);
-		}
-
-		//QUIT
-		if (1201 < mX && mX < 1435 && 40 < mY && mY < 110){
-			activeMenuText.draw(game.batch, "QUIT", 1270, 90);
-		}else{
-			inactiveMenuText.draw(game.batch, "QUIT", 1270, 90);
-		}
-		
-		//tutorial
-		if (365 < mX && mX < 598 && 40 < mY && mY < 110){
-			activeMenuText.draw(game.batch, "TUTORIAL", 382, 90);
-		}else {
-			inactiveMenuText.draw(game.batch, "TUTORIAL", 382, 90);
+			//START goes to player mode screen
+			if (88 < mX && mX < 311 && 40 < mY && mY < 110)  {
+				activeMenuText.draw(game.batch, "START", 140, 90);
+			}else {
+				inactiveMenuText.draw(game.batch, "START", 140, 90);
 			}
-	
-		PointSystem.pointFile();
-		
-//
-//		//***********************************		
-//		//FRAMES PER SECOND
-//		//**********************************
-//		int f = Gdx.graphics.getFramesPerSecond(); // grabs frames per second
-//		String frames = Integer.toString(f); //converts frames per second to a string
-//		framerate.draw(game.batch, frames, 5, 785); //displays frames per second as text in top left
-//		//**********************************
 
-		cam.update();
-		game.batch.end(); 
+			//OPTIONS
+			if (645 < mX && mX < 874 && 40 < mY && mY < 110){
+				activeMenuText.draw(game.batch, "OPTIONS", 670, 90);
+			}else {
+				inactiveMenuText.draw(game.batch, "OPTIONS", 670, 90);
+			}
+			//CREDITS
+			if (916 < mX && mX < 1152 && 40< mY && mY < 110){
+				activeMenuText.draw(game.batch, "CREDITS", 952, 90);
+			}else {
+				inactiveMenuText.draw(game.batch, "CREDITS", 952, 90);
+			}
 
+			//QUIT
+			if (1201 < mX && mX < 1435 && 40 < mY && mY < 110){
+				activeMenuText.draw(game.batch, "QUIT", 1270, 90);
+			}else{
+				inactiveMenuText.draw(game.batch, "QUIT", 1270, 90);
+			}
+			
+			//tutorial
+			if (365 < mX && mX < 598 && 40 < mY && mY < 110){
+				activeMenuText.draw(game.batch, "TUTORIAL", 382, 90);
+			}else {
+				inactiveMenuText.draw(game.batch, "TUTORIAL", 382, 90);
+				}
+
+			PointSystem.pointFile();
+			
+			cam.update();
+			game.batch.end();
+		} catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+		} 
 	}
 
 

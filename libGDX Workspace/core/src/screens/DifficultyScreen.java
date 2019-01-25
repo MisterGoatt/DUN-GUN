@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import BackEnd.LogFileHandler;
 import BackEnd.Mutagen;
 
 public class DifficultyScreen implements Screen, InputProcessor{
@@ -21,58 +22,73 @@ public class DifficultyScreen implements Screen, InputProcessor{
 	private boolean buttonPressed = false;
 	private float mX, mY;
 	public static int difficulty;
+	LogFileHandler lfh = new LogFileHandler();
 	
 	public DifficultyScreen(final Mutagen game) {
 		this.game = game;
-		cam = new OrthographicCamera();		
-		gamePort = new StretchViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
-		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-		Gdx.input.setInputProcessor(this);
-		
-		blank = Mutagen.manager.get("screens/difficultyScreen/difficultyb.jpg");
-		back = Mutagen.manager.get("screens/difficultyScreen/difficultyba.jpg");
-		normal = Mutagen.manager.get("screens/difficultyScreen/difficultyn.jpg");
-		challenge = Mutagen.manager.get("screens/difficultyScreen/difficultyc.jpg");
-		blank.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		back.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		normal.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		challenge.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		try {
+			cam = new OrthographicCamera();		
+			gamePort = new StretchViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+			cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+			Gdx.input.setInputProcessor(this);
+			
+			blank = Mutagen.manager.get("screens/difficultyScreen/difficultyb.jpg");
+			back = Mutagen.manager.get("screens/difficultyScreen/difficultyba.jpg");
+			normal = Mutagen.manager.get("screens/difficultyScreen/difficultyn.jpg");
+			challenge = Mutagen.manager.get("screens/difficultyScreen/difficultyc.jpg");
+			blank.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			back.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			normal.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			challenge.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		} catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+
+		}
 
 	}
 
 	@Override
 	public void render(float delta) {
 
-		//clears screen
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-		cam.unproject(mousePosition); //gets mouse coordinates within viewport
+		try {
+			//clears screen
+			Gdx.gl.glClearColor(0, 0, 0, 1);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+			cam.unproject(mousePosition); //gets mouse coordinates within viewport
 
-		mX = mousePosition.x;
-		mY = mousePosition.y;
-		game.batch.setProjectionMatrix(cam.combined);
-		game.batch.begin();
-		
-		//BACK
-		if (mX < 244 && mX > 15 && mY < 106 && mY > 17) {
-			game.batch.draw(back, 0, 0);	
-		}
-		//NORMAL
-		else if (mX < 962 && mX > 535 && mY > 422 && mY < 567) {
-			game.batch.draw(normal, 0, 0);	
-		}
-		//CHALLENGING
-		else if (mX < 962 && mX > 535 && mY > 283 && mY < 406) {
-			game.batch.draw(challenge, 0, 0);	
+			mX = mousePosition.x;
+			mY = mousePosition.y;
+			game.batch.setProjectionMatrix(cam.combined);
+			game.batch.begin();
+			
+			//BACK
+			if (mX < 244 && mX > 15 && mY < 106 && mY > 17) {
+				game.batch.draw(back, 0, 0);	
+			}
+			//NORMAL
+			else if (mX < 962 && mX > 535 && mY > 422 && mY < 567) {
+				game.batch.draw(normal, 0, 0);	
+			}
+			//CHALLENGING
+			else if (mX < 962 && mX > 535 && mY > 283 && mY < 406) {
+				game.batch.draw(challenge, 0, 0);	
 
-		}else {
-			game.batch.draw(blank, 0, 0);	
+			}else {
+				game.batch.draw(blank, 0, 0);	
+
+			}
+			
+			game.batch.end();
+			cam.update();
+		} catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
 
 		}
-		
-		game.batch.end();
-		cam.update();
 
 	}
 

@@ -23,8 +23,10 @@ public class PointSystem {
 	public static int x;
 	public static int y;
 	public static int z = 0;
+	public static boolean ivanovDeath = false;
+	
 	public static void pointFile() {
-
+		
 			try {
 				y = sum;
 				BufferedWriter hs;
@@ -71,11 +73,13 @@ public class PointSystem {
 
 						CollisionDetector.turretDeath = false; // set's the boolean back to false
 					} else if (CollisionDetector.ivanovDeath) {
-						bw.write("double");
-						sum *= 2;
-						bw.newLine();// Starts the new line on the file
-						bw.close();// saves the information written to the file
-
+						if (!ivanovDeath) {
+							bw.write("double");
+							sum *= 2;
+							bw.newLine();// Starts the new line on the file
+							bw.close();// saves the information written to the file
+							ivanovDeath = true;
+						}
 						CollisionDetector.ivanovDeath = false; // set's the boolean back to false
 					} else if (Level3.pointCountGame) {
 
@@ -110,7 +114,7 @@ public class PointSystem {
 					bw = new BufferedWriter(new FileWriter("playerScore", false));// Sets the file so that all information is not kept in the file
 					bw.write("");// writes blank space into the file effectively clearing the file
 					bw.close();
-					int sum = 0; // resets the score to zero
+					sum = 0; // resets the score to zero
 					if (z == 0) {
 						hs = new BufferedWriter(new FileWriter("highScore", false));// clears the file highScore
 						hs.write("");

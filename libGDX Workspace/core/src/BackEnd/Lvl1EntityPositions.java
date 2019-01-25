@@ -942,9 +942,7 @@ public class Lvl1EntityPositions {
 					room26 = false;
 				}
 			}
-			// Logs that this method of this class worked properly
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
+
 		} catch (Exception e) {
 			// Logs that this method of this class triggered an exception
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();

@@ -220,9 +220,6 @@ public class Level2 implements Screen{
 				PlayerTwo.timeToShake = false;
 
 			}
-			//Logs that this method of this class worked properly
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
 
 		} catch (Exception e) {
 			//Logs that this method of this class triggered an exception
@@ -347,11 +344,6 @@ public class Level2 implements Screen{
 				elapsed += delta;
 			}
 			cam.update();
-			//Logs that this method of this class worked properly
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
-
-
 		} catch (Exception e) {
 			//Logs that this method of this class triggered an exception
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
@@ -436,9 +428,6 @@ public class Level2 implements Screen{
 				}
 			}
 			bodiesToRemove.clear();
-			//Logs that this method of this class worked properly
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
 
 		} catch (Exception e) {
 			//Logs that this method of this class triggered an exception
@@ -670,9 +659,6 @@ public class Level2 implements Screen{
 			mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			cam.unproject(mousePosition); //gets mouse coordinates within viewport
 			game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
-			System.out.println(mousePosition);
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "Working");
 
 		} catch (Exception e) {
 

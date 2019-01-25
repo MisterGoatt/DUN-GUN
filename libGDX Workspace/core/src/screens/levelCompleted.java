@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import BackEnd.LogFileHandler;
 import BackEnd.Mutagen;
 import BackEnd.PointSystem;
 import levels.Level2;
@@ -30,92 +31,108 @@ public class levelCompleted implements Screen{
 	BitmapFont activeMenuText;
 	private Vector3 mousePosition = new Vector3(0, 0, 0);
 	private float mX, mY;
+	LogFileHandler lfh = new LogFileHandler();
 
+	
 	public levelCompleted(final Mutagen game) {
 		this.game = game;
-		levelComplete = Mutagen.manager.get("screens/levelCompletedScreen.jpg");
-		levelComplete.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		highScore = Mutagen.manager.get("screens/highScore.jpg");
-		highScore.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		inactiveMenuText = Mutagen.manager.get("fonts/inactiveMenu(36).fnt", BitmapFont.class);
-		activeMenuText = Mutagen.manager.get("fonts/activeMenu(36).fnt", BitmapFont.class);
+		try {
+			levelComplete = Mutagen.manager.get("screens/levelCompletedScreen.jpg");
+			levelComplete.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			highScore = Mutagen.manager.get("screens/highScore.jpg");
+			highScore.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			inactiveMenuText = Mutagen.manager.get("fonts/inactiveMenu(36).fnt", BitmapFont.class);
+			activeMenuText = Mutagen.manager.get("fonts/activeMenu(36).fnt", BitmapFont.class);
 
 
-		cam = new OrthographicCamera();
-		gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
-		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-		lvlComplete = Mutagen.manager.get("music/lvlComplete.mp3");
-		if (Mutagen.musicVolume > 0) {
-			lvlComplete.setVolume(Mutagen.musicVolume - .3f);
-			lvlComplete.setLooping(true);
-			lvlComplete.play();
+			cam = new OrthographicCamera();
+			gamePort = new FitViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+			cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+			lvlComplete = Mutagen.manager.get("music/lvlComplete.mp3");
+			if (Mutagen.musicVolume > 0) {
+				lvlComplete.setVolume(Mutagen.musicVolume - .3f);
+				lvlComplete.setLooping(true);
+				lvlComplete.play();
+			}
+		} catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+
 		}
 	}
 
 
 	@Override
 	public void render(float delta) {
-		mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-		cam.unproject(mousePosition);
-		
-		mX = mousePosition.x;
-		mY = mousePosition.y;
+		try {
+			mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+			cam.unproject(mousePosition);
+			
+			mX = mousePosition.x;
+			mY = mousePosition.y;
 
-		game.batch.begin(); 
-		game.batch.setProjectionMatrix(cam.combined);
+			game.batch.begin(); 
+			game.batch.setProjectionMatrix(cam.combined);
 
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		if (Mutagen.level != "3") {
-			game.batch.draw(levelComplete, 0, yPos);
-		}else if (Mutagen.level == "3") {
-			game.batch.draw(highScore, 0, yPos);
-		}
-		if (yPos > -1570) { // Moves the screen down
-			yPos -= 10;
-		}
-		else {
+			Gdx.gl.glClearColor(0, 0, 0, 1);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			
 			if (Mutagen.level != "3") {
 				game.batch.draw(levelComplete, 0, yPos);
-			
-				String summed = Integer.toString(PointSystem.sum); 
-				inactiveMenuText.draw(game.batch, "CURRENT SCORE: " + summed, 515, 100);
-				
+			}else if (Mutagen.level == "3") {
+				game.batch.draw(highScore, 0, yPos);
 			}
-			
-			else if (Mutagen.level == "3") {// plays the mission complete screen after level 3
+			if (yPos > -1570) { // Moves the screen down
+				yPos -= 10;
+			}
+			else {
+				if (Mutagen.level != "3") {
+					game.batch.draw(levelComplete, 0, yPos);
 				
-				inactiveMenuText.draw(game.batch, "CURRENT SCORE: " + PointSystem.y, 500, 290);
-				inactiveMenuText.draw(game.batch, "HIGH SCORE: " + PointSystem.x, 500, 490);
-				
-				if (35 < mX && mX < 290 && 57 < mY && mY < 110){
-					activeMenuText.draw(game.batch, "MAIN MENU", 42, 88);
+					String summed = Integer.toString(PointSystem.sum); 
+					inactiveMenuText.draw(game.batch, "CURRENT SCORE: " + summed, 515, 100);
 					
-					if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-						lvlComplete.stop();
-						game.setScreen(new MainMenu(game));
+				}
+				
+				else if (Mutagen.level == "3") {// plays the mission complete screen after level 3
+					
+					inactiveMenuText.draw(game.batch, "CURRENT SCORE: " + PointSystem.y, 500, 290);
+					inactiveMenuText.draw(game.batch, "HIGH SCORE: " + PointSystem.x, 500, 490);
+					
+					if (35 < mX && mX < 290 && 57 < mY && mY < 110){
+						activeMenuText.draw(game.batch, "MAIN MENU", 42, 88);
+						
+						if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+							lvlComplete.stop();
+							game.setScreen(new MainMenu(game));
+						}
+					}else {
+						inactiveMenuText.draw(game.batch, "MAIN MENU", 42, 88);
 					}
-				}else {
-					inactiveMenuText.draw(game.batch, "MAIN MENU", 42, 88);
+				}
+				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+					if (Mutagen.level == "1") {
+						lvlComplete.stop();
+						game.setScreen(new Level2(game));
+						
+					}
+					else if (Mutagen.level == "2") {
+						lvlComplete.stop();
+						game.setScreen(new Level3(game));
+					}
 				}
 			}
-			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-				if (Mutagen.level == "1") {
-					lvlComplete.stop();
-					game.setScreen(new Level2(game));
-					
-				}
-				else if (Mutagen.level == "2") {
-					lvlComplete.stop();
-					game.setScreen(new Level3(game));
-				}
-			}
+			
+			
+			cam.update();
+			game.batch.end();
+		} catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+
 		}
-		
-		
-		cam.update();
-		game.batch.end();
 	}
 
 

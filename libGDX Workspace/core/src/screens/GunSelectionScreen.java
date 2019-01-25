@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import BackEnd.LogFileHandler;
 import BackEnd.Mutagen;
 import levels.Level1;
 
@@ -28,38 +29,47 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 	private boolean buttonPressed = false, p1Screen = true, gunScr = true, next = false;
 	public static int p1AimStyle, p2AimStyle;
 	ShapeRenderer shapeR;
+	LogFileHandler lfh = new LogFileHandler();
 
 	public GunSelectionScreen(final Mutagen game) {
 		this.game = game;
-		gunPickScreen = Mutagen.manager.get("screens/gun_selection.jpg");
-		p1GS = Mutagen.manager.get("screens/p1GS.jpg");
-		p2GS = Mutagen.manager.get("screens/p2GS.jpg"); 
-		p1b = Mutagen.manager.get("screens/aim style/aimStyle1b.jpg");
-		p1rot = Mutagen.manager.get("screens/aim style/aimStylerot1.jpg");
-		p1dir = Mutagen.manager.get("screens/aim style/aimStyledir1.jpg");
-		p2b = Mutagen.manager.get("screens/aim style/aimStyle2b.jpg");
-		p2rot = Mutagen.manager.get("screens/aim style/aimStylerot2.jpg");
-		p2dir = Mutagen.manager.get("screens/aim style/aimStyledir2.jpg");
+		try {
+			gunPickScreen = Mutagen.manager.get("screens/gun_selection.jpg");
+			p1GS = Mutagen.manager.get("screens/p1GS.jpg");
+			p2GS = Mutagen.manager.get("screens/p2GS.jpg"); 
+			p1b = Mutagen.manager.get("screens/aim style/aimStyle1b.jpg");
+			p1rot = Mutagen.manager.get("screens/aim style/aimStylerot1.jpg");
+			p1dir = Mutagen.manager.get("screens/aim style/aimStyledir1.jpg");
+			p2b = Mutagen.manager.get("screens/aim style/aimStyle2b.jpg");
+			p2rot = Mutagen.manager.get("screens/aim style/aimStylerot2.jpg");
+			p2dir = Mutagen.manager.get("screens/aim style/aimStyledir2.jpg");
 
-		gunPickScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);		
-		p1GS.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		p2GS.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		p1b.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		p2b.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		p1rot.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		p1dir.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		p2rot.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		p2dir.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			gunPickScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);		
+			p1GS.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			p2GS.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			p1b.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			p2b.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			p1rot.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			p1dir.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			p2rot.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			p2dir.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
-		p1AimStyle = 0;
-		p2AimStyle = 0;
-		p1AimStyle = 0; 
-		p2AimStyle = 0;
-		cam = new OrthographicCamera();		
-		gamePort = new StretchViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
-		cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-		Gdx.input.setInputProcessor(this);
-		shapeR = new ShapeRenderer();
+			p1AimStyle = 0;
+			p2AimStyle = 0;
+			p1AimStyle = 0; 
+			p2AimStyle = 0;
+			cam = new OrthographicCamera();		
+			gamePort = new StretchViewport(1500, 800, cam); //fits view port to match map's dimensions (in this case 320x320) and scales. Adds black bars to adjust
+			cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+			Gdx.input.setInputProcessor(this);
+			shapeR = new ShapeRenderer();
+		} catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+
+
+		}
 	}
 
 	@Override
@@ -72,52 +82,59 @@ public class GunSelectionScreen implements Screen, InputProcessor{
 
 	@Override
 	public void render(float delta) {
-		//clears screen
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-		cam.unproject(mousePosition); //gets mouse coordinates within viewport
-		game.batch.setProjectionMatrix(cam.combined);
-		game.batch.begin();
-		if (gunScr) {
-			if (PlayerMode.OneP) {
-				game.batch.draw(gunPickScreen, 0, 0);	
-			}else {
-				if (p1Screen) {
-					game.batch.draw(p1GS, 0, 0);
+		try {
+			//clears screen
+			Gdx.gl.glClearColor(0, 0, 0, 1);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+			cam.unproject(mousePosition); //gets mouse coordinates within viewport
+			game.batch.setProjectionMatrix(cam.combined);
+			game.batch.begin();
+			if (gunScr) {
+				if (PlayerMode.OneP) {
+					game.batch.draw(gunPickScreen, 0, 0);	
 				}else {
-					game.batch.draw(p2GS, 0, 0);
+					if (p1Screen) {
+						game.batch.draw(p1GS, 0, 0);
+					}else {
+						game.batch.draw(p2GS, 0, 0);
+					}
 				}
-			}
-		}else {
-			
-			if (p1AimStyle == 0) {
-				game.batch.draw(p1b, 0, 0);
-			}else if (p1AimStyle == 1) {
-				game.batch.draw(p1rot, 0, 0);
-			}else if (p1AimStyle == 2) {
-				game.batch.draw(p1dir, 0, 0);
-			}
-			
-			if (next) {
-				if (p2AimStyle == 0) {
-					game.batch.draw(p2b, 0, 0);
-				}else if (p2AimStyle == 1) {
-					game.batch.draw(p2rot, 0, 0);
-				}else if (p2AimStyle == 2) {
-					game.batch.draw(p2dir, 0, 0);
-				}				
-			}
+			}else {
+				
+				if (p1AimStyle == 0) {
+					game.batch.draw(p1b, 0, 0);
+				}else if (p1AimStyle == 1) {
+					game.batch.draw(p1rot, 0, 0);
+				}else if (p1AimStyle == 2) {
+					game.batch.draw(p1dir, 0, 0);
+				}
+				
+				if (next) {
+					if (p2AimStyle == 0) {
+						game.batch.draw(p2b, 0, 0);
+					}else if (p2AimStyle == 1) {
+						game.batch.draw(p2rot, 0, 0);
+					}else if (p2AimStyle == 2) {
+						game.batch.draw(p2dir, 0, 0);
+					}				
+				}
 
+				
+				
+			}
+			game.batch.end();
+			shapeR.begin(ShapeType.Filled);
+			shapeR.setColor(255, 0 ,0, 0);
+			shapeR.end();
 			
-			
+			cam.update();
+		} catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+
 		}
-		game.batch.end();
-		shapeR.begin(ShapeType.Filled);
-		shapeR.setColor(255, 0 ,0, 0);
-		shapeR.end();
-		
-		cam.update();
 
 	}
 
