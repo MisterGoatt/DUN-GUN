@@ -81,7 +81,7 @@ public class ControlScreen implements Screen, InputProcessor{
 			game.batch.draw(controlScreen, 0, 0);
 			mX = mouse_position.x;
 			mY = mouse_position.y;
-			if (0 < mX && mX < 120 && 0 < mY && mY < 61)
+			if (12 < mX && mX < 117 && 27 < mY && mY < 73)
 			{
 				activeMenuText.draw(game.batch, "BACK", 10, 55);
 			}else {
@@ -158,7 +158,7 @@ public class ControlScreen implements Screen, InputProcessor{
 		if (!buttonPressed) {
 			//back button
 			
-			if (mX < 120 && mY < 61)  {
+			if (mX < 120 && mY < 73)  {
 				
 				Mutagen.clicking();
 				game.setScreen(new Tutorial(game));

@@ -161,7 +161,7 @@ public class Tutorial implements Screen, InputProcessor{
 				}
 			}
 
-			if (7 < mX && mX < 123 && 8 < mY && mY < 61)
+			if (7 < mX && mX < 123 && 8 < mY && mY < 73)
 			{
 				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 					game.setScreen(new MainMenu(game));
