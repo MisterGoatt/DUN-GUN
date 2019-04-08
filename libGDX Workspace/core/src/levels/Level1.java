@@ -3,16 +3,15 @@ package levels;
 import java.io.IOException;
 import java.util.Random;
 
-import javax.swing.plaf.synth.SynthSplitPaneUI;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -69,14 +68,15 @@ public class Level1 implements Screen{
 	private CollisionDetector cd;
 	private Lvl1EntityPositions lvl1EP;
 	private Music levelOneMusicAll;
-	private Texture mouseCursor, axeMouseCursor, pauseMenu;
+	private Texture pauseMenu;
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
-	private boolean lockCursor = true, gamePaused = false;
+	private boolean gamePaused = false;
 	private float elapsed = 0, duration, intensity, gameOver = 0, fadeOut = 0;
 	public static boolean bulletImpact = false;
 	public static Vector3 mousePosition = new Vector3(0, 0, 0);
 	private Vector2 boundaryAbs = new Vector2(0, 0);
 	private Vector2 boundary = new Vector2(0, 0);
+	Cursor customCursor;
 	Random random;
 	LogFileHandler lfh = new LogFileHandler();
 
@@ -84,7 +84,7 @@ public class Level1 implements Screen{
 	public Level1(final Mutagen game) {
 		this.game = game;
 
-		try {
+//		try {
 			//		Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
 			//        Gdx.graphics.setFullscreenMode(currentMode);
 			//		System.out.println(currentMode);
@@ -105,8 +105,6 @@ public class Level1 implements Screen{
 				map = new TmxMapLoader().load("tileMaps/Levels/Level1Challenging.tmx", params);
 
 			}
-			mouseCursor = Mutagen.manager.get("crosshair 1.png", Texture.class);
-			axeMouseCursor = Mutagen.manager.get("axeCursor.png");
 			mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / Mutagen.PPM);
 
 			//Box2d variables
@@ -161,13 +159,16 @@ public class Level1 implements Screen{
 			}
 			this.world.setContactListener(cd);
 			Gdx.input.setInputProcessor(null);
+			customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("crosshair 2.png")), 1, 1);
+			Gdx.graphics.setCursor(customCursor);
 
-		} catch (Exception e) {
-			//Logs that this method of this class triggered an exception
-			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
 		}
-	}
+//		 catch (Exception e) {
+//			//Logs that this method of this class triggered an exception
+//			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+//			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+//		}
+
 
 	//Creation of bullet objects and playing shooting and swinging sound effects
 	public void shootGun() throws IOException {
@@ -283,7 +284,6 @@ public class Level1 implements Screen{
 
 					if (PlayerOne.movHalt && PlayerTwo.movHalt) {
 						//p2 is right of p1
-						System.out.println(boundary.x);
 						if (boundary.x >= 0 ) {
 							playerOne.b2body.applyForceToCenter(-2, 0, true);
 							playerTwo.b2body.applyForceToCenter(2, 0, true);
@@ -452,12 +452,6 @@ public class Level1 implements Screen{
 				gamePaused = false;
 			}
 
-			//hides the mouse and displays cross hair		
-			if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && !lockCursor) {
-				lockCursor = true;
-			}else if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && lockCursor) {
-				lockCursor = false;
-			}
 
 			//DEV KEY THAT WILL SKIP TO LEVEL 2
 			if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
@@ -470,9 +464,6 @@ public class Level1 implements Screen{
 				game.setScreen(new levelCompleted(game));
 			}
 
-			if (lockCursor) {
-				Gdx.input.setCursorCatched(true);
-			}else Gdx.input.setCursorCatched(false);
 
 			//*********GAME IS PAUSED*********
 			if (gamePaused) {
@@ -480,15 +471,14 @@ public class Level1 implements Screen{
 				game.batch.begin(); //starts sprite spriteBatch
 				cam.position.x = 0;
 				cam.position.y = 0;
+
 				game.batch.draw(pauseMenu, 0 - (350/Mutagen.PPM), 0 - (200 / Mutagen.PPM), 1500 / 200,  800 / 200);
 
-				lockCursor = false;	
 				if (Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
 					//RESUME
 					if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < 0.88 && mousePosition.y > .31) {
 						Mutagen.clicking();
 						gamePaused = false;
-						lockCursor = true;
 					}
 					//QUIT TO MENU
 					if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < 0.221 && mousePosition.y > -.38) {
@@ -510,8 +500,6 @@ public class Level1 implements Screen{
 				mapRenderer.render();
 				//b2dr.render(world, cam.combined);
 				game.batch.begin(); //starts sprite spriteBatch
-
-
 				//RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER BODY OBJECTS
 				for (int i = 0; i < Grunt.grunts.size; i++) {
 					Grunt.grunts.get(i).renderSprite(game.batch);
@@ -618,15 +606,19 @@ public class Level1 implements Screen{
 					if (!PlayerTwo.p2Dead) {
 						playerTwo.handleInput(delta);
 						playerTwo.renderSprite(game.batch);
-					}	
+					}
 				}
 
 				if (PlayerMode.OneP) {
-					if (GunSelectionScreen.p1WeaponSelected == "battle axe") {
-						game.batch.draw(axeMouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 21 / Mutagen.PPM, 21/ Mutagen.PPM);
-					}else { 
-						game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / Mutagen.PPM, 13 / Mutagen.PPM);
-					}				
+
+
+//
+//					if (GunSelectionScreen.p1WeaponSelected == "battle axe") {
+//						game.batch.draw(axeMouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 21 / Mutagen.PPM, 21/ Mutagen.PPM);
+//					}else if (GunSelectionScreen.p1WeaponSelected != "battle axe") { 
+//						game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / Mutagen.PPM, 13 / Mutagen.PPM);
+//
+//					}
 				}
 
 				mapRenderer.setView(cam);

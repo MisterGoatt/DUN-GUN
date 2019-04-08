@@ -47,7 +47,7 @@ public class PlayerOne extends Sprite implements Disposable{
 	//sound effect of the player's movement
 	public static Sound runningSound;
 	private float speed = 3, oldSpeed, speedAB = .707f, waitToShootL = 0, timeSinceLastShot = 60f, timePassed = 0, slowedCounter, rotationSpeed = 4, storedHP, secondWind = 1, olA; //speed of the player, Sqrt 2 divided by 2
-	public static float  angle, p1PosX, p1PosY, axeSwingTimer = 0; //get distance between mouse and player in radians
+	public static float  angle, p1PosX, p1PosY, axeSwingTimer = 0, mouseBoundValue = 4.46f; //get distance between mouse and player in radians
 	//amount of damage each weapon deals
 	public static float laserLanceDamage = 60, battleAxeDamage = 175, assaultRifleDamage = 22, shotgunDamage = 38f, 
 			rifleDamage = 150, revolverDamage = 75;
@@ -484,6 +484,7 @@ public class PlayerOne extends Sprite implements Disposable{
 
 						if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)){
 							this.b2body.setLinearVelocity(-speed * speedAB, speed * speedAB);
+							mouseBoundValue = 3.8f;
 						}else if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)){
 							this.b2body.setLinearVelocity(speed * speedAB, speed * speedAB);
 						}else if(Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)){
@@ -499,6 +500,7 @@ public class PlayerOne extends Sprite implements Disposable{
 
 						}else if(Gdx.input.isKeyPressed(Input.Keys.A)){
 							this.b2body.setLinearVelocity(-speed, 0f);
+							mouseBoundValue = 3.8f;
 
 						}else if(Gdx.input.isKeyPressed(Input.Keys.D)){
 							this.b2body.setLinearVelocity(speed, 0f);

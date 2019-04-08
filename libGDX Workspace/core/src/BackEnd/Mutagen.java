@@ -86,6 +86,7 @@ public class Mutagen extends Game{
 
 			//Level1
 			manager.load("crosshair 1.png", Texture.class);
+			//manager.load("mouseOriginal.png", Texture.class);
 			manager.load("axeCursor.png", Texture.class);
 			manager.load("screens/Pause.jpg", Texture.class);
 			manager.load("music/songAll.mp3", Music.class);
