@@ -84,7 +84,7 @@ public class Level1 implements Screen{
 	public Level1(final Mutagen game) {
 		this.game = game;
 
-//		try {
+		try {
 			//		Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
 			//        Gdx.graphics.setFullscreenMode(currentMode);
 			//		System.out.println(currentMode);
@@ -159,15 +159,16 @@ public class Level1 implements Screen{
 			}
 			this.world.setContactListener(cd);
 			Gdx.input.setInputProcessor(null);
-			customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("crosshair 2.png")), 1, 1);
+			customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("crosshair 2.png")), 10, 2);
 			Gdx.graphics.setCursor(customCursor);
 
 		}
-//		 catch (Exception e) {
-//			//Logs that this method of this class triggered an exception
-//			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-//			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
-//		}
+		catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+		}
+	}
 
 
 	//Creation of bullet objects and playing shooting and swinging sound effects
@@ -612,13 +613,13 @@ public class Level1 implements Screen{
 				if (PlayerMode.OneP) {
 
 
-//
-//					if (GunSelectionScreen.p1WeaponSelected == "battle axe") {
-//						game.batch.draw(axeMouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 21 / Mutagen.PPM, 21/ Mutagen.PPM);
-//					}else if (GunSelectionScreen.p1WeaponSelected != "battle axe") { 
-//						game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / Mutagen.PPM, 13 / Mutagen.PPM);
-//
-//					}
+					//
+					//					if (GunSelectionScreen.p1WeaponSelected == "battle axe") {
+					//						game.batch.draw(axeMouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 21 / Mutagen.PPM, 21/ Mutagen.PPM);
+					//					}else if (GunSelectionScreen.p1WeaponSelected != "battle axe") { 
+					//						game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / Mutagen.PPM, 13 / Mutagen.PPM);
+					//
+					//					}
 				}
 
 				mapRenderer.setView(cam);

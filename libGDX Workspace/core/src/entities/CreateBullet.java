@@ -167,7 +167,7 @@ public class CreateBullet {
 					posX = (float) (Math.cos(angleR)) * speed;
 					posY = (float) (Math.sin(angleR)) * speed;
 					angleR = angleR - 1.57f;
-					b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angleR); // sets the position of
+					b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y-.05f, angleR); // sets the position of
 																									// the body to the
 																									// position of the
 																									// body and
@@ -249,7 +249,7 @@ public class CreateBullet {
 						posX = (float) (Math.cos(angleR)) * speed;
 						posY = (float) (Math.sin(angleR)) * speed;
 						angleR = angleR - 1.57f;
-						b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y, angleR); // sets the
+						b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y-.05f, angleR); // sets the
 																										// position of
 																										// the body to
 																										// the position
@@ -316,6 +316,7 @@ public class CreateBullet {
 				default:
 					batch.draw(bulletAnimation.getKeyFrame(timePassed, true), b2body.getPosition().x,
 							b2body.getPosition().y, 0, 0, 5 / Mutagen.PPM, 20 / Mutagen.PPM, 1, 1, angleD - 90);
+					
 					timePassed += Gdx.graphics.getDeltaTime();
 
 					break;
