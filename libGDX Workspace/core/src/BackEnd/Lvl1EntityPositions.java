@@ -606,7 +606,6 @@ public class Lvl1EntityPositions {
 					}
 					MapLayer TurLayer = map.getLayers().get("Tur1");
 					for (MapObject mo : TurLayer.getObjects()) {
-						System.out.println("Spawned!");
 						Turret.turretSpawnPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
 						Turret.turretSpawnPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
 						turret = new Turret(world);

@@ -75,9 +75,9 @@ public class Level3 implements Screen{
 	private CollisionDetector cd;
 	private Lvl3EntityPositions lvl3EP;
 	private Music levelThreeMusicAll, secretRoomMusic;
-	private Texture mouseCursor, axeMouseCursor, pauseMenu;
+	private Texture pauseMenu;
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
-	private boolean lockCursor = true, gamePaused = false, sMusic = false, spawnIvanov = true, zoom = true;
+	private boolean lockCursor = true, gamePaused = false, spawnIvanov = true, zoom = true;
 	private float elapsed = 0, duration, intensity, gameOver = 0, fadeOut = 0;
 	public static boolean bulletImpact = false, cin = false;
 	public static Vector3 mousePosition = new Vector3(0, 0, 0);
@@ -103,8 +103,6 @@ public class Level3 implements Screen{
 			params.textureMinFilter = TextureFilter.Linear;
 			params.textureMagFilter = TextureFilter.Linear;
 			map = new TmxMapLoader().load("tileMaps/Levels/Level3.tmx", params);
-			mouseCursor = Mutagen.manager.get("crosshair 1.png", Texture.class);
-			axeMouseCursor = Mutagen.manager.get("axeCursor.png");
 			mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / Mutagen.PPM);
 
 			//Box2d variables
@@ -164,7 +162,10 @@ public class Level3 implements Screen{
 			}
 			this.world.setContactListener(cd);
 			Gdx.input.setInputProcessor(null);
-		} catch (Exception e) {
+			Ivanov.dead = false;
+			
+		}
+		catch (Exception e) {
 
 			//Logs that this method of this class triggered an exception
 			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
@@ -266,7 +267,6 @@ public class Level3 implements Screen{
 						gameOver +=1;
 
 						if (gameOver > 120) {
-							Gdx.input.setCursorCatched(false);
 							game.setScreen(new MainMenu(game));					
 						}
 					}
@@ -336,7 +336,6 @@ public class Level3 implements Screen{
 					if (PlayerOne.p1Dead && PlayerTwo.p2Dead) {
 						gameOver +=1;
 						if (gameOver > 120) {
-							Gdx.input.setCursorCatched(false);
 							game.setScreen(new MainMenu(game));
 						}
 					}
@@ -494,17 +493,6 @@ public class Level3 implements Screen{
 				gamePaused = false;
 			}
 
-			//hides the mouse and displays cross hair		
-			if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && !lockCursor) {
-				lockCursor = true;
-			}else if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && lockCursor) {
-				lockCursor = false;
-			}
-
-			if (lockCursor) {
-				Gdx.input.setCursorCatched(true);
-			}else Gdx.input.setCursorCatched(false);
-
 			//*********GAME IS PAUSED*********
 			if (gamePaused) {
 				PlayerOne.runningSound.stop();
@@ -517,13 +505,11 @@ public class Level3 implements Screen{
 
 				game.batch.end();
 
-				lockCursor = false;	
 				if (Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
 					//RESUME
 					if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < 0.88 && mousePosition.y > .31) {
 						Mutagen.clicking();
 						gamePaused = false;
-						lockCursor = true;
 					}
 					//QUIT TO MENU
 					if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < 0.221 && mousePosition.y > -.38) {
@@ -603,26 +589,14 @@ public class Level3 implements Screen{
 				//Goes to class that handles spawning the enemies
 				lvl3EP.SpawnEntities(world, map);
 
-				//Secret Room Music
-				if (PlayerOne.p1PosX > 10.8 && PlayerOne.p1PosX < 11 && PlayerOne.p1PosY > 44 && PlayerOne.p1PosY < 46.6 && !sMusic) {
-					levelThreeMusicAll.stop();
-					secretRoomMusic.play();
-					sMusic = true;
-				}
-				if (PlayerOne.p1PosX > 13 && PlayerOne.p1PosX < 13.5 && PlayerOne.p1PosY > 44 && PlayerOne.p1PosY < 46.6 && sMusic) {
-					secretRoomMusic.stop();
-					levelThreeMusicAll.play();
-					sMusic = false;
-				}
+
 
 				//LEVEL END
 				if (Ivanov.dead) {
 					PlayerOne.runningSound.stop();					
-
 					if (!PlayerMode.OneP) {
 						PlayerTwo.runningSound.stop();
 					}
-					Gdx.input.setCursorCatched(false);
 					levelThreeMusicAll.stop();
 
 					gameOver+=1;
@@ -695,13 +669,6 @@ public class Level3 implements Screen{
 					
 				}
 
-				if (PlayerMode.OneP) {
-					if (GunSelectionScreen.p1WeaponSelected == "battle axe") {
-						game.batch.draw(axeMouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 21 / Mutagen.PPM, 21/ Mutagen.PPM);
-					}else { 
-						game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / Mutagen.PPM, 13 / Mutagen.PPM);
-					}				
-				}
 
 				mapRenderer.setView(cam);
 				game.batch.end(); //starts sprite spriteBatch
@@ -711,7 +678,6 @@ public class Level3 implements Screen{
 			mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			cam.unproject(mousePosition); //gets mouse coordinates within viewport
 			game.batch.setProjectionMatrix(cam.combined); //keeps player sprite from doing weird out of sync movement
-			//System.out.println(mousePosition);
 		} catch (Exception e) {
 
 			//Logs that this method of this class triggered an exception

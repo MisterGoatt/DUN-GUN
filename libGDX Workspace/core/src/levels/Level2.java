@@ -71,9 +71,9 @@ public class Level2 implements Screen{
 	private CollisionDetector cd;
 	private Lvl2EntityPositions lvl2EP;
 	private Music levelThreeMusicAll, secretRoomMusic;
-	private Texture mouseCursor, axeMouseCursor, pauseMenu;
+	private Texture pauseMenu;
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
-	private boolean lockCursor = true, gamePaused = false, sMusic = false;
+	private boolean lock = true, gamePaused = false, sMusic = false;
 	private float elapsed = 0, duration, intensity, gameOver = 0, fadeOut = 0;
 	public static boolean bulletImpact = false;
 	public static Vector3 mousePosition = new Vector3(0, 0, 0);
@@ -103,8 +103,7 @@ public class Level2 implements Screen{
 			}else {
 				map = new TmxMapLoader().load("tileMaps/Levels/Level2Challenging.tmx", params);
 			}
-			mouseCursor = Mutagen.manager.get("crosshair 1.png", Texture.class);
-			axeMouseCursor = Mutagen.manager.get("axeCursor.png");
+
 			mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / Mutagen.PPM);
 
 			//Box2d variables
@@ -251,7 +250,6 @@ public class Level2 implements Screen{
 					gameOver +=1;
 
 					if (gameOver > 120) {
-						Gdx.input.setCursorCatched(false);
 						game.setScreen(new MainMenu(game));					
 					}
 
@@ -325,7 +323,6 @@ public class Level2 implements Screen{
 					gameOver +=1;
 
 					if (gameOver > 120) {
-						Gdx.input.setCursorCatched(false);
 						game.setScreen(new MainMenu(game));
 					}
 				}
@@ -449,17 +446,7 @@ public class Level2 implements Screen{
 				gamePaused = false;
 			}
 
-			//hides the mouse and displays cross hair		
-			if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && !lockCursor) {
-				lockCursor = true;
-			}else if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) && lockCursor) {
-				lockCursor = false;
-			}
-
-			if (lockCursor) {
-				Gdx.input.setCursorCatched(true);
-			}else Gdx.input.setCursorCatched(false);
-
+			
 			if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
 				levelThreeMusicAll.stop();
 				Mutagen.clicking();
@@ -483,13 +470,11 @@ public class Level2 implements Screen{
 
 				game.batch.end();
 
-				lockCursor = false;	
 				if (Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
 					//RESUME
 					if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < 0.88 && mousePosition.y > .31) {
 						Mutagen.clicking();
 						gamePaused = false;
-						lockCursor = true;
 					}
 					//QUIT TO MENU
 					if (mousePosition.x > -1.02 && mousePosition.x < 1 && mousePosition.y < 0.221 && mousePosition.y > -.38) {
@@ -583,7 +568,6 @@ public class Level2 implements Screen{
 					if (!PlayerMode.OneP) {
 						PlayerTwo.runningSound.stop();
 					}
-					Gdx.input.setCursorCatched(false);
 					levelThreeMusicAll.stop();
 
 					gameOver+=1;
@@ -607,7 +591,6 @@ public class Level2 implements Screen{
 				else if (PlayerTwo.p2PosX > 97 && PlayerTwo.p2PosX < 98.4 && PlayerTwo.p2PosY > 25.3 && PlayerTwo.p2PosY < 26.7) {
 					PlayerOne.runningSound.stop();
 					PlayerTwo.runningSound.stop();
-					Gdx.input.setCursorCatched(false);
 					levelThreeMusicAll.stop();
 
 					gameOver+=1;
@@ -641,13 +624,6 @@ public class Level2 implements Screen{
 					}	
 				}
 
-				if (PlayerMode.OneP) {
-					if (GunSelectionScreen.p1WeaponSelected == "battle axe") {
-						game.batch.draw(axeMouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 21 / Mutagen.PPM, 21/ Mutagen.PPM);
-					}else { 
-						game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / Mutagen.PPM, 13 / Mutagen.PPM);
-					}				
-				}
 
 				mapRenderer.setView(cam);
 				game.batch.end(); //starts sprite spriteBatch

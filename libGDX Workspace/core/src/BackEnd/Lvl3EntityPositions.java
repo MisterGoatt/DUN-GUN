@@ -52,7 +52,6 @@ public class Lvl3EntityPositions {
 
 			// spawn grunts
 			if (spawnGrunts) {
-				System.out.println("spawn grunts");
 				MapLayer MutLayer = map.getLayers().get("mut");
 				for (MapObject mo : MutLayer.getObjects()) {
 					Grunt.gruntPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
@@ -64,7 +63,6 @@ public class Lvl3EntityPositions {
 			}
 			// spawn scientists
 			if (spawnScientists) {
-				System.out.println("spawn scientists");
 				MapLayer SciLayer = map.getLayers().get("sci");
 				for (MapObject mo : SciLayer.getObjects()) {
 					Scientist.scientistPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
@@ -76,7 +74,6 @@ public class Lvl3EntityPositions {
 			}
 			// spawn soldiers
 			if (spawnSoldiers) {
-				System.out.println("spawn soldiers");
 
 				MapLayer Layer = map.getLayers().get("sol");
 				for (MapObject mo : Layer.getObjects()) {
@@ -89,7 +86,6 @@ public class Lvl3EntityPositions {
 			}
 			// spawn flayers
 			if (spawnFlayers) {
-				System.out.println("spawn flayers");
 
 				MapLayer FlayLayer = map.getLayers().get("flay");
 				for (MapObject mo : FlayLayer.getObjects()) {

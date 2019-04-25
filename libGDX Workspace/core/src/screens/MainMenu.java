@@ -48,7 +48,7 @@ public class MainMenu implements Screen, InputProcessor{
 
 	public MainMenu(final Mutagen game) {
 		this.game = game;
-//		try {
+		try {
 			mainMenuScreen = Mutagen.manager.get("screens/menuScreen.jpg", Texture.class);
 			mainMenuScreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 			framerate = Mutagen.manager.get("fonts/CourierNew32.fnt", BitmapFont.class) ;
@@ -63,19 +63,16 @@ public class MainMenu implements Screen, InputProcessor{
 			themeMusic.play();
 			themeMusic.setVolume(Mutagen.musicVolume);
 			pointsMenu = true;
-			System.out.println("skeet skeet");
 			mouseOriginal = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("mouseOriginal.png")), 1, 1);
-			System.out.println("breet breet");
 			Gdx.graphics.setCursor(mouseOriginal);
-			System.out.println("yeet deet");
 
-//		} 
-//		catch (Exception e) {
-//			//Logs that this method of this class triggered an exception
-//			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
-//			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
-//
-//		}
+		} 
+		catch (Exception e) {
+			//Logs that this method of this class triggered an exception
+			String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+			lfh.fileLog(this.getClass().getSimpleName() + " ", name + " ", "ERROR");
+
+		}
 
 	}
 
@@ -92,7 +89,6 @@ public class MainMenu implements Screen, InputProcessor{
 			
 			mousePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			cam.unproject(mousePosition); //gets mouse coordinates within viewport
-			//System.out.println(mousePosition);
 			game.batch.begin(); 
 			game.batch.setProjectionMatrix(cam.combined);
 
