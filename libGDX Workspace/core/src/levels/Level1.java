@@ -36,6 +36,7 @@ import BackEnd.Lvl1EntityPositions;
 import BackEnd.Mutagen;
 import collisions.B2DWorldCreator;
 import collisions.CollisionDetector;
+import entities.Arrows;
 import entities.CreateBullet;
 import entities.Grunt;
 import entities.HealthPickUp;
@@ -68,10 +69,10 @@ public class Level1 implements Screen{
 	private CollisionDetector cd;
 	private Lvl1EntityPositions lvl1EP;
 	private Music levelOneMusicAll;
-	private Texture pauseMenu;
+	private Texture pauseMenu, objective;
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
-	private boolean gamePaused = false;
-	private float elapsed = 0, duration, intensity, gameOver = 0, fadeOut = 0;
+	private boolean gamePaused = false, obj = true;
+	private float elapsed = 0, duration, intensity, gameOver = 0, fadeOut = 0, quickTime = 0;
 	public static boolean bulletImpact = false;
 	public static Vector3 mousePosition = new Vector3(0, 0, 0);
 	private Vector2 boundaryAbs = new Vector2(0, 0);
@@ -92,7 +93,7 @@ public class Level1 implements Screen{
 			Mutagen.level = "1";
 			cam = new OrthographicCamera();		
 			gamePort = new FitViewport(Mutagen.V_WIDTH / Mutagen.PPM, Mutagen.V_HEIGHT / Mutagen.PPM, cam);
-			cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+			//cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 			cam.zoom -= .40;
 
 			TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
@@ -124,6 +125,15 @@ public class Level1 implements Screen{
 					playerTwo = new PlayerTwo(world);
 				}
 			}
+			MapLayer arrowLayerUp = map.getLayers().get("ArrowUp");
+			
+			MapLayer arrowLayerLeft = map.getLayers().get("ArrowLeft");
+			
+			MapLayer arrowLayerDown = map.getLayers().get("ArrowDown");
+			
+			MapLayer arrowLayerRight = map.getLayers().get("ArrowRight");
+
+			
 
 			lvl1EP = new Lvl1EntityPositions();
 			cd = new CollisionDetector();
@@ -147,6 +157,8 @@ public class Level1 implements Screen{
 			}
 
 			pauseMenu = Mutagen.manager.get("screens/Pause.jpg", Texture.class);
+			objective = Mutagen.manager.get("tileMaps/Levels/objective_text.png", Texture.class);
+			objective.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
 			levelOneMusicAll = Mutagen.manager.get("music/songAll.mp3");
 
@@ -251,95 +263,109 @@ public class Level1 implements Screen{
 			 * a+(b-a)*lerp
 			 * the higher the lerp value the more instantaneous
 			 */
-			if (PlayerMode.OneP) {
-				cam.position.x = cam.position.x + (playerOne.b2body.getPosition().x - cam.position.x) * .05f;
-				cam.position.y = cam.position.y + (playerOne.b2body.getPosition().y - cam.position.y) * .05f;
+			if (!obj) {
+				
+				
 
-				//GOES TO MAIN MENU IF BOTH PLAYERS ARE DEAD
-				if (PlayerOne.p1Dead) {
-					gameOver +=1;
-
-					if (gameOver > 120) {
-						Gdx.input.setCursorCatched(false);
-						game.setScreen(new MainMenu(game));					
-					}
-
-				}
-			} else {
-				//prevents co-op players from moving out of the screen if moving is separate directions
-				if (!PlayerOne.p1Dead && !PlayerTwo.p2Dead) {
-
-					boundaryAbs.x = Math.abs(playerOne.b2body.getPosition().x - playerTwo.b2body.getPosition().x);
-					boundaryAbs.y = Math.abs(playerOne.b2body.getPosition().y - playerTwo.b2body.getPosition().y);
-					boundary.x = playerOne.b2body.getPosition().x - playerTwo.b2body.getPosition().x;
-					boundary.y = playerOne.b2body.getPosition().y - playerTwo.b2body.getPosition().y;
-					if (boundaryAbs.x > 8.9 || boundaryAbs.y > 4.7) {
-						PlayerOne.movHalt = true;
-						PlayerTwo.movHalt = true;
-
-					}else {
-						PlayerOne.movHalt = false;
-						PlayerTwo.movHalt = false;
-					}
-
-
-					if (PlayerOne.movHalt && PlayerTwo.movHalt) {
-						//p2 is right of p1
-						if (boundary.x >= 0 ) {
-							playerOne.b2body.applyForceToCenter(-2, 0, true);
-							playerTwo.b2body.applyForceToCenter(2, 0, true);
-						}
-						//p2 if left of p1
-						else {
-							playerOne.b2body.applyForceToCenter(2, 0, true);
-							playerTwo.b2body.applyForceToCenter(-2, 0, true);
-
-						}
-						//p2 is below p1
-						if (boundary.y >= 0 ) {
-							playerOne.b2body.applyForceToCenter(0, -2f, true);
-							playerTwo.b2body.applyForceToCenter(0, 2f, true);
-
-						}
-						//p2 is below of p1
-						else {
-							playerOne.b2body.applyForceToCenter(0, 2f, true);
-							playerTwo.b2body.applyForceToCenter(0, -2f, true);
-						}
-
-					}
-
-					cam.position.x = (playerTwo.b2body.getPosition().x - playerOne.b2body.getPosition().x) / 2;
-					if (playerOne.b2body.getPosition().x > playerTwo.b2body.getPosition().x) {
-						cam.position.x = playerTwo.b2body.getPosition().x + Math.abs(cam.position.x);
-					}else {
-						cam.position.x = playerOne.b2body.getPosition().x + Math.abs(cam.position.x);
-					}
-					cam.position.y = (playerTwo.b2body.getPosition().y - playerOne.b2body.getPosition().y) / 2;
-					if (playerOne.b2body.getPosition().y > playerTwo.b2body.getPosition().y) {
-						cam.position.y = playerTwo.b2body.getPosition().y + Math.abs(cam.position.y);
-					}else {
-						cam.position.y = playerOne.b2body.getPosition().y + Math.abs(cam.position.y);
-					}
-				}else if (PlayerOne.p1Dead) {
-					//Player Two
-					cam.position.x = cam.position.x + (playerTwo.b2body.getPosition().x - cam.position.x) * .05f;
-					cam.position.y = cam.position.y + (playerTwo.b2body.getPosition().y - cam.position.y) * .05f;	
-				}else {
-					//Player One
+				if (PlayerMode.OneP) {
 					cam.position.x = cam.position.x + (playerOne.b2body.getPosition().x - cam.position.x) * .05f;
-					cam.position.y = cam.position.y + (playerOne.b2body.getPosition().y - cam.position.y) * .05f;	
-				}
-				//GOES TO MAIN MENU IF BOTH PLAYERS ARE DEAD
-				if (PlayerOne.p1Dead && PlayerTwo.p2Dead) {
-					gameOver +=1;
+					cam.position.y = cam.position.y + (playerOne.b2body.getPosition().y - cam.position.y) * .05f;
 
-					if (gameOver > 120) {
-						Gdx.input.setCursorCatched(false);
-						game.setScreen(new MainMenu(game));
+					//GOES TO MAIN MENU IF BOTH PLAYERS ARE DEAD
+					if (PlayerOne.p1Dead) {
+						gameOver +=1;
+
+						if (gameOver > 120) {
+							Gdx.input.setCursorCatched(false);
+							game.setScreen(new MainMenu(game));					
+						}
+
 					}
-				}
+				} else {
+					//prevents co-op players from moving out of the screen if moving is separate directions
+					if (!PlayerOne.p1Dead && !PlayerTwo.p2Dead) {
 
+						boundaryAbs.x = Math.abs(playerOne.b2body.getPosition().x - playerTwo.b2body.getPosition().x);
+						boundaryAbs.y = Math.abs(playerOne.b2body.getPosition().y - playerTwo.b2body.getPosition().y);
+						boundary.x = playerOne.b2body.getPosition().x - playerTwo.b2body.getPosition().x;
+						boundary.y = playerOne.b2body.getPosition().y - playerTwo.b2body.getPosition().y;
+						if (boundaryAbs.x > 8.9 || boundaryAbs.y > 4.7) {
+							PlayerOne.movHalt = true;
+							PlayerTwo.movHalt = true;
+
+						}else {
+							PlayerOne.movHalt = false;
+							PlayerTwo.movHalt = false;
+						}
+
+
+						if (PlayerOne.movHalt && PlayerTwo.movHalt) {
+							//p2 is right of p1
+							if (boundary.x >= 0 ) {
+								playerOne.b2body.applyForceToCenter(-2, 0, true);
+								playerTwo.b2body.applyForceToCenter(2, 0, true);
+							}
+							//p2 if left of p1
+							else {
+								playerOne.b2body.applyForceToCenter(2, 0, true);
+								playerTwo.b2body.applyForceToCenter(-2, 0, true);
+
+							}
+							//p2 is below p1
+							if (boundary.y >= 0 ) {
+								playerOne.b2body.applyForceToCenter(0, -2f, true);
+								playerTwo.b2body.applyForceToCenter(0, 2f, true);
+
+							}
+							//p2 is below of p1
+							else {
+								playerOne.b2body.applyForceToCenter(0, 2f, true);
+								playerTwo.b2body.applyForceToCenter(0, -2f, true);
+							}
+
+						}
+
+						cam.position.x = (playerTwo.b2body.getPosition().x - playerOne.b2body.getPosition().x) / 2;
+						if (playerOne.b2body.getPosition().x > playerTwo.b2body.getPosition().x) {
+							cam.position.x = playerTwo.b2body.getPosition().x + Math.abs(cam.position.x);
+						}else {
+							cam.position.x = playerOne.b2body.getPosition().x + Math.abs(cam.position.x);
+						}
+						cam.position.y = (playerTwo.b2body.getPosition().y - playerOne.b2body.getPosition().y) / 2;
+						if (playerOne.b2body.getPosition().y > playerTwo.b2body.getPosition().y) {
+							cam.position.y = playerTwo.b2body.getPosition().y + Math.abs(cam.position.y);
+						}else {
+							cam.position.y = playerOne.b2body.getPosition().y + Math.abs(cam.position.y);
+						}
+					}else if (PlayerOne.p1Dead) {
+						//Player Two
+						cam.position.x = cam.position.x + (playerTwo.b2body.getPosition().x - cam.position.x) * .05f;
+						cam.position.y = cam.position.y + (playerTwo.b2body.getPosition().y - cam.position.y) * .05f;	
+					}else {
+						//Player One
+						cam.position.x = cam.position.x + (playerOne.b2body.getPosition().x - cam.position.x) * .05f;
+						cam.position.y = cam.position.y + (playerOne.b2body.getPosition().y - cam.position.y) * .05f;	
+					}
+					//GOES TO MAIN MENU IF BOTH PLAYERS ARE DEAD
+					if (PlayerOne.p1Dead && PlayerTwo.p2Dead) {
+						gameOver +=1;
+
+						if (gameOver > 120) {
+							Gdx.input.setCursorCatched(false);
+							game.setScreen(new MainMenu(game));
+						}
+					}
+
+				}
+			}
+			else {
+				
+				cam.position.set(19, 42, 0);
+				quickTime += .1;
+				if (Gdx.input.justTouched() && quickTime > 2) {
+					obj = false;
+				}
+				
 			}
 			// Only screen shake when required.
 			if (elapsed < duration) {
@@ -544,6 +570,11 @@ public class Level1 implements Screen{
 				for (int i = 0; i < HealthPickUp.hpPickUp.size; i++) {
 					HealthPickUp.hpPickUp.get(i).renderSprite(game.batch);
 				}
+				
+				for (int i = 0; i < Arrows.arrows.size; i++) {
+					Arrows.arrows.get(i).renderSprite(game.batch);
+				}
+				
 				//Goes to method that handles spawning the enemies
 				lvl1EP.SpawnEntities(world, map);
 				//LEVEL END
@@ -610,17 +641,11 @@ public class Level1 implements Screen{
 					}
 				}
 
-				if (PlayerMode.OneP) {
+
+				//Draws objective text
+				game.batch.draw(objective, 15.5f, 41f, 7f, 2.5f);
 
 
-					//
-					//					if (GunSelectionScreen.p1WeaponSelected == "battle axe") {
-					//						game.batch.draw(axeMouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 21 / Mutagen.PPM, 21/ Mutagen.PPM);
-					//					}else if (GunSelectionScreen.p1WeaponSelected != "battle axe") { 
-					//						game.batch.draw(mouseCursor, mousePosition.x - .05f, mousePosition.y - .05f, 13 / Mutagen.PPM, 13 / Mutagen.PPM);
-					//
-					//					}
-				}
 
 				mapRenderer.setView(cam);
 				game.batch.end(); //starts sprite spriteBatch

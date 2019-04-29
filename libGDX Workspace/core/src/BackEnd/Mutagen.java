@@ -25,7 +25,8 @@ public class Mutagen extends Game{
 	public SpriteBatch batch;
 	//Virtual Screen size and Box2D Scale(Pixels Per Meter)
 	public static final int V_WIDTH = 1500,  V_HEIGHT = 800;
-	public static final short PLAYER = 0x0001, BULLET = 0x0002, ENEMY = 0x0004, ENEMY_BULLET = 0x0008, SHOOT_OVER = 0x0016, HP_PICKUP = 0x0032, WALL = 0x0064;
+	public static final short PLAYER = 0x0001, BULLET = 0x0002, ENEMY = 0x0004, ENEMY_BULLET = 0x0008, SHOOT_OVER = 0x0016, 
+			HP_PICKUP = 0x0032, WALL = 0x0064, ARROWS = 0x0128;
 	public static AssetManager manager;
 	public static float musicVolume = .6f, sfxVolume = 1f, PPM = 100;
 	public static Sound click;
@@ -91,6 +92,7 @@ public class Mutagen extends Game{
 			manager.load("screens/Pause.jpg", Texture.class);
 			manager.load("music/songAll.mp3", Music.class);
 			manager.load("music/lvlComplete.mp3", Music.class);
+			manager.load("tileMaps/Levels/objective_text.png", Texture.class);
 
 
 			//Gun sound effects
