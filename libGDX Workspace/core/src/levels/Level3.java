@@ -39,6 +39,7 @@ import BackEnd.Mutagen;import BackEnd.PointSystem;
 
 import collisions.B2DWorldCreator;
 import collisions.CollisionDetector;
+import entities.Arrows;
 import entities.CreateBullet;
 import entities.Flayer;
 import entities.FlayerThorns;
@@ -70,6 +71,7 @@ public class Level3 implements Screen{
 	private Box2DDebugRenderer b2dr; //graphical representation of body fixtures
 	private PlayerOne playerOne;
 	private PlayerTwo playerTwo;
+	private Arrows arrow;
 	private Ivanov ivanov;
 	public CreateBullet createBullet;
 	private CollisionDetector cd;
@@ -122,6 +124,18 @@ public class Level3 implements Screen{
 					playerTwo = new PlayerTwo(world);
 				}
 			}
+			
+			
+			
+			Arrows.arrows.clear();
+			
+			MapLayer arrowLayerUp = map.getLayers().get("ArrowUp");
+			for (MapObject mo : arrowLayerUp.getObjects()) {
+				Arrows.arrowPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+				Arrows.arrowPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+				Arrows.arrowAngle = 360;
+				arrow = new Arrows(world);
+				Arrows.arrows.add(arrow);			}
 
 			lvl3EP = new Lvl3EntityPositions();
 			cd = new CollisionDetector();
@@ -532,6 +546,9 @@ public class Level3 implements Screen{
 
 
 				//RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER BODY OBJECTS
+				for (int i = 0; i < Arrows.arrows.size; i++) {
+					Arrows.arrows.get(i).renderSprite(game.batch);
+				}
 				for (int i = 0; i < Grunt.grunts.size; i++) {
 					Grunt.grunts.get(i).renderSprite(game.batch);
 				}

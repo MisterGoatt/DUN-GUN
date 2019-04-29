@@ -65,6 +65,7 @@ public class Level1 implements Screen{
 	private Box2DDebugRenderer b2dr; //graphical representation of body fixtures
 	private PlayerOne playerOne;
 	private PlayerTwo playerTwo;
+	private Arrows arrow;
 	public CreateBullet createBullet;
 	private CollisionDetector cd;
 	private Lvl1EntityPositions lvl1EP;
@@ -86,9 +87,6 @@ public class Level1 implements Screen{
 		this.game = game;
 
 		try {
-			//		Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
-			//        Gdx.graphics.setFullscreenMode(currentMode);
-			//		System.out.println(currentMode);
 
 			Mutagen.level = "1";
 			cam = new OrthographicCamera();		
@@ -125,14 +123,45 @@ public class Level1 implements Screen{
 					playerTwo = new PlayerTwo(world);
 				}
 			}
+			
+			Arrows.arrows.clear();
+
+			
 			MapLayer arrowLayerUp = map.getLayers().get("ArrowUp");
+			for (MapObject mo : arrowLayerUp.getObjects()) {
+				Arrows.arrowPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+				Arrows.arrowPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+				Arrows.arrowAngle = 360;
+				arrow = new Arrows(world);
+				Arrows.arrows.add(arrow);			}
+			MapLayer arrowLayerDown = map.getLayers().get("ArrowDown");
+			for (MapObject mo : arrowLayerDown.getObjects()) {
+				Arrows.arrowPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+				Arrows.arrowPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+				Arrows.arrowAngle = 180;
+				arrow = new Arrows(world);
+				Arrows.arrows.add(arrow);
+
+			}
 			
 			MapLayer arrowLayerLeft = map.getLayers().get("ArrowLeft");
-			
-			MapLayer arrowLayerDown = map.getLayers().get("ArrowDown");
+			for (MapObject mo : arrowLayerLeft.getObjects()) {
+				Arrows.arrowPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+				Arrows.arrowPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+				Arrows.arrowAngle = 90;
+				arrow = new Arrows(world);
+				Arrows.arrows.add(arrow);
+
+			}
 			
 			MapLayer arrowLayerRight = map.getLayers().get("ArrowRight");
-
+			for (MapObject mo : arrowLayerRight.getObjects()) {
+				Arrows.arrowPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+				Arrows.arrowPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+				Arrows.arrowAngle = 270;
+				arrow = new Arrows(world);
+				Arrows.arrows.add(arrow);
+			}
 			
 
 			lvl1EP = new Lvl1EntityPositions();
@@ -528,6 +557,9 @@ public class Level1 implements Screen{
 				//b2dr.render(world, cam.combined);
 				game.batch.begin(); //starts sprite spriteBatch
 				//RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER BODY OBJECTS
+				for (int i = 0; i < Arrows.arrows.size; i++) {
+					Arrows.arrows.get(i).renderSprite(game.batch);
+				}
 				for (int i = 0; i < Grunt.grunts.size; i++) {
 					Grunt.grunts.get(i).renderSprite(game.batch);
 				}
@@ -571,12 +603,11 @@ public class Level1 implements Screen{
 					HealthPickUp.hpPickUp.get(i).renderSprite(game.batch);
 				}
 				
-				for (int i = 0; i < Arrows.arrows.size; i++) {
-					Arrows.arrows.get(i).renderSprite(game.batch);
-				}
+
 				
 				//Goes to method that handles spawning the enemies
 				lvl1EP.SpawnEntities(world, map);
+
 				//LEVEL END
 				if (PlayerOne.p1PosX > 85. && PlayerOne.p1PosX < 86.6 && PlayerOne.p1PosY > 10.7 && PlayerOne.p1PosY < 12.4) {
 					PlayerOne.runningSound.stop();					
@@ -643,7 +674,9 @@ public class Level1 implements Screen{
 
 
 				//Draws objective text
-				game.batch.draw(objective, 15.5f, 41f, 7f, 2.5f);
+				if (obj) {
+					game.batch.draw(objective, 15.5f, 41f, 7f, 2.5f);					
+				}
 
 
 

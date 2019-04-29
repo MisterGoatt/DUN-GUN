@@ -26,15 +26,18 @@ public class Arrows extends Sprite implements Disposable{
 	private Animation <TextureRegion> arrowAnimation;
 	private TextureAtlas arrowAtlas;
 	public static Vector2 textPos = new Vector2(0,0);
-	private float timePassed = 0;
+	private float timePassed = 0, arrowAng;
 	public static Array<Arrows> arrows = new Array<Arrows>();
 	public static Vector2 arrowPos = new Vector2(0,0);
 	public static float arrowAngle = 0;
+	
 	
 	public Arrows(World world) {
 		this.world = world;
 		arrowAtlas = Mutagen.manager.get("sprites/arrowAnimation.atlas");
 		arrowAnimation = new Animation <TextureRegion>(1f/15f, arrowAtlas.getRegions());	
+		arrowAng = arrowAngle;
+		
 		defineArrow();
 
 	}
@@ -62,7 +65,7 @@ public class Arrows extends Sprite implements Disposable{
 	public void renderSprite(SpriteBatch batch) {
 		float posX = this.b2body.getPosition().x;
 		float posY = this.b2body.getPosition().y;
-		batch.draw(arrowAnimation.getKeyFrame(timePassed), posX - .17f, posY - .13f, 20 / Mutagen.PPM, 10 / Mutagen.PPM, 40 / Mutagen.PPM, 32 / Mutagen.PPM, 1, 1, 2);
+		batch.draw(arrowAnimation.getKeyFrame(timePassed, true), posX - .17f, posY - .13f, 21 / Mutagen.PPM, 32 / Mutagen.PPM, 42 / Mutagen.PPM, 65 / Mutagen.PPM, 1, 1, arrowAng);
 		timePassed += Gdx.graphics.getDeltaTime();
 	}
 	

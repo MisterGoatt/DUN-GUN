@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="24" nextobjectid="65">
+<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="27" nextobjectid="66">
  <tileset firstgid="1" source="Level2 Tileset.tsx"/>
  <layer id="11" name="Ground" width="100" height="100">
   <data encoding="csv">
@@ -1167,6 +1167,11 @@
   <object id="39" x="1601.69" y="3007.58" width="158.545" height="2"/>
   <object id="40" x="1602.06" y="2978.67" width="2.54545" height="30.5455"/>
   <object id="41" x="1601.33" y="2854.85" width="3.63636" height="27.8182"/>
+ </objectgroup>
+ <objectgroup color="#ffffff" id="24" name="ArrowUp">
+  <object id="65" x="1678" y="2694">
+   <ellipse/>
+  </object>
  </objectgroup>
  <objectgroup color="#ffff00" id="12" name="Wall">
   <object id="22" x="1184" y="1600" width="64" height="672"/>

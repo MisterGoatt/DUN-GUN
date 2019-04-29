@@ -37,6 +37,7 @@ import BackEnd.Lvl2EntityPositions;
 import BackEnd.Mutagen;
 import collisions.B2DWorldCreator;
 import collisions.CollisionDetector;
+import entities.Arrows;
 import entities.CreateBullet;
 import entities.Flayer;
 import entities.FlayerThorns;
@@ -67,6 +68,7 @@ public class Level2 implements Screen{
 	private Box2DDebugRenderer b2dr; //graphical representation of body fixtures
 	private PlayerOne playerOne;
 	private PlayerTwo playerTwo;
+	private Arrows arrow;
 	public CreateBullet createBullet;
 	private CollisionDetector cd;
 	private Lvl2EntityPositions lvl2EP;
@@ -124,6 +126,45 @@ public class Level2 implements Screen{
 				}
 			}
 
+			Arrows.arrows.clear();
+
+			
+			MapLayer arrowLayerUp = map.getLayers().get("ArrowUp");
+			for (MapObject mo : arrowLayerUp.getObjects()) {
+				Arrows.arrowPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+				Arrows.arrowPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+				Arrows.arrowAngle = 360;
+				arrow = new Arrows(world);
+				Arrows.arrows.add(arrow);			}
+			MapLayer arrowLayerDown = map.getLayers().get("ArrowDown");
+			for (MapObject mo : arrowLayerDown.getObjects()) {
+				Arrows.arrowPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+				Arrows.arrowPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+				Arrows.arrowAngle = 180;
+				arrow = new Arrows(world);
+				Arrows.arrows.add(arrow);
+
+			}
+			
+			MapLayer arrowLayerLeft = map.getLayers().get("ArrowLeft");
+			for (MapObject mo : arrowLayerLeft.getObjects()) {
+				Arrows.arrowPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+				Arrows.arrowPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+				Arrows.arrowAngle = 90;
+				arrow = new Arrows(world);
+				Arrows.arrows.add(arrow);
+
+			}
+			
+			MapLayer arrowLayerRight = map.getLayers().get("ArrowRight");
+			for (MapObject mo : arrowLayerRight.getObjects()) {
+				Arrows.arrowPos.x = (float) mo.getProperties().get("x") / Mutagen.PPM;
+				Arrows.arrowPos.y = (float) mo.getProperties().get("y") / Mutagen.PPM;
+				Arrows.arrowAngle = 270;
+				arrow = new Arrows(world);
+				Arrows.arrows.add(arrow);
+			}
+			
 			lvl2EP = new Lvl2EntityPositions();
 			cd = new CollisionDetector();
 			new B2DWorldCreator(world, map);
@@ -141,7 +182,6 @@ public class Level2 implements Screen{
 			SoldierBullets.soldierBullets.clear();
 			Flayer.flayers.clear();
 			FlayerThorns.flayerThorns.clear();
-
 
 			if (!PlayerMode.OneP) {
 				PlayerTwo.pellets2.clear();
@@ -498,6 +538,9 @@ public class Level2 implements Screen{
 
 
 				//RENDER DIFFERENT TEXTURES AND ANIMATIONS OVER BODY OBJECTS
+				for (int i = 0; i < Arrows.arrows.size; i++) {
+					Arrows.arrows.get(i).renderSprite(game.batch);
+				}
 				for (int i = 0; i < Grunt.grunts.size; i++) {
 					Grunt.grunts.get(i).renderSprite(game.batch);
 				}
