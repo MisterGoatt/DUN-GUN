@@ -8,12 +8,12 @@ PAK4
 *1st place Best in Show
 
 
-Richard H - Team Captain/Programmer (gameplay)
+Richard H - Team Captain/Lead Programmer
 
 
 
 
-Jeremy B  - Programmer (Networking)
+Jeremy B  - Programmer
 
 
 
@@ -23,7 +23,7 @@ Kyle P    - Level Design/Logging
 
 
 
-Kyle T    - Graphic Designer/Programmer
+Kyle T    - Graphic Designer
 
 
 
